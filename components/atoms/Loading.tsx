@@ -1,10 +1,21 @@
-export const Loading = ({text}: {text?: string}) => {
+import clsx from "clsx";
+
+export const Loading = ({
+	text,
+	className,
+}: {
+	text?: string;
+	className?: string;
+}) => {
 	return (
 		<div>
 			<div role="status">
 				<svg
 					aria-hidden="true"
-					className="h-4 w-4 animate-spin fill-cyan-300 text-gray-200 dark:text-gray-600"
+					className={clsx(
+						"h-8 w-8 animate-spin fill-cyan-300 text-gray-200 dark:text-gray-600",
+						className
+					)}
 					viewBox="0 0 100 101"
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"

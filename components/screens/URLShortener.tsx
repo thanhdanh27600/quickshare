@@ -2,6 +2,7 @@ import {Button} from "components/atoms/Button";
 import {Input} from "components/atoms/Input";
 import {useState} from "react";
 import {SubmitHandler, useForm} from "react-hook-form";
+import {urlRegex} from "utils/text";
 
 type URLShortenerForm = {
 	url: string;
@@ -29,7 +30,13 @@ export const URLShortener = () => {
 			<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
 				<Input
 					placeholder="https://..."
-					{...register("url", {required: true})}
+					{...register("url", {
+						required: {message: "Vui lòng nhập URL để tiếp tục", value: true},
+						pattern: {
+							message: "URL không hợp lệ, hãy thử lại",
+							value: urlRegex,
+						},
+					})}
 				/>
 				<Button
 					text="Generate"
@@ -39,9 +46,7 @@ export const URLShortener = () => {
 					loading={loading}
 				/>
 			</form>
-			<p className="text-red-400">
-				{errors.url && "Vui lòng nhập URL để tiếp tục"}
-			</p>
+			<p className="text-red-400">{errors.url?.message}</p>
 			{shortenedUrl && (
 				<div className="mt-4">
 					<h3>Rút gọn link thành công!</h3>

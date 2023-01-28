@@ -28,7 +28,7 @@ export const Button = (props: Props) => {
 		<button
 			{...otherProps}
 			className={clsx(
-				"mr-2 mb-2 rounded-lg bg-gradient-to-br text-center text-sm font-medium focus:ring-2 ",
+				"rounded-lg bg-gradient-to-br text-center text-sm font-medium focus:ring-2 ",
 				{
 					"px-5 py-2.5 text-white hover:bg-gradient-to-bl focus:outline-none dark:focus:ring-cyan-800":
 						color === "cyan" && variant === "filled",
@@ -41,12 +41,12 @@ export const Button = (props: Props) => {
 			)}
 		>
 			<span
-				className={clsx({
-					"relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900":
+				className={clsx("flex min-h-[1.2rem] min-w-max",{
+					"relative max-h-4 rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900":
 						variant === "outlined",
 				})}
 			>
-				{props.loading === true ? <Loading /> : text}
+				{props.loading ? <Loading className="!h-5 !w-5" /> : text}
 			</span>
 		</button>
 	);
