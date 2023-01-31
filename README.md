@@ -10,6 +10,8 @@ npm run dev
 yarn dev
 ```
 
+docker run -p 6379:6379 -d redis
+
 Open [http://localhost:5000](http://localhost:5000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.

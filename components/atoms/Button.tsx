@@ -5,7 +5,7 @@ import {Loading} from "./Loading";
 type ButtonColors = "cyan";
 type ButtonVariants = "filled" | "outlined";
 
-interface Props
+export interface ButtonProps
 	extends DetailedHTMLProps<
 		ButtonHTMLAttributes<HTMLButtonElement>,
 		HTMLButtonElement
@@ -16,7 +16,7 @@ interface Props
 	loading?: boolean;
 }
 
-export const Button = (props: Props) => {
+export const Button = (props: ButtonProps) => {
 	const {
 		text = "Button",
 		color = "cyan",

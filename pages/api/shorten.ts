@@ -2,6 +2,11 @@
 import type {NextApiRequest, NextApiResponse} from "next";
 
 import {createClient} from "redis";
+import {
+	LIMIT_URL_NUMBER,
+	LIMIT_URL_SECOND,
+	NUM_CHARACTER_HASH,
+} from "types/constants";
 import HttpStatusCode from "utils/statusCode";
 import {generateRandomString, isValidUrl} from "utils/text";
 
@@ -13,11 +18,8 @@ type Data = {
 	url?: string;
 	hash?: string;
 	errorMessage?: string;
+	errorCode?: string;
 };
-
-const LIMIT_URL_SECOND = 24 * 3600;
-const LIMIT_URL_NUMBER = 3;
-const NUM_CHARACTER_HASH = 5;
 
 export default async function handler(
 	req: NextApiRequest,
@@ -26,14 +28,16 @@ export default async function handler(
 	const ip = req.socket.remoteAddress;
 	const url = req.query.url as string;
 	if (!url) {
-		return res
-			.status(HttpStatusCode.BAD_REQUEST)
-			.send({errorMessage: "BAD_REQUEST"});
+		return res.status(HttpStatusCode.BAD_REQUEST).send({
+			errorMessage: "You have submitted wrong data, please try again",
+			errorCode: "BAD_REQUEST",
+		});
 	}
 	if (!isValidUrl(url)) {
-		return res
-			.status(HttpStatusCode.BAD_REQUEST)
-			.send({errorMessage: "INVALID_URL"});
+		return res.status(HttpStatusCode.BAD_REQUEST).send({
+			errorMessage: "Wrong URL format, please try again",
+			errorCode: "INVALID_URL",
+		});
 	}
 	await client.connect();
 	const keyLimit = `limit:${ip}`;
@@ -45,9 +49,11 @@ export default async function handler(
 	const value = (await client.get(keyLimit)) || "";
 	const randomHash = generateRandomString(NUM_CHARACTER_HASH);
 	if (parseFloat(value) >= LIMIT_URL_NUMBER) {
-		res
-			.status(HttpStatusCode.UNAUTHORIZED)
-			.send({errorMessage: "UNAUTHORIZED"});
+		res.status(HttpStatusCode.UNAUTHORIZED).send({
+			errorMessage:
+				"Exceeded 3 shorten links, please comeback after 24 hours.",
+			errorCode: "UNAUTHORIZED",
+		});
 	} else {
 		await client.incr(keyLimit);
 		const keyHash = `hash:${ip}`;

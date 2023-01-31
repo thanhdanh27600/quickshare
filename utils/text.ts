@@ -22,3 +22,12 @@ export const urlRegex = new RegExp(
 export const isValidUrl = (urlString: string) => {
 	return !!urlRegex.test(urlString);
 };
+
+export const copyToClipBoard = (text: string) => {
+	const el = document.createElement("textarea");
+	el.value = text;
+	document.body.appendChild(el);
+	el.select();
+	document.execCommand("copy");
+	document.body.removeChild(el);
+};
