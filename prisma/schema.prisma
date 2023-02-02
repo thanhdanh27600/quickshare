@@ -9,3 +9,21 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model UrlShortenerRecord {
+  id        Int                   @id @default(autoincrement())
+  ip        String                @unique
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+  history   UrlShortenerHistory[]
+}
+
+model UrlShortenerHistory {
+  id                   Int                 @id @default(autoincrement())
+  url                  String
+  hash                 String
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  UrlShortenerRecord   UrlShortenerRecord? @relation(fields: [urlShortenerRecordId], references: [id])
+  urlShortenerRecordId Int?
+}
