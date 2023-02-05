@@ -23,7 +23,7 @@ export const Input = forwardRef(
 		);
 	}
 );
-
+Input.displayName = "Input";
 interface InputWithButtonProps extends Props {
 	buttonChild?: string | JSX.Element;
 	buttonProps: ButtonProps;
@@ -45,3 +45,4 @@ export const InputWithButton = forwardRef(
 		);
 	}
 );
+InputWithButton.displayName = "InputWithButton";
