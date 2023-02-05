@@ -6,9 +6,21 @@ const queryClient = new QueryClient();
 
 function MyApp({Component, pageProps}: AppProps) {
 	return (
-		<QueryClientProvider client={queryClient}>
-			<Component {...pageProps} />
-		</QueryClientProvider>
+		<>
+			<link rel="preconnect" href="https://fonts.googleapis.com" />
+			<link
+				rel="preconnect"
+				href="https://fonts.gstatic.com"
+				crossOrigin="anonymous"
+			/>
+			<link
+				href="https://fonts.googleapis.com/css2?family=Itim&display=swap"
+				rel="stylesheet"
+			/>
+			<QueryClientProvider client={queryClient}>
+				<Component {...pageProps} />
+			</QueryClientProvider>
+		</>
 	);
 }
 

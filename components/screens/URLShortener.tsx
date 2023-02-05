@@ -54,7 +54,7 @@ export const URLShortener = () => {
 
 	return (
 		<div className="solid rounded-lg border p-4">
-			<h1 className="mb-8 text-3xl">URL Shortener</h1>
+			<h1 className="mb-4 text-4xl">URL Shortener</h1>
 			<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
 				<InputWithButton
 					placeholder="https://example.com"

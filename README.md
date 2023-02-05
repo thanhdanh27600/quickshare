@@ -11,6 +11,8 @@ yarn dev
 ```
 
 docker run -p 6379:6379 -d redis
+docker exec -it ... sh
+
 
 Open [http://localhost:5000](http://localhost:5000) with your browser to see the result.
 
