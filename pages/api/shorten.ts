@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import {PrismaClient} from "@prisma/client";
 import type {NextApiRequest, NextApiResponse} from "next";
-import {createClient} from "redis";
+import {createClient, RedisClientOptions} from "redis";
 import {
 	LIMIT_URL_HOUR,
 	LIMIT_URL_NUMBER,
@@ -12,7 +12,11 @@ import {
 import HttpStatusCode from "utils/statusCode";
 import {generateRandomString, isValidUrl} from "utils/text";
 
-const client = createClient({password: process.env.REDIS_AUTH});
+let redisConfig: RedisClientOptions = {password: process.env.REDIS_AUTH};
+if (process.env.NODE_ENV === "production") {
+	redisConfig = {url: `redis://default:${process.env.REDIS_AUTH}@cache:6379`};
+}
+const client = createClient(redisConfig);
 
 const prisma = new PrismaClient();
 

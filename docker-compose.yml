@@ -1,0 +1,29 @@
+version: '3'
+services:
+  app:
+    build:
+      context: ./
+    ports:
+      - "3000:3000"
+    networks:
+      - common-network
+    volumes:
+      - db:/prisma
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass dolph123 
+    volumes: 
+      - cache:/data
+    networks:
+      - common-network
+volumes:
+  cache:
+    driver: local
+  db:
+    driver: local
+networks:
+  common-network:
+    external: true

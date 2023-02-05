@@ -1,0 +1,22 @@
+{
+	"name": "nextjs",
+	"options": {
+		"allow-unauthenticated": true,
+		"memory": "256Mi",
+		"cpu": "1",
+		"port": 3000,
+		"http2": false
+	},
+	"env": {
+		"DATABASE_URL": {
+			"description": "Database URL",
+			"value": "file:./prod.db",
+			"required": true
+		},
+		"REDIS_AUTH": {
+			"description": "Redis Password",
+			"value": "dolph123",
+			"required": true
+		}
+	}
+}

@@ -7,7 +7,8 @@
 		"migrate:dev": "npx prisma migrate dev --name",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"db:push": "prisma db push"
 	},
 	"dependencies": {
 		"@prisma/client": "4.9.0",
