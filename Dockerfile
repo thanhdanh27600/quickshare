@@ -19,11 +19,12 @@ ENV NODE_ENV production
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/prod.env ./.env
-COPY --from=builder /app/prisma ./prisma
+COPY --chown=nextjs:nodejs ./.next ./.next
+# COPY ./node_modules ./node_modules
+# COPY ./package.json ./package.json
+# COPY ./prod.env ./.env
+# COPY ./prisma ./prisma
+RUN rm -rf ./node_modules
 RUN chmod -R 777 ./prisma
 RUN npm run db:push
 
