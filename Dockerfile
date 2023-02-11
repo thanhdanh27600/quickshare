@@ -5,13 +5,13 @@ COPY package.json yarn.lock prisma prod.env ./
 RUN npm install
 
 # Rebuild the source code only when needed
-FROM node:14-alpine AS builder
+FROM dependencies AS builder
 WORKDIR /app
-COPY --from=dependencies . .
+COPY . .
 RUN npm run build
 
 # Production image, copy all the files and run next
-FROM node:14-alpine AS runner
+FROM builder AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
