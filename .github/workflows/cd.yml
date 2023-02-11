@@ -34,7 +34,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
   deploy:
     runs-on: ubuntu-latest
     steps:
@@ -49,6 +49,7 @@ jobs:
             cd ~/dolph-utils
             git pull origin production
             git status
+            docker login -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
             docker compose pull
             docker compose up -d
             # docker system prune -f
