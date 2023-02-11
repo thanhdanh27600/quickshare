@@ -25,7 +25,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
-            cd ~/home/danielwetan/apps/node1
+            cd ~/dolph-utils
             git pull origin production
             git status
 
