@@ -48,10 +48,8 @@ jobs:
           port: 22
           script: |
             cd ~/dolph-utils
-            git pull origin production
-            git status
             docker login -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
             docker compose pull
             docker compose up -d
-            # docker system prune -f
+            docker system prune -f
 

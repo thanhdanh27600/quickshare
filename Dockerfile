@@ -25,7 +25,7 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prod.env ./.env
 COPY --from=builder /app/prisma ./prisma
 RUN npm run db:push
-RUN chmod -R 777 prisma
+RUN chmod -R 777 ./prisma
 
 USER nextjs
 EXPOSE 3000
