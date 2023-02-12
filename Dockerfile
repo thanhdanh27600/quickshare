@@ -11,8 +11,6 @@ COPY . .
 RUN npm run build
 COPY ./prod.env ./.env
 RUN npm run db:push
-COPY ./prod.db ./prisma
-RUN chmod -R 777 ./prisma
 
 # Production image, copy all the files and run next
 FROM builder AS runner
@@ -27,6 +25,8 @@ RUN adduser -S nextjs -u 1003
 # COPY --from=builder /app/node_modules ./node_modules
 # COPY --from=builder /app/package.json ./package.json
 # COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prod.db ./prisma
+RUN chmod -R 777 ./prisma
 
 USER nextjs
 EXPOSE 3000
