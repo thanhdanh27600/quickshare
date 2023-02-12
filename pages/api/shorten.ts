@@ -2,6 +2,7 @@
 import {PrismaClient} from "@prisma/client";
 import type {NextApiRequest, NextApiResponse} from "next";
 import {createClient, RedisClientOptions} from "redis";
+import {Response} from "types/api";
 import {
 	LIMIT_URL_HOUR,
 	LIMIT_URL_NUMBER,
@@ -22,16 +23,14 @@ const prisma = new PrismaClient();
 
 client.on("error", (err) => console.log("Redis Client Error", err));
 
-type Data = {
+export type ShortenUrlRs = Response & {
 	url?: string;
 	hash?: string;
-	errorMessage?: string;
-	errorCode?: string;
 };
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<Data>
+	res: NextApiResponse<ShortenUrlRs>
 ) {
 	try {
 		const ip = req.socket.remoteAddress;
