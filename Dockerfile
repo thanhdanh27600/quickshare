@@ -9,6 +9,8 @@ FROM dependencies AS builder
 WORKDIR /app
 COPY . .
 RUN npm run build
+RUN chmod -R 777 ./prisma
+RUN npm run db:push
 
 # Production image, copy all the files and run next
 FROM builder AS runner
@@ -23,9 +25,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 # COPY --from=builder /app/node_modules ./node_modules
 # COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prod.env ./.env
-# COPY --from=builder /app/prisma ./prisma
-# RUN chmod -R 777 ./prisma
-# RUN npm run db:push
+COPY --from=builder /app/prisma ./prisma
 
 USER nextjs
 EXPOSE 3000
