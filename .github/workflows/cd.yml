@@ -48,8 +48,10 @@ jobs:
           port: 22
           script: |
             cd ~/dolph-utils
+            sh ./backup.sh
             docker login -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
             docker compose pull
             docker compose up -d
             docker system prune -f
+            sh ./migrate.sh
 
