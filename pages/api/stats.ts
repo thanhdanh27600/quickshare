@@ -6,6 +6,7 @@ import {
 import {NextApiRequest, NextApiResponse} from "next";
 import {Response} from "types/api";
 import HttpStatusCode from "utils/statusCode";
+import requestIp from "request-ip";
 
 type Stat = Response & {
 	record?:
@@ -22,7 +23,7 @@ export default async function handler(
 	res: NextApiResponse<Stat>
 ) {
 	try {
-		const ip = req.socket.remoteAddress;
+		const ip = requestIp.getClientIp(req);
 		if (req.method !== "GET") {
 			return res
 				.status(HttpStatusCode.METHOD_NOT_ALLOWED)
