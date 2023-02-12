@@ -77,7 +77,7 @@ export const URLShortener = () => {
 			{hasData && shortenedUrl && (
 				<div className="mt-4">
 					<h3>Rút gọn link thành công!</h3>
-					<div className="mt-2 flex justify-between border-gray-200 bg-gray-100 px-3 py-10">
+					<div className="mt-2 flex flex-wrap justify-between border-gray-200 bg-gray-100 px-3 py-10">
 						<p className="text-2xl font-bold">{shortenedUrl}</p>
 						<button
 							type="button"

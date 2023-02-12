@@ -1,5 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import {PrismaClient} from "@prisma/client";
+import requestIp from "request-ip";
 import type {NextApiRequest, NextApiResponse} from "next";
 import {createClient, RedisClientOptions} from "redis";
 import {Response} from "types/api";
@@ -33,7 +34,7 @@ export default async function handler(
 	res: NextApiResponse<ShortenUrlRs>
 ) {
 	try {
-		const ip = req.socket.remoteAddress;
+		const ip = requestIp.getClientIp(req)
 		const url = req.query.url as string;
 		// TODO use explicit validator lib
 		if (!url || !ip) {
