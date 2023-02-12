@@ -13,7 +13,7 @@ export const Loading = ({
 				<svg
 					aria-hidden="true"
 					className={clsx(
-						"h-8 w-8 animate-spin fill-cyan-300 text-gray-200 dark:text-gray-600",
+						"h-8 w-8 animate-spin fill-cyan-300 text-gray-200",
 						className
 					)}
 					viewBox="0 0 100 101"
