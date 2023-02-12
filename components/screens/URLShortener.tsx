@@ -50,7 +50,7 @@ export const URLShortener = () => {
 
 	const error = errors.url?.message || serverError?.message || localError;
 	const loading = createShortenUrl.isLoading;
-	const hasData = !loading && !error;
+	const hasData = !loading && !createShortenUrl.isError;
 
 	return (
 		<div className="solid rounded-lg border p-4">
