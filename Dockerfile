@@ -18,8 +18,8 @@ WORKDIR /app
 
 ENV NODE_ENV production
 
-RUN addgroup -g 1003 -S nodejs
-RUN adduser -S nextjs -u 1003
+# RUN addgroup -g 1003 -S nodejs
+# RUN adduser -S nextjs -u 1003
 
 # COPY --from=builder /app/.next ./.next
 # COPY --from=builder /app/node_modules ./node_modules
@@ -28,7 +28,7 @@ RUN adduser -S nextjs -u 1003
 COPY --from=builder /app/prod.db ./prisma
 RUN chmod -R 777 ./prisma
 
-USER nextjs
+# USER nextjs
 EXPOSE 3000
 
 CMD ["npm", "start"]
