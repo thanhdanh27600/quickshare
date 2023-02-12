@@ -31,6 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 		const history = await prisma.urlShortenerHistory.findFirst({
 			where: {hash},
 		});
+		await prisma.$disconnect();
 		res.status(HttpStatusCode.OK).json({history});
 	} catch (error) {
 		console.error(error);
