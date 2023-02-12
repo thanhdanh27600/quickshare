@@ -9,10 +9,10 @@ FROM dependencies AS builder
 WORKDIR /app
 COPY . .
 RUN npm run build
-RUN chmod -R 777 ./prisma
 COPY ./prod.env ./.env
 RUN npm run db:push
 COPY ./prod.db ./prisma
+RUN chmod -R 777 ./prisma
 
 # Production image, copy all the files and run next
 FROM builder AS runner
