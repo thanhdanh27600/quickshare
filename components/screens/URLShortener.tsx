@@ -83,7 +83,7 @@ export const URLShortener = () => {
 							type="button"
 							data-copy-state="copy"
 							onClick={onCopy}
-							className="flex items-center border-l text-lg font-medium text-gray-600 transition-all hover:text-cyan-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-white"
+							className="flex items-center border-l text-lg font-medium text-gray-600 transition-all hover:text-cyan-600"
 						>
 							<svg
 								className="mr-2 h-6 w-6"

@@ -112,6 +112,7 @@ export default async function handler(
 					urlShortenerRecordId: +clientRedisId!,
 				},
 			});
+			console.log("history", history);
 			res.status(HttpStatusCode.OK).json({url, hash: targetHash});
 		}
 		await client.disconnect();
