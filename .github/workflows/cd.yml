@@ -19,6 +19,8 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+      - name: Update IP Database
+        run: ./update_ip_db.sh
         env:
           GEOLITE2_LICENSE_KEY: ${{ secrets.GEOLITE2_LICENSE_KEY }}
       - name: Decrypt secret
