@@ -6,6 +6,8 @@ import {
 import {NextApiRequest, NextApiResponse} from "next";
 import {Response} from "types/api";
 import HttpStatusCode from "utils/statusCode";
+import requestIp from "request-ip";
+import geoIp from "geoip-country";
 
 export type ForwardRs = Response & {
 	history?: UrlShortenerHistory | null;
@@ -13,8 +15,12 @@ export type ForwardRs = Response & {
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ForwardRs>) {
+export default async function handler(
+	req: NextApiRequest,
+	res: NextApiResponse<ForwardRs>
+) {
 	try {
+		const ip = requestIp.getClientIp(req);
 		if (req.method !== "POST") {
 			return res
 				.status(HttpStatusCode.METHOD_NOT_ALLOWED)
@@ -28,6 +34,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 				errorCode: "BAD_REQUEST",
 			});
 		}
+		let lookupIp;
+		if (ip) {
+			lookupIp = geoIp.lookup(ip);
+		}
+
+		if (!lookupIp) {
+			console.log(!ip ? "ip not found" : `geoIp cannot determined ${ip}`);
+		} else {
+			console.log("lookupIp", lookupIp);
+		}
+
 		const history = await prisma.urlShortenerHistory.findFirst({
 			where: {hash},
 		});
