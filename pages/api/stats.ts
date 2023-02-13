@@ -7,6 +7,7 @@ import {NextApiRequest, NextApiResponse} from "next";
 import {Response} from "types/api";
 import HttpStatusCode from "utils/statusCode";
 import requestIp from "request-ip";
+import geoIp from "geoip-country";
 
 type Stat = Response & {
 	record?:
@@ -36,6 +37,7 @@ export default async function handler(
 			});
 		}
 		console.log("ip", ip);
+		console.log("geoIp", geoIp.lookup(ip));
 		const record = await prisma.urlShortenerRecord.findFirst({
 			where: {ip},
 			include: {history: true},

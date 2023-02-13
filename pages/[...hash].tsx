@@ -1,5 +1,4 @@
 import {getForwardUrl} from "api/requests";
-import {Loading} from "components/atoms/Loading";
 import {useRouter} from "next/router";
 import {useEffect} from "react";
 import {useMutation} from "react-query";
@@ -8,7 +7,8 @@ const Hash = () => {
 	const router = useRouter();
 	const {hash} = router.query;
 	const forwardUrl = useMutation("forward", getForwardUrl);
-	const loading = forwardUrl.isLoading;
+	const loading = forwardUrl.isLoading && !forwardUrl.isError;
+	const url = forwardUrl.data?.history?.url;
 
 	useEffect(() => {
 		if (!hash || !hash[0]) {
@@ -17,12 +17,18 @@ const Hash = () => {
 		forwardUrl.mutate(hash[0] as string);
 	}, [hash]);
 
-	if (loading) return <Loading />;
-	let url = forwardUrl.data?.history?.url;
-	if (!url) {
-		return <div>Invalid Forward URL</div>;
-	}
-	location.replace(`${url.includes("http") ? "" : "//"}${url}`);
+	useEffect(() => {
+		if (loading) return;
+		if (!url) {
+			if (typeof window !== undefined && forwardUrl.isSuccess) {
+				location.replace("/");
+			}
+			return;
+		}
+		location.replace(`${url.includes("http") ? "" : "//"}${url}`);
+	}, [forwardUrl]);
+
+	return forwardUrl.isError ? <p>Sorry, something got wrong :(</p> : <></>;
 };
 
 export default Hash;
