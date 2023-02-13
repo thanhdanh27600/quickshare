@@ -6,6 +6,7 @@ import {createShortenUrlRequest} from "api/requests";
 import {copyToClipBoard, urlRegex} from "utils/text";
 import {AxiosError} from "axios";
 import {BASE_URL} from "types/constants";
+import clsx from "clsx";
 
 type URLShortenerForm = {
 	url: string;
@@ -14,8 +15,10 @@ type URLShortenerForm = {
 export const URLShortener = () => {
 	const [shortenedUrl, setShortenedUrl] = useState("");
 	const [localError, setLocalError] = useState("");
+	const [copied, setCopied] = useState(false);
 
 	const onCopy = () => {
+		setCopied(true);
 		copyToClipBoard(shortenedUrl);
 	};
 
@@ -78,12 +81,18 @@ export const URLShortener = () => {
 				<div className="mt-4">
 					<h3>Rút gọn link thành công!</h3>
 					<div className="mt-2 flex flex-wrap justify-between border-gray-200 bg-gray-100 px-3 py-10">
-						<p className="text-2xl font-bold">{shortenedUrl}</p>
+						<p className="text-2xl font-bold" title={shortenedUrl}>
+							{shortenedUrl}
+						</p>
 						<button
+							title="Copy"
 							type="button"
 							data-copy-state="copy"
 							onClick={onCopy}
-							className="flex items-center border-l-2 pl-2 text-lg font-medium text-gray-600 transition-all hover:text-cyan-600"
+							className={clsx(
+								"flex items-center border-l-2 pl-2 text-lg font-medium text-gray-600 transition-all hover:text-cyan-500",
+								copied && "!text-cyan-500"
+							)}
 						>
 							<svg
 								className="mr-2 h-6 w-6"
@@ -99,7 +108,7 @@ export const URLShortener = () => {
 									d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
 								></path>
 							</svg>{" "}
-							<span className="">Copy</span>
+							<span className="">{copied ? "Copied" : "Copy"}</span>
 						</button>
 					</div>
 				</div>

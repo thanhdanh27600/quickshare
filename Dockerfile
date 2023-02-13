@@ -2,10 +2,11 @@
 FROM node:14-alpine AS dependencies
 ARG GEOLITE2_LICENSE_KEY
 WORKDIR /app
-COPY package.json yarn.lock prisma prod.env ./
+COPY package.json yarn.lock prisma prod.env update_ip_db.sh ./
 RUN npm install
-ENV GEOLITE2_LICENSE_KEY ${GEOLITE2_LICENSE_KEY}
-RUN ./update_ip_db.sh
+# Update IP Database
+# ENV GEOLITE2_LICENSE_KEY ${GEOLITE2_LICENSE_KEY}
+# RUN ./update_ip_db.sh
 
 # Rebuild the source code only when needed
 FROM dependencies AS builder
