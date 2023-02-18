@@ -13,6 +13,7 @@
 	"dependencies": {
 		"@prisma/client": "4.9.0",
 		"axios": "^1.2.6",
+		"chalk": "^5.2.0",
 		"clsx": "^1.2.1",
 		"geoip-country": "^4.1.43",
 		"next": "13.1.6",

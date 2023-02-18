@@ -2,7 +2,6 @@ import { getForwardUrl } from 'api/requests';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
-import { isDesktop, isMobile } from 'utils/agent';
 
 const Hash = () => {
   const router = useRouter();
@@ -15,11 +14,7 @@ const Hash = () => {
     if (!hash || !hash[0]) {
       return;
     }
-    console.log('navigator.userAgent', navigator.userAgent);
-    forwardUrl.mutate({
-      hash: hash[0] as string,
-      userAgent: navigator.userAgent,
-    });
+    // forwardUrl.mutate({hash: hash[0] as string, isMobile: isMobile()});
   }, [hash]);
 
   useEffect(() => {

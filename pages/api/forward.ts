@@ -1,60 +1,73 @@
-import {
-	PrismaClient,
-	UrlShortenerHistory,
-	UrlShortenerRecord,
-} from "@prisma/client";
-import {NextApiRequest, NextApiResponse} from "next";
-import {Response} from "types/api";
-import HttpStatusCode from "utils/statusCode";
-import requestIp from "request-ip";
-import geoIp from "geoip-country";
+import { PrismaClient, UrlShortenerHistory, UrlShortenerRecord } from '@prisma/client';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { Response } from 'types/api';
+import HttpStatusCode from 'utils/statusCode';
+import requestIp from 'request-ip';
+import geoIp from 'geoip-country';
+import prisma from 'db/prisma';
+import { log } from 'utils/clg';
 
 export type ForwardRs = Response & {
-	history?: UrlShortenerHistory | null;
+  history?: UrlShortenerHistory | null;
 };
 
-const prisma = new PrismaClient();
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ForwardRs>) {
+  try {
+    const ip = requestIp.getClientIp(req);
+    if (req.method !== 'POST') {
+      await prisma.$disconnect();
+      return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
+    }
+    const hash = req.body.hash as string;
+    const userAgent = req.body.userAgent as string;
+    console.log('forward hash', hash);
+    if (!hash) {
+      return res.status(HttpStatusCode.BAD_REQUEST).send({
+        errorMessage: 'You have submitted wrong data, please try again',
+        errorCode: 'BAD_REQUEST',
+      });
+    }
+    let lookupIp;
+    if (ip) {
+      lookupIp = geoIp.lookup(ip);
+    }
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse<ForwardRs>
-) {
-	try {
-		const ip = requestIp.getClientIp(req);
-		if (req.method !== "POST") {
-			return res
-				.status(HttpStatusCode.METHOD_NOT_ALLOWED)
-				.json({errorMessage: "Method Not Allowed"});
-		}
-		const hash = req.body.hash as string;
-		console.log("forward hash", hash);
-		if (!hash) {
-			return res.status(HttpStatusCode.BAD_REQUEST).send({
-				errorMessage: "You have submitted wrong data, please try again",
-				errorCode: "BAD_REQUEST",
-			});
-		}
-		let lookupIp;
-		if (ip) {
-			lookupIp = geoIp.lookup(ip);
-		}
+    if (!lookupIp) {
+      console.log(!ip ? 'ip not found' : `geoIp cannot determined ${ip}`);
+    } else {
+      console.log('lookupIp', lookupIp);
+    }
 
-		if (!lookupIp) {
-			console.log(!ip ? "ip not found" : `geoIp cannot determined ${ip}`);
-		} else {
-			console.log("lookupIp", lookupIp);
-		}
+    let history = await prisma.urlShortenerHistory.findUnique({
+      where: {
+        hash,
+      },
+    });
 
-		const history = await prisma.urlShortenerHistory.findFirst({
-			where: {hash},
-		});
-		await prisma.$disconnect();
-		res.status(HttpStatusCode.OK).json({history});
-	} catch (error) {
-		console.error(error);
-		await prisma.$disconnect();
-		res
-			.status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-			.json({errorMessage: (error as any).message || "Something when wrong."});
-	}
+    if (!history) {
+      await prisma.$disconnect();
+      return res.status(HttpStatusCode.BAD_REQUEST).send({
+        errorMessage: 'You have submitted wrong data, please try again',
+        errorCode: 'BAD_REQUEST',
+      });
+    }
+
+    const meta = await prisma.urlForwardMeta.create({
+      data: {
+        countryCode: lookupIp?.country,
+        userAgent,
+        urlShortenerHistoryId: history.id,
+      },
+    });
+    log(['history forward', JSON.stringify(history, null, 2)]);
+    log(['meta forward', JSON.stringify(meta, null, 2)], 'G');
+    await prisma.$disconnect();
+    res.status(HttpStatusCode.OK).json({ history });
+  } catch (error) {
+    console.error(error);
+    await prisma.$disconnect();
+    res
+      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+      .json({ errorMessage: (error as any).message || 'Something when wrong.' });
+  }
 }
