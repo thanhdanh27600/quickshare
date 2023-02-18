@@ -1,12 +1,10 @@
 export function generateRandomString(numChars: number): string {
-	const possibleChars = "abcdefghijklmnopqrstuvwxyz0123456789";
-	let randomString = "";
-	for (let i = 0; i < numChars; i++) {
-		randomString += possibleChars.charAt(
-			Math.floor(Math.random() * possibleChars.length)
-		);
-	}
-	return randomString;
+  const possibleChars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let randomString = '';
+  for (let i = 0; i < numChars; i++) {
+    randomString += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
+  }
+  return randomString;
 }
 
 /**
@@ -22,17 +20,17 @@ export function generateRandomString(numChars: number): string {
 
  */
 export const urlRegex =
-	/^((?:https?:\/\/)?(?:www\.)?[a-z0-9\-]+\.[a-z]+(?:\.[a-z]+)?(?:\/[\w\-\.\/\?#&=]*)?(?:\b|$))$/i;
+  /^((?:https?:\/\/)?(?:www\.)?[a-z0-9\-]+\.[a-z]+(?:\.[a-z]+)?(?:\/[\w\-\.\/\?#&=]*)?(?:\b|$))$/i;
 
 export const isValidUrl = (urlString: string) => {
-	return !!urlRegex.test(urlString);
+  return !!urlRegex.test(urlString);
 };
 
 export const copyToClipBoard = (text: string) => {
-	const el = document.createElement("textarea");
-	el.value = text;
-	document.body.appendChild(el);
-	el.select();
-	document.execCommand("copy");
-	document.body.removeChild(el);
+  const el = document.createElement('textarea');
+  el.value = text;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
 };
