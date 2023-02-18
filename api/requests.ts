@@ -8,8 +8,14 @@ export const createShortenUrlRequest = async (url: string) => {
 	return data as ShortenUrlRs;
 };
 
-export const getForwardUrl = async (hash: string) => {
-	const rs = await API.post(`/api/forward`, {hash});
+export const getForwardUrl = async ({
+	hash,
+	userAgent,
+}: {
+	hash: string;
+	userAgent?: string;
+}) => {
+	const rs = await API.post(`/api/forward`, {hash, userAgent});
 	const data = await rs.data;
 	return data as ForwardRs;
 };

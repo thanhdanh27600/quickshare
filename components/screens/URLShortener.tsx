@@ -38,7 +38,7 @@ export const URLShortener = () => {
 		},
 		onSuccess: (data, variables, context) => {
 			console.log("data, variables, context", data, variables, context);
-			if (data.hash) setShortenedUrl(`${BASE_URL()}/${data.hash}`);
+			if (data.hash) setShortenedUrl(`${BASE_URL}/${data.hash}`);
 			else {
 				setLocalError("Something wrong happened :(");
 			}
@@ -48,6 +48,7 @@ export const URLShortener = () => {
 	const serverError = createShortenUrl.error as AxiosError;
 
 	const onSubmit: SubmitHandler<URLShortenerForm> = (data) => {
+		setCopied(false);
 		createShortenUrl.mutate(data.url);
 	};
 
@@ -81,9 +82,11 @@ export const URLShortener = () => {
 				<div className="mt-4">
 					<h3>Rút gọn link thành công!</h3>
 					<div className="mt-2 flex flex-wrap justify-between border-gray-200 bg-gray-100 px-3 py-10">
-						<p className="text-2xl font-bold" title={shortenedUrl}>
-							{shortenedUrl}
-						</p>
+						<a href={shortenedUrl} target="_blank" rel={BASE_URL}>
+							<p className="text-2xl font-bold" title={shortenedUrl}>
+								{shortenedUrl}
+							</p>
+						</a>
 						<button
 							title="Copy"
 							type="button"

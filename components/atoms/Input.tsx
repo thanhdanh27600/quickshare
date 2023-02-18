@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React, {
 	DetailedHTMLProps,
 	ForwardedRef,
@@ -18,7 +19,7 @@ export const Input = forwardRef(
 			<input
 				{...props}
 				ref={ref}
-				className="block h-12 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-xl text-gray-900 focus:border-cyan-500 focus:ring-cyan-500 focus-visible:outline-cyan-500"
+				className="block h-12 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pr-36 text-xl text-gray-900 focus:border-cyan-500 focus:ring-cyan-500 focus-visible:outline-cyan-500"
 			/>
 		);
 	}
@@ -37,7 +38,10 @@ export const InputWithButton = forwardRef(
 				<Input {...inputProps} ref={ref} />
 				<Button
 					{...buttonProps}
-					className="absolute top-0 right-0 h-full rounded-none rounded-r-lg text-lg"
+					className={clsx(
+						"absolute top-0 right-0 h-full rounded-none rounded-r-lg text-lg w-32",
+						buttonProps.className
+					)}
 				>
 					{props.buttonChild}
 				</Button>

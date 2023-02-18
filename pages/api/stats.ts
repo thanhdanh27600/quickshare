@@ -8,7 +8,7 @@ import {Response} from "types/api";
 import HttpStatusCode from "utils/statusCode";
 import requestIp from "request-ip";
 import geoIp from "geoip-country";
-
+import prisma from "db/prisma";
 type Stat = Response & {
 	record?:
 		| (UrlShortenerRecord & {
@@ -16,8 +16,6 @@ type Stat = Response & {
 		  })
 		| null;
 };
-
-const prisma = new PrismaClient();
 
 export default async function handler(
 	req: NextApiRequest,
@@ -40,13 +38,18 @@ export default async function handler(
 		console.log("geoIp", geoIp.lookup(ip));
 		const record = await prisma.urlShortenerRecord.findFirst({
 			where: {ip},
-			include: {history: true},
+			include: {
+				history: {
+					include: {
+						urlForwardMeta: true,
+					},
+				},
+			},
 		});
-		await prisma.$disconnect();
+
 		res.status(HttpStatusCode.OK).json({record: record});
 	} catch (error) {
 		console.error(error);
-		await prisma.$disconnect();
 		res
 			.status(HttpStatusCode.INTERNAL_SERVER_ERROR)
 			.json({errorMessage: (error as any).message || "Something when wrong."});

@@ -13,14 +13,14 @@ import {
 } from "types/constants";
 import HttpStatusCode from "utils/statusCode";
 import {generateRandomString, isValidUrl} from "utils/text";
+import prisma from "db/prisma";
+import {log} from "utils/clg";
 
 let redisConfig: RedisClientOptions = {password: process.env.REDIS_AUTH};
 if (process.env.NODE_ENV === "production") {
 	redisConfig = {url: `redis://default:${process.env.REDIS_AUTH}@cache:6379`};
 }
 const client = createClient(redisConfig);
-
-const prisma = new PrismaClient();
 
 client.on("error", (err) => console.log("Redis Client Error", err));
 
@@ -34,7 +34,7 @@ export default async function handler(
 	res: NextApiResponse<ShortenUrlRs>
 ) {
 	try {
-		const ip = requestIp.getClientIp(req)
+		const ip = requestIp.getClientIp(req);
 		const url = req.query.url as string;
 		// TODO use explicit validator lib
 		if (!url || !ip) {
@@ -51,7 +51,7 @@ export default async function handler(
 		}
 		// check or reset get link limit
 		await client.connect();
-		const keyLimit = `limit:${ip}`;
+		const keyLimit = `${REDIS_KEY.HASH_LIMIT}:${ip}`;
 		const ttl = await client.ttl(keyLimit);
 		if (ttl < 0) {
 			await client.set(keyLimit, 0);
@@ -112,15 +112,13 @@ export default async function handler(
 					urlShortenerRecordId: +clientRedisId!,
 				},
 			});
-			console.log("history", history);
+			log(["history", JSON.stringify(history, null, 2)]);
 			res.status(HttpStatusCode.OK).json({url, hash: targetHash});
 		}
 		await client.disconnect();
-		await prisma.$disconnect();
 	} catch (error) {
 		console.error(error);
 		await client.disconnect();
-		await prisma.$disconnect();
 		res
 			.status(HttpStatusCode.INTERNAL_SERVER_ERROR)
 			.json({errorMessage: (error as any).message || "Something when wrong."});
