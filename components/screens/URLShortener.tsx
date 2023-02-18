@@ -83,7 +83,7 @@ export const URLShortener = () => {
           <h3>Rút gọn link thành công!</h3>
           <div className="mt-2 flex flex-wrap justify-between border-gray-200 bg-gray-100 px-3 py-10">
             <a href={shortenedUrl} target="_blank" rel={BASE_URL}>
-              <p className="text-2xl font-bold" title={shortenedUrl}>
+              <p className="text-lg font-bold sm:text-2xl" title={shortenedUrl}>
                 {shortenedUrl}
               </p>
             </a>
@@ -93,7 +93,7 @@ export const URLShortener = () => {
               data-copy-state="copy"
               onClick={onCopy}
               className={clsx(
-                'flex items-center border-l-2 pl-2 text-lg font-medium text-gray-600 transition-all hover:text-cyan-500',
+                'flex items-center border-l-2 pl-2 text-sm font-medium text-gray-600 transition-all hover:text-cyan-500 sm:text-lg',
                 copied && '!text-cyan-500',
               )}>
               <svg

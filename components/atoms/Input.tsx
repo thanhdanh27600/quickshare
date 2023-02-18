@@ -9,7 +9,7 @@ export const Input = forwardRef((props: Props, ref: ForwardedRef<HTMLInputElemen
     <input
       {...props}
       ref={ref}
-      className="block h-12 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pr-36 text-xl text-gray-900 focus:border-cyan-500 focus:ring-cyan-500 focus-visible:outline-cyan-500"
+      className="block h-12 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pr-[6.7rem] text-gray-900 focus:border-cyan-500 focus:ring-cyan-500 focus-visible:outline-cyan-500 sm:pr-[8.6rem] sm:text-xl"
     />
   );
 });
@@ -26,7 +26,10 @@ export const InputWithButton = forwardRef((props: InputWithButtonProps, ref: For
       <Input {...inputProps} ref={ref} />
       <Button
         {...buttonProps}
-        className={clsx('absolute top-0 right-0 h-full w-32 rounded-none rounded-r-lg text-lg', buttonProps.className)}>
+        className={clsx(
+          'absolute top-0 right-0 h-full w-24 rounded-none rounded-r-lg text-lg sm:w-32',
+          buttonProps.className,
+        )}>
         {props.buttonChild}
       </Button>
     </div>
