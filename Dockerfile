@@ -1,5 +1,5 @@
 # Get NPM packages
-FROM node:18-alpine AS dependencies
+FROM node:16-alpine AS dependencies
 ARG GEOLITE2_LICENSE_KEY
 WORKDIR /app
 COPY package.json yarn.lock prisma prod.env update_ip_db.sh ./
@@ -34,5 +34,6 @@ ENV NODE_ENV production
 
 # USER nextjs
 EXPOSE 3000
+RUN node -v
 
 CMD ["npm", "start"]

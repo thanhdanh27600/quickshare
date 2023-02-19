@@ -76,10 +76,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       // retrive client id and write to db
       let clientRedisId = await client.hGet(keyHash, 'dbId');
       if (!clientRedisId) {
-        const record = await prisma.urlShortenerRecord.create({
-          data: { ip },
+        const clientDb = await prisma.urlShortenerRecord.findFirst({
+          where: {
+            ip,
+          },
         });
-        clientRedisId = record.id + '';
+        if (!clientDb) {
+          // maybe cache were down...
+          const record = await prisma.urlShortenerRecord.create({
+            data: { ip },
+          });
+          clientRedisId = record.id + '';
+        } else {
+          clientRedisId = clientDb.id + '';
+        }
       }
       const dataHashClient = ['lastUrl', url, 'lastHash', targetHash, 'dbId', clientRedisId];
       await client.hSet(keyHash, dataHashClient);
