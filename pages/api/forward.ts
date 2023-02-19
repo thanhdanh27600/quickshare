@@ -1,11 +1,11 @@
-import { PrismaClient, UrlShortenerHistory, UrlShortenerRecord } from '@prisma/client';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { Response } from 'types/api';
-import HttpStatusCode from 'utils/statusCode';
-import requestIp from 'request-ip';
-import geoIp from 'geoip-country';
+import { UrlShortenerHistory } from '@prisma/client';
 import prisma from 'db/prisma';
+import geoIp from 'geoip-country';
+import { NextApiRequest, NextApiResponse } from 'next';
+import requestIp from 'request-ip';
+import { Response } from 'types/api';
 import { log } from 'utils/clg';
+import HttpStatusCode from 'utils/statusCode';
 
 export type ForwardRs = Response & {
   history?: UrlShortenerHistory | null;
