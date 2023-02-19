@@ -26,7 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   try {
     const ip = requestIp.getClientIp(req);
     const url = req.query.url as string;
-    // TODO use explicit validator lib
+    console.log('===SHORTEN===');
+    // TODO: ZOD
     if (!url || !ip) {
       return res.status(HttpStatusCode.BAD_REQUEST).send({
         errorMessage: 'You have submitted wrong data, please try again',

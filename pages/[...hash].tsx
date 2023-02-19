@@ -2,6 +2,7 @@ import { getForwardUrl } from 'api/requests';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useEffect } from 'react';
+import requestIp from 'request-ip';
 import { BASE_URL } from 'types/constants';
 
 const ForwardURL = ({ url, hash, error }: { url?: string; hash?: string; error?: boolean }) => {
@@ -55,9 +56,11 @@ const ForwardURL = ({ url, hash, error }: { url?: string; hash?: string; error?:
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { hash } = context.query;
   try {
+    const ip = requestIp.getClientIp(context.req);
     const forwardUrl = await getForwardUrl({
       hash: hash ? (hash[0] as string) : '',
       userAgent: context.req.headers['user-agent'],
+      ip,
     });
     return { props: { url: forwardUrl.history?.url, hash: hash ? (hash[0] as string) : '' } };
   } catch (error) {
