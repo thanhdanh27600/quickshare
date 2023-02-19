@@ -154,7 +154,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+      args: ['--no-sandbox', '--disabled-setupid-sandbox', '--disable-gpu'],
       defaultViewport: {
         width: 1200,
         height: 630,
