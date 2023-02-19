@@ -6,8 +6,8 @@ export const brandUrl = 'https://clickdi.top';
 export const baseUrl = () => {
   const isProduction = process.env.NODE_ENV === 'production';
   if (isProduction) return brandUrl;
+  // return 'https://99a2-58-187-186-116.ap.ngrok.io';
   return 'http://localhost:5000';
-  return 'https://114d-58-187-186-116.ap.ngrok.io/';
 };
 export const BASE_URL = baseUrl();
 export const REDIS_KEY = {

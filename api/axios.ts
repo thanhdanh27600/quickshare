@@ -1,10 +1,16 @@
 import axios from 'axios';
+import { BASE_URL } from 'types/constants';
 
-export const API = axios.create();
+export const API = axios.create({
+  baseURL: BASE_URL,
+});
 
 API.interceptors.response.use(
   (res) => res,
   (err) => {
-    throw new Error(err.response.data.errorMessage);
+    // server reponse error
+    if (err.response?.data?.errorMessage) throw new Error(err.response.data.errorMessage);
+    // internal error
+    throw new Error(err);
   },
 );
