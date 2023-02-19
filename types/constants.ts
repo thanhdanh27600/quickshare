@@ -3,8 +3,10 @@ export const LIMIT_URL_SECOND = LIMIT_URL_HOUR * 3600;
 export const LIMIT_URL_NUMBER = 5;
 export const NUM_CHARACTER_HASH = 5;
 export const brandUrl = 'https://clickdi.top';
+
+export const isProduction = process.env.NODE_ENV === 'production';
+
 export const baseUrl = () => {
-  const isProduction = process.env.NODE_ENV === 'production';
   if (isProduction) return brandUrl;
   // return 'https://99a2-58-187-186-116.ap.ngrok.io';
   return 'http://localhost:5000';
