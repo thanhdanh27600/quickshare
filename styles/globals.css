@@ -3,6 +3,6 @@
 @tailwind utilities;
 @layer base {
   html {
-    font-family: 'Roboto Mono', system-ui, sans-serif;
+    font-family: 'Signika Negative', system-ui, sans-serif;
   }
 }

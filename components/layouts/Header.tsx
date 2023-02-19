@@ -1,8 +1,13 @@
 import { BrandIconText, BrandLogo } from 'components/atoms/BrandIcon';
+import { BASE_URL } from 'types/constants';
 
 export const Header = () => {
+  const supportUrl = `mailto:thanhdanh27600@gmail.com?subject=${encodeURIComponent(
+    '[CLICKDI.TOP] Hỗ trợ / Báo lỗi',
+  )}&body=${encodeURIComponent('Rất tiếc không làm bạn hài lòng, hãy cung cấp thêm thông tin nhé:\n')}`;
+
   return (
-    <div className="md:max-w-7x container flex justify-between py-5 px-2 md:mx-auto">
+    <div className="container flex justify-between py-5 px-2 md:mx-auto md:max-w-7xl">
       <div className="flex w-fit flex-col items-center gap-2">
         <BrandLogo
           width={50}
@@ -11,7 +16,13 @@ export const Header = () => {
         <BrandIconText width={120} />
       </div>
       <div className="flex items-center">
-        <a className="cursor-pointer transition-all hover:text-cyan-500 hover:underline">Báo cáo lỗi</a>
+        <a
+          href={supportUrl}
+          target="_blank"
+          rel={BASE_URL}
+          className="cursor-pointer transition-all hover:text-cyan-500 hover:underline">
+          Báo cáo lỗi
+        </a>
       </div>
     </div>
   );
