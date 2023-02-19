@@ -1,6 +1,7 @@
 import Handlebars from 'handlebars';
 import { NextApiRequest, NextApiResponse } from 'next';
 import puppeteer from 'puppeteer';
+import { isProduction } from 'types/constants';
 import { log } from 'utils/clg';
 import HttpStatusCode from 'utils/statusCode';
 import { validateOgSchema } from 'utils/validateMiddleware';
@@ -153,12 +154,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox'],
+      args: ['--no-sandbox', '--disabled-setupid-sandbox'],
       defaultViewport: {
         width: 1200,
         height: 630,
         deviceScaleFactor: 1,
       },
+      executablePath: isProduction ? '/usr/bin/chromium-browser' : undefined,
     });
     const page = await browser.newPage();
 
