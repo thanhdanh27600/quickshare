@@ -56,4 +56,5 @@ jobs:
             docker compose up -d
             docker system prune -f
             sh ./migrate.sh
+            sh ./puppeteer.sh
 
