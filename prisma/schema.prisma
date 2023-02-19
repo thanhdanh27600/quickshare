@@ -11,20 +11,21 @@ datasource db {
 }
 
 model UrlShortenerRecord {
-  id        Int                   @id @default(autoincrement())
-  ip        String                @unique
-  createdAt DateTime              @default(now())
-  updatedAt DateTime              @updatedAt
-  history   UrlShortenerHistory[]
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ip      String                @unique
+  history UrlShortenerHistory[]
 }
 
 model UrlShortenerHistory {
-  id Int @id @default(autoincrement())
-
-  url       String
-  hash      String   @unique
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  url  String
+  hash String @unique
 
   UrlShortenerRecord   UrlShortenerRecord @relation(fields: [urlShortenerRecordId], references: [id], onDelete: Cascade)
   urlShortenerRecordId Int
@@ -33,7 +34,9 @@ model UrlShortenerHistory {
 }
 
 model UrlForwardMeta {
-  id Int @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   userAgent   String?
   countryCode String?

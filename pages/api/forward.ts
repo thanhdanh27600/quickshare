@@ -2,7 +2,6 @@ import { UrlShortenerHistory } from '@prisma/client';
 import prisma from 'db/prisma';
 import geoIp from 'geoip-country';
 import { NextApiRequest, NextApiResponse } from 'next';
-import requestIp from 'request-ip';
 import { Response } from 'types/api';
 import { log } from 'utils/clg';
 import HttpStatusCode from 'utils/statusCode';
@@ -13,13 +12,14 @@ export type ForwardRs = Response & {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ForwardRs>) {
   try {
-    const ip = requestIp.getClientIp(req);
     if (req.method !== 'POST') {
       await prisma.$disconnect();
       return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
     }
     const hash = req.body.hash as string;
     const userAgent = req.body.userAgent as string;
+    const ip = req.body.ip as string;
+    console.log('===FORWARD===');
     console.log('forward hash', hash);
     if (!hash) {
       return res.status(HttpStatusCode.BAD_REQUEST).send({

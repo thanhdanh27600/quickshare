@@ -8,7 +8,7 @@ export const isProduction = process.env.NODE_ENV === 'production';
 
 export const baseUrl = () => {
   if (isProduction) return brandUrl;
-  // return 'https://99a2-58-187-186-116.ap.ngrok.io';
+  // return 'https://bed2-58-187-186-116.ap.ngrok.io';
   return 'http://localhost:5000';
 };
 export const BASE_URL = baseUrl();

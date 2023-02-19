@@ -55,14 +55,13 @@ body {
   width: 1200px;
   height: 630px;
   overflow: hidden;
-  background: #042f7d;
+  background: #06b6d4;
   {{#if bgUrl}}
   background-image: url({{bgUrl}});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   {{else}}
-  background: linear-gradient(to bottom right, #06b5d4dd, #3b83f6dd);
   color: black;
   {{/if}}
 }
@@ -74,7 +73,7 @@ main {
   flex-direction: column;
   justify-content: space-between;
   border: 4px double;
-  padding: 1rem;
+  padding: 2rem;
 }
 .logo {
   width: fit-content;

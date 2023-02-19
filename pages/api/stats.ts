@@ -1,10 +1,10 @@
-import { PrismaClient, UrlShortenerHistory, UrlShortenerRecord } from '@prisma/client';
+import { UrlShortenerHistory, UrlShortenerRecord } from '@prisma/client';
+import prisma from 'db/prisma';
+import geoIp from 'geoip-country';
 import { NextApiRequest, NextApiResponse } from 'next';
+import requestIp from 'request-ip';
 import { Response } from 'types/api';
 import HttpStatusCode from 'utils/statusCode';
-import requestIp from 'request-ip';
-import geoIp from 'geoip-country';
-import prisma from 'db/prisma';
 type Stat = Response & {
   record?:
     | (UrlShortenerRecord & {
@@ -25,6 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         errorCode: 'BAD_REQUEST',
       });
     }
+    console.log('====STATS===');
     console.log('ip', ip);
     console.log('geoIp', geoIp.lookup(ip));
     const record = await prisma.urlShortenerRecord.findFirst({
