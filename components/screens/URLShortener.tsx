@@ -82,8 +82,10 @@ export const URLShortener = () => {
         <div className="mt-4">
           <h3>Rút gọn link thành công!</h3>
           <div className="mt-2 flex flex-wrap justify-between border-gray-200 bg-gray-100 px-3 py-10">
-            <a href={shortenedUrl} target="_blank" rel={BASE_URL}>
-              <p className="text-lg font-bold sm:text-2xl" title={shortenedUrl}>
+            <a href={shortenedUrl} target="_blank">
+              <p
+                className="text-lg font-bold transition-all hover:text-cyan-500 hover:underline sm:text-2xl"
+                title={shortenedUrl}>
                 {shortenedUrl}
               </p>
             </a>

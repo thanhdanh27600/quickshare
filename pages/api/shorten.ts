@@ -1,14 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { PrismaClient } from '@prisma/client';
-import requestIp from 'request-ip';
+import prisma from 'db/prisma';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient, RedisClientOptions } from 'redis';
+import requestIp from 'request-ip';
 import { Response } from 'types/api';
 import { LIMIT_URL_HOUR, LIMIT_URL_NUMBER, LIMIT_URL_SECOND, NUM_CHARACTER_HASH, REDIS_KEY } from 'types/constants';
+import { log } from 'utils/clg';
 import HttpStatusCode from 'utils/statusCode';
 import { generateRandomString, isValidUrl } from 'utils/text';
-import prisma from 'db/prisma';
-import { log } from 'utils/clg';
 
 let redisConfig: RedisClientOptions = { password: process.env.REDIS_AUTH };
 if (process.env.NODE_ENV === 'production') {

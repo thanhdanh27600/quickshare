@@ -29,7 +29,7 @@ export const Button = (props: ButtonProps) => {
         props.className,
       )}>
       <span
-        className={clsx('flex min-h-[1.2rem] min-w-max justify-center text-sm sm:text-base', {
+        className={clsx('flex min-h-[1.2rem] min-w-max justify-center text-sm sm:text-xl', {
           'relative max-h-4 rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0':
             variant === 'outlined',
         })}>
