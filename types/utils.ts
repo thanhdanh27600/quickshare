@@ -15,7 +15,7 @@ export const MIXPANEL_EVENT = {
 } as const;
 
 export const trackLanded = () => {
-  if (!location) return;
+  if (typeof location === 'undefined') return;
   if (location.pathname === '/') {
     mixpanel.track(MIXPANEL_EVENT.HOMEPAGED);
   }

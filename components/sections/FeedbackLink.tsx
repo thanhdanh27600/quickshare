@@ -1,4 +1,3 @@
-import { BASE_URL } from 'types/constants';
 import { useTrans } from 'utils/i18next';
 
 export const FeedbackLink = () => {
@@ -13,7 +12,6 @@ export const FeedbackLink = () => {
       <a
         href={supportUrl}
         target="_blank"
-        rel={BASE_URL}
         className="cursor-pointer underline transition-all hover:text-cyan-500 hover:decoration-wavy">
         {t('giveFeedback')}
       </a>
