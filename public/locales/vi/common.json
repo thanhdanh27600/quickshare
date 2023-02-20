@@ -1,0 +1,10 @@
+{
+  "giveFeedback": "Báo cáo lỗi",
+  "errorNoUrl":"Vui lòng nhập URL để tiếp tục",
+  "errorInvalidUrl":"URL không hợp lệ, hãy thử lại",
+  "somethingWrong": "Có gì đó sai sai :(, chúng tui đang xem lại",
+  "generate": "Ẩn link",
+  "feedbackSubject":"[CLICKDI.TOP] Hỗ trợ / Báo lỗi",
+  "feedbackBody":"Rất tiếc không làm bạn hài lòng, hãy cung cấp thêm thông tin nhé (có ảnh thì tuyệt vời):",
+  "shortenSuccess": "Rút gọn link thành công!"
+}

@@ -29,7 +29,7 @@ export default function Document() {
         <meta httpEquiv="content-language" content="vi-vn" />
         <meta
           name="URL shortener, risk-free and cost-free as always"
-          content="Shorten and track all clicks, intuitive, user-friendly and always free."
+          content="Shorten and track all clicks, convenient, user-friendly and always free."
         />
         <meta
           name="Rút gọn link, hoàn toàn miễn phí"

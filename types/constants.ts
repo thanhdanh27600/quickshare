@@ -8,8 +8,9 @@ export const isProduction = process.env.NODE_ENV === 'production';
 
 export const baseUrl = () => {
   if (isProduction) return brandUrl;
-  // return 'https://bed2-58-187-186-116.ap.ngrok.io';
-  return 'http://localhost:5000';
+  return typeof location === 'object'
+    ? `${location.protocol}//` + location.hostname + (location.port ? ':' + location.port : '')
+    : 'http://localhost:5000/';
 };
 export const BASE_URL = baseUrl();
 export const REDIS_KEY = {
@@ -17,3 +18,5 @@ export const REDIS_KEY = {
   HASH_HISTORY_BY_ID: 'hHistory',
   HASH_SHORTEN_BY_HASHED_URL: 'hShort',
 };
+
+export const MIX_PANEL_TOKEN = process.env.NEXT_PUBLIC_MIX_PANEL_TOKEN;

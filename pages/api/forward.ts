@@ -47,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     if (!history) {
       await prisma.$disconnect();
       return res.status(HttpStatusCode.BAD_REQUEST).send({
-        errorMessage: 'You have submitted wrong data, please try again',
+        errorMessage: 'No URL was found',
         errorCode: 'BAD_REQUEST',
       });
     }

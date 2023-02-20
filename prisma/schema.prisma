@@ -36,7 +36,7 @@ model UrlShortenerHistory {
 model UrlForwardMeta {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  updatedAt DateTime @updatedAt
 
   userAgent   String?
   countryCode String?
