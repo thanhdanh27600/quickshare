@@ -12,12 +12,15 @@ const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    if (!MIX_PANEL_TOKEN) return;
+    if (!MIX_PANEL_TOKEN) {
+      log(['Mix panel Not found']);
+      return;
+    }
     mixpanel.init(MIX_PANEL_TOKEN, {
       debug: !isProduction,
       loaded: trackLanded,
     });
-    !isProduction && log(['Mix panel loaded', MIX_PANEL_TOKEN]);
+    log(['Mix panel loaded', !isProduction ? MIX_PANEL_TOKEN : '']);
   }, []);
 
   return (
