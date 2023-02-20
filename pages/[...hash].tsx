@@ -1,21 +1,34 @@
 import { getForwardUrl } from 'api/requests';
+import mixpanel from 'mixpanel-browser';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useEffect } from 'react';
 import requestIp from 'request-ip';
 import { BASE_URL } from 'types/constants';
+import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 
-const ForwardURL = ({ url, hash, error }: { url?: string; hash?: string; error?: boolean }) => {
+const ForwardURL = ({ url, hash, error }: { url?: string; hash?: string; error?: unknown }) => {
   useEffect(() => {
-    if (!url) {
-      if (typeof window !== undefined) {
-        location.replace('/');
-      }
+    if (typeof window === undefined) {
       return;
     }
-    setTimeout(() => {
-      location.replace(`${url.includes('http') ? '' : '//'}${url}`);
-    });
+    if (!url) {
+      mixpanel.track(MIXPANEL_EVENT.FORWARD, {
+        status: MIXPANEL_STATUS.FAILED,
+        error,
+      });
+      location.replace('/');
+
+      return;
+    }
+    try {
+      mixpanel.track(MIXPANEL_EVENT.FORWARD, {
+        status: MIXPANEL_STATUS.OK,
+        urlRaw: url,
+        hash,
+      });
+    } catch (error) {}
+    location.replace(`${url.includes('http') ? '' : '//'}${url}`);
   }, [url]);
 
   return (
@@ -63,9 +76,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       ip,
     });
     return { props: { url: forwardUrl.history?.url, hash: hash ? (hash[0] as string) : '' } };
-  } catch (error) {
+  } catch (error: any) {
     console.log('ForwardURL error', error);
-    return { props: { error: true } };
+    return { props: { error: error.message || 'Something wrong happened' } };
   }
 }
 

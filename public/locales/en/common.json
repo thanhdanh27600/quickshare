@@ -1,0 +1,10 @@
+{
+  "giveFeedback": "Give feedback",
+  "errorNoUrl":"Please enter the URL to continue",
+  "errorInvalidUrl":"Invalid URL, please try agin",
+  "somethingWrong": "Something wrong happened :(. We're looking into it",
+  "generate": "Hide it",
+  "feedbackSubject":"[CLICKDI.TOP] Feedback / Bug report",
+  "feedbackBody":"Sorry for the inconvenience, please provide more information (image would be helpful):",
+  "shortenSuccess": "That was fast! URL has been successfully shortened."
+}

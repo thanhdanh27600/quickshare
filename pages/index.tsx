@@ -1,12 +1,15 @@
 import { Header } from 'components/layouts/Header';
 import { URLShortener } from 'components/screens/URLShortener';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
-import { BASE_URL } from 'types/constants';
+import { BASE_URL, isProduction } from 'types/constants';
+import { LocaleProp } from 'types/locale';
 
 const Home = () => {
   return (
     <>
       <Head>
+        {isProduction && <title>Clickdi - Share link like a pro.</title>}
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://facebook.com/clickditop/ " />
@@ -33,7 +36,7 @@ const Home = () => {
         />
       </Head>
       <Header />
-      <div className="container mt-4 px-2 md:mx-auto md:mt-8 md:max-w-5xl">
+      <div className="container mt-4 px-4 md:mx-auto md:mt-8 md:max-w-5xl">
         <URLShortener />
       </div>
     </>
@@ -41,3 +44,9 @@ const Home = () => {
 };
 
 export default Home;
+
+export const getServerSideProps = async ({ locale }: LocaleProp) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? 'vi', ['common'])),
+  },
+});
