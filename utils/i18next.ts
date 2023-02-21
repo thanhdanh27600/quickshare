@@ -2,6 +2,7 @@ import { TOptions } from 'i18next';
 import { useTranslation } from 'next-i18next';
 import common from 'public/locales/vi/common.json';
 import { UseTranslationOptions } from 'react-i18next';
+import { BASE_URL } from 'types/constants';
 import { Locale, Locales, locales } from 'types/locale';
 
 export type LanguageNamespaces = {
@@ -18,4 +19,11 @@ export function useTrans<K extends keyof LanguageNamespaces>(namespace?: K | K[]
     i18n,
     locale,
   };
+}
+
+export function linkWithLanguage(href: string, locale: Locale) {
+  if (locale === Locale.Vietnamese) {
+    return href;
+  }
+  return href.replaceAll(BASE_URL, `${BASE_URL}/${locale}`);
 }

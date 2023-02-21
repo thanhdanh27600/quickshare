@@ -24,8 +24,10 @@ model UrlShortenerHistory {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  url  String
-  hash String @unique
+  url      String
+  hash     String  @unique
+  email    String?
+  password String?
 
   UrlShortenerRecord   UrlShortenerRecord @relation(fields: [urlShortenerRecordId], references: [id], onDelete: Cascade)
   urlShortenerRecordId Int
@@ -38,9 +40,13 @@ model UrlForwardMeta {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userAgent   String?
-  countryCode String?
+  userAgent      String?
+  countryCode    String?
+  ip             String?
+  fromClientSide Boolean? @default(false)
 
-  UrlShortenerHistory   UrlShortenerHistory @relation(fields: [urlShortenerHistoryId], references: [id])
+  UrlShortenerHistory   UrlShortenerHistory @relation(fields: [urlShortenerHistoryId], references: [id], onDelete: Cascade)
   urlShortenerHistoryId Int
+
+  @@unique([userAgent, ip, urlShortenerHistoryId])
 }

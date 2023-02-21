@@ -1,0 +1,56 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CD
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [short]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Decrypt secret
+        run: ./scripts/decrypt_secret.sh
+        env:
+          SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          build-args: |
+            "GEOLITE2_LICENSE_KEY=${{ secrets.GEOLITE2_LICENSE_KEY }}"
+            NEXT_PUBLIC_SHORT_DOMAIN=true
+          push: true
+          tags: ghcr.io/${{ github.repository }}:short-latest
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy short using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_SHORT }}
+          username: ${{ secrets.USERNAME_SHORT }}
+          password: ${{ secrets.PASSWORD_SHORT }}
+          port: 22
+          script: |
+            cd ~/clickdi
+            docker compose pull
+            docker compose up -d
+            docker system prune -f

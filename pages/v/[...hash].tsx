@@ -1,34 +1,28 @@
-import { getForwardUrl } from 'api/requests';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useMutation } from 'react-query';
+import { URLTracking } from 'components/screens/URLTracking';
+import { GetServerSidePropsContext } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { pgFullDomain } from 'utils/guards';
 
-const Hash = () => {
-  const router = useRouter();
-  const { hash } = router.query;
-  const forwardUrl = useMutation('forward', getForwardUrl);
-  const loading = forwardUrl.isLoading && !forwardUrl.isError;
-  const url = forwardUrl.data?.history?.url;
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { hash } = context.query;
+  try {
+    // const stats = await getStats({
+    //   hash: hash ? (hash[0] as string) : undefined,
+    // });
+    // const record = stats.record;
+    // const history = stats.history;
+    return {
+      props: {
+        // record: record || null,
+        // history: history || null,
+        hash: hash ? (hash[0] as string) : '',
+        ...(await serverSideTranslations(context.locale ?? 'vi', ['common'])),
+      },
+    };
+  } catch (error: any) {
+    console.error('Stats error', error);
+    return { props: { error: error.message || 'Something wrong happened' } };
+  }
+}
 
-  useEffect(() => {
-    if (!hash || !hash[0]) {
-      return;
-    }
-    // forwardUrl.mutate({hash: hash[0] as string, isMobile: isMobile()});
-  }, [hash]);
-
-  useEffect(() => {
-    if (loading) return;
-    if (!url) {
-      if (typeof window !== undefined && forwardUrl.isSuccess) {
-        location.replace('/');
-      }
-      return;
-    }
-    location.replace(`${url.includes('http') ? '' : '//'}${url}`);
-  }, [forwardUrl]);
-
-  return forwardUrl.isError ? <p>Sorry, something got wrong :(</p> : <></>;
-};
-
-export default Hash;
+export default pgFullDomain(URLTracking);

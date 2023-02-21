@@ -1,9 +1,13 @@
 # Get NPM packages
 FROM node:16-alpine AS dependencies
 ARG GEOLITE2_LICENSE_KEY
+ARG NEXT_PUBLIC_SHORT_DOMAIN
+CMD ["echo", "NEXT_PUBLIC_SHORT_DOMAIN=$NEXT_PUBLIC_SHORT_DOMAIN"]
 WORKDIR /app
-COPY package.json yarn.lock prisma .env.production update_ip_db.sh ./
+COPY package.json yarn.lock prisma .env scripts/update_ip_db.sh ./
 RUN npm install
+# add sharp for image production
+RUN npm install sharp
 # Update IP Database
 # ENV GEOLITE2_LICENSE_KEY ${GEOLITE2_LICENSE_KEY}
 # RUN ./update_ip_db.sh
@@ -22,6 +26,7 @@ FROM builder AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
+ENV NEXT_PUBLIC_SHORT_DOMAIN $NEXT_PUBLIC_SHORT_DOMAIN
 
 # RUN addgroup -g 1007 -S nodejs
 # RUN adduser -S nextjs -u 1007

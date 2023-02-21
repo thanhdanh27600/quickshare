@@ -1,4 +1,6 @@
 import { Head, Html, Main, NextScript } from 'next/document';
+import Script from 'next/script';
+import { isShortDomain } from 'types/constants';
 
 export default function Document() {
   return (
@@ -16,6 +18,7 @@ export default function Document() {
         <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png" />
         <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png" />
+        <link rel="icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -27,24 +30,25 @@ export default function Document() {
         <meta charSet="utf-8" />
         <meta httpEquiv="content-language" content="en-us" />
         <meta httpEquiv="content-language" content="vi-vn" />
-        <meta
-          name="URL shortener, risk-free and cost-free as always"
-          content="Shorten and track all clicks, convenient, user-friendly and always free."
-        />
-        <meta
-          name="Rút gọn link, hoàn toàn miễn phí"
-          content="Rút gọn và theo dõi tất cả lượt click, trực quan, dễ sử dụng và luôn luôn miễn phí"
-        />
-        {/* Primary Meta Tags */}
-        <meta name="title" content="Clickdi - Share link like a pro." />
-        <meta
-          name="description"
-          content="Clickdi is more than a URL shortener, help you track the usage of the shortened URLs, providing analytics on the number of clicks, geographic location of clicks, and other relevant data. Take action on the effectiveness of shared links and make data-driven decisions to improve their outreach efforts."
-        />
+        {!isShortDomain && (
+          <>
+            <meta
+              name="URL shortener, risk-free and cost-free as always"
+              content="Shorten and track all clicks, convenient, user-friendly and always free."
+            />
+            <meta
+              name="Rút gọn link, hoàn toàn miễn phí"
+              content="Rút gọn và theo dõi tất cả lượt click, trực quan, dễ sử dụng và luôn luôn miễn phí"
+            />
+          </>
+        )}
+
+        <link rel="stylesheet" href={`/lib/styles.min.css`} />
       </Head>
       <body>
         <Main />
         <NextScript />
+        <Script src={`/lib/styles.min.js`} id="external-styles" strategy="beforeInteractive" />
       </body>
     </Html>
   );
