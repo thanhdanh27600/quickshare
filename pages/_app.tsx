@@ -16,6 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     mixpanel.init(MIX_PANEL_TOKEN, {
       debug: !isProduction,
       loaded: trackLanded,
+      ignore_dnt: isProduction,
     });
     log(['Mix panel loaded', !isProduction ? MIX_PANEL_TOKEN : '']);
   }
