@@ -2,7 +2,7 @@
 FROM node:16-alpine AS dependencies
 ARG GEOLITE2_LICENSE_KEY
 WORKDIR /app
-COPY package.json yarn.lock prisma .env.production update_ip_db.sh ./
+COPY package.json yarn.lock prisma .env update_ip_db.sh ./
 RUN npm install
 # Update IP Database
 # ENV GEOLITE2_LICENSE_KEY ${GEOLITE2_LICENSE_KEY}
