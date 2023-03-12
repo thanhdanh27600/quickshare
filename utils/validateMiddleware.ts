@@ -7,3 +7,14 @@ export const validateOgSchema = z.object({
     }),
   }),
 });
+
+export const validateStatsSchema = z.object({
+  query: z.object({
+    // hash: z.string({
+    //   required_error: 'Hash is required',
+    // }),
+    ip: z.string({
+      required_error: 'IP is required',
+    }),
+  }),
+});

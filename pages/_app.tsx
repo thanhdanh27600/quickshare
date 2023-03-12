@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       loaded: trackLanded,
       ignore_dnt: isProduction,
     });
-    log(['Mix panel loaded', !isProduction ? MIX_PANEL_TOKEN : '']);
+    log(['Mix panel loaded', !isProduction ? MIX_PANEL_TOKEN : undefined]);
   }
 
   return (

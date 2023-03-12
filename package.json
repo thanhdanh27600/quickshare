@@ -8,13 +8,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "prisma db push"
+    "db:push": "prisma db push",
+    "migrate": "prisma migrate "
   },
   "dependencies": {
     "@prisma/client": "4.9.0",
+    "@styled-icons/feather": "^10.47.0",
     "axios": "^1.2.6",
     "chalk": "^5.2.0",
     "clsx": "^1.2.1",
+    "dayjs": "^1.11.7",
     "geoip-country": "^4.1.43",
     "handlebars": "^4.7.7",
     "i18next": "^22.4.10",
@@ -32,6 +35,8 @@
     "redis": "^4.6.2",
     "request-ip": "^3.3.0",
     "sass": "^1.57.1",
+    "styled-components": "^5.3.8",
+    "ua-parser-js": "^1.0.33",
     "zod": "^3.20.6"
   },
   "devDependencies": {
@@ -42,6 +47,7 @@
     "@types/react-dom": "18.0.10",
     "@types/react-i18next": "^8.1.0",
     "@types/request-ip": "^0.0.37",
+    "@types/ua-parser-js": "^0.7.36",
     "autoprefixer": "^10.4.13",
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.6",

@@ -1,4 +1,4 @@
 build/**
-public/**
+# public/**
 .next/**
 node_modules/**

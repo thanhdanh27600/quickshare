@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       boxShadow: {
-        default: 'rgba(0, 0, 0, 0.1) 0px 10px 50px',
+        card: 'rgba(0, 0, 0, 0.1) 0px 10px 50px',
       },
     },
   },
