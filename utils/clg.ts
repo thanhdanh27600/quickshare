@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 export type LogLevel = 'R' | 'G' | 'B' | 'Y' | 'D';
 
-export function log(text: string | string[], level: LogLevel = 'D') {
+export function log(text: string | (string | undefined)[], level: LogLevel = 'D') {
   let chalkLog;
   switch (level) {
     case 'R':

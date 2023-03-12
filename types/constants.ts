@@ -10,7 +10,7 @@ export const baseUrl = () => {
   if (isProduction) return brandUrl;
   return typeof location === 'object'
     ? `${location.protocol}//` + location.hostname + (location.port ? ':' + location.port : '')
-    : 'http://localhost:5000/';
+    : 'http://localhost:5000';
 };
 export const BASE_URL = baseUrl();
 export const REDIS_KEY = {

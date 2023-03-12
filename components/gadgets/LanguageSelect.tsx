@@ -24,7 +24,7 @@ const LanguageOptions = ({ changeLanguage, setOpen }: { changeLanguage: (l: stri
               setOpen(false);
             }}
             type="button"
-            className="inline-flex w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white">
+            className="inline-flex w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">
             <div className="inline-flex items-center">
               <Icon width={20} className="mr-2" />
               {languages[lan as Locale]}
@@ -49,6 +49,8 @@ export const LanguageSelect = () => {
     router.push({ pathname, query }, asPath, { locale: newLocale });
   };
 
+  if (!currentLanguage) return null;
+
   return (
     <div className="flex">
       <button
@@ -65,7 +67,7 @@ export const LanguageSelect = () => {
       </button>
       <div
         className={clsx(
-          'absolute inset-x-auto z-10 m-0 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow-xl dark:bg-gray-700',
+          'absolute inset-x-auto z-10 m-0 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow-xl',
           open && '!block translate-y-[46px] -translate-x-24 md:-translate-x-8',
         )}>
         <ul className="text-sm text-gray-900" aria-labelledby="states-button">

@@ -38,8 +38,10 @@ model UrlForwardMeta {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userAgent   String?
-  countryCode String?
+  userAgent      String?
+  countryCode    String?
+  ip             String?
+  fromClientSide Boolean? @default(false)
 
   UrlShortenerHistory   UrlShortenerHistory @relation(fields: [urlShortenerHistoryId], references: [id])
   urlShortenerHistoryId Int

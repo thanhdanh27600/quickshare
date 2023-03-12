@@ -7,8 +7,7 @@ export function generateRandomString(numChars: number): string {
   return randomString;
 }
 
-export const urlRegex =
-  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+export const urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i;
 
 export const isValidUrl = (urlString: string) => {
   return !!urlRegex.test(urlString);

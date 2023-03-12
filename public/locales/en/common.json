@@ -1,10 +1,19 @@
 {
   "giveFeedback": "Give feedback",
-  "errorNoUrl":"Please enter the URL to continue",
-  "errorInvalidUrl":"Invalid URL, please try agin",
+  "errorNoUrl": "Please enter the URL to continue",
+  "errorInvalidUrl": "Invalid URL, please try again",
+  "errorNoInput": "Please enter a value to continue",
+  "errorInvalidInput": "Invalid input, please try agin",
   "somethingWrong": "Something wrong happened :(. We're looking into it",
   "generate": "Hide it",
-  "feedbackSubject":"[CLICKDI.TOP] Feedback / Bug report",
-  "feedbackBody":"Sorry for the inconvenience, please provide more information (image would be helpful):",
-  "shortenSuccess": "That was fast! URL has been successfully shortened."
+  "tracking": "Tracking Link",
+  "continue": "Continue",
+  "feedbackURLSubject": "[CLICKDI.TOP] Feedback / Bug URL Shortener",
+  "feedbackShortSubject": "[CLICKDI.TOP] Feedback / Bug report Statistics",
+  "feedbackBody": "Sorry for the inconvenience, please provide more information (image would be helpful):",
+  "shortenSuccess": "That was fast! URL has been successfully shortened.",
+  "urlShortener": "URL Shortener",
+  "viewMore": "View more",
+  "errorInvalidForward": "Invalid forwarded link (ex: {{name}})",
+  "unknown": "Unknown"
 }

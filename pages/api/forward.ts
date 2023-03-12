@@ -3,6 +3,8 @@ import prisma from 'db/prisma';
 import geoIp from 'geoip-country';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Response } from 'types/api';
+import { UAParser } from 'ua-parser-js';
+import { detectCrawler, detectReferer } from 'utils/agent';
 import { log } from 'utils/clg';
 import HttpStatusCode from 'utils/statusCode';
 
@@ -19,9 +21,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const hash = req.body.hash as string;
     const userAgent = req.body.userAgent as string;
     const ip = req.body.ip as string;
-    console.log('===FORWARD===');
+    const fromClientSide = req.body.fromClientSide as string;
+    console.log(`===FORWARD${fromClientSide ? '-FROM CLIENT' : ''}===`);
     console.log('forward hash', hash);
     if (!hash) {
+      console.log('NO HASH FOUND');
       return res.status(HttpStatusCode.BAD_REQUEST).send({
         errorMessage: 'You have submitted wrong data, please try again',
         errorCode: 'BAD_REQUEST',
@@ -45,6 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     });
 
     if (!history) {
+      console.log('NO HISTORY');
       await prisma.$disconnect();
       return res.status(HttpStatusCode.BAD_REQUEST).send({
         errorMessage: 'No URL was found',
@@ -54,13 +59,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     const meta = await prisma.urlForwardMeta.create({
       data: {
+        ip,
         countryCode: lookupIp?.country,
         userAgent,
         urlShortenerHistoryId: history.id,
+        fromClientSide: !!fromClientSide,
       },
     });
     log(['history forward', JSON.stringify(history, null, 2)]);
     log(['meta forward', JSON.stringify(meta, null, 2)], 'G');
+    log(['ua parser', JSON.stringify(UAParser(userAgent), null, 2)], 'Y');
+    log(['crawler', detectCrawler(userAgent), 'referer', detectReferer(userAgent)], 'B');
     await prisma.$disconnect();
     res.status(HttpStatusCode.OK).json({ history });
   } catch (error) {

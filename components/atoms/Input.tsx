@@ -9,7 +9,7 @@ export const Input = forwardRef((props: Props, ref: ForwardedRef<HTMLInputElemen
     <input
       {...props}
       ref={ref}
-      className="block h-12 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pr-[6.7rem] text-gray-900 focus:border-cyan-500 focus:ring-cyan-500 focus-visible:outline-cyan-500 sm:pr-[8.6rem] sm:text-xl"
+      className="block h-16 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pr-[6.7rem] text-gray-900 focus:shadow-[0_0_8px_0_#06b6d4] focus:outline-none focus:ring-cyan-500 sm:pr-[8.6rem] sm:text-xl"
     />
   );
 });
