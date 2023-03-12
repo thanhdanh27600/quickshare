@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         },
       });
       history = record?.history;
-      res.status(HttpStatusCode.OK).json({ record: record, history });
+      return res.status(HttpStatusCode.OK).json({ record: record, history });
     } else {
       history = await prisma.urlShortenerHistory.findUnique({
         where: {
@@ -51,9 +51,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           UrlShortenerRecord: true,
         },
       });
-      res.status(HttpStatusCode.OK).json({ record: history?.UrlShortenerRecord, history: history ? [history] : null });
+      return res
+        .status(HttpStatusCode.OK)
+        .json({ record: history?.UrlShortenerRecord, history: history ? [history] : null });
     }
-    res.status(HttpStatusCode.OK).json({ record: record });
   } catch (error) {
     console.error(error);
     if (error instanceof z.ZodError) {
