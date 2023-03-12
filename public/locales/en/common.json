@@ -3,7 +3,7 @@
   "errorNoUrl": "Please enter the URL to continue",
   "errorInvalidUrl": "Invalid URL, please try again",
   "errorNoInput": "Please enter a value to continue",
-  "errorInvalidInput": "Invalid input, please try agin",
+  "errorInvalidInput": "Invalid input, please try again",
   "somethingWrong": "Something wrong happened :(. We're looking into it",
   "generate": "Hide it",
   "tracking": "Tracking Link",
@@ -15,5 +15,10 @@
   "urlShortener": "URL Shortener",
   "viewMore": "View more",
   "errorInvalidForward": "Invalid forwarded link (ex: {{name}})",
-  "unknown": "Unknown"
+  "unknown": "Unknown",
+  "countryCode": "Country Code",
+  "userAgent": "User Agent",
+  "date": "Date",
+  "clickedByHuman": "Clicked by Human",
+  "copyRawInfo": "copy raw info"
 }

@@ -1,6 +1,7 @@
 import { getStats } from 'api/requests';
 import { URLTracking } from 'components/screens/URLTracking';
 import { GetServerSidePropsContext } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { hash } = context.query;
@@ -10,7 +11,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     });
     const record = stats.record;
     const history = stats.history;
-    return { props: { record, history, hash: hash ? (hash[0] as string) : '' } };
+    return {
+      props: {
+        record: record || null,
+        history: history || null,
+        hash: hash ? (hash[0] as string) : '',
+        ...(await serverSideTranslations(context.locale ?? 'vi', ['common'])),
+      },
+    };
   } catch (error: any) {
     console.error('Stats error', error);
     return { props: { error: error.message || 'Something wrong happened' } };

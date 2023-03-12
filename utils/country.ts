@@ -4,7 +4,7 @@ export const getCountryName = (code: string) => {
   try {
     countryName = regionNames.of(code.toUpperCase());
   } catch (error) {
-    console.error('GET COUNTRY ERROR', error);
+    console.error('GET COUNTRY NAME ERROR', error);
   }
   return countryName;
 };

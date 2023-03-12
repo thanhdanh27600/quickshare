@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import { useId } from 'react';
 import { BASE_URL } from 'types/constants';
 
@@ -13,7 +14,7 @@ export const Accordion = ({ children, title }: Props) => {
 
   return (
     <div id={`accordion${id}`}>
-      <script src={`${BASE_URL}/lib/styles.min.js`} async />
+      <Script src={`${BASE_URL}/lib/styles.min.js`} />
       {(((children as []).length ? children : [children]) as []).map((c, i) => {
         return (
           <div key={`k${id}${i}`} className="rounded-none border-none border-neutral-200">
