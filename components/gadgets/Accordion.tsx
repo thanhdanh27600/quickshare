@@ -13,7 +13,7 @@ export const Accordion = ({ children, title }: Props) => {
 
   return (
     <div id={`accordion${id}`}>
-      <script src={`${BASE_URL}/lib/styles.min.js`} />
+      <script src={`${BASE_URL}/lib/styles.min.js`} async />
       {(((children as []).length ? children : [children]) as []).map((c, i) => {
         return (
           <div key={`k${id}${i}`} className="rounded-none border-none border-neutral-200">
