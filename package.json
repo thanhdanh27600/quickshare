@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:push": "prisma db push",
-    "migrate": "prisma migrate "
+    "migrate": "prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/client": "4.9.0",
