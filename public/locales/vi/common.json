@@ -15,5 +15,10 @@
   "urlShortener": "Rút gọn link",
   "viewMore": "Xem thêm",
   "errorInvalidForward": "Link rút gọt không hợp lệ (vd: {{name}})",
-  "unknown": "Không rõ"
+  "unknown": "Không xác định",
+  "countryCode": "Quốc gia",
+  "userAgent": "Người dùng",
+  "date": "Thời gian",
+  "clickedByHuman": "Click thật",
+  "copyRawInfo": "copy đầy đủ"
 }
