@@ -17,8 +17,14 @@
   "errorInvalidForward": "Link rút gọt không hợp lệ (vd: {{name}})",
   "unknown": "Không xác định",
   "countryCode": "Quốc gia",
-  "userAgent": "Người dùng",
+  "userAgent": "User Agent",
   "date": "Thời gian",
   "clickedByHuman": "Click thật",
-  "copyRawInfo": "copy đầy đủ"
+  "copyRawInfo": "copy đầy đủ",
+  "trackingLive": "Theo dõi link trực tiếp",
+  "shareFacebook": "Chia sẻ Facebook",
+  "shareTwitter": "Chia sẻ Twitter",
+  "shareLinkedIn": "Chia sẻ LinkedIn",
+  "downloadQR": "Tải QR",
+  "author": "Người tạo"
 }

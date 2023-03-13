@@ -57,15 +57,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       });
     }
 
-    const meta = await prisma.urlForwardMeta.create({
-      data: {
-        ip,
+    const meta = await prisma.urlForwardMeta.upsert({
+      where: {
+        userAgent_ip_urlShortenerHistoryId: {
+          ip,
+          userAgent,
+          urlShortenerHistoryId: history.id,
+        },
+      },
+      update: {
         countryCode: lookupIp?.country,
+        fromClientSide: !!fromClientSide,
+      },
+      create: {
+        ip,
         userAgent,
         urlShortenerHistoryId: history.id,
+        countryCode: lookupIp?.country,
         fromClientSide: !!fromClientSide,
       },
     });
+
     log(['history forward', JSON.stringify(history, null, 2)]);
     log(['meta forward', JSON.stringify(meta, null, 2)], 'G');
     log(['ua parser', JSON.stringify(UAParser(userAgent), null, 2)], 'Y');

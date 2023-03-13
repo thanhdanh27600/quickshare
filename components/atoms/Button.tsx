@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import clsx, { ClassValue } from 'clsx';
 import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 import { Loading } from './Loading';
 
@@ -8,17 +8,18 @@ type ButtonVariants = 'filled' | 'outlined';
 export interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
   text?: string;
   color?: ButtonColors;
+  TextClassname?: ClassValue;
   variant?: ButtonVariants;
   loading?: boolean;
 }
 
 export const Button = (props: ButtonProps) => {
-  const { text = 'Button', color = 'cyan', variant = 'filled', loading, ...otherProps } = props;
+  const { text = 'Button', color = 'cyan', variant = 'filled', loading, TextClassname, ...otherProps } = props;
   return (
     <button
       {...otherProps}
       className={clsx(
-        'rounded-lg bg-gradient-to-br text-center text-sm font-medium focus:ring-2 ',
+        'rounded-lg bg-gradient-to-br py-2 text-center text-sm font-medium transition-all focus:ring-2',
         {
           'px-5 py-2.5 text-white hover:bg-gradient-to-bl focus:outline-none': color === 'cyan' && variant === 'filled',
 
@@ -29,10 +30,14 @@ export const Button = (props: ButtonProps) => {
         props.className,
       )}>
       <span
-        className={clsx('flex min-w-max justify-center text-sm sm:text-xl', {
-          'relative max-h-4 rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0':
-            variant === 'outlined',
-        })}>
+        className={clsx(
+          'flex min-w-max justify-center text-sm sm:text-xl',
+          {
+            'relative max-h-4 rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0':
+              variant === 'outlined',
+          },
+          TextClassname,
+        )}>
         {props.loading ? <Loading className="!h-5 !w-5" /> : text}
       </span>
     </button>

@@ -80,7 +80,7 @@ export const URLShortenerInput = () => {
   }, [isSubmitting]);
 
   return (
-    <div className="solid rounded-lg border p-4 shadow-card sm:px-8 sm:py-8 sm:pt-10">
+    <div className="solid rounded-lg border p-4 pt-8 shadow-card sm:px-8 sm:py-8 sm:pt-10">
       <h1 className="mb-4 text-4xl">{t('urlShortener')}</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         <InputWithButton

@@ -59,6 +59,7 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
 
   return (
     <>
+      {/* CUSTOM HEAD */}
       <Head>
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />

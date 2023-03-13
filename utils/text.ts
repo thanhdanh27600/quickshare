@@ -21,3 +21,8 @@ export const copyToClipBoard = (text: string) => {
   document.execCommand('copy');
   document.body.removeChild(el);
 };
+
+export const capitalize = (string?: string) => {
+  if (!string) return string;
+  return string[0].toUpperCase() + string.slice(1);
+};
