@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { Button } from 'components/atoms/Button';
 import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
+import Image from 'next/image';
 import { useQuery } from 'react-query';
 import { BASE_URL, PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
@@ -102,7 +103,7 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
           </a>
           {query.data?.qr && (
             <div className="flex flex-col items-center gap-2">
-              <img className="w-20" src={query.data?.qr} />
+              <Image src={query.data?.qr} alt="QR-Code" width={80} height={80} />
               <a href={query.data?.qr} download={`QR-${shortenedUrl.replace(`${BASE_URL}/`, '')}`}>
                 <Button
                   text={t('downloadQR')}

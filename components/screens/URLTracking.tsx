@@ -32,7 +32,7 @@ export const URLTracking = ({ record, history, /** SSR then Client fetch */ hash
     <>
       <Header />
       <div className="container mx-auto py-5 px-4">
-        {(data?.record || record) && <div>{`Recorded from user: ${record?.ip}`}</div>}
+        {(data?.record || record) && <div>{`${t('author')}: ${record?.ip}`}</div>}
         {(data?.history || history)?.map((h, i) => {
           return (
             <div
