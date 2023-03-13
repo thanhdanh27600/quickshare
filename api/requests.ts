@@ -1,4 +1,5 @@
 import { ForwardRs } from 'pages/api/forward';
+import { QR } from 'pages/api/qr';
 import { ShortenUrlRs } from 'pages/api/shorten';
 import { Stats } from 'pages/api/stats';
 import { API } from './axios';
@@ -29,4 +30,14 @@ export const getStats = async ({ hash }: { hash?: string }) => {
   const rs = await API.get(`/api/stats?hash=${hash}`);
   const data = await rs.data;
   return data as Stats;
+};
+
+export const getQr = async (text: string, token: string) => {
+  const rs = await API.get(`/api/qr?text=${text}`, {
+    headers: {
+      'X-Platform-Auth': token,
+    },
+  });
+  const data = await rs.data;
+  return data as QR;
 };

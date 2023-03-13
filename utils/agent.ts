@@ -2,7 +2,8 @@ import { UAParser } from 'ua-parser-js';
 
 export enum Referer {
   ZALO = 'ZALO',
-  FACEBOOK_MESSENGER = 'FACEBOOK_MESSENGER',
+  LINKEDIN = 'LINKEDIN',
+  FACEBOOK = 'FACEBOOK',
   INSTAGRAM = 'INSTAGRAM',
   TIKTOK = 'TIKTOK',
   GOOGLE = 'GOOGLE',
@@ -24,7 +25,10 @@ export function isDesktop(userAgent: string): boolean {
   return /Macintosh|Windows|Linux/i.test(userAgent) && !/Mobile|Tablet/i.test(userAgent);
 }
 
-export function detectReferer(userAgent: string): Referer {
+export function detectReferer(userAgent?: string | null): Referer {
+  if (!userAgent) {
+    return Referer.UNKNOWN;
+  }
   const ua = userAgent.toLowerCase();
   const uaParsed = UAParser(userAgent);
   let check = false;
@@ -32,22 +36,31 @@ export function detectReferer(userAgent: string): Referer {
   check = ua.includes('tiktok') || ua.includes('bytel') || ua.includes('bytefulll');
   if (check) return Referer.TIKTOK;
 
+  // LINKEDIN
+  check = ua.includes('linkedin');
+  if (check) return Referer.LINKEDIN;
+
   //ZALO
   check = ua.includes('zalo') || ua.includes('zalotheme') || ua.includes('zalolanguage');
   if (check) return Referer.ZALO;
 
   //INSTAGRAM
-  check = ua.includes('zalo') || ua.includes('zalotheme') || ua.includes('zalolanguage');
+  check = ua.includes('instagram') || ua.includes('insta') || ua.includes('insta');
   if (check) return Referer.INSTAGRAM;
 
-  //FACEBOOK_MESSENGER
-  check = ua.includes('messenger') || ua.includes('fbav') || uaParsed.browser?.name?.toLowerCase() === 'facebook';
-  if (check) return Referer.FACEBOOK_MESSENGER;
+  //FACEBOOK
+  check =
+    ua.includes('messenger') ||
+    ua.includes('fbav') ||
+    ua.includes('facebook') ||
+    uaParsed.browser?.name?.toLowerCase() === 'facebook';
+  if (check) return Referer.FACEBOOK;
 
   //DIRECT
   let browserName = uaParsed.browser?.name?.toLowerCase() || '-1';
   check = ['chrome', 'safari', 'firefox', 'brave', 'opera', 'chromium', 'microsoft edge', 'edge'].includes(browserName);
-  if (check) return Referer.DIRECT;
+  // if (check) return Referer.DIRECT;
+  if (check) return Referer.UNKNOWN;
 
   return Referer.UNKNOWN;
 }

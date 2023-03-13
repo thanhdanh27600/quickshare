@@ -20,5 +20,10 @@
   "userAgent": "User Agent",
   "date": "Date",
   "clickedByHuman": "Clicked by Human",
-  "copyRawInfo": "copy raw info"
+  "copyRawInfo": "copy raw info",
+  "trackingLive": "Live link tracking",
+  "shareFacebook": "Share Facebook",
+  "shareTwitter": "Share Twitter",
+  "shareLinkedIn": "Share LinkedIn",
+  "downloadQR": "Download QR"
 }

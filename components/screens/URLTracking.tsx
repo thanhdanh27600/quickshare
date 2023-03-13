@@ -1,15 +1,18 @@
 import { Calendar, Copy, Globe, MapPin, UserCheck, UserX } from '@styled-icons/feather';
+import { getStats } from 'api/requests';
 import { Header } from 'components/layouts/Header';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { Stats } from 'pages/api/stats';
 import { useEffect } from 'react';
+import { useQuery } from 'react-query';
 import { UAParser } from 'ua-parser-js';
+import { detectReferer, Referer } from 'utils/agent';
 import { getCountryName } from 'utils/country';
 import { useTrans } from 'utils/i18next';
-import { copyToClipBoard } from 'utils/text';
+import { capitalize, copyToClipBoard } from 'utils/text';
 
-export const URLTracking = ({ record, history }: Stats) => {
+export const URLTracking = ({ record, history, /** SSR then Client fetch */ hash }: Stats & { hash: string }) => {
   const { t } = useTrans();
   const router = useRouter();
 
@@ -19,12 +22,18 @@ export const URLTracking = ({ record, history }: Stats) => {
     }
   }, []);
 
+  const { data } = useQuery({
+    queryKey: ['forward'],
+    queryFn: async () => getStats({ hash }),
+    refetchInterval: 2000,
+  });
+
   return (
     <>
       <Header />
       <div className="container mx-auto py-5 px-4">
-        {record && <div>{`Recorded from user: ${record?.ip}`}</div>}
-        {history?.map((h, i) => {
+        {(data?.record || record) && <div>{`Recorded from user: ${record?.ip}`}</div>}
+        {(data?.history || history)?.map((h, i) => {
           return (
             <div
               key={`history-${i}`}
@@ -42,6 +51,7 @@ export const URLTracking = ({ record, history }: Stats) => {
                 <tbody>
                   {h.urlForwardMeta.map((m, j) => {
                     const UA = m.userAgent ? new UAParser(m.userAgent) : undefined;
+                    const ref = detectReferer(m.userAgent);
                     return (
                       <tr key={`meta-${j}`} className="border-b bg-white">
                         <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
@@ -52,7 +62,8 @@ export const URLTracking = ({ record, history }: Stats) => {
                           {UA ? (
                             <div>
                               <p>
-                                Device: {UA?.getDevice().type?.toUpperCase() || t('unknown')} {UA?.getDevice().vendor}
+                                Device: {capitalize(UA?.getDevice().type) || t('unknown')} {UA?.getDevice().vendor}{' '}
+                                {UA?.getDevice().model}
                               </p>
                               <p>OS: {UA?.getOS().name || t('unknown')}</p>
                               <p>Browser: {UA?.getBrowser().name || t('unknown')}</p>
@@ -78,7 +89,10 @@ export const URLTracking = ({ record, history }: Stats) => {
                           {m.fromClientSide ? (
                             <UserCheck className="mr-1 w-6 stroke-2 text-green-500" />
                           ) : (
-                            <UserX className="mr-1 w-6 stroke-2 text-red-500" />
+                            <>
+                              <UserX className="mr-1 w-6 stroke-2 text-red-500" />
+                              {ref !== Referer.UNKNOWN && <p>{ref}</p>}
+                            </>
                           )}
                         </td>
                       </tr>

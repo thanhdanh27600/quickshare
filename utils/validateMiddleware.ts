@@ -18,3 +18,14 @@ export const validateStatsSchema = z.object({
     }),
   }),
 });
+
+export const validateQrSchema = z.object({
+  query: z.object({
+    text: z
+      .string({
+        required_error: 'text is required',
+      })
+      .min(5)
+      .max(100),
+  }),
+});

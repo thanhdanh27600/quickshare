@@ -1,4 +1,4 @@
-import { UrlForwardMeta, UrlShortenerHistory, UrlShortenerRecord } from '@prisma/client';
+import { Prisma, UrlForwardMeta, UrlShortenerHistory, UrlShortenerRecord } from '@prisma/client';
 import prisma from 'db/prisma';
 import geoIp from 'geoip-country';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -34,7 +34,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         include: {
           history: {
             include: {
-              urlForwardMeta: true,
+              urlForwardMeta: {
+                orderBy: {
+                  createdAt: Prisma.SortOrder.desc,
+                },
+              },
             },
           },
         },
@@ -47,7 +51,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           hash,
         },
         include: {
-          urlForwardMeta: true,
+          urlForwardMeta: {
+            orderBy: {
+              createdAt: Prisma.SortOrder.desc,
+            },
+          },
           UrlShortenerRecord: true,
         },
       });

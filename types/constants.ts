@@ -20,3 +20,4 @@ export const REDIS_KEY = {
 };
 
 export const MIX_PANEL_TOKEN = process.env.NEXT_PUBLIC_MIX_PANEL_TOKEN;
+export const PLATFORM_AUTH = process.env.NEXT_PUBLIC_PLATFORM_AUTH;

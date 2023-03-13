@@ -45,4 +45,6 @@ model UrlForwardMeta {
 
   UrlShortenerHistory   UrlShortenerHistory @relation(fields: [urlShortenerHistoryId], references: [id])
   urlShortenerHistoryId Int
+
+  @@unique([userAgent, ip, urlShortenerHistoryId])
 }

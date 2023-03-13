@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:push": "prisma db push",
+    "gen": "prisma generate",
     "migrate": "prisma migrate deploy"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "axios": "^1.2.6",
     "chalk": "^5.2.0",
     "clsx": "^1.2.1",
+    "crypto-js": "^4.1.1",
     "dayjs": "^1.11.7",
     "geoip-country": "^4.1.43",
     "handlebars": "^4.7.7",
@@ -27,6 +29,7 @@
     "node-fetch": "^3.3.0",
     "prisma": "^4.9.0",
     "puppeteer": "^19.7.1",
+    "qrcode": "^1.5.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.42.1",
@@ -40,6 +43,7 @@
     "zod": "^3.20.6"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.1.1",
     "@types/geoip-country": "^4.0.0",
     "@types/mixpanel-browser": "^2.38.1",
     "@types/node": "18.11.18",
