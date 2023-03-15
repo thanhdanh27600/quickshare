@@ -15,6 +15,7 @@
   "dependencies": {
     "@prisma/client": "4.9.0",
     "@styled-icons/feather": "^10.47.0",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "axios": "^1.2.6",
     "chalk": "^5.2.0",
     "clsx": "^1.2.1",
