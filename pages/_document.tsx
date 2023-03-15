@@ -1,4 +1,5 @@
 import { Head, Html, Main, NextScript } from 'next/document';
+import Script from 'next/script';
 import { BASE_URL, isProduction } from 'types/constants';
 
 export default function Document() {
@@ -72,6 +73,7 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
+        <Script src={`${BASE_URL}/lib/styles.min.js`} id="external-styles" strategy="lazyOnload" />
       </body>
     </Html>
   );

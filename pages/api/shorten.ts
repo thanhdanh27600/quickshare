@@ -1,10 +1,18 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import CryptoJS from 'crypto-js';
 import prisma from 'db/prisma';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient, RedisClientOptions } from 'redis';
 import requestIp from 'request-ip';
 import { Response } from 'types/api';
-import { LIMIT_URL_HOUR, LIMIT_URL_NUMBER, LIMIT_URL_SECOND, NUM_CHARACTER_HASH, REDIS_KEY } from 'types/constants';
+import {
+  LIMIT_URL_HOUR,
+  LIMIT_URL_NUMBER,
+  LIMIT_URL_SECOND,
+  NUM_CHARACTER_HASH,
+  PLATFORM_AUTH,
+  REDIS_KEY,
+} from 'types/constants';
 import { log } from 'utils/clg';
 import HttpStatusCode from 'utils/statusCode';
 import { generateRandomString, isValidUrl } from 'utils/text';
@@ -25,7 +33,7 @@ export type ShortenUrlRs = Response & {
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ShortenUrlRs>) {
   try {
     const ip = requestIp.getClientIp(req);
-    const url = req.query.url as string;
+    let url = req.query.url as string;
     console.log('===SHORTEN===');
     // TODO: ZOD
     if (!url || !ip) {
@@ -34,7 +42,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         errorCode: 'BAD_REQUEST',
       });
     }
-    if (!isValidUrl(url)) {
+    if (PLATFORM_AUTH) {
+      const bytes = CryptoJS.AES.decrypt(decodeURIComponent(url), PLATFORM_AUTH);
+      url = bytes.toString(CryptoJS.enc.Utf8);
+    }
+    console.log('url', url);
+    if (!url || !isValidUrl(url)) {
       return res.status(HttpStatusCode.BAD_REQUEST).send({
         errorMessage: 'Wrong URL format, please try again',
         errorCode: 'INVALID_URL',

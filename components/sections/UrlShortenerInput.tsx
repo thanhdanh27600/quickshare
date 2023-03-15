@@ -3,11 +3,12 @@ import { AxiosError } from 'axios';
 import { InputWithButton } from 'components/atoms/Input';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLShortenerResult } from 'components/sections/URLShortenerResult';
+import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
-import { BASE_URL } from 'types/constants';
+import { useMutation, useQueryClient } from 'react-query';
+import { BASE_URL, PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 import { urlRegex } from 'utils/text';
@@ -21,6 +22,7 @@ export const URLShortenerInput = () => {
   const [localError, setLocalError] = useState('');
   const [copied, setCopied] = useState(false);
   const { t } = useTrans('common');
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -45,6 +47,7 @@ export const URLShortenerInput = () => {
       // console.log('data, variables, context', data, variables, context);
       if (data.hash) {
         setShortenedUrl(`${BASE_URL}/${data.hash}`);
+        queryClient.invalidateQueries('fetchRecord');
         mixpanel.track(MIXPANEL_EVENT.SHORTEN, {
           status: MIXPANEL_STATUS.OK,
           ...data,
@@ -61,7 +64,11 @@ export const URLShortenerInput = () => {
 
   const onSubmit: SubmitHandler<URLShortenerForm> = (data) => {
     setCopied(false);
-    createShortenUrl.mutate(data.url);
+    if (PLATFORM_AUTH) {
+      createShortenUrl.mutate(encodeURIComponent(CryptoJS.AES.encrypt(data.url, PLATFORM_AUTH).toString()));
+    } else {
+      console.error('Not found PLATFORM_AUTH');
+    }
   };
 
   const mutateError = createShortenUrl.error as AxiosError;

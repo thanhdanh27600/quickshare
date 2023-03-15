@@ -26,5 +26,6 @@
   "shareTwitter": "Chia sẻ Twitter",
   "shareLinkedIn": "Chia sẻ LinkedIn",
   "downloadQR": "Tải QR",
-  "author": "Người tạo"
+  "author": "Người tạo",
+  "errorNoTracking": "Không tồn tại link theo dõi này."
 }

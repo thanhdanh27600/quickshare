@@ -10,7 +10,7 @@ import { z } from 'zod';
 
 export type Stats = Response & {
   record?: UrlShortenerRecord | null;
-  history?: (UrlShortenerHistory & { urlForwardMeta: UrlForwardMeta[] })[] | null;
+  history?: (UrlShortenerHistory & { urlForwardMeta?: UrlForwardMeta[] })[] | null;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Stats>) {
@@ -33,12 +33,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         where: { ip },
         include: {
           history: {
-            include: {
-              urlForwardMeta: {
-                orderBy: {
-                  createdAt: Prisma.SortOrder.desc,
-                },
-              },
+            orderBy: {
+              createdAt: Prisma.SortOrder.desc,
             },
           },
         },

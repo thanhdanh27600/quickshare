@@ -3,7 +3,6 @@ import { getStats } from 'api/requests';
 import { Header } from 'components/layouts/Header';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { Stats } from 'pages/api/stats';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { UAParser } from 'ua-parser-js';
@@ -12,28 +11,30 @@ import { getCountryName } from 'utils/country';
 import { useTrans } from 'utils/i18next';
 import { capitalize, copyToClipBoard } from 'utils/text';
 
-export const URLTracking = ({ record, history, /** SSR then Client fetch */ hash }: Stats & { hash: string }) => {
+export const URLTracking = ({ /**  record, history, SSR then Client fetch */ hash }: { hash: string }) => {
   const { t } = useTrans();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!record && !history && typeof window !== undefined) {
-      router.replace('/');
-    }
-  }, []);
-
-  const { data } = useQuery({
+  const { data, isLoading, isSuccess } = useQuery({
     queryKey: ['forward'],
     queryFn: async () => getStats({ hash }),
     refetchInterval: 2000,
   });
 
+  useEffect(() => {
+    if (isSuccess) {
+      if (!data?.record && !data?.history) router.replace('/');
+    }
+  }, [isSuccess]);
+
+  if (isLoading) return null;
+
   return (
     <>
       <Header />
       <div className="container mx-auto py-5 px-4">
-        {(data?.record || record) && <div>{`${t('author')}: ${record?.ip}`}</div>}
-        {(data?.history || history)?.map((h, i) => {
+        {data?.record && <div>{`${t('author')}: ${data?.record.ip}`}</div>}
+        {data?.history?.map((h, i) => {
           return (
             <div
               key={`history-${i}`}
@@ -49,7 +50,7 @@ export const URLTracking = ({ record, history, /** SSR then Client fetch */ hash
                   </tr>
                 </thead>
                 <tbody>
-                  {h.urlForwardMeta.map((m, j) => {
+                  {h.urlForwardMeta?.map((m, j) => {
                     const UA = m.userAgent ? new UAParser(m.userAgent) : undefined;
                     const ref = detectReferer(m.userAgent);
                     return (

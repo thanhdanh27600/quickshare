@@ -79,7 +79,7 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
           className="cursor-pointer text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
           {t('trackingLive')}
         </a>
-        <div className="flex items-center gap-2 ">
+        <div className="flex items-center gap-2">
           <a href={`http://www.facebook.com/sharer.php?u=${shortenedUrl}`} target="_blank">
             <Button
               text={t('shareFacebook')}
@@ -102,8 +102,8 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
             />
           </a>
           {query.data?.qr && (
-            <div className="flex flex-col items-center gap-2">
-              <Image src={query.data?.qr} alt="QR-Code" width={80} height={80} />
+            <div className="mt-1 flex flex-col items-center gap-2">
+              <Image src={query.data?.qr} alt="QR-Code" width={84} height={84} />
               <a href={query.data?.qr} download={`QR-${shortenedUrl.replace(`${BASE_URL}/`, '')}`}>
                 <Button
                   text={t('downloadQR')}

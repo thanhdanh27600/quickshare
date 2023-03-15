@@ -26,5 +26,6 @@
   "shareTwitter": "Share Twitter",
   "shareLinkedIn": "Share LinkedIn",
   "downloadQR": "Download QR",
-  "author": "Author"
+  "author": "Author",
+  "errorNoTracking": "No tracking was found."
 }
