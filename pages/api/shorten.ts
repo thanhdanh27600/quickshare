@@ -46,7 +46,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       const bytes = CryptoJS.AES.decrypt(decodeURIComponent(url), PLATFORM_AUTH);
       url = bytes.toString(CryptoJS.enc.Utf8);
     }
-    console.log('url', url);
     if (!url || !isValidUrl(url)) {
       return res.status(HttpStatusCode.BAD_REQUEST).send({
         errorMessage: 'Wrong URL format, please try again',
