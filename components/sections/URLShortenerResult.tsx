@@ -72,14 +72,14 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
           <span className="">{copied ? 'Copied' : 'Copy'}</span>
         </button>
       </div>
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+      <div className="mt-4 flex flex-col flex-wrap justify-between gap-8 sm:flex-row sm:items-center">
         <a
           href={shortenedUrl.replace(`${BASE_URL}/`, `${BASE_URL}/v/`)}
           target="_blank"
           className="cursor-pointer text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
           {t('trackingLive')}
         </a>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col items-center gap-2 sm:flex-row">
           <a href={`http://www.facebook.com/sharer.php?u=${shortenedUrl}`} target="_blank">
             <Button
               text={t('shareFacebook')}
