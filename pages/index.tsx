@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="container p-4 md:mx-auto md:mt-8 md:max-w-5xl">
+      <div className="container mx-auto overflow-y-auto p-4 md:mt-8 md:max-w-5xl">
         <URLShortener />
       </div>
     </>
