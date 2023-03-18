@@ -43,7 +43,7 @@ const Home = () => {
         />
       </Head>
       <Header />
-      <div className="container mx-auto p-4 md:mt-8 md:max-w-5xl">
+      <div className="container-xl mx-auto p-4 md:mt-8 md:max-w-5xl">
         <URLShortener />
       </div>
     </>

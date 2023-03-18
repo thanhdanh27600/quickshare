@@ -59,7 +59,7 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
       <Header />
       <ValidateToken setToken={onInputPassword} open={needValidate} />
       {!needValidate && (
-        <div className="container mx-auto py-5 px-4">
+        <div className="mx-auto max-w-7xl py-5 px-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
             {data?.record && <span> {`${t('author')}: ${data?.record.ip}`}</span>}
             <div className="flex items-center gap-4">

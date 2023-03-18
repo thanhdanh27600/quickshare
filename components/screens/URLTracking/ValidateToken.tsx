@@ -44,11 +44,16 @@ export const ValidateToken = ({
         ConfirmButtonProps={{
           onClick: handleSubmit(onSubmit),
         }}
+        modalOptions={{
+          backdrop: 'static',
+          keyboard: false,
+        }}
         DismissButtonProps={{
           onClick: () => {
             router.push('/');
           },
-        }}>
+        }}
+        blockDismiss>
         <div className="py-2">
           <label className="text-gray-700">{t('requiredPasswordLabel')}</label>
           <Input
@@ -57,7 +62,7 @@ export const ValidateToken = ({
               required: { message: t('errorNoInput'), value: true },
             })}
           />
-          <p className="text-red-400">{errors.password?.message}</p>
+          <p className="mt-2 text-red-400">{errors.password?.message}</p>
         </div>
       </Modal>
     </div>
