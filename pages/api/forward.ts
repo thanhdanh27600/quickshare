@@ -72,11 +72,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       },
     });
     await prisma.$disconnect();
-    res.status(HttpStatusCode.OK).json({ history });
+    return res.status(HttpStatusCode.OK).json({ history });
   } catch (error) {
     console.error(error);
     await prisma.$disconnect();
-    res
+    return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
       .json({ errorMessage: (error as any).message || 'Something when wrong.' });
   }

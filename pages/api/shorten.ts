@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
     const curLimit = (await client.get(keyLimit)) || '';
     if (parseFloat(curLimit) >= LIMIT_URL_NUMBER) {
-      res.status(HttpStatusCode.UNAUTHORIZED).send({
+      return res.status(HttpStatusCode.UNAUTHORIZED).send({
         errorMessage: `Exceeded ${LIMIT_URL_NUMBER} shorten links, please comeback after ${LIMIT_URL_HOUR} hours.`,
         errorCode: 'UNAUTHORIZED',
       });
