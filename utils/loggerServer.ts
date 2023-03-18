@@ -1,8 +1,9 @@
 import pino from 'pino';
+import { isProduction } from 'types/constants';
 
 const fileTransport = pino.transport({
   target: 'pino/file',
-  options: { destination: `./logs/pino.log` },
+  options: { destination: isProduction ? `pino.log` : `./logs/pino.log` },
 });
 
 module.exports = pino(
