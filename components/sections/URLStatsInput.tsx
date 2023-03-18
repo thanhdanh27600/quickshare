@@ -1,4 +1,5 @@
 import { getStats } from 'api/requests';
+import clsx from 'clsx';
 import { InputWithButton } from 'components/atoms/Input';
 import { Accordion } from 'components/gadgets/Accordion';
 import { Dropdown } from 'components/gadgets/Dropdown';
@@ -97,8 +98,9 @@ export const URLStats = () => {
               text: t('continue'),
               variant: 'filled',
               type: 'submit',
+              TextClassname: 'text-sm sm:text-xl',
             }}
-            className="pl-16"
+            className={clsx(hasHistory ? 'pl-16' : 'pl-4')}
             onFocus={() => {
               mixpanel.track(MIXPANEL_EVENT.INPUT_STATS, { status: MIXPANEL_STATUS.OK });
             }}

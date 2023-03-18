@@ -1,3 +1,4 @@
+import { isProduction } from 'types/constants';
 import { z } from 'zod';
 
 export const validateOgSchema = z.object({
@@ -10,9 +11,13 @@ export const validateOgSchema = z.object({
 
 export const validateStatsSchema = z.object({
   query: z.object({
-    // hash: z.string({
-    //   required_error: 'Hash is required',
-    // }),
+    ...(isProduction
+      ? {
+          h: z.string({
+            required_error: 'Hash is required',
+          }),
+        }
+      : null),
     ip: z.string({
       required_error: 'IP is required',
     }),

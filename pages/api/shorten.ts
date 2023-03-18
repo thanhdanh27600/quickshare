@@ -13,7 +13,6 @@ import {
   PLATFORM_AUTH,
   REDIS_KEY,
 } from 'types/constants';
-import { log } from 'utils/clg';
 import HttpStatusCode from 'utils/statusCode';
 import { generateRandomString, isValidUrl } from 'utils/text';
 
@@ -32,9 +31,9 @@ export type ShortenUrlRs = Response & {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ShortenUrlRs>) {
   try {
+    require('utils/loggerServer').info(req);
     const ip = requestIp.getClientIp(req);
     let url = req.query.url as string;
-    console.log('===SHORTEN===');
     // TODO: ZOD
     if (!url || !ip) {
       return res.status(HttpStatusCode.BAD_REQUEST).send({
@@ -43,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       });
     }
     if (PLATFORM_AUTH) {
-      const bytes = CryptoJS.AES.decrypt(decodeURIComponent(url), PLATFORM_AUTH);
+      const bytes = CryptoJS.AES.decrypt(decodeURI(url), PLATFORM_AUTH);
       url = bytes.toString(CryptoJS.enc.Utf8);
     }
     if (!url || !isValidUrl(url)) {
@@ -113,7 +112,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           urlShortenerRecordId: +clientRedisId!,
         },
       });
-      log(['history', JSON.stringify(history, null, 2)]);
       res.status(HttpStatusCode.OK).json({ url, hash: targetHash });
     }
     await client.disconnect();

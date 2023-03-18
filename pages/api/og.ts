@@ -1,8 +1,8 @@
+import CryptoJS from 'crypto-js';
 import Handlebars from 'handlebars';
 import { NextApiRequest, NextApiResponse } from 'next';
 import puppeteer from 'puppeteer';
-import { isProduction } from 'types/constants';
-import { log } from 'utils/clg';
+import { isProduction, PLATFORM_AUTH } from 'types/constants';
 import HttpStatusCode from 'utils/statusCode';
 import { validateOgSchema } from 'utils/validateMiddleware';
 import { z } from 'zod';
@@ -93,7 +93,6 @@ main {
 }
 .title {
   font-size: {{fontSize}};
-  text-transform: capitalize;
   margin: 0.25rem 0;
   font-weight: bold;
   color: #fff;
@@ -119,7 +118,6 @@ main {
 function getFontSize(title = '') {
   if (!title || typeof title !== 'string') return '';
   const titleLength = title.length;
-  log(['titleLength', titleLength + '']);
   if (titleLength > 100) return '2.5rem';
   if (titleLength > 80) return '3rem';
   if (titleLength > 60) return '3.5rem';
@@ -130,22 +128,29 @@ function getFontSize(title = '') {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   try {
+    require('utils/loggerServer').info(req);
     if (req.method !== 'GET') {
       return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
     }
+    let title = '';
+    if (PLATFORM_AUTH) {
+      const bytes = CryptoJS.AES.decrypt(decodeURIComponent(req.query.title as string), PLATFORM_AUTH);
+      title = bytes.toString(CryptoJS.enc.Utf8);
+    }
+    console.log('title', title);
     await validateOgSchema.parseAsync({
-      query: req.query,
+      query: { title: !!title ? title : undefined },
     });
     // compile templateStyles
     const compiledStyles = Handlebars.compile(templateStylesOg)({
       bgUrl: req.query.bgUrl,
-      fontSize: getFontSize(req.query.title as string),
+      fontSize: getFontSize(title),
     });
 
     // compile templateHTML
     const compiledHTML = Handlebars.compile(templateHTMLOg)({
       logoUrl: req.query.logoUrl,
-      title: req.query.title,
+      title,
       tags: req.query.tags,
       path: req.query.path,
       styles: compiledStyles,

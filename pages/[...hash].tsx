@@ -1,11 +1,12 @@
 import { getForwardUrl } from 'api/requests';
+import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
-import { BASE_URL } from 'types/constants';
+import { BASE_URL, PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
@@ -57,6 +58,11 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
     location.replace(`${url.includes('http') ? '' : '//'}${url}`);
   }, [forwardUrl]);
 
+  let encodeTitle = '';
+  if (PLATFORM_AUTH) {
+    encodeTitle = CryptoJS.AES.encrypt(`Shared Link <${hash}>. Click Now!`, PLATFORM_AUTH).toString();
+  }
+
   return (
     <>
       {/* CUSTOM HEAD */}
@@ -64,27 +70,13 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://facebook.com/clickditop/ " />
-        <meta property="og:title" content="Clickdi - Share link like a pro." />
-        <meta
-          property="og:description"
-          content="Clickdi is more than a URL shortener, help you track the usage of the shortened URLs, providing analytics on the number of clicks, geographic location of clicks, and other relevant data. Take action on the effectiveness of shared links and make data-driven decisions to improve their outreach efforts."
-        />
-        <meta
-          property="og:image"
-          content={BASE_URL + '/api/og' + encodeURI(`?title=Shared link <${hash}>. Click now!`)}
-        />
+        <meta property="og:title" content={`Shared Link <${hash}>. Click now!`} />
+        <meta property="og:image" content={BASE_URL + '/api/og' + `?title=${encodeURIComponent(encodeTitle)}`} />
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://twitter.com/clickditop" />
-        <meta property="twitter:title" content="Clickdi - Share link like a pro." />
-        <meta
-          property="twitter:description"
-          content="Clickdi is more than a URL shortener, help you track the usage of the shortened URLs, providing analytics on the number of clicks, geographic location of clicks, and other relevant data. Take action on the effectiveness of shared links and make data-driven decisions to improve their outreach efforts."
-        />
-        <meta
-          property="twitter:image"
-          content={BASE_URL + '/api/og' + encodeURI(`?title=Shared link <${hash}>. Click now!`)}
-        />
+        <meta property="twitter:title" content={`Shared Link <${hash}>. Click now!`} />
+        <meta property="twitter:image" content={BASE_URL + '/api/og' + `?title=${encodeURIComponent(encodeTitle)}`} />
       </Head>
       {error ? <p>{t(error as any)}</p> : <></>}
     </>

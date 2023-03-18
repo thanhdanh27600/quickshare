@@ -1,6 +1,6 @@
 import { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
-import { BASE_URL, isProduction } from 'types/constants';
+import { BASE_URL } from 'types/constants';
 
 export default function Document() {
   return (
@@ -37,43 +37,13 @@ export default function Document() {
           name="Rút gọn link, hoàn toàn miễn phí"
           content="Rút gọn và theo dõi tất cả lượt click, trực quan, dễ sử dụng và luôn luôn miễn phí"
         />
-        {/* Primary Meta Tags */}
-        <meta name="title" content="Clickdi - Share link like a pro." />
-        <meta
-          name="description"
-          content="Clickdi is more than a URL shortener, help you track the usage of the shortened URLs, providing analytics on the number of clicks, geographic location of clicks, and other relevant data. Take action on the effectiveness of shared links and make data-driven decisions to improve their outreach efforts."
-        />
 
-        {isProduction && <title>Clickdi - Share link like a pro.</title>}
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://facebook.com/clickditop/ " />
-        <meta property="og:title" content="Clickdi - Share link like a pro." />
-        <meta
-          property="og:description"
-          content="Clickdi is more than a URL shortener, help you track the usage of the shortened URLs, providing analytics on the number of clicks, geographic location of clicks, and other relevant data. Take action on the effectiveness of shared links and make data-driven decisions to improve their outreach efforts."
-        />
-        <meta
-          property="og:image"
-          content={BASE_URL + '/api/og' + encodeURI('?title=Let us Shorten your URL, always free')}
-        />
-        {/* Twitter */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://twitter.com/clickditop" />
-        <meta property="twitter:title" content="Clickdi - Share link like a pro." />
-        <meta
-          property="twitter:description"
-          content="Clickdi is more than a URL shortener, help you track the usage of the shortened URLs, providing analytics on the number of clicks, geographic location of clicks, and other relevant data. Take action on the effectiveness of shared links and make data-driven decisions to improve their outreach efforts."
-        />
-        <meta
-          property="twitter:image"
-          content={BASE_URL + '/api/og' + encodeURI('?title=Let us Shorten your URL, always free')}
-        />
+        <link rel="stylesheet" href={`${BASE_URL}/lib/styles.min.css`} />
       </Head>
       <body>
         <Main />
         <NextScript />
-        <Script src={`${BASE_URL}/lib/styles.min.js`} id="external-styles" strategy="lazyOnload" />
+        <Script src={`${BASE_URL}/lib/styles.min.js`} id="external-styles" strategy="beforeInteractive" />
       </body>
     </Html>
   );

@@ -104,6 +104,7 @@ export const URLShortenerInput = () => {
             variant: 'filled',
             type: 'submit',
             loading,
+            TextClassname: 'text-sm sm:text-xl',
           }}
           onFocus={() => {
             mixpanel.track(MIXPANEL_EVENT.INPUT_URL, { status: MIXPANEL_STATUS.OK });

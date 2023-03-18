@@ -2,6 +2,7 @@
   "giveFeedback": "Give feedback",
   "errorNoUrl": "Please enter the URL to continue",
   "errorInvalidUrl": "Invalid URL, please try again",
+  "errorInvalidEmail": "Invalid email, please try again",
   "errorNoInput": "Please enter a value to continue",
   "errorInvalidInput": "Invalid input, please try again",
   "somethingWrong": "Something wrong happened :(. We're looking into it",
@@ -27,5 +28,16 @@
   "shareLinkedIn": "Share LinkedIn",
   "downloadQR": "Download QR",
   "author": "Author",
-  "errorNoTracking": "No tracking was found."
+  "errorNoTracking": "No tracking was found.",
+  "setPassword": "Set password",
+  "minCharacter": "Minimum {{n}} characters",
+  "requiredPasswordLabel": "Password*",
+  "emailRecoverLabel": "Email (for password recovery)",
+  "dismiss": "Dismiss",
+  "confirm": "Confirm",
+  "updated": "Updated",
+  "password": "Password",
+  "unlock": "Unlock",
+  "inputManyTimes": "Too many input. Please refresh page and try again.",
+  "autoUpdate": "Auto update"
 }

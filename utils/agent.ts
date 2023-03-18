@@ -4,6 +4,7 @@ export enum Referer {
   ZALO = 'ZALO',
   LINKEDIN = 'LINKEDIN',
   FACEBOOK = 'FACEBOOK',
+  SHARE_LINK = 'SHARE LINK',
   INSTAGRAM = 'INSTAGRAM',
   TIKTOK = 'TIKTOK',
   GOOGLE = 'GOOGLE',
@@ -47,6 +48,10 @@ export function detectReferer(userAgent?: string | null): Referer {
   //INSTAGRAM
   check = ua.includes('instagram') || ua.includes('insta') || ua.includes('insta');
   if (check) return Referer.INSTAGRAM;
+
+  // OG IMAGE
+  check = ua.includes('facebookexternalhit') || ua.includes('facebook.com/externalhit');
+  if (check) return Referer.SHARE_LINK;
 
   //FACEBOOK
   check =
