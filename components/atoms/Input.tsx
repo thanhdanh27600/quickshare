@@ -10,7 +10,7 @@ export const Input = forwardRef((props: Props, ref: ForwardedRef<HTMLInputElemen
       {...props}
       ref={ref}
       className={clsx(
-        'block h-16 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pr-[6.7rem] text-gray-900 focus:shadow-[0_0_8px_0_#06b6d4] focus:outline-none focus:ring-cyan-500 sm:pr-[8.6rem] sm:text-xl',
+        'block h-16 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5  text-gray-900 focus:shadow-[0_0_8px_0_#06b6d4] focus:outline-none focus:ring-cyan-500 sm:text-xl',
         props.className,
       )}
     />
@@ -28,7 +28,7 @@ export const InputWithButton = forwardRef((props: InputWithButtonProps, ref: For
   return (
     <div className={clsx('relative w-full', Prefix && 'flex')}>
       {Prefix}
-      <Input {...inputProps} ref={ref} />
+      <Input {...inputProps} ref={ref} className={clsx(inputProps.className, 'pr-[6.7rem] sm:pr-[8.6rem]')} />
       <Button
         {...buttonProps}
         className={clsx(

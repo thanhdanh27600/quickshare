@@ -12,13 +12,13 @@ export type QR = Response & {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<QR>) {
   try {
+    require('utils/loggerServer').info(req);
     if (req.method !== 'GET') {
       return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
     }
     await validateQrSchema.parseAsync({
       query: req.query,
     });
-    console.log('====QR===');
     const text = req.query.text as string;
     const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
     let decrypt = '';

@@ -8,6 +8,7 @@ export function generateRandomString(numChars: number): string {
 }
 
 export const urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i;
+export const emailRegex = /(.+)@(.+){2,}\.(.+){2,}/i;
 
 export const isValidUrl = (urlString: string) => {
   return !!urlRegex.test(urlString);

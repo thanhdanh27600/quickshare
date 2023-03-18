@@ -11,7 +11,7 @@ export const Header = () => {
             width={50}
             className="-ml-4 bg-gradient-to-br from-cyan-500 to-blue-500 bg-clip-text text-transparent"
           />
-          <BrandIconText width={120} />
+          <BrandIconText width={80} />
         </div>
       </Link>
       <div className="flex items-center gap-4">

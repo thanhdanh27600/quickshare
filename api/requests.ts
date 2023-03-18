@@ -2,6 +2,7 @@ import { ForwardRs } from 'pages/api/forward';
 import { QR } from 'pages/api/qr';
 import { ShortenUrlRs } from 'pages/api/shorten';
 import { Stats } from 'pages/api/stats';
+import { stringify } from 'querystring';
 import { API } from './axios';
 
 export const createShortenUrlRequest = async (url: string) => {
@@ -26,8 +27,13 @@ export const getForwardUrl = async ({
   return data as ForwardRs;
 };
 
-export const getStats = async ({ hash }: { hash?: string }) => {
-  const rs = await API.get(`/api/stats?hash=${hash}`);
+export const getStats = async ({ hash, email, password }: { hash: string; email?: string; password?: string }) => {
+  const q = stringify({
+    h: hash,
+    ...(email ? { e: email } : null),
+    ...(password ? { p: password } : null),
+  });
+  const rs = await API.get(`/api/stats?${q}`);
   const data = await rs.data;
   return data as Stats;
 };
