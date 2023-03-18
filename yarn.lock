@@ -2,11 +2,6 @@
 # yarn lockfile v1
 
 
-"@51degrees/ua-parser-js@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@51degrees/ua-parser-js/-/ua-parser-js-2.0.3.tgz#5ee2606fbccb176e0aefb76ce1edc3319270f604"
-  integrity sha512-GCiDLvLIdpVGW394CFE4hJtykQyHPhU2kx9kRauM9m2RFuqXJr4iitgfspg2REuVcpRXbWi20AqDB8PFo20RwA==
-
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.18.6":
   version "7.18.6"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.18.6.tgz#3b25d38c89600baa2dcc219edfa88a74eb2c427a"
@@ -3636,6 +3631,11 @@ typescript@4.9.4:
   version "4.9.4"
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.9.4.tgz"
   integrity sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==
+
+ua-parser-js@^1.0.34:
+  version "1.0.34"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.34.tgz#b33f41c415325839f354005d25a2f588be296976"
+  integrity sha512-K9mwJm/DaB6mRLZfw6q8IMXipcrmuT6yfhYmwhAkuh+81sChuYstYA+znlgaflUPaYUa3odxKPKGw6Vw/lANew==
 
 uglify-js@^3.1.4:
   version "3.17.4"

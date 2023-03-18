@@ -13,7 +13,6 @@
     "migrate": "prisma migrate deploy"
   },
   "dependencies": {
-    "@51degrees/ua-parser-js": "^2.0.3",
     "@prisma/client": "4.9.0",
     "@styled-icons/feather": "^10.47.0",
     "@tailwindcss/line-clamp": "^0.4.2",
@@ -42,6 +41,7 @@
     "request-ip": "^3.3.0",
     "sass": "^1.57.1",
     "styled-components": "^5.3.8",
+    "ua-parser-js": "^1.0.34",
     "zod": "^3.20.6"
   },
   "devDependencies": {
