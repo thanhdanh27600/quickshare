@@ -27,7 +27,13 @@ const Home = () => {
         />
         <meta
           property="og:image"
-          content={BASE_URL + '/api/og' + encodeURI('?title=Let us Shorten your URL, always free')}
+          content={
+            BASE_URL +
+            '/api/og?title=' +
+            encodeURIComponent(
+              'U2FsdGVkX1+IEpdIZm+U48yjdQMVqcCOVBw2TQjQriMnsP0paNBd7TqAWmeqTJScL0trSU9MdKZEysQO5YkJXw==',
+            )
+          }
         />
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
@@ -39,7 +45,13 @@ const Home = () => {
         />
         <meta
           property="twitter:image"
-          content={BASE_URL + '/api/og' + encodeURI('?title=Let us Shorten your URL, always free')}
+          content={
+            BASE_URL +
+            '/api/og?title=' +
+            encodeURIComponent(
+              'U2FsdGVkX1+IEpdIZm+U48yjdQMVqcCOVBw2TQjQriMnsP0paNBd7TqAWmeqTJScL0trSU9MdKZEysQO5YkJXw==',
+            )
+          }
         />
       </Head>
       <Header />
