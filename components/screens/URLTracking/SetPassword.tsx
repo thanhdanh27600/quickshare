@@ -72,7 +72,7 @@ export const SetPassword = ({ hash, setToken }: { hash: string; setToken: (passw
               },
             })}
           />
-          <p className="text-red-400">{errors.password?.message}</p>
+          <p className="mt-2 text-red-400">{errors.password?.message}</p>
         </div>
         <div className="py-2">
           <label className="text-gray-700">{t('emailRecoverLabel')}</label>
@@ -85,7 +85,7 @@ export const SetPassword = ({ hash, setToken }: { hash: string; setToken: (passw
               },
             })}
           />
-          <p className="text-red-400">{errors.email?.message}</p>
+          <p className="mt-2 text-red-400">{errors.email?.message}</p>
         </div>
       </Modal>
     </div>
