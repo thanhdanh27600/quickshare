@@ -10,7 +10,7 @@
   "tracking": "Tracking Link",
   "continue": "Continue",
   "feedbackURLSubject": "[CLICKDI.TOP] Feedback / Bug URL Shortener",
-  "feedbackShortSubject": "[CLICKDI.TOP] Feedback / Bug report Statistics",
+  "feedbackShortSubject": "[CLICKDI.TOP] Feedback / Bug report URL Tracking",
   "feedbackBody": "Sorry for the inconvenience, please provide more information (image would be helpful):",
   "shortenSuccess": "That was fast! URL has been successfully shortened.",
   "urlShortener": "URL Shortener",
@@ -39,5 +39,6 @@
   "password": "Password",
   "unlock": "Unlock",
   "inputManyTimes": "Too many input. Please refresh page and try again.",
-  "autoUpdate": "Auto update"
+  "autoUpdate": "Auto update",
+  "noData": "No data found"
 }

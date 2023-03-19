@@ -18,7 +18,7 @@ export const FeedbackLink = ({ template }: { template: FeedbackTemplate }) => {
 
 export enum FeedbackTemplate {
   URL_SHORT = 'URL_SHORT',
-  URL_STATS = 'URL_STATS',
+  URL_TRACKING = 'URL_TRACKING',
 }
 
 const useFeedbackTemplate = (template: FeedbackTemplate) => {
@@ -30,7 +30,7 @@ const useFeedbackTemplate = (template: FeedbackTemplate) => {
         t('feedbackURLSubject'),
       )}&body=${encodeURIComponent(t('feedbackBody'))}`;
       break;
-    case FeedbackTemplate.URL_STATS:
+    case FeedbackTemplate.URL_TRACKING:
       supportUrl = `mailto:thanhdanh27600@gmail.com?subject=${encodeURIComponent(
         t('feedbackShortSubject'),
       )}&body=${encodeURIComponent(t('feedbackBody'))}`;

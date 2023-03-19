@@ -107,7 +107,7 @@ export const URLStats = () => {
           />
         </form>
         <p className="mt-4 text-red-400">{error}</p>
-        <FeedbackLink template={FeedbackTemplate.URL_STATS} />
+        <FeedbackLink template={FeedbackTemplate.URL_TRACKING} />
       </div>
     </Accordion>
   );
