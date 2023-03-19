@@ -5,6 +5,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import requestIp from 'request-ip';
 import { Response } from 'types/api';
 import { PLATFORM_AUTH } from 'types/constants';
+import { parseIntSafe } from 'utils/number';
+import { withQueryCursor } from 'utils/requests';
 import HttpStatusCode from 'utils/statusCode';
 import { validateStatsSchema } from 'utils/validateMiddleware';
 import { z } from 'zod';
@@ -27,6 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const hash = req.query.h as string;
     const email = req.query.e as string;
     const password = req.query.p as string;
+    const queryCursor = req.query.qc ? parseIntSafe(req.query.qc as string) : undefined;
     let record;
     let history;
     if (!hash) {
@@ -50,8 +53,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         include: {
           urlForwardMeta: {
             orderBy: {
-              createdAt: Prisma.SortOrder.desc,
+              updatedAt: Prisma.SortOrder.desc,
             },
+            ...withQueryCursor(queryCursor),
           },
           UrlShortenerRecord: true,
         },
