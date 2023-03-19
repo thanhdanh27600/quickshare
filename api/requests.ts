@@ -27,11 +27,22 @@ export const getForwardUrl = async ({
   return data as ForwardRs;
 };
 
-export const getStats = async ({ hash, email, password }: { hash: string; email?: string; password?: string }) => {
+export const getStats = async ({
+  hash,
+  email,
+  password,
+  queryCursor,
+}: {
+  hash: string;
+  email?: string;
+  password?: string;
+  queryCursor?: number;
+}) => {
   const q = stringify({
     h: hash,
     ...(email ? { e: email } : null),
     ...(password ? { p: password } : null),
+    ...(queryCursor ? { qc: queryCursor } : null),
   });
   const rs = await API.get(`/api/stats?${q}`);
   const data = await rs.data;
