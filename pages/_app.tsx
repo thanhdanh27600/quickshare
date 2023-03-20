@@ -1,3 +1,4 @@
+import ErrorBoundary from 'components/gadgets/ErrorBoundary';
 import mixpanel from 'mixpanel-browser';
 import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
@@ -21,19 +22,21 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />
-      <Toaster
-        toastOptions={{
-          success: {
-            iconTheme: {
-              primary: '#67E8F9',
-              secondary: '#155E75',
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+        <Toaster
+          toastOptions={{
+            success: {
+              iconTheme: {
+                primary: '#67E8F9',
+                secondary: '#155E75',
+              },
             },
-          },
-        }}
-      />
-    </QueryClientProvider>
+          }}
+        />
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 

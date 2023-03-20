@@ -2,7 +2,7 @@ import { Header } from 'components/layouts/Header';
 import { URLShortener } from 'components/screens/URLShortener';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
-import { BASE_URL, isProduction } from 'types/constants';
+import { isProduction } from 'types/constants';
 import { LocaleProp } from 'types/locale';
 
 const Home = () => {
@@ -28,7 +28,6 @@ const Home = () => {
         <meta
           property="og:image"
           content={
-            BASE_URL +
             '/api/og?title=' +
             encodeURIComponent(
               'U2FsdGVkX1+IEpdIZm+U48yjdQMVqcCOVBw2TQjQriMnsP0paNBd7TqAWmeqTJScL0trSU9MdKZEysQO5YkJXw==',
@@ -46,7 +45,6 @@ const Home = () => {
         <meta
           property="twitter:image"
           content={
-            BASE_URL +
             '/api/og?title=' +
             encodeURIComponent(
               'U2FsdGVkX1+IEpdIZm+U48yjdQMVqcCOVBw2TQjQriMnsP0paNBd7TqAWmeqTJScL0trSU9MdKZEysQO5YkJXw==',

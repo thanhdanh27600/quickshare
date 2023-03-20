@@ -50,7 +50,7 @@ export const URLStats = () => {
         message: t('errorNoTracking'),
       });
     } else {
-      window.open(`/v/${getValues('hash').replace(BASE_URL + '/', '')}`, '_blank');
+      window.location.replace(`/v/${getValues('hash').replace(BASE_URL + '/', '')}`);
     }
   }, [fetchTracking.isSuccess]);
 
