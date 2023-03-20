@@ -45,7 +45,7 @@ model UrlForwardMeta {
   ip             String?
   fromClientSide Boolean? @default(false)
 
-  UrlShortenerHistory   UrlShortenerHistory @relation(fields: [urlShortenerHistoryId], references: [id])
+  UrlShortenerHistory   UrlShortenerHistory @relation(fields: [urlShortenerHistoryId], references: [id], onDelete: Cascade)
   urlShortenerHistoryId Int
 
   @@unique([userAgent, ip, urlShortenerHistoryId])
