@@ -17,7 +17,7 @@ import { detectReferer, Referer } from 'utils/agent';
 import { getCountryName } from 'utils/country';
 import { useTrans } from 'utils/i18next';
 import { PAGE_SIZE, strictRefetch } from 'utils/requests';
-import { capitalize, copyToClipBoard } from 'utils/text';
+import { capitalize, copyToClipBoard, truncate } from 'utils/text';
 import { SetPassword } from './SetPassword';
 import { ValidateToken } from './ValidateToken';
 
@@ -104,7 +104,17 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
       {!needValidate && (
         <div className="mx-auto max-w-7xl py-5 px-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            {data?.record && <span> {`${t('author')}: ${data?.record.ip}`}</span>}
+            <div>
+              {data?.record && <span> {`${t('author')}: ${data?.record.ip}`}</span>}
+              {history?.url && (
+                <a className="block" href={history.url} target="_blank">
+                  URL:{' '}
+                  <span className="text-cyan-500 underline decoration-1 hover:decoration-wavy">
+                    {truncate(history.url)}
+                  </span>
+                </a>
+              )}
+            </div>
             {!password && <SetPassword hash={hash} setToken={onInputPassword} />}
           </div>
           <div className="mt-2 text-sm text-gray-500">
