@@ -1,6 +1,5 @@
 import { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
-import { BASE_URL } from 'types/constants';
 
 export default function Document() {
   return (
@@ -38,12 +37,12 @@ export default function Document() {
           content="Rút gọn và theo dõi tất cả lượt click, trực quan, dễ sử dụng và luôn luôn miễn phí"
         />
 
-        <link rel="stylesheet" href={`${BASE_URL}/lib/styles.min.css`} />
+        <link rel="stylesheet" href={`/lib/styles.min.css`} />
       </Head>
       <body>
         <Main />
         <NextScript />
-        <Script src={`${BASE_URL}/lib/styles.min.js`} id="external-styles" strategy="beforeInteractive" />
+        <Script src={`/lib/styles.min.js`} id="external-styles" strategy="beforeInteractive" />
       </body>
     </Html>
   );

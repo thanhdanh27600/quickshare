@@ -1,11 +1,10 @@
 import { BrandIconText, BrandLogo } from 'components/atoms/BrandIcon';
 import { LanguageSelect } from 'components/gadgets/LanguageSelect';
-import Link from 'next/link';
 
 export const Header = () => {
   return (
     <div className="mx-auto flex justify-between py-5 px-4 md:mx-auto md:max-w-7xl">
-      <Link href="/">
+      <a href="/">
         <div className="flex w-fit cursor-pointer flex-col items-center gap-2">
           <BrandLogo
             width={50}
@@ -13,7 +12,7 @@ export const Header = () => {
           />
           <BrandIconText width={80} />
         </div>
-      </Link>
+      </a>
       <div className="flex items-center gap-4">
         <LanguageSelect />
       </div>

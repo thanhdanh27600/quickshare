@@ -9,7 +9,6 @@ export const withQueryCursor = (queryCursor?: number, takeAll?: boolean) => {
 };
 
 export const strictRefetch = {
-  refetchOnMount: false,
   refetchOnWindowFocus: false,
   refetchOnReconnect: false,
   refetchIntervalInBackground: false,

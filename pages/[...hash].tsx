@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
-import { BASE_URL, PLATFORM_AUTH } from 'types/constants';
+import { PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
@@ -71,12 +71,12 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://facebook.com/clickditop/ " />
         <meta property="og:title" content={`Shared Link <${hash}>. Click now!`} />
-        <meta property="og:image" content={BASE_URL + '/api/og' + `?title=${encodeURIComponent(encodeTitle)}`} />
+        <meta property="og:image" content={'/api/og' + `?title=${encodeURIComponent(encodeTitle)}`} />
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://twitter.com/clickditop" />
         <meta property="twitter:title" content={`Shared Link <${hash}>. Click now!`} />
-        <meta property="twitter:image" content={BASE_URL + '/api/og' + `?title=${encodeURIComponent(encodeTitle)}`} />
+        <meta property="twitter:image" content={'/api/og' + `?title=${encodeURIComponent(encodeTitle)}`} />
       </Head>
       {error ? <p>{t(error as any)}</p> : <></>}
     </>

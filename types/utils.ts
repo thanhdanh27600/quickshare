@@ -13,6 +13,7 @@ export const MIXPANEL_EVENT = {
   LINK_COPY: 'Link Copy',
   FORWARD: 'Forward',
   INPUT_URL: 'Input URL',
+  CRASH: 'CRASH',
 } as const;
 
 export const trackLanded = () => {
