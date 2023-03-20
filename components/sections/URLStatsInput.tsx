@@ -4,13 +4,12 @@ import { InputWithButton } from 'components/atoms/Input';
 import { Accordion } from 'components/gadgets/Accordion';
 import { Dropdown } from 'components/gadgets/Dropdown';
 import mixpanel from 'mixpanel-browser';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
 import { BASE_URL } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
-import { useTrans } from 'utils/i18next';
+import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { FeedbackLink, FeedbackTemplate } from './FeedbackLink';
 
 type URLStatsForm = {
@@ -18,8 +17,8 @@ type URLStatsForm = {
 };
 
 export const URLStats = () => {
-  const router = useRouter();
-  const { t } = useTrans();
+  const { t, locale } = useTrans();
+  const openStatsRef = useRef<HTMLAnchorElement>(null);
 
   const onSubmit: SubmitHandler<URLStatsForm> = (data) => {
     fetchTracking.mutate({ hash: data.hash.replace(BASE_URL + '/', '') });
@@ -50,7 +49,8 @@ export const URLStats = () => {
         message: t('errorNoTracking'),
       });
     } else {
-      window.location.replace(`/v/${getValues('hash').replace(BASE_URL + '/', '')}`);
+      // window.location.replace(`/v/${getValues('hash').replace(BASE_URL + '/', '')}`);
+      openStatsRef.current?.click();
     }
   }, [fetchTracking.isSuccess]);
 
@@ -70,6 +70,11 @@ export const URLStats = () => {
       <div className="solid rounded-lg border p-4 py-8 shadow-card sm:px-8 sm:py-8 sm:pt-10">
         <h1 className="mb-4 text-4xl">{t('tracking')}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+          <a
+            ref={openStatsRef}
+            href={linkWithLanguage(`${BASE_URL}/v/${getValues('hash').replace(BASE_URL + '/', '')}`, locale)}
+            target="_blank"
+          />
           <InputWithButton
             placeholder={`${BASE_URL}/xxxxx`}
             Prefix={

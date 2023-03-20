@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useQuery } from 'react-query';
 import { BASE_URL, PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
-import { useTrans } from 'utils/i18next';
+import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { copyToClipBoard } from 'utils/text';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) => {
-  const { t } = useTrans('common');
+  const { t, locale } = useTrans('common');
   const onCopy = () => {
     mixpanel.track(MIXPANEL_EVENT.LINK_COPY, {
       status: MIXPANEL_STATUS.OK,
@@ -74,7 +74,7 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
       </div>
       <div className="mt-4 flex flex-col flex-wrap justify-between gap-8 sm:flex-row sm:items-center">
         <a
-          href={shortenedUrl.replace(`${BASE_URL}/`, `${BASE_URL}/v/`)}
+          href={linkWithLanguage(shortenedUrl.replace(`${BASE_URL}/`, `${BASE_URL}/v/`), locale)}
           target="_blank"
           className="cursor-pointer text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
           {t('trackingLive')}
