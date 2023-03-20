@@ -23,7 +23,7 @@ class ErrorBoundary extends React.Component {
     if ((this.state as any).hasError) {
       return (
         <div>
-          <h2>Oops, there is an error, and it should not happened, we'll looking into it!</h2>
+          <h2>{'Oops, there is an error, and it should not happened, we will looking into it!'}</h2>
           <code>{(this.state as any).error.message}</code>
         </div>
       );

@@ -76,6 +76,7 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
   if (isLoading) return null;
 
   const password = (data?.history || [])[0]?.password;
+
   const needValidate = !!password && open;
 
   const onInputPassword = (_password: string, setError?: any) => {

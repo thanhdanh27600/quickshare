@@ -50,7 +50,7 @@ export const URLStats = () => {
         message: t('errorNoTracking'),
       });
     } else {
-      router.replace(`/v/${getValues('hash').replace(BASE_URL + '/', '')}`);
+      window.location.replace(`/v/${getValues('hash').replace(BASE_URL + '/', '')}`);
     }
   }, [fetchTracking.isSuccess]);
 
