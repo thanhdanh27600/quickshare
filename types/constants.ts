@@ -3,11 +3,11 @@ export const LIMIT_URL_SECOND = LIMIT_URL_HOUR * 3600;
 export const LIMIT_URL_NUMBER = 5;
 export const NUM_CHARACTER_HASH = 5;
 export const brandUrl = 'https://clickdi.top';
-export const brandUrlShort = 'https://clkid.top';
+export const brandUrlShort = 'https://cklid.top';
 
 export const Window = () => ('object' === typeof window && window ? (window as any) : undefined);
 export const isProduction = process.env.NODE_ENV === 'production';
-export const isShortDomain = isProduction && Window()?.location.hostname === 'clkid.top';
+export const isShortDomain = isProduction && Window()?.location.hostname === 'cklid.top';
 
 export const baseUrl = (useShortDomain: boolean = false) => {
   if (isProduction) {

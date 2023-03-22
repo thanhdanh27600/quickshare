@@ -74,7 +74,7 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
       </div>
       <div className="mt-4 flex flex-col flex-wrap justify-between gap-8 sm:flex-row sm:items-center">
         <a
-          href={linkWithLanguage(shortenedUrl.replace(`${BASE_URL}/`, `${BASE_URL}/v/`), locale)}
+          href={linkWithLanguage(shortenedUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`), locale)}
           target="_blank"
           className="cursor-pointer text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
           {t('trackingLive')}
