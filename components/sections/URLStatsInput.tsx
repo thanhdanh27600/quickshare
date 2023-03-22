@@ -7,7 +7,7 @@ import mixpanel from 'mixpanel-browser';
 import { useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
-import { BASE_URL } from 'types/constants';
+import { BASE_URL, BASE_URL_SHORT } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { FeedbackLink, FeedbackTemplate } from './FeedbackLink';
@@ -21,7 +21,7 @@ export const URLStats = () => {
   const openStatsRef = useRef<HTMLAnchorElement>(null);
 
   const onSubmit: SubmitHandler<URLStatsForm> = (data) => {
-    fetchTracking.mutate({ hash: data.hash.replace(BASE_URL + '/', '') });
+    fetchTracking.mutate({ hash: data.hash.replace(BASE_URL_SHORT + '/', '') });
   };
 
   const fetchTracking = useMutation('fetchTracking', getStats);
@@ -37,7 +37,7 @@ export const URLStats = () => {
     setValue,
     setError,
   } = useForm<URLStatsForm>({
-    defaultValues: { hash: hasHistory ? `${BASE_URL}/${fetchRecord.data?.history![0].hash}` : '' },
+    defaultValues: { hash: hasHistory ? `${BASE_URL_SHORT}/${fetchRecord.data?.history![0].hash}` : '' },
   });
 
   const error = errors.hash?.message; /** form error */
@@ -49,7 +49,6 @@ export const URLStats = () => {
         message: t('errorNoTracking'),
       });
     } else {
-      // window.location.replace(`/v/${getValues('hash').replace(BASE_URL + '/', '')}`);
       openStatsRef.current?.click();
     }
   }, [fetchTracking.isSuccess]);
@@ -72,18 +71,18 @@ export const URLStats = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
           <a
             ref={openStatsRef}
-            href={linkWithLanguage(`${BASE_URL}/v/${getValues('hash').replace(BASE_URL + '/', '')}`, locale)}
+            href={linkWithLanguage(`${BASE_URL}/v/${getValues('hash').replace(BASE_URL_SHORT + '/', '')}`, locale)}
             target="_blank"
           />
           <InputWithButton
-            placeholder={`${BASE_URL}/xxxxx`}
+            placeholder={`${BASE_URL_SHORT}/xxxxx`}
             Prefix={
               hasHistory ? (
                 <Dropdown
                   ContainerProps={{ className: 'absolute h-55 w-fit text-sm' }}
                   options={(fetchRecord.data?.history || []).map((h, idx) => ({
                     label: `${idx + 1}. ${h.url} (${h.hash})`,
-                    value: `${BASE_URL}/${h.hash}`,
+                    value: `${BASE_URL_SHORT}/${h.hash}`,
                   }))}
                   handleSelect={(value) => {
                     setValue('hash', value);
@@ -94,9 +93,9 @@ export const URLStats = () => {
             {...register('hash', {
               required: { message: t('errorNoInput'), value: true },
               validate: function (values) {
-                return values.startsWith(BASE_URL) && /^.{5}$/.test(values.replace(BASE_URL + '/', ''))
+                return values.startsWith(BASE_URL_SHORT) && /^.{5}$/.test(values.replace(BASE_URL_SHORT + '/', ''))
                   ? undefined
-                  : t('errorInvalidForward', { name: `${BASE_URL}/xxxxx` });
+                  : t('errorInvalidForward', { name: `${BASE_URL_SHORT}/xxxxx` });
               },
             })}
             buttonProps={{

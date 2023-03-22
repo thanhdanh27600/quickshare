@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
-import { PLATFORM_AUTH } from 'types/constants';
+import { brandUrl, isShortDomain, PLATFORM_AUTH, Window } from 'types/constants';
 import { UAParser } from 'ua-parser-js';
 import { detectReferer, Referer } from 'utils/agent';
 import { getCountryName } from 'utils/country';
@@ -29,6 +29,10 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
   const [history, setHistory] = useState<(UrlShortenerHistory & { urlForwardMeta: UrlForwardMeta[] }) | undefined>(
     undefined,
   );
+
+  if (isShortDomain) {
+    Window()?.location.replace(brandUrl);
+  }
 
   /* now data has only 1 history */
   const { data, isLoading, isSuccess } = useQuery({
