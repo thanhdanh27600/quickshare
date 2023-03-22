@@ -2,7 +2,7 @@ import { Header } from 'components/layouts/Header';
 import { URLShortener } from 'components/screens/URLShortener';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
-import { brandUrl, isProduction, isShortDomain, Window } from 'types/constants';
+import { BASE_URL, brandUrl, isProduction, isShortDomain, Window } from 'types/constants';
 import { LocaleProp } from 'types/locale';
 
 const Home = () => {
@@ -30,12 +30,9 @@ const Home = () => {
         />
         <meta
           property="og:image"
-          content={
-            '/api/og?title=' +
-            encodeURIComponent(
-              'U2FsdGVkX1+IEpdIZm+U48yjdQMVqcCOVBw2TQjQriMnsP0paNBd7TqAWmeqTJScL0trSU9MdKZEysQO5YkJXw==',
-            )
-          }
+          content={`${BASE_URL}/api/og?title=${encodeURIComponent(
+            'U2FsdGVkX1+IEpdIZm+U48yjdQMVqcCOVBw2TQjQriMnsP0paNBd7TqAWmeqTJScL0trSU9MdKZEysQO5YkJXw==',
+          )}`}
         />
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
@@ -47,12 +44,9 @@ const Home = () => {
         />
         <meta
           property="twitter:image"
-          content={
-            '/api/og?title=' +
-            encodeURIComponent(
-              'U2FsdGVkX1+IEpdIZm+U48yjdQMVqcCOVBw2TQjQriMnsP0paNBd7TqAWmeqTJScL0trSU9MdKZEysQO5YkJXw==',
-            )
-          }
+          content={`${BASE_URL}/api/og?title=${encodeURIComponent(
+            'U2FsdGVkX1+IEpdIZm+U48yjdQMVqcCOVBw2TQjQriMnsP0paNBd7TqAWmeqTJScL0trSU9MdKZEysQO5YkJXw==',
+          )}`}
         />
       </Head>
       <Header />
