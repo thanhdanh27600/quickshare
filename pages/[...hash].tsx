@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
-import { isProduction, isShortDomain, PLATFORM_AUTH, Window } from 'types/constants';
+import { BASE_URL_SHORT, isProduction, isShortDomain, PLATFORM_AUTH, Window } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
@@ -27,10 +27,14 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
     if (!Window()) {
       return;
     }
+    if (isProduction && !isShortDomain) {
+      location.replace('/');
+      return;
+    }
     // client-side forward
     forwardUrl.mutate({
       hash: hash,
-      userAgent: navigator.userAgent, // browser useragent
+      userAgent: navigator.userAgent,
       ip,
       fromClientSide: true,
     });
@@ -48,6 +52,9 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
         error,
       });
       if (forwardUrl.isSuccess) location.replace('/');
+      else {
+        console.error('Cannot forward...!');
+      }
       return;
     }
     mixpanel.track(MIXPANEL_EVENT.FORWARD, {
@@ -55,11 +62,7 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
       urlRaw: url,
       hash,
     });
-    if (!isProduction || isShortDomain) {
-      location.replace(`${url.includes('http') ? '' : '//'}${url}`);
-    } else {
-      location.replace('/');
-    }
+    location.replace(`${url.includes('http') ? '' : '//'}${url}`);
   }, [forwardUrl]);
 
   let encodeTitle = '';
@@ -74,13 +77,13 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://facebook.com/clickditop/ " />
-        <meta property="og:title" content={`Shared Link <${hash}>. Click now!`} />
-        <meta property="og:image" content={'/api/og' + `?title=${encodeURIComponent(encodeTitle)}`} />
+        <meta property="og:title" content={`I'm sharing link <${hash}> with you. Let's explore!`} />
+        <meta property="og:image" content={`${BASE_URL_SHORT}/api/og?title=${encodeURIComponent(encodeTitle)}`} />
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://twitter.com/clickditop" />
-        <meta property="twitter:title" content={`Shared Link <${hash}>. Click now!`} />
-        <meta property="twitter:image" content={'/api/og' + `?title=${encodeURIComponent(encodeTitle)}`} />
+        <meta property="twitter:title" content={`I'm sharing link <${hash}> with you. Let's explore!`} />
+        <meta property="twitter:image" content={`${BASE_URL_SHORT}/api/og?title=${encodeURIComponent(encodeTitle)}`} />
       </Head>
       {error ? <p>{t(error as any)}</p> : <></>}
     </>

@@ -7,7 +7,7 @@ export const brandUrlShort = 'https://clid.top';
 
 export const Window = () => ('object' === typeof window && window ? (window as any) : undefined);
 export const isProduction = process.env.NODE_ENV === 'production';
-export const isShortDomain = isProduction && Window()?.location.hostname === 'clid.top';
+export const isShortDomain = Window()?.location.hostname === 'clid.top';
 
 export const baseUrl = (useShortDomain: boolean = false) => {
   if (isProduction) {
