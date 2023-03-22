@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
-import { PLATFORM_AUTH } from 'types/constants';
+import { isProduction, isShortDomain, PLATFORM_AUTH, Window } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
@@ -24,7 +24,7 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
   // const url = forwardUrl.data?.history?.url;
 
   useEffect(() => {
-    if (typeof window === undefined) {
+    if (!Window()) {
       return;
     }
     // client-side forward
@@ -38,7 +38,7 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
 
   const { t } = useTrans();
   useEffect(() => {
-    if (typeof window === undefined) {
+    if (!Window()) {
       return;
     }
     if (loading) return;
@@ -55,7 +55,11 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
       urlRaw: url,
       hash,
     });
-    location.replace(`${url.includes('http') ? '' : '//'}${url}`);
+    if (!isProduction || isShortDomain) {
+      location.replace(`${url.includes('http') ? '' : '//'}${url}`);
+    } else {
+      location.replace('/');
+    }
   }, [forwardUrl]);
 
   let encodeTitle = '';

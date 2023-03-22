@@ -2,10 +2,13 @@ import { Header } from 'components/layouts/Header';
 import { URLShortener } from 'components/screens/URLShortener';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
-import { isProduction } from 'types/constants';
+import { brandUrl, isProduction, isShortDomain, Window } from 'types/constants';
 import { LocaleProp } from 'types/locale';
 
 const Home = () => {
+  if (isShortDomain) {
+    Window()?.location.replace(brandUrl);
+  }
   return (
     <>
       <Head>

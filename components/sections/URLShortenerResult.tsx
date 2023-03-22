@@ -5,7 +5,7 @@ import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
 import Image from 'next/image';
 import { useQuery } from 'react-query';
-import { BASE_URL, PLATFORM_AUTH } from 'types/constants';
+import { BASE_URL, BASE_URL_SHORT, PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { copyToClipBoard } from 'utils/text';
@@ -27,7 +27,7 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
   };
   let token = '';
   if (PLATFORM_AUTH) {
-    token = CryptoJS.AES.encrypt(shortenedUrl.replace(`${BASE_URL}/`, ''), PLATFORM_AUTH).toString();
+    token = CryptoJS.AES.encrypt(shortenedUrl.replace(`${BASE_URL_SHORT}/`, ''), PLATFORM_AUTH).toString();
   } else {
     console.error('Not found PLATFORM_AUTH');
   }
@@ -104,7 +104,7 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
           {query.data?.qr && (
             <div className="mt-1 flex flex-col items-center gap-2">
               <Image src={query.data?.qr} alt="QR-Code" width={84} height={84} />
-              <a href={query.data?.qr} download={`QR-${shortenedUrl.replace(`${BASE_URL}/`, '')}`}>
+              <a href={query.data?.qr} download={`QR-${shortenedUrl.replace(`${BASE_URL_SHORT}/`, '')}`}>
                 <Button
                   text={t('downloadQR')}
                   TextClassname="!text-sm !p-0 text-gray-900"
