@@ -8,7 +8,7 @@ import mixpanel from 'mixpanel-browser';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
-import { baseUrl, PLATFORM_AUTH } from 'types/constants';
+import { BASE_URL_SHORT, PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 import { urlRegex } from 'utils/text';
@@ -44,9 +44,8 @@ export const URLShortenerInput = () => {
       });
     },
     onSuccess: (data, variables, context) => {
-      // console.log('data, variables, context', data, variables, context);
       if (data.hash) {
-        setShortenedUrl(`${baseUrl(true)}/${data.hash}`);
+        setShortenedUrl(`${BASE_URL_SHORT}/${data.hash}`);
         queryClient.invalidateQueries('fetchRecord');
         mixpanel.track(MIXPANEL_EVENT.SHORTEN, {
           status: MIXPANEL_STATUS.OK,
