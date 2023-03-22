@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
-import { BASE_URL_SHORT, isProduction, isShortDomain, PLATFORM_AUTH, Window } from 'types/constants';
+import { BASE_URL_SHORT, brandUrlShort, isProduction, PLATFORM_AUTH, Window } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
@@ -15,29 +15,29 @@ interface Props {
   hash: string;
   error?: unknown;
   ip?: string;
+  redirect?: string;
 }
 
-const ForwardURL = ({ url, hash, ip, error }: Props) => {
+const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
   const forwardUrl = useMutation('forward', getForwardUrl);
   const loading = forwardUrl.isLoading && !forwardUrl.isError;
-  // url fetch in serverside, need to call to record real click
-  // const url = forwardUrl.data?.history?.url;
 
   useEffect(() => {
     if (!Window()) {
       return;
     }
-    if (isProduction && !isShortDomain) {
-      location.replace('/');
+    if (redirect) {
+      location.replace(redirect);
       return;
+    } else {
+      // start client-side forward
+      forwardUrl.mutate({
+        hash: hash,
+        userAgent: navigator.userAgent,
+        ip,
+        fromClientSide: true,
+      });
     }
-    // client-side forward
-    forwardUrl.mutate({
-      hash: hash,
-      userAgent: navigator.userAgent,
-      ip,
-      fromClientSide: true,
-    });
   }, []);
 
   const { t } = useTrans();
@@ -45,14 +45,16 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
     if (!Window()) {
       return;
     }
+    if (forwardUrl.isIdle) return;
     if (loading) return;
     if (!url) {
       mixpanel.track(MIXPANEL_EVENT.FORWARD, {
         status: MIXPANEL_STATUS.FAILED,
         error,
       });
-      if (forwardUrl.isSuccess) location.replace('/');
-      else {
+      if (forwardUrl.isSuccess) {
+        location.replace('/');
+      } else {
         console.error('Cannot forward...!');
       }
       return;
@@ -91,9 +93,15 @@ const ForwardURL = ({ url, hash, ip, error }: Props) => {
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { hash } = context.query;
   try {
+    if (isProduction && context.req.headers['host'] !== brandUrlShort) {
+      return {
+        props: { redirect: '/' },
+      };
+    }
+    const { hash } = context.query;
     const ip = requestIp.getClientIp(context.req);
+    // start server-side forward
     const forwardUrl = await getForwardUrl({
       hash: hash ? (hash[0] as string) : '',
       userAgent: context.req.headers['user-agent'],
