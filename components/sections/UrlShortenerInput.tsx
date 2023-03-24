@@ -23,7 +23,6 @@ export const URLShortenerInput = () => {
   const [copied, setCopied] = useState(false);
   const { t } = useTrans('common');
   const queryClient = useQueryClient();
-
   const {
     register,
     handleSubmit,
@@ -87,7 +86,9 @@ export const URLShortenerInput = () => {
 
   return (
     <div className="solid rounded-lg border p-4 pt-8 shadow-card sm:px-8 sm:py-8 sm:pt-10">
-      <h1 className="mb-4 text-4xl">{t('urlShortener')}</h1>
+      <h1 className="mb-4 text-4xl" data-te-toggle="tooltip" title="adf">
+        {t('urlShortener')}
+      </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         <InputWithButton
           placeholder="https://example.com"
