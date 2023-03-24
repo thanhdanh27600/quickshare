@@ -1,11 +1,20 @@
 export function generateRandomString(numChars: number): string {
-  const possibleChars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const possibleChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let randomString = '';
   for (let i = 0; i < numChars; i++) {
     randomString += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
   }
   return randomString;
 }
+
+// export function testGenerateRandomString(numChars: number): string {
+//   const possibleChars = 'abe';
+//   let randomString = '';
+//   for (let i = 0; i < numChars; i++) {
+//     randomString += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
+//   }
+//   return randomString;
+// }
 
 export const truncate = (text: string, l = 30) => {
   return text.length <= l ? text : text.substring(0, l) + '...';

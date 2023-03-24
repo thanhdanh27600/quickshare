@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
-import { BASE_URL_SHORT, isProduction, PLATFORM_AUTH, Window } from 'types/constants';
+import { BASE_URL_SHORT, brandUrlShortDomain, isProduction, PLATFORM_AUTH, Window } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
@@ -94,7 +94,7 @@ const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
-    if (isProduction && context.req.headers['host'] !== 'clid.top') {
+    if (isProduction && context.req.headers['host'] !== brandUrlShortDomain) {
       return {
         props: { redirect: '/' },
       };

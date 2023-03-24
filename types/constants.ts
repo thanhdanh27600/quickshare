@@ -4,6 +4,7 @@ export const LIMIT_URL_NUMBER = 5;
 export const NUM_CHARACTER_HASH = 5;
 export const brandUrl = 'https://clickdi.top';
 export const brandUrlShort = 'https://clid.top';
+export const brandUrlShortDomain = 'clid.top';
 
 export const Window = () => ('object' === typeof window && window ? (window as any) : undefined);
 export const isProduction = process.env.NODE_ENV === 'production';

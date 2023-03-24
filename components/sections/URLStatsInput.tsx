@@ -72,7 +72,7 @@ export const URLStats = () => {
         <h1 className="mb-4 text-4xl">{t('tracking')}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
           <InputWithButton
-            placeholder={`${BASE_URL_SHORT}/xxxxx`}
+            placeholder={`${BASE_URL_SHORT}/xxx`}
             Prefix={
               hasHistory ? (
                 <Dropdown
@@ -90,9 +90,9 @@ export const URLStats = () => {
             {...register('hash', {
               required: { message: t('errorNoInput'), value: true },
               validate: function (values) {
-                return values.startsWith(BASE_URL_SHORT) && /^.{5}$/.test(values.replace(BASE_URL_SHORT + '/', ''))
+                return values.startsWith(BASE_URL_SHORT) && /^.{3}$/.test(values.replace(BASE_URL_SHORT + '/', ''))
                   ? undefined
-                  : t('errorInvalidForward', { name: `${BASE_URL_SHORT}/xxxxx` });
+                  : t('errorInvalidForward', { name: `${BASE_URL_SHORT}/xxx` });
               },
             })}
             buttonProps={{

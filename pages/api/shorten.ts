@@ -2,7 +2,7 @@
 import CryptoJS from 'crypto-js';
 import prisma from 'db/prisma';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { createClient, RedisClientOptions } from 'redis';
+import { createRedisInstance } from 'redis/client';
 import requestIp from 'request-ip';
 import { Response } from 'types/api';
 import {
@@ -16,20 +16,13 @@ import {
 import HttpStatusCode from 'utils/statusCode';
 import { generateRandomString, isValidUrl } from 'utils/text';
 
-let redisConfig: RedisClientOptions = { password: process.env.REDIS_AUTH };
-if (process.env.NODE_ENV === 'production') {
-  redisConfig = { url: `redis://default:${process.env.REDIS_AUTH}@cache:6379` };
-}
-const client = createClient(redisConfig);
-
-client.on('error', (err) => console.log('Redis Client Error', err));
-
 export type ShortenUrlRs = Response & {
   url?: string;
   hash?: string;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ShortenUrlRs>) {
+  const client = createRedisInstance();
   try {
     require('utils/loggerServer').info(req);
     const ip = requestIp.getClientIp(req);
@@ -61,7 +54,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
     const curLimit = (await client.get(keyLimit)) || '';
     if (parseFloat(curLimit) >= LIMIT_URL_NUMBER) {
-      return res.status(HttpStatusCode.UNAUTHORIZED).send({
+      await client.quit();
+      return res.status(HttpStatusCode.TOO_MANY_REQUESTS).send({
         errorMessage: `Exceeded ${LIMIT_URL_NUMBER} shorten links, please comeback after ${LIMIT_URL_HOUR} hours.`,
         errorCode: 'UNAUTHORIZED',
       });
@@ -73,6 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       let timesLimit = 0;
       // regenerate if collapse
       while (isExist) {
+        console.log('timesLimit', timesLimit);
         if (timesLimit++ > 10 /** U better buy lucky ticket */) {
           throw new Error('Bad URL, please try again');
         }
@@ -112,13 +107,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           urlShortenerRecordId: +clientRedisId!,
         },
       });
-      res.status(HttpStatusCode.OK).json({ url, hash: targetHash });
+      await client.quit();
+      return res.status(HttpStatusCode.OK).json({ url, hash: targetHash });
     }
-    await client.disconnect();
   } catch (error) {
     console.error(error);
-    await client.disconnect();
-    res
+    await client.quit();
+    return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
       .json({ errorMessage: (error as any).message || 'Something when wrong.' });
   }
