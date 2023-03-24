@@ -1,7 +1,7 @@
 export const LIMIT_URL_HOUR = 1;
 export const LIMIT_URL_SECOND = LIMIT_URL_HOUR * 3600;
 export const LIMIT_URL_NUMBER = 5;
-export const NUM_CHARACTER_HASH = 5;
+export const NUM_CHARACTER_HASH = 3;
 export const brandUrl = 'https://clickdi.top';
 export const brandUrlShort = 'https://clid.top';
 export const brandUrlShortDomain = 'clid.top';

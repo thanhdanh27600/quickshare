@@ -4,6 +4,7 @@ import { Button } from 'components/atoms/Button';
 import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
 import Image from 'next/image';
+import { toast } from 'react-hot-toast';
 import { useQuery } from 'react-query';
 import { BASE_URL, BASE_URL_SHORT, PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
@@ -19,6 +20,9 @@ interface Props {
 export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) => {
   const { t, locale } = useTrans('common');
   const onCopy = () => {
+    if (copied) {
+      toast.success('Copied');
+    }
     mixpanel.track(MIXPANEL_EVENT.LINK_COPY, {
       status: MIXPANEL_STATUS.OK,
     });
@@ -40,10 +44,10 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
   return (
     <div className="mt-4">
       <h3>{t('shortenSuccess')}</h3>
-      <div className="mt-2 flex flex-wrap justify-between border-gray-200 bg-gray-100 px-3 py-10">
-        <a href={shortenedUrl} target="_blank">
+      <div className="mt-2 flex justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-10">
+        <a href={shortenedUrl} target="_blank" className="flex-1">
           <p
-            className="text-lg font-bold transition-all hover:text-cyan-500 hover:underline sm:text-3xl"
+            className="text-center text-lg font-bold transition-all hover:text-cyan-500 hover:underline sm:text-2xl md:text-4xl"
             title={shortenedUrl}>
             {shortenedUrl.replace(/https:\/\//i, '')}
           </p>
