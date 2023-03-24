@@ -45,7 +45,7 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
           <p
             className="text-lg font-bold transition-all hover:text-cyan-500 hover:underline sm:text-3xl"
             title={shortenedUrl}>
-            {shortenedUrl}
+            {shortenedUrl.replace(/https:\/\//i, '')}
           </p>
         </a>
         <button
