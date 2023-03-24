@@ -40,6 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             orderBy: {
               createdAt: Prisma.SortOrder.desc,
             },
+            take: 5,
           },
         },
       });

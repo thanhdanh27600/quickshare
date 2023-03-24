@@ -43,11 +43,11 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
 
   return (
     <div className="mt-4">
-      <h3>{t('shortenSuccess')}</h3>
-      <div className="mt-2 flex justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-10">
+      <h2 className="text-xl">🚀 {t('shortenSuccess')}</h2>
+      <div className="mt-2 flex justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-6 sm:py-8 md:py-10">
         <a href={shortenedUrl} target="_blank" className="flex-1">
           <p
-            className="text-center text-lg font-bold transition-all hover:text-cyan-500 hover:underline sm:text-2xl md:text-4xl"
+            className="text-center text-2xl font-bold text-gray-800 transition-all hover:text-cyan-500 hover:underline sm:text-3xl md:text-4xl"
             title={shortenedUrl}>
             {shortenedUrl.replace(/https:\/\//i, '')}
           </p>
