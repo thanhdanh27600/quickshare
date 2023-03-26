@@ -7,11 +7,13 @@ import { LayoutMain } from 'components/layouts/LayoutMain';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import CryptoJS from 'crypto-js';
 import dayjs from 'dayjs';
+import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
 import { brandUrl, isShortDomain, PLATFORM_AUTH, Window } from 'types/constants';
+import { MIXPANEL_EVENT } from 'types/utils';
 import { UAParser } from 'ua-parser-js';
 import { detectReferer, Referer } from 'utils/agent';
 import { getCountryName } from 'utils/country';
@@ -76,6 +78,10 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
       if (!data?.record && !data?.history) router.replace('/');
     }
   }, [isSuccess]);
+
+  useEffect(() => {
+    mixpanel.track(MIXPANEL_EVENT.TRACKING);
+  }, []);
 
   if (isLoading) return null;
 

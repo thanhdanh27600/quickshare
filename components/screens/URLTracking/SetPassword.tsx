@@ -2,10 +2,12 @@ import { getStats } from 'api/requests';
 import { Button } from 'components/atoms/Button';
 import { Input } from 'components/atoms/Input';
 import { Modal } from 'components/atoms/Modal';
+import mixpanel from 'mixpanel-browser';
 import { useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
+import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 import { logger } from 'utils/logger';
 import { emailRegex } from 'utils/text';
@@ -28,11 +30,17 @@ export const SetPassword = ({ hash, setToken }: { hash: string; setToken: (passw
 
   const setPassword = useMutation('setPassword', {
     mutationFn: getStats,
-    onError: (error) => {
+    onError: (error: any) => {
+      try {
+        mixpanel.track(MIXPANEL_EVENT.SET_PASSWORD, { status: MIXPANEL_STATUS.FAILED, error: error.toString() });
+      } catch (error) {
+        logger.error(error);
+      }
       logger.error(error);
       toast.error(t('somethingWrong'));
     },
     onSuccess: async (data) => {
+      mixpanel.track(MIXPANEL_EVENT.SET_PASSWORD, { status: MIXPANEL_STATUS.OK });
       await queryClient.invalidateQueries('forward');
       closeModalRef.current?.click();
       data.history && setToken(data.history[0].password || '');
@@ -46,7 +54,15 @@ export const SetPassword = ({ hash, setToken }: { hash: string; setToken: (passw
 
   return (
     <div>
-      <Button text={t('setPassword')} variant="outlined" data-te-toggle="modal" data-te-target="#setPassword" />
+      <Button
+        text={t('setPassword')}
+        variant="outlined"
+        data-te-toggle="modal"
+        data-te-target="#setPassword"
+        onClick={() => {
+          mixpanel.track(MIXPANEL_EVENT.OPEN_SET_PASSWORD, { status: MIXPANEL_STATUS.OK });
+        }}
+      />
       <button
         ref={closeModalRef}
         type="button"
