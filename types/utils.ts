@@ -12,6 +12,7 @@ export const MIXPANEL_EVENT = {
   INPUT_STATS: 'Input Stats',
   LINK_COPY: 'Link Copy',
   FORWARD: 'Forward',
+  MODAL: 'Modal',
   INPUT_URL: 'Input URL',
   CRASH: 'CRASH',
 } as const;
