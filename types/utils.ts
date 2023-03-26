@@ -12,7 +12,10 @@ export const MIXPANEL_EVENT = {
   INPUT_STATS: 'Input Stats',
   LINK_COPY: 'Link Copy',
   FORWARD: 'Forward',
-  MODAL: 'Modal',
+  DONATE: 'Donate',
+  TRACKING: 'Tracking',
+  OPEN_SET_PASSWORD: 'Open Set Password',
+  SET_PASSWORD: 'Set Password',
   INPUT_URL: 'Input URL',
   CRASH: 'CRASH',
 } as const;

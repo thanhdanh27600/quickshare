@@ -41,5 +41,5 @@
   "inputManyTimes": "Nhập quá nhiều lần. Refresh trang và thử lại.",
   "autoUpdate": "Tự động cập nhật",
   "noData": "Chưa có dữ liệu",
-  "helpShortUrlHead": "- Rút gọn mọi link thành 3 ký tự định danh xxx (clid.top/xxx)\n- Link lưu theo IP, không cần đăng nhập\n- Để theo dõi link, vào \"Xem thêm\"\n- Theo dõi link rút gọn là công khai, trừ khi tạo mật khẩu"
+  "helpShortUrlHead": "- Rút gọn mọi link thành 3 ký tự định danh xxx (clid.top/xxx)\n- Link lưu theo IP, không cần đăng nhập\n- Để theo dõi link, vào \"Xem thêm\"\n- Theo dõi link rút gọn là công khai, trừ khi đặt mật khẩu"
 }
