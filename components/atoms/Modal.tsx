@@ -1,6 +1,8 @@
 import { Button, ButtonProps } from 'components/atoms/Button';
+import mixpanel from 'mixpanel-browser';
 import { useEffect, useRef } from 'react';
 import { TE } from 'types/constants';
+import { MIXPANEL_EVENT } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
 interface Props {
@@ -37,6 +39,10 @@ export const Modal = (props: Props) => {
       }
     } catch (error) {}
   }, [props.open, TEInstance]);
+
+  useEffect(() => {
+    mixpanel.track(MIXPANEL_EVENT.MODAL, { modalId: props.id.toString().toUpperCase() });
+  }, []);
 
   // useEffect(() => {
   //   const element = document.getElementById(props.id);
