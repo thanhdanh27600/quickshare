@@ -17,7 +17,6 @@ export const HelpTooltip = () => {
     }
   }, [show, keep]);
 
-  console.log("t('helpShortUrlHead')", t('helpShortUrlHead'));
   return (
     <div className={'relative'}>
       <div
@@ -33,9 +32,6 @@ export const HelpTooltip = () => {
       </div>
       <Tooltip show={show || keep}>
         <div
-          onMouseEnter={() => {
-            setKeep(true);
-          }}
           onMouseLeave={() => {
             setShow(false);
             setKeep(false);
