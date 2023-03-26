@@ -3,7 +3,7 @@ import { Calendar, Copy, MapPin, RefreshCw, Search, UserCheck, UserX } from '@st
 import { getStats } from 'api/requests';
 import clsx from 'clsx';
 import { Button } from 'components/atoms/Button';
-import { Header } from 'components/layouts/Header';
+import { LayoutMain } from 'components/layouts/LayoutMain';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import CryptoJS from 'crypto-js';
 import dayjs from 'dayjs';
@@ -102,8 +102,7 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
   const hasMore = hasData && (history?.urlForwardMeta?.length || 0) % PAGE_SIZE === 0;
 
   return (
-    <>
-      <Header />
+    <LayoutMain>
       <ValidateToken setToken={onInputPassword} open={needValidate} />
       {!needValidate && (
         <div className="mx-auto max-w-7xl py-5 px-8">
@@ -231,6 +230,6 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
           </div>
         </div>
       )}
-    </>
+    </LayoutMain>
   );
 };

@@ -40,5 +40,6 @@
   "unlock": "Unlock",
   "inputManyTimes": "Too many input. Please refresh page and try again.",
   "autoUpdate": "Auto update",
-  "noData": "No data found"
+  "noData": "No data found",
+  "helpShortUrlHead": "- Shorten link to 3 unique hash xxx (clid.top/xxx)\n- Link saved by IP, no sign in required\n- To tracking link, check \"View more\"\n- Tracking shortened link goes publicly, unless set new password"
 }

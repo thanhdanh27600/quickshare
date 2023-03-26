@@ -1,6 +1,7 @@
 import { createShortenUrlRequest } from 'api/requests';
 import { AxiosError } from 'axios';
 import { InputWithButton } from 'components/atoms/Input';
+import { HelpTooltip } from 'components/gadgets/HelpTooltip';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLShortenerResult } from 'components/sections/URLShortenerResult';
 import CryptoJS from 'crypto-js';
@@ -86,8 +87,9 @@ export const URLShortenerInput = () => {
 
   return (
     <div className="solid rounded-lg border p-4 pt-8 shadow-card sm:px-8 sm:py-8 sm:pt-10">
-      <h1 className="mb-4 text-4xl" data-te-toggle="tooltip" title="adf">
+      <h1 className="mb-4 flex gap-1 text-4xl">
         {t('urlShortener')}
+        <HelpTooltip />
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         <InputWithButton

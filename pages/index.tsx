@@ -1,4 +1,4 @@
-import { Header } from 'components/layouts/Header';
+import { LayoutMain } from 'components/layouts/LayoutMain';
 import { URLShortener } from 'components/screens/URLShortener';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
@@ -49,10 +49,11 @@ const Home = () => {
           )}`}
         />
       </Head>
-      <Header />
-      <div className="container-xl mx-auto p-4 md:mt-8 md:max-w-5xl">
-        <URLShortener />
-      </div>
+      <LayoutMain>
+        <div className="container-xl mx-auto min-h-[80vh] p-4 md:mt-8 md:max-w-5xl">
+          <URLShortener />
+        </div>
+      </LayoutMain>
     </>
   );
 };
