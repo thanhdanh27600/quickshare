@@ -32,7 +32,7 @@ export const InputWithButton = forwardRef((props: InputWithButtonProps, ref: For
       <Button
         {...buttonProps}
         className={clsx(
-          'absolute top-0 right-0 h-full w-24 rounded-none rounded-r-lg text-lg sm:w-32',
+          'absolute top-0 right-0 h-full w-24 !rounded-none !rounded-r-lg text-lg sm:w-32',
           buttonProps.className,
         )}>
         {props.buttonChild}

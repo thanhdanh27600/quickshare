@@ -1,5 +1,5 @@
 import { Input } from 'components/atoms/Input';
-import { Modal } from 'components/gadgets/Modal';
+import { Modal } from 'components/atoms/Modal';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm, UseFormSetError } from 'react-hook-form';

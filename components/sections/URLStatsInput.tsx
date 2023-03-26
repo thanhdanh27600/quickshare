@@ -1,8 +1,8 @@
 import { getStats } from 'api/requests';
 import clsx from 'clsx';
+import { Accordion } from 'components/atoms/Accordion';
+import { Dropdown } from 'components/atoms/Dropdown';
 import { InputWithButton } from 'components/atoms/Input';
-import { Accordion } from 'components/gadgets/Accordion';
-import { Dropdown } from 'components/gadgets/Dropdown';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';

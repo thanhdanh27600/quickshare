@@ -1,7 +1,7 @@
 import { getStats } from 'api/requests';
 import { Button } from 'components/atoms/Button';
 import { Input } from 'components/atoms/Input';
-import { Modal } from 'components/gadgets/Modal';
+import { Modal } from 'components/atoms/Modal';
 import { useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
