@@ -15,7 +15,7 @@ export const Footer = () => {
           data-te-toggle="modal"
           data-te-target="#donate"
           className="cursor-pointer text-xs text-gray-500 decoration-1 hover:text-cyan-600 hover:underline hover:decoration-wavy">
-          🙏 Get me a Pho Bo 🍲
+          Get me a Pho Bo 🍲
         </div>
       </div>
     </footer>

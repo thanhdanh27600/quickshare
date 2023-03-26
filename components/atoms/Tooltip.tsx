@@ -5,5 +5,7 @@ type Props = React.PropsWithChildren & {
 };
 
 export const Tooltip = ({ show, children }: Props) => {
-  return <div className={clsx('absolute z-10 opacity-0 transition-opacity', show && 'opacity-100')}>{children}</div>;
+  return (
+    <div className={clsx('absolute z-0 opacity-0 transition-opacity', show && 'z-20 opacity-100')}>{children}</div>
+  );
 };
