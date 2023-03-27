@@ -116,7 +116,7 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
             <div>
               {data?.record && <span> {`${t('author')}: ${data?.record.ip}`}</span>}
               {history?.url && (
-                <a className="block" href={history.url} target="_blank">
+                <a className="block" href={history.url} target="_blank" title={history.url}>
                   URL:{' '}
                   <span className="text-cyan-500 underline decoration-1 hover:decoration-wavy">
                     {truncate(history.url)}
@@ -137,7 +137,7 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
                 <thead className="bg-gray-50 text-xs uppercase text-gray-700">
                   <tr>
                     <th className="px-6 py-3">
-                      <span className="">{t('countryCode')}</span>
+                      <span className="">{t('country')}</span>
                     </th>
                     <th className="px-6 py-3">
                       <span className="">{t('userAgent')}</span>
@@ -149,7 +149,9 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
                       <span className="">{t('date')}</span>
                     </th>
                     <th className="px-6 py-3 text-right">
-                      <span className="">{t('clickedByHuman')}</span>
+                      <span className="float-right block w-32">
+                        {t('clickedByHuman')} ({(history as any)._count?.urlForwardMeta})
+                      </span>
                     </th>
                   </tr>
                 </thead>

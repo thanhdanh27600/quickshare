@@ -17,10 +17,10 @@
   "viewMore": "View more",
   "errorInvalidForward": "Invalid forwarded link (ex: {{name}})",
   "unknown": "Unknown",
-  "countryCode": "Country Code",
+  "country": "Country",
   "userAgent": "User Agent",
   "date": "Date",
-  "clickedByHuman": "Clicked by Human",
+  "clickedByHuman": "Unique click",
   "copyRawInfo": "copy raw info",
   "trackingLive": "Live link tracking",
   "shareFacebook": "Share Facebook",
@@ -41,5 +41,8 @@
   "inputManyTimes": "Too many input. Please refresh page and try again.",
   "autoUpdate": "Auto update",
   "noData": "No data found",
-  "helpShortUrlHead": "- Shorten link to 3 unique hash xxx (clid.top/xxx)\n- Link saved by IP, no sign in required\n- To tracking link, check \"View more\"\n- Tracking shortened link goes publicly, unless set new password"
+  "helpShortUrlHead": "- Shorten link to 3 unique hash xxx (clid.top/xxx)\n- Link saved by IP, no sign in required\n- To tracking link, check \"View more\"\n- Tracking shortened link goes publicly, unless set new password",
+  "ogBrand": "U2FsdGVkX1+IEpdIZm+U48yjdQMVqcCOVBw2TQjQriMnsP0paNBd7TqAWmeqTJScL0trSU9MdKZEysQO5YkJXw==",
+  "brandTitle": "Clickdi - Quick share shortened link.",
+  "brandDescription": "Clickdi is more than a URL shortener, help you track the usage of the shortened URLs, providing analytics on the number of clicks, geographic location of clicks, and other relevant data. Take action on the effectiveness of shared links and make data-driven decisions to improve their outreach efforts."
 }
