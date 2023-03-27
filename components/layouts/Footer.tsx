@@ -7,8 +7,8 @@ export const Footer = () => {
   return (
     <footer className="gap-4 border-t border-t-gray-200 py-5 px-4">
       <Modal id="donate" title="Donate 🙏" ConfirmButtonProps={{ ['data-te-modal-dismiss']: true } as any}>
-        <div className="flex justify-center gap-4">
-          <Image alt="Qr-Momo" src={'/assets/qr-momo.jpg'} width={160} height={0} />
+        <div className="flex justify-center">
+          <Image alt="Qr-Momo" src={'/assets/qr-momo.jpg'} width={180} height={0} />
           <Image alt="Qr-Bank" src={'/assets/qr-bank.jpg'} width={160} height={0} />
         </div>
       </Modal>

@@ -11,6 +11,7 @@ import { useMutation, useQuery } from 'react-query';
 import { BASE_URL, BASE_URL_SHORT } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
+import { strictRefetch } from 'utils/requests';
 import { FeedbackLink, FeedbackTemplate } from './FeedbackLink';
 
 type URLStatsForm = {
@@ -27,7 +28,12 @@ export const URLStats = () => {
   };
 
   const fetchTracking = useMutation('fetchTracking', getStats);
-  const fetchRecord = useQuery({ queryKey: 'fetchRecord', queryFn: async () => getStats({ hash: '' }) });
+  const fetchRecord = useQuery({
+    queryKey: 'fetchRecord',
+    queryFn: async () => getStats({ hash: '' }),
+    refetchInterval: -1,
+    ...strictRefetch,
+  });
 
   const hasHistory = fetchRecord.data?.history?.length || 0 > 0;
 

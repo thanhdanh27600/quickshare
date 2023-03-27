@@ -18,16 +18,16 @@ export const HelpTooltip = () => {
   }, [show, keep]);
 
   return (
-    <div className={'relative'}>
-      <div
-        className={clsx('relative cursor-pointer text-gray-500 transition-colors', show && 'text-gray-800')}
-        onMouseEnter={() => {
-          setShow(true);
-          setKeep(true);
-        }}
-        onMouseLeave={() => {
-          setKeep(false);
-        }}>
+    <div
+      className={'relative'}
+      onMouseEnter={() => {
+        setShow(true);
+        setKeep(true);
+      }}
+      onMouseLeave={() => {
+        setKeep(false);
+      }}>
+      <div className={clsx('relative cursor-pointer text-gray-500 transition-colors', show && 'text-gray-800')}>
         <HelpCircle className="absolute top-0 w-4" />
       </div>
       <Tooltip show={show || keep}>
@@ -36,8 +36,17 @@ export const HelpTooltip = () => {
             setShow(false);
             setKeep(false);
           }}
-          className="absolute -bottom-0 w-[300px] border border-cyan-300 bg-gray-50 p-4 text-sm max-sm:right-0 max-sm:translate-x-[50%] sm:left-4">
-          <p className="whitespace-pre-line">{t('helpShortUrlHead')}</p>
+          onMouseEnter={() => {
+            if (!show) {
+              setShow(false);
+              setKeep(false);
+            }
+          }}
+          className={clsx(
+            'absolute -bottom-0 -z-[1] w-[300px] border border-cyan-300 bg-gray-50 p-4 text-sm transition-all max-sm:right-0 max-sm:translate-x-[50%] sm:left-4',
+            (show || keep) && 'z-0',
+          )}>
+          <p className="whitespace-pre-line text-gray-700">{t('helpShortUrlHead')}</p>
         </div>
       </Tooltip>
     </div>

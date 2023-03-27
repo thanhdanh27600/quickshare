@@ -17,7 +17,7 @@
   "viewMore": "Xem thêm",
   "errorInvalidForward": "Link rút gọt không hợp lệ (vd: {{name}})",
   "unknown": "Không xác định",
-  "countryCode": "Quốc gia",
+  "country": "Quốc gia",
   "userAgent": "User Agent",
   "date": "Thời gian",
   "clickedByHuman": "Click thật",
@@ -41,5 +41,8 @@
   "inputManyTimes": "Nhập quá nhiều lần. Refresh trang và thử lại.",
   "autoUpdate": "Tự động cập nhật",
   "noData": "Chưa có dữ liệu",
-  "helpShortUrlHead": "- Rút gọn mọi link thành 3 ký tự định danh xxx (clid.top/xxx)\n- Link lưu theo IP, không cần đăng nhập\n- Để theo dõi link, vào \"Xem thêm\"\n- Theo dõi link rút gọn là công khai, trừ khi đặt mật khẩu"
+  "helpShortUrlHead": "- Rút gọn mọi link thành 3 ký tự định danh xxx (clid.top/xxx)\n- Link lưu theo IP, không cần đăng nhập\n- Để theo dõi link, vào \"Xem thêm\"\n- Theo dõi link rút gọn là công khai, trừ khi đặt mật khẩu",
+  "ogBrand": "U2FsdGVkX1/peYMg6O52ZA6SJEW4ehfDrnQIHtZraMP+Dby16K1dgvrghOpE0DRGJLK9GyCc911FkTbB8jlOt6BzKSZY9FJ8npAFD0HnaBU=",
+  "brandTitle": "Clickdi - Rút gọn link nhanh gọn",
+  "brandDescription": "Clickdi rút gọn URL. Clickdi rút gọn link, giúp bạn theo dõi các đường dẫn được rút gọn, số lượng lượt nhấp chuột, vị trí của và các dữ liệu liên quan khác."
 }

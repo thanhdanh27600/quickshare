@@ -58,6 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             },
             ...withQueryCursor(queryCursor),
           },
+          _count: true,
           UrlShortenerRecord: true,
         },
       });
