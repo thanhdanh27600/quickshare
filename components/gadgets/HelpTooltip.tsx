@@ -19,7 +19,7 @@ export const HelpTooltip = () => {
 
   return (
     <div
-      className={'relative'}
+      className={'relative h-8 w-8'}
       onMouseEnter={() => {
         setShow(true);
         setKeep(true);
@@ -42,10 +42,7 @@ export const HelpTooltip = () => {
               setKeep(false);
             }
           }}
-          className={clsx(
-            'absolute -bottom-0 -z-[1] w-[300px] border border-cyan-300 bg-gray-50 p-4 text-sm transition-all max-sm:right-0 max-sm:translate-x-[50%] sm:left-4',
-            (show || keep) && 'z-0',
-          )}>
+          className="absolute bottom-1 w-[300px] border border-cyan-300 bg-gray-50 p-4 text-sm transition-all max-sm:right-0 max-sm:translate-x-[95px] sm:left-5">
           <p className="whitespace-pre-line text-gray-700">{t('helpShortUrlHead')}</p>
         </div>
       </Tooltip>

@@ -10,7 +10,7 @@ const Home = () => {
   }
   return (
     <LayoutMain>
-      <div className="container-xl mx-auto min-h-[80vh] p-4 md:mt-8 md:max-w-5xl">
+      <div className="container-xl mx-auto min-h-[80vh] p-4 max-sm:py-8 md:mt-8 md:max-w-5xl">
         <URLShortener />
       </div>
     </LayoutMain>
