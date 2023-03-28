@@ -14,3 +14,9 @@ API.interceptors.response.use(
     throw new Error(err);
   },
 );
+
+export function withAuth(token?: string) {
+  return {
+    'X-Platform-Auth': token ?? localStorage.getItem('clickdi-tk'),
+  };
+}

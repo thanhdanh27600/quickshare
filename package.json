@@ -16,10 +16,13 @@
     "@prisma/client": "4.9.0",
     "@styled-icons/feather": "^10.47.0",
     "@tailwindcss/line-clamp": "^0.4.2",
+    "@textea/json-viewer": "^2.16.0",
+    "add": "^2.0.6",
     "axios": "^1.2.6",
     "clsx": "^1.2.1",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.7",
+    "fast-memoize": "^2.5.2",
     "geoip-country": "^4.1.43",
     "handlebars": "^4.7.7",
     "i18next": "^22.4.10",
@@ -42,6 +45,7 @@
     "sass": "^1.57.1",
     "styled-components": "^5.3.8",
     "ua-parser-js": "^1.0.34",
+    "yarn": "^1.22.19",
     "zod": "^3.20.6"
   },
   "devDependencies": {

@@ -1,19 +1,14 @@
+import { getStatsToken } from 'api/requests';
 import { Input } from 'components/atoms/Input';
 import { Modal } from 'components/atoms/Modal';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { SubmitHandler, useForm, UseFormSetError } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTrans } from 'utils/i18next';
 
 type ValidatePasswordForm = { password: string };
 
-export const ValidateToken = ({
-  setToken,
-  open,
-}: {
-  setToken: (password: string, setError: UseFormSetError<ValidatePasswordForm>) => void;
-  open: boolean;
-}) => {
+export const ValidateToken = ({ open, hash, refetch }: { hash: string; open?: boolean; refetch: () => void }) => {
   const { t } = useTrans();
   const {
     register,
@@ -24,14 +19,24 @@ export const ValidateToken = ({
   const router = useRouter();
   const [maxTime, setMaxTime] = useState(0);
 
-  const onSubmit: SubmitHandler<ValidatePasswordForm> = (data) => {
+  const onSubmit: SubmitHandler<ValidatePasswordForm> = async (data) => {
     if (maxTime > 5) {
       setError('password', {
         message: t('inputManyTimes'),
       });
       return;
     }
-    setToken(data.password, setError);
+    try {
+      const rs = await getStatsToken(hash, data.password);
+      if (rs.token) {
+        localStorage.setItem('clickdi-tk', rs.token);
+        window.location.reload();
+      }
+    } catch (error) {
+      setError('password', {
+        message: t('errorInvalidInput'),
+      });
+    }
     setMaxTime((_m) => _m + 1);
   };
 

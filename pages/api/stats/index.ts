@@ -1,10 +1,11 @@
 import { Prisma, UrlForwardMeta, UrlShortenerHistory, UrlShortenerRecord } from '@prisma/client';
-import CryptoJS from 'crypto-js';
 import prisma from 'db/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import requestIp from 'request-ip';
 import { Response } from 'types/api';
 import { PLATFORM_AUTH } from 'types/constants';
+import { errorHandler } from 'utils/axios';
+import { decryptS, encryptS } from 'utils/crypto';
 import { parseIntSafe } from 'utils/number';
 import { withQueryCursor } from 'utils/requests';
 import HttpStatusCode from 'utils/statusCode';
@@ -29,10 +30,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const hash = req.query.h as string;
     const email = req.query.e as string;
     const password = req.query.p as string;
+    const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
     const queryCursor = req.query.qc ? parseIntSafe(req.query.qc as string) : undefined;
     let record;
     let history;
     if (!hash) {
+      // get hash of ip
       record = await prisma.urlShortenerRecord.findFirst({
         where: { ip },
         include: {
@@ -46,41 +49,47 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       });
       history = record?.history;
       return res.status(HttpStatusCode.OK).json({ record: record, history });
-    } else {
-      history = await prisma.urlShortenerHistory.findUnique({
-        where: {
-          hash,
-        },
-        include: {
-          urlForwardMeta: {
-            orderBy: {
-              updatedAt: Prisma.SortOrder.desc,
-            },
-            ...withQueryCursor(queryCursor),
-          },
-          _count: true,
-          UrlShortenerRecord: true,
-        },
-      });
-      if (password && history && !history?.password) {
-        if (PLATFORM_AUTH) {
-          const encryptPassword = CryptoJS.AES.encrypt(password, PLATFORM_AUTH).toString();
-          await prisma.urlShortenerHistory.update({
-            where: { hash },
-            data: {
-              password: encryptPassword,
-              email,
-            },
-          });
-          history.password = encryptPassword;
-        }
-      }
-      // hide recovery email
-      if (history?.email) history.email = '';
-      return res
-        .status(HttpStatusCode.OK)
-        .json({ record: history?.UrlShortenerRecord, history: history ? [history] : null });
     }
+    // get stats with hash
+    history = await prisma.urlShortenerHistory.findUnique({
+      where: {
+        hash,
+      },
+      include: {
+        urlForwardMeta: {
+          orderBy: {
+            updatedAt: Prisma.SortOrder.desc,
+          },
+          ...withQueryCursor(queryCursor),
+        },
+        _count: true,
+        UrlShortenerRecord: true,
+      },
+    });
+    if (history && history?.password) {
+      if (!token || decryptS(token) !== history.id.toString()) {
+        return errorHandler(res);
+      }
+    }
+    if (password && history && !history?.password) {
+      // set password
+      if (PLATFORM_AUTH) {
+        const encryptPassword = encryptS(password);
+        await prisma.urlShortenerHistory.update({
+          where: { hash },
+          data: {
+            password: encryptPassword,
+            email,
+          },
+        });
+      }
+    }
+    // hide sensitive data
+    if (history?.email) history.email = '';
+    if (history?.password) history.password = '';
+    return res
+      .status(HttpStatusCode.OK)
+      .json({ record: history?.UrlShortenerRecord, history: history ? [history] : null });
   } catch (error) {
     console.error(error);
     if (error instanceof z.ZodError) {

@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 import { logger } from 'utils/logger';
+import { QueryKey } from 'utils/requests';
 import { emailRegex } from 'utils/text';
 
 type PasswordForm = {
@@ -17,7 +18,7 @@ type PasswordForm = {
   email: string;
 };
 
-export const SetPassword = ({ hash, setToken }: { hash: string; setToken: (password: string) => void }) => {
+export const SetPassword = ({ hash }: { hash: string }) => {
   const { t } = useTrans();
   const queryClient = useQueryClient();
   const {
@@ -28,7 +29,7 @@ export const SetPassword = ({ hash, setToken }: { hash: string; setToken: (passw
 
   const closeModalRef = useRef<HTMLButtonElement>(null);
 
-  const setPassword = useMutation('setPassword', {
+  const setPassword = useMutation(QueryKey.SET_PASSWORD, {
     mutationFn: getStats,
     onError: (error: any) => {
       try {
@@ -41,9 +42,8 @@ export const SetPassword = ({ hash, setToken }: { hash: string; setToken: (passw
     },
     onSuccess: async (data) => {
       mixpanel.track(MIXPANEL_EVENT.SET_PASSWORD, { status: MIXPANEL_STATUS.OK });
-      await queryClient.invalidateQueries('forward');
+      await queryClient.invalidateQueries(QueryKey.STATS);
       closeModalRef.current?.click();
-      data.history && setToken(data.history[0].password || '');
       toast.success(t('updated'));
     },
   });

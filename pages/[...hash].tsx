@@ -1,5 +1,4 @@
 import { getForwardUrl } from 'api/requests';
-import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
@@ -8,7 +7,9 @@ import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
 import { BASE_URL_SHORT, brandUrlShortDomain, isProduction, PLATFORM_AUTH, Window } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
+import { encrypt } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
+import { QueryKey } from 'utils/requests';
 
 interface Props {
   url: string;
@@ -19,7 +20,7 @@ interface Props {
 }
 
 const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
-  const forwardUrl = useMutation('forward', getForwardUrl);
+  const forwardUrl = useMutation(QueryKey.FORWARD, getForwardUrl);
   const loading = forwardUrl.isLoading && !forwardUrl.isError;
 
   useEffect(() => {
@@ -69,7 +70,7 @@ const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
 
   let encodeTitle = '';
   if (PLATFORM_AUTH) {
-    encodeTitle = CryptoJS.AES.encrypt(`Shared Link <${hash}>. Click Now!`, PLATFORM_AUTH).toString();
+    encodeTitle = encrypt(`Shared Link <${hash}>. Click Now!`);
   }
 
   return (
