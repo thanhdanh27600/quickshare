@@ -4,14 +4,15 @@ import { InputWithButton } from 'components/atoms/Input';
 import { HelpTooltip } from 'components/gadgets/HelpTooltip';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLShortenerResult } from 'components/sections/URLShortenerResult';
-import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import { BASE_URL_SHORT, PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
+import { encrypt } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
+import { QueryKey } from 'utils/requests';
 import { urlRegex } from 'utils/text';
 
 type URLShortenerForm = {
@@ -31,7 +32,7 @@ export const URLShortenerInput = () => {
     getValues,
   } = useForm<URLShortenerForm>();
 
-  const createShortenUrl = useMutation('shortenUrl', createShortenUrlRequest, {
+  const createShortenUrl = useMutation(QueryKey.SHORTEN, createShortenUrlRequest, {
     onMutate: (variables) => {
       setLocalError('');
     },
@@ -46,7 +47,7 @@ export const URLShortenerInput = () => {
     onSuccess: (data, variables, context) => {
       if (data.hash) {
         setShortenedUrl(`${BASE_URL_SHORT}/${data.hash}`);
-        queryClient.invalidateQueries('fetchRecord');
+        queryClient.invalidateQueries(QueryKey.RECORD);
         mixpanel.track(MIXPANEL_EVENT.SHORTEN, {
           status: MIXPANEL_STATUS.OK,
           ...data,
@@ -64,7 +65,7 @@ export const URLShortenerInput = () => {
   const onSubmit: SubmitHandler<URLShortenerForm> = (data) => {
     setCopied(false);
     if (PLATFORM_AUTH) {
-      createShortenUrl.mutate(encodeURIComponent(CryptoJS.AES.encrypt(data.url, PLATFORM_AUTH).toString()));
+      createShortenUrl.mutate(encodeURIComponent(encrypt(data.url)));
     } else {
       console.error('Not found PLATFORM_AUTH');
     }

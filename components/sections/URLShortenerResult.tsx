@@ -1,14 +1,15 @@
 import { getQr } from 'api/requests';
 import clsx from 'clsx';
 import { Button } from 'components/atoms/Button';
-import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
 import Image from 'next/image';
 import { toast } from 'react-hot-toast';
 import { useQuery } from 'react-query';
 import { BASE_URL, BASE_URL_SHORT, PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
+import { encrypt } from 'utils/crypto';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
+import { QueryKey, strictRefetch } from 'utils/requests';
 import { copyToClipBoard } from 'utils/text';
 
 interface Props {
@@ -31,14 +32,15 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
   };
   let token = '';
   if (PLATFORM_AUTH) {
-    token = CryptoJS.AES.encrypt(shortenedUrl.replace(`${BASE_URL_SHORT}/`, ''), PLATFORM_AUTH).toString();
+    token = encrypt(shortenedUrl.replace(`${BASE_URL_SHORT}/`, ''));
   } else {
     console.error('Not found PLATFORM_AUTH');
   }
 
   const query = useQuery({
-    queryKey: ['qr'],
+    queryKey: QueryKey.QR,
     queryFn: async () => getQr(shortenedUrl, token),
+    ...strictRefetch,
   });
 
   return (

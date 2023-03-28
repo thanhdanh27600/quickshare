@@ -1,7 +1,7 @@
-import CryptoJS from 'crypto-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Response } from 'types/api';
-import { PLATFORM_AUTH } from 'types/constants';
+import { errorHandler } from 'utils/axios';
+import { decrypt } from 'utils/crypto';
 import HttpStatusCode from 'utils/statusCode';
 import { validateQrSchema } from 'utils/validateMiddleware';
 import { z } from 'zod';
@@ -21,14 +21,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     });
     const text = req.query.text as string;
     const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
-    let decrypt = '';
-    // Decrypt
-    if (PLATFORM_AUTH && token) {
-      const bytes = CryptoJS.AES.decrypt(token, PLATFORM_AUTH);
-      decrypt = bytes.toString(CryptoJS.enc.Utf8);
-    }
-    if (!decrypt) {
-      return res.status(HttpStatusCode.UNAUTHORIZED).json({ errorMessage: 'UNAUTHORIZED' });
+    const decrypted = decrypt(token);
+    if (!decrypted) {
+      return errorHandler(res);
     }
     const QRCode = require('qrcode');
     let qr = '';

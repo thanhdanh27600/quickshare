@@ -4,14 +4,13 @@ import { Accordion } from 'components/atoms/Accordion';
 import { Dropdown } from 'components/atoms/Dropdown';
 import { InputWithButton } from 'components/atoms/Input';
 import mixpanel from 'mixpanel-browser';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
 import { BASE_URL, BASE_URL_SHORT } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
-import { strictRefetch } from 'utils/requests';
+import { QueryKey, strictRefetch } from 'utils/requests';
 import { FeedbackLink, FeedbackTemplate } from './FeedbackLink';
 
 type URLStatsForm = {
@@ -20,16 +19,14 @@ type URLStatsForm = {
 
 export const URLStats = () => {
   const { t, locale } = useTrans();
-  const router = useRouter();
-  //  const openStatsRef = useRef<HTMLAnchorElement>(null);
 
   const onSubmit: SubmitHandler<URLStatsForm> = (data) => {
     fetchTracking.mutate({ hash: data.hash.replace(BASE_URL_SHORT + '/', '') });
   };
 
-  const fetchTracking = useMutation('fetchTracking', getStats);
+  const fetchTracking = useMutation(QueryKey.STATS, getStats);
   const fetchRecord = useQuery({
-    queryKey: 'fetchRecord',
+    queryKey: QueryKey.RECORD,
     queryFn: async () => getStats({ hash: '' }),
     refetchInterval: -1,
     ...strictRefetch,
@@ -51,15 +48,15 @@ export const URLStats = () => {
   const error = errors.hash?.message; /** form error */
 
   useEffect(() => {
-    if (!fetchTracking.isSuccess) return;
-    if (!fetchTracking.data?.history) {
+    if (!fetchTracking.isSuccess && (fetchTracking.error as any)?.message !== 'UNAUTHORIZED') return;
+    if (!fetchTracking.data?.history && (fetchTracking.error as any)?.message !== 'UNAUTHORIZED') {
       setError('hash', {
         message: t('errorNoTracking'),
       });
     } else {
       location.href = linkWithLanguage(`${BASE_URL}/v/${getValues('hash').replace(BASE_URL_SHORT + '/', '')}`, locale);
     }
-  }, [fetchTracking.isSuccess]);
+  }, [fetchTracking.isSuccess, fetchTracking.isError]);
 
   const title = [
     <span className="relative" key="accordion-viewmore">

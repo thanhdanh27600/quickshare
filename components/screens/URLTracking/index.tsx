@@ -1,24 +1,25 @@
 import { UrlForwardMeta, UrlShortenerHistory } from '@prisma/client';
-import { Calendar, Copy, MapPin, RefreshCw, Search, UserCheck, UserX } from '@styled-icons/feather';
-import { getStats } from 'api/requests';
+import { Calendar, Copy, Globe, MapPin, RefreshCw, Search, UserCheck, UserX } from '@styled-icons/feather';
+import { JsonViewer } from '@textea/json-viewer';
+import { getStats, parseUA } from 'api/requests';
 import clsx from 'clsx';
 import { Button } from 'components/atoms/Button';
+import { Modal } from 'components/atoms/Modal';
 import { LayoutMain } from 'components/layouts/LayoutMain';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
-import CryptoJS from 'crypto-js';
 import dayjs from 'dayjs';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
-import { brandUrl, isShortDomain, PLATFORM_AUTH, Window } from 'types/constants';
+import { brandUrl, isShortDomain, Window } from 'types/constants';
 import { MIXPANEL_EVENT } from 'types/utils';
 import { UAParser } from 'ua-parser-js';
 import { detectReferer, Referer } from 'utils/agent';
 import { getCountryName } from 'utils/country';
 import { useTrans } from 'utils/i18next';
-import { PAGE_SIZE, strictRefetch } from 'utils/requests';
+import { PAGE_SIZE, QueryKey, strictRefetch } from 'utils/requests';
 import { capitalize, copyToClipBoard, truncate } from 'utils/text';
 import { SetPassword } from './SetPassword';
 import { ValidateToken } from './ValidateToken';
@@ -26,7 +27,9 @@ import { ValidateToken } from './ValidateToken';
 export const URLTracking = ({ /**  record, history, SSR then Client fetch */ hash }: { hash: string }) => {
   const { t } = useTrans();
   const router = useRouter();
-  const [open, setOpen] = useState(true);
+  const [token, setToken] = useState('');
+  const [needValidate, setNeedValidate] = useState<boolean>();
+  const [parsedUA, setParsedUA] = useState();
   const [qc, setQc] = useState<number | undefined>(undefined);
   const [history, setHistory] = useState<(UrlShortenerHistory & { urlForwardMeta: UrlForwardMeta[] }) | undefined>(
     undefined,
@@ -36,11 +39,13 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
     Window()?.location.replace(brandUrl);
   }
 
+  const getStatsQuery = useCallback(async () => getStats({ hash, token }), [hash, token]);
   /* now data has only 1 history */
-  const { data, isLoading, isSuccess } = useQuery({
-    queryKey: ['forward'],
-    queryFn: async () => getStats({ hash }),
-    refetchInterval: !!qc ? false : 2000,
+  const { data, isLoading, isSuccess, refetch } = useQuery({
+    queryKey: QueryKey.STATS,
+    queryFn: getStatsQuery,
+    refetchInterval: !!qc || needValidate ? false : 2000,
+    retry: false,
     ...strictRefetch,
     onSuccess(data) {
       setHistory(
@@ -49,9 +54,16 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
           : undefined,
       );
     },
+    onError(err: any) {
+      if (err.message === 'UNAUTHORIZED') {
+        if (!needValidate) {
+          setNeedValidate(true);
+        }
+      }
+    },
   });
 
-  const forwardMore = useMutation('forwardMore', {
+  const statsMore = useMutation(QueryKey.STATS_MORE, {
     mutationFn: getStats,
     onSuccess(data) {
       setHistory((h) => {
@@ -65,10 +77,17 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
     },
   });
 
+  const getMoreUA = useMutation(QueryKey.PARSE_UA, {
+    mutationFn: parseUA,
+    onSuccess(data) {
+      setParsedUA(data);
+    },
+  });
+
   const onLoadMore = () => {
     setQc((_) => {
       const _qc = history?.urlForwardMeta?.at(-1)?.id;
-      if (!forwardMore.isLoading) forwardMore.mutate({ hash, queryCursor: _qc });
+      if (!statsMore.isLoading) statsMore.mutate({ hash, queryCursor: _qc });
       return _qc;
     });
   };
@@ -85,31 +104,20 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
 
   if (isLoading) return null;
 
-  const password = (data?.history || [])[0]?.password;
-
-  const needValidate = !!password && open;
-
-  const onInputPassword = (_password: string, setError?: any) => {
-    let decryptPassword = '';
-    if (PLATFORM_AUTH && password) {
-      const bytes = CryptoJS.AES.decrypt(password, PLATFORM_AUTH);
-      decryptPassword = bytes.toString(CryptoJS.enc.Utf8);
-    }
-    if (decryptPassword !== _password && setError) {
-      setError('password', {
-        message: t('errorInvalidInput'),
-      });
-    } else {
-      setOpen(false);
-    }
-  };
-
   const hasData = !!history?.urlForwardMeta?.length;
+  const hasPassword = history?.password !== null;
   const hasMore = hasData && (history?.urlForwardMeta?.length || 0) % PAGE_SIZE === 0;
 
   return (
     <LayoutMain>
-      <ValidateToken setToken={onInputPassword} open={needValidate} />
+      <ValidateToken open={needValidate} hash={hash} refetch={refetch} />
+      <Modal
+        id="parsedUA"
+        title={'User Agent'}
+        onDismiss={() => setParsedUA(undefined)}
+        ConfirmButtonProps={{ ['data-te-modal-dismiss']: true } as any}>
+        <div className="contents w-full p-2">{parsedUA && !getMoreUA.isLoading && <JsonViewer value={parsedUA} />}</div>
+      </Modal>
       {!needValidate && (
         <div className="mx-auto max-w-7xl py-5 px-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -124,7 +132,7 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
                 </a>
               )}
             </div>
-            {!password && <SetPassword hash={hash} setToken={onInputPassword} />}
+            {!hasPassword && <SetPassword hash={hash} />}
           </div>
           <div className="mt-2 text-sm text-gray-500">
             <span className={clsx(!!qc ? 'text-red-500' : 'text-green-500')}>•</span> <span>{t('autoUpdate')}</span>
@@ -150,7 +158,7 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
                     </th>
                     <th className="px-6 py-3 text-right">
                       <span className="float-right block w-32">
-                        {t('clickedByHuman')} ({(history as any)._count?.urlForwardMeta})
+                        {t('clickedByHuman')} ({(history as any)?._count?.urlForwardMeta})
                       </span>
                     </th>
                   </tr>
@@ -174,6 +182,18 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
                               </p>
                               <p>OS: {UA?.getOS().name || t('unknown')}</p>
                               <p>Browser: {UA?.getBrowser().name || t('unknown')}</p>
+                              {m.userAgent && (
+                                <p
+                                  data-te-toggle="modal"
+                                  data-te-target="#parsedUA"
+                                  className="cursor-pointer text-gray-500 underline hover:text-cyan-500"
+                                  onClick={() => {
+                                    getMoreUA.mutate(m.userAgent!);
+                                  }}>
+                                  {t('advancedView')} <Globe className="mb-2 w-3" />
+                                </p>
+                              )}
+
                               <p
                                 className="cursor-pointer text-gray-500 hover:text-cyan-500 hover:underline"
                                 onClick={() => {
@@ -216,7 +236,7 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
                     <tr>
                       <td colSpan={5}>
                         <div className="flex justify-center py-4">
-                          <Button text="Load more" onClick={onLoadMore} loading={forwardMore.isLoading} />
+                          <Button text="Load more" onClick={onLoadMore} loading={statsMore.isLoading} />
                         </div>
                       </td>
                     </tr>

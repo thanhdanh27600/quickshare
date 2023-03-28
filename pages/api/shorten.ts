@@ -1,18 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import CryptoJS from 'crypto-js';
 import prisma from 'db/prisma';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createRedisInstance } from 'redis/client';
 import requestIp from 'request-ip';
 import { Response } from 'types/api';
-import {
-  LIMIT_URL_HOUR,
-  LIMIT_URL_NUMBER,
-  LIMIT_URL_SECOND,
-  NUM_CHARACTER_HASH,
-  PLATFORM_AUTH,
-  REDIS_KEY,
-} from 'types/constants';
+import { LIMIT_URL_HOUR, LIMIT_URL_NUMBER, LIMIT_URL_SECOND, NUM_CHARACTER_HASH, REDIS_KEY } from 'types/constants';
+import { decrypt } from 'utils/crypto';
 import HttpStatusCode from 'utils/statusCode';
 import { generateRandomString, isValidUrl } from 'utils/text';
 
@@ -34,10 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         errorCode: 'BAD_REQUEST',
       });
     }
-    if (PLATFORM_AUTH) {
-      const bytes = CryptoJS.AES.decrypt(decodeURI(url), PLATFORM_AUTH);
-      url = bytes.toString(CryptoJS.enc.Utf8);
-    }
+    url = decrypt(decodeURI(url));
     if (!url || !isValidUrl(url)) {
       return res.status(HttpStatusCode.BAD_REQUEST).send({
         errorMessage: 'Wrong URL format, please try again',

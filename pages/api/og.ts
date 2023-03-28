@@ -1,8 +1,8 @@
-import CryptoJS from 'crypto-js';
 import Handlebars from 'handlebars';
 import { NextApiRequest, NextApiResponse } from 'next';
 import puppeteer from 'puppeteer';
-import { isProduction, PLATFORM_AUTH } from 'types/constants';
+import { isProduction } from 'types/constants';
+import { decrypt } from 'utils/crypto';
 import HttpStatusCode from 'utils/statusCode';
 import { validateOgSchema } from 'utils/validateMiddleware';
 import { z } from 'zod';
@@ -132,12 +132,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     if (req.method !== 'GET') {
       return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
     }
-    let title = '';
-    if (PLATFORM_AUTH) {
-      const bytes = CryptoJS.AES.decrypt(decodeURIComponent(req.query.title as string), PLATFORM_AUTH);
-      title = bytes.toString(CryptoJS.enc.Utf8);
-    }
-    console.log('title', title);
+    const title = decrypt(decodeURIComponent(req.query.title as string));
     await validateOgSchema.parseAsync({
       query: { title: !!title ? title : undefined },
     });

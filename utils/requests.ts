@@ -13,3 +13,14 @@ export const strictRefetch = {
   refetchOnReconnect: false,
   refetchIntervalInBackground: false,
 };
+
+export const QueryKey = {
+  FORWARD: 'FORWARD',
+  SET_PASSWORD: 'SET_PASSWORD',
+  STATS: 'STATS',
+  STATS_MORE: 'STATS_MORE',
+  RECORD: 'RECORD',
+  SHORTEN: 'SHORTEN',
+  QR: 'QR',
+  PARSE_UA: 'PARSE_UA',
+};

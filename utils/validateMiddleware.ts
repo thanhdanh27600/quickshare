@@ -24,6 +24,8 @@ export const validateStatsSchema = z.object({
   }),
 });
 
+export const validateStatsTokenSchema = z.object({ h: z.string(), p: z.string() });
+
 export const validateQrSchema = z.object({
   query: z.object({
     text: z
