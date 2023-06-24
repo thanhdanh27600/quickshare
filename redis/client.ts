@@ -18,3 +18,5 @@ export function createRedisInstance() {
     throw new Error(`Could not create Redis instance`);
   }
 }
+
+export const redis = createRedisInstance();

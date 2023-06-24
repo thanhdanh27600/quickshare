@@ -1,13 +1,18 @@
 import CryptoJS from 'crypto-js';
 import { PLATFORM_AUTH, SERVER_AUTH } from 'types/constants';
-
+import { logger } from './logger';
 export const decrypt = (token: string) => {
-  let decrypted = '';
-  if (PLATFORM_AUTH) {
-    const bytes = CryptoJS.AES.decrypt(token, PLATFORM_AUTH);
-    decrypted = bytes.toString(CryptoJS.enc.Utf8).split('###')[0];
+  try {
+    let decrypted = '';
+    if (PLATFORM_AUTH) {
+      const bytes = CryptoJS.AES.decrypt(token, PLATFORM_AUTH);
+      decrypted = bytes.toString(CryptoJS.enc.Utf8).split('###')[0];
+    }
+    return decrypted;
+  } catch (error) {
+    logger.error(error);
+    return '';
   }
-  return decrypted;
 };
 
 export const encrypt = (word: string) => {
@@ -19,12 +24,17 @@ export const encrypt = (word: string) => {
 };
 
 export const decryptS = (token: string) => {
-  let decrypted = '';
-  if (SERVER_AUTH) {
-    const bytes = CryptoJS.AES.decrypt(token, SERVER_AUTH);
-    decrypted = bytes.toString(CryptoJS.enc.Utf8).split('###')[0];
+  try {
+    let decrypted = '';
+    if (SERVER_AUTH) {
+      const bytes = CryptoJS.AES.decrypt(token, SERVER_AUTH);
+      decrypted = bytes.toString(CryptoJS.enc.Utf8).split('###')[0];
+    }
+    return decrypted;
+  } catch (error) {
+    logger.error(error);
+    return '';
   }
-  return decrypted;
 };
 
 export const encryptS = (word: string) => {
