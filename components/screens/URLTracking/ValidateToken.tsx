@@ -1,6 +1,7 @@
 import { getStatsToken } from 'api/requests';
 import { Input } from 'components/atoms/Input';
 import { Modal } from 'components/atoms/Modal';
+import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -59,7 +60,7 @@ export const ValidateToken = ({ open, hash, refetch }: { hash: string; open?: bo
           },
         }}
         blockDismiss>
-        <div className="py-2">
+        <div className="pt-2">
           <label className="text-gray-700">{t('requiredPasswordLabel')}</label>
           <Input
             className="mt-2 h-12"
@@ -68,6 +69,9 @@ export const ValidateToken = ({ open, hash, refetch }: { hash: string; open?: bo
             })}
           />
           <p className="mt-2 text-red-400">{errors.password?.message}</p>
+        </div>
+        <div className="pt-2">
+          <FeedbackLink template={FeedbackTemplate.FORGOT_PASSWORD} displayText={t('forgotPassword')} />
         </div>
       </Modal>
     </div>

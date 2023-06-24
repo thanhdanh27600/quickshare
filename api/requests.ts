@@ -1,15 +1,15 @@
 import memoize from 'fast-memoize';
-import { ForwardRs } from 'pages/api/forward';
-import { QR } from 'pages/api/qr';
-import { ShortenUrlRs } from 'pages/api/shorten';
-import { Stats } from 'pages/api/stats/index';
 import { stringify } from 'querystring';
+import { Forward } from 'types/forward';
+import { QR } from 'types/qr';
+import { ShortenUrl } from 'types/shorten';
+import { Stats } from 'types/stats';
 import { API, withAuth } from './axios';
 
 export const createShortenUrlRequest = async (url: string) => {
   const rs = await API.get(`/api/shorten?url=${url}`);
   const data = rs.data;
-  return data as ShortenUrlRs;
+  return data as ShortenUrl;
 };
 
 export const getForwardUrl = async ({
@@ -25,7 +25,7 @@ export const getForwardUrl = async ({
 }) => {
   const rs = await API.post(`/api/forward`, { hash, userAgent, ip, fromClientSide });
   const data = rs.data;
-  return data as ForwardRs;
+  return data as Forward;
 };
 
 export const getStats = async ({

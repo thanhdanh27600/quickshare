@@ -62,7 +62,7 @@ export const URLStats = () => {
     <span className="relative" key="accordion-viewmore">
       {t('viewMore')}
       {hasHistory && (
-        <span className="absolute bottom-2 -right-6 flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-sm">
+        <span className="gradient- absolute bottom-2 -right-6 flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-sm">
           {fetchRecord.data?.history?.length}
         </span>
       )}
@@ -102,6 +102,7 @@ export const URLStats = () => {
               text: t('continue'),
               variant: 'filled',
               type: 'submit',
+              className: 'bg-gray-500 bg-none',
               TextClassname: 'text-sm sm:text-xl',
             }}
             className={clsx(hasHistory ? 'pl-16' : 'pl-4')}

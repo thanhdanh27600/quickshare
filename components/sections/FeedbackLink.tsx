@@ -1,6 +1,6 @@
 import { useTrans } from 'utils/i18next';
 
-export const FeedbackLink = ({ template }: { template: FeedbackTemplate }) => {
+export const FeedbackLink = ({ template, displayText }: { template: FeedbackTemplate; displayText?: string }) => {
   const { t } = useTrans('common');
   const supportUrl = useFeedbackTemplate(template);
 
@@ -10,7 +10,7 @@ export const FeedbackLink = ({ template }: { template: FeedbackTemplate }) => {
         href={supportUrl}
         target="_blank"
         className="cursor-pointer underline decoration-1 transition-all hover:text-cyan-500 hover:decoration-wavy">
-        {t('giveFeedback')}
+        {displayText || t('giveFeedback')}
       </a>
     </div>
   );
@@ -19,6 +19,7 @@ export const FeedbackLink = ({ template }: { template: FeedbackTemplate }) => {
 export enum FeedbackTemplate {
   URL_SHORT = 'URL_SHORT',
   URL_TRACKING = 'URL_TRACKING',
+  FORGOT_PASSWORD = 'FORGOT_PASSWORD',
 }
 
 const useFeedbackTemplate = (template: FeedbackTemplate) => {
@@ -34,6 +35,11 @@ const useFeedbackTemplate = (template: FeedbackTemplate) => {
       supportUrl = `mailto:thanhdanh27600@gmail.com?subject=${encodeURIComponent(
         t('feedbackShortSubject'),
       )}&body=${encodeURIComponent(t('feedbackBody'))}`;
+      break;
+    case FeedbackTemplate.FORGOT_PASSWORD:
+      supportUrl = `mailto:thanhdanh27600@gmail.com?subject=${encodeURIComponent(
+        t('feedbackForgotSubject'),
+      )}&body=${encodeURIComponent(t('feedbackForgotBody'))}`;
       break;
     default:
       break;

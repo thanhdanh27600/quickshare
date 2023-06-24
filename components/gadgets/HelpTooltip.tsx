@@ -28,7 +28,7 @@ export const HelpTooltip = () => {
         setKeep(false);
       }}>
       <div className={clsx('relative cursor-pointer text-gray-500 transition-colors', show && 'text-gray-800')}>
-        <HelpCircle className="absolute top-0 w-4" />
+        <HelpCircle className="absolute left-1 top-0 w-6" />
       </div>
       <Tooltip show={show || keep}>
         <div
