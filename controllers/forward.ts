@@ -9,7 +9,6 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse<Forward>
   try {
     require('utils/loggerServer').info(req);
     if (req.method !== 'POST') {
-      await prisma.$disconnect();
       return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
     }
     const hash = req.body.hash as string;
@@ -17,7 +16,6 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse<Forward>
     const ip = req.body.ip as string;
     const fromClientSide = req.body.fromClientSide as string;
     if (!hash) {
-      await prisma.$disconnect();
       return res.status(HttpStatusCode.BAD_REQUEST).send({
         errorMessage: 'You have submitted wrong data, please try again',
         errorCode: 'BAD_REQUEST',

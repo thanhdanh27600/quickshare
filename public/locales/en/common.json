@@ -35,7 +35,7 @@
   "setPassword": "Set password",
   "minCharacter": "Minimum {{n}} characters",
   "requiredPasswordLabel": "Password*",
-  "emailRecoverLabel": "Email (for password recovery)",
+  "emailRecoverLabel": "Email (for password recovery)*",
   "dismiss": "Dismiss",
   "confirm": "Confirm",
   "updated": "Updated",

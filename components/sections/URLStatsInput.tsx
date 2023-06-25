@@ -7,7 +7,7 @@ import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
-import { BASE_URL, BASE_URL_SHORT } from 'types/constants';
+import { BASE_URL, BASE_URL_SHORT, LIMIT_RECENT_HISTORY } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { QueryKey, strictRefetch } from 'utils/requests';
@@ -31,8 +31,8 @@ export const URLStats = () => {
     refetchInterval: -1,
     ...strictRefetch,
   });
-
-  const hasHistory = fetchRecord.data?.history?.length || 0 > 0;
+  const recentHistories = fetchRecord.data?.history;
+  const hasHistory = recentHistories?.length || 0 > 0;
 
   const {
     register,
@@ -62,8 +62,9 @@ export const URLStats = () => {
     <span className="relative" key="accordion-viewmore">
       {t('viewMore')}
       {hasHistory && (
-        <span className="gradient- absolute bottom-2 -right-6 flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-sm">
-          {fetchRecord.data?.history?.length}
+        <span className="absolute bottom-2 -right-7 flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-sm">
+          {recentHistories?.length}
+          {Number(recentHistories?.length) >= LIMIT_RECENT_HISTORY && '+'}
         </span>
       )}
     </span>,

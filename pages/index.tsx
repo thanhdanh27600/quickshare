@@ -1,12 +1,12 @@
 import { LayoutMain } from 'components/layouts/LayoutMain';
 import { URLShortener } from 'components/screens/URLShortener';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { brandUrl, isShortDomain, Window } from 'types/constants';
+import { isShortDomain } from 'types/constants';
 import { LocaleProp } from 'types/locale';
 
 const Home = () => {
   if (isShortDomain) {
-    Window()?.location.replace(brandUrl);
+    return null;
   }
   return (
     <LayoutMain>

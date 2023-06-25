@@ -35,7 +35,7 @@
   "setPassword": "Đặt mật khẩu",
   "minCharacter": "Ít nhất {{n}} ký tự",
   "requiredPasswordLabel": "Mật khẩu*",
-  "emailRecoverLabel": "Email (để lấy lại mật khẩu)",
+  "emailRecoverLabel": "Email (để lấy lại mật khẩu)*",
   "dismiss": "Hủy",
   "confirm": "Xác nhận",
   "updated": "Đã cập nhật",

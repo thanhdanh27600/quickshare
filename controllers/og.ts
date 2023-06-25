@@ -201,7 +201,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse<any>) =>
   } catch (error) {
     console.error(error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json(error.issues);
+      return res.status(HttpStatusCode.BAD_REQUEST).json(error.issues);
     }
     res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)

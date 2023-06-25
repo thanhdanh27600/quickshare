@@ -95,6 +95,7 @@ export const SetPassword = ({ hash }: { hash: string }) => {
           <Input
             className="mt-2 h-12"
             {...register('email', {
+              required: { message: t('errorNoInput'), value: true },
               pattern: {
                 value: emailRegex,
                 message: t('errorInvalidEmail'),
