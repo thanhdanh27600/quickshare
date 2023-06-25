@@ -1,6 +1,17 @@
 import { isProduction } from 'types/constants';
 import { z } from 'zod';
 
+export const validateShortenSchema = z.object({
+  query: z.object({
+    ip: z.string({
+      required_error: 'IP is required',
+    }),
+    url: z.string({
+      required_error: 'Url is required',
+    }),
+  }),
+});
+
 export const validateOgSchema = z.object({
   query: z.object({
     title: z.string({
@@ -30,7 +41,7 @@ export const validateQrSchema = z.object({
   query: z.object({
     text: z
       .string({
-        required_error: 'text is required',
+        required_error: 'Text is required',
       })
       .min(5)
       .max(100),

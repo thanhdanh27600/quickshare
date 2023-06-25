@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import prisma from 'db/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import requestIp from 'request-ip';
-import { PLATFORM_AUTH } from 'types/constants';
+import { LIMIT_RECENT_HISTORY, PLATFORM_AUTH } from 'types/constants';
 import { Stats } from 'types/stats';
 import { errorHandler } from 'utils/axios';
 import { decryptS, encryptS } from 'utils/crypto';
@@ -30,7 +30,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse<Stats>) 
     let record;
     let history;
     if (!hash) {
-      // get hash of ip
+      // get recent with ip
       record = await prisma.urlShortenerRecord.findFirst({
         where: { ip },
         include: {
@@ -38,7 +38,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse<Stats>) 
             orderBy: {
               createdAt: Prisma.SortOrder.desc,
             },
-            take: 5,
+            take: LIMIT_RECENT_HISTORY,
           },
         },
       });
