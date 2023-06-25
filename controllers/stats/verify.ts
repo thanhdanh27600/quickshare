@@ -1,11 +1,11 @@
-import prisma from 'db/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Stats } from 'types/stats';
-import { errorHandler } from 'utils/axios';
-import { decryptS, encryptS } from 'utils/crypto';
-import HttpStatusCode from 'utils/statusCode';
-import { validateStatsTokenSchema } from 'utils/validateMiddleware';
 import { z } from 'zod';
+import prisma from '../../db/prisma';
+import { Stats } from '../../types/stats';
+import { errorHandler } from '../../utils/axios';
+import { decryptS, encryptS } from '../../utils/crypto';
+import HttpStatusCode from '../../utils/statusCode';
+import { validateStatsTokenSchema } from '../../utils/validateMiddleware';
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse<Stats>) => {
   try {

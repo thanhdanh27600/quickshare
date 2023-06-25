@@ -1,6 +1,6 @@
 export const LIMIT_URL_HOUR = 1;
 export const LIMIT_URL_SECOND = LIMIT_URL_HOUR * 3600;
-export const LIMIT_URL_NUMBER = 5;
+export const LIMIT_URL_REQUEST = 5;
 export const LIMIT_RECENT_HISTORY = 5;
 export const NUM_CHARACTER_HASH = 3;
 export const brandUrl = 'https://clickdi.top';

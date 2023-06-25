@@ -1,5 +1,5 @@
 import pino from 'pino';
-import { isProduction } from 'types/constants';
+import { isProduction } from '../types/constants';
 
 const fileTransport = pino.transport({
   target: 'pino/file',

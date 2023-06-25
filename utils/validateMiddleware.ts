@@ -1,5 +1,5 @@
-import { isProduction } from 'types/constants';
 import { z } from 'zod';
+import { isProduction } from '../types/constants';
 
 export const validateShortenSchema = z.object({
   query: z.object({

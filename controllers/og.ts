@@ -1,11 +1,11 @@
 import Handlebars from 'handlebars';
 import { NextApiRequest, NextApiResponse } from 'next';
 import puppeteer from 'puppeteer';
-import { isProduction } from 'types/constants';
-import { decrypt } from 'utils/crypto';
-import HttpStatusCode from 'utils/statusCode';
-import { validateOgSchema } from 'utils/validateMiddleware';
 import { z } from 'zod';
+import { isProduction } from '../types/constants';
+import { decrypt } from '../utils/crypto';
+import HttpStatusCode from '../utils/statusCode';
+import { validateOgSchema } from '../utils/validateMiddleware';
 
 const templateHTMLOg = `
 <!DOCTYPE html>
