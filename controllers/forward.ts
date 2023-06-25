@@ -1,9 +1,9 @@
-import prisma from 'db/prisma';
 import geoIp from 'geoip-country';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Forward } from 'types/forward';
-import { logger } from 'utils/logger';
-import HttpStatusCode from 'utils/statusCode';
+import prisma from '../db/prisma';
+import { logger } from '../utils/logger';
+import HttpStatusCode from '../utils/statusCode';
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse<Forward>) => {
   try {

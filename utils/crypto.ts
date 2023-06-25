@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js';
-import { PLATFORM_AUTH, SERVER_AUTH } from 'types/constants';
+import { PLATFORM_AUTH, SERVER_AUTH } from '../types/constants';
 import { logger } from './logger';
 export const decrypt = (token: string) => {
   try {

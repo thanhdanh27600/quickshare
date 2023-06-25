@@ -1,21 +1,50 @@
-import { createClient, RedisClientOptions } from 'redis';
-import { isProduction } from 'types/constants';
+import { Redis, RedisOptions } from 'ioredis';
+import { isProduction } from '../types/constants';
 
-export function createRedisInstance() {
+const redisConfig = {
+  host: isProduction ? 'default' : '127.0.0.1',
+  password: process.env.REDIS_AUTH,
+  port: process.env.REDIS_PORT || '6379',
+};
+
+export function createRedisInstance(config = redisConfig) {
   try {
-    const options: RedisClientOptions = {
-      url: isProduction ? `redis://default:${process.env.REDIS_AUTH}@cache:6379` : undefined,
-      password: process.env.REDIS_AUTH,
+    const options: RedisOptions = {
+      host: config.host,
+      lazyConnect: true,
+      showFriendlyErrorStack: true,
+      enableAutoPipelining: true,
+      maxRetriesPerRequest: 0,
+      retryStrategy: (times: number) => {
+        if (times > 3) {
+          throw new Error(`[Redis] Could not connect after ${times} attempts`);
+        }
+
+        return Math.min(times * 200, 1000);
+      },
     };
 
-    const client = createClient(options);
+    if (config.port) {
+      options.port = +config.port;
+    }
 
-    client.on('error', (error: unknown) => {
-      console.warn('[Redis] has error', error);
+    if (config.password) {
+      options.password = config.password;
+    }
+
+    const redis = new Redis(options);
+
+    redis.on('error', (error: unknown) => {
+      console.warn('[Redis] error', error);
     });
-    return client;
+
+    redis.on('ready', () => {
+      console.log('[Redis] have ready');
+    });
+
+    return redis;
   } catch (e) {
-    throw new Error(`Could not create Redis instance`);
+    throw new Error(`[Redis] Could not create a Redis instance`);
   }
 }
 

@@ -1,16 +1,16 @@
 import { Prisma } from '@prisma/client';
-import prisma from 'db/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import requestIp from 'request-ip';
-import { LIMIT_RECENT_HISTORY, PLATFORM_AUTH } from 'types/constants';
-import { Stats } from 'types/stats';
-import { errorHandler } from 'utils/axios';
-import { decryptS, encryptS } from 'utils/crypto';
-import { parseIntSafe } from 'utils/number';
-import { withQueryCursor } from 'utils/requests';
-import HttpStatusCode from 'utils/statusCode';
-import { validateStatsSchema } from 'utils/validateMiddleware';
 import { z } from 'zod';
+import prisma from '../../db/prisma';
+import { LIMIT_RECENT_HISTORY, PLATFORM_AUTH } from '../../types/constants';
+import { Stats } from '../../types/stats';
+import { errorHandler } from '../../utils/axios';
+import { decryptS, encryptS } from '../../utils/crypto';
+import { parseIntSafe } from '../../utils/number';
+import { withQueryCursor } from '../../utils/requests';
+import HttpStatusCode from '../../utils/statusCode';
+import { validateStatsSchema } from '../../utils/validateMiddleware';
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse<Stats>) => {
   try {

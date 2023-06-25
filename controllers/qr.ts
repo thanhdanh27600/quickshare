@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { QR } from 'types/qr';
-import { errorHandler } from 'utils/axios';
-import { decrypt } from 'utils/crypto';
-import HttpStatusCode from 'utils/statusCode';
-import { validateQrSchema } from 'utils/validateMiddleware';
 import { z } from 'zod';
+import { QR } from '../types/qr';
+import { errorHandler } from '../utils/axios';
+import { decrypt } from '../utils/crypto';
+import HttpStatusCode from '../utils/statusCode';
+import { validateQrSchema } from '../utils/validateMiddleware';
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse<QR>) => {
   try {
