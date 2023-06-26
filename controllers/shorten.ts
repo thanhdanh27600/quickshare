@@ -31,14 +31,11 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse<ShortenU
     // check or reset get link limit
     const keyLimit = `${REDIS_KEY.HASH_LIMIT}:${ip}`;
     const ttl = await redis.ttl(keyLimit);
-    console.log('keyLimit', keyLimit);
-    console.log('ttl inner', ttl);
     if (ttl < 0) {
       await redis.set(keyLimit, 0);
       await redis.expire(keyLimit, LIMIT_URL_SECOND);
     }
     const curLimit = (await redis.get(keyLimit)) || '';
-    console.log('curLimit inner', curLimit);
     if (parseFloat(curLimit) >= LIMIT_URL_REQUEST) {
       return res.status(HttpStatusCode.TOO_MANY_REQUESTS).send({
         errorMessage: `Exceeded ${LIMIT_URL_REQUEST} shorten links, please comeback after ${LIMIT_URL_HOUR} hours.`,
