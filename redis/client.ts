@@ -2,7 +2,7 @@ import { Redis, RedisOptions } from 'ioredis';
 import { isProduction } from 'types/constants';
 
 const redisConfig = {
-  host: '127.0.0.1',
+  host: isProduction ? 'cache' : '127.0.0.1',
   password: process.env.REDIS_AUTH,
   port: '6379',
 };
@@ -11,7 +11,6 @@ export function createRedisInstance(config = redisConfig) {
   try {
     const options: RedisOptions = {
       host: config.host,
-      db: isProduction ? 'cache' : undefined,
       lazyConnect: true,
       showFriendlyErrorStack: true,
       retryStrategy: (times: number) => {
