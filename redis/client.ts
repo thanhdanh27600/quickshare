@@ -1,10 +1,9 @@
 import { Redis, RedisOptions } from 'ioredis';
-import { isProduction } from '../types/constants';
 
 const redisConfig = {
-  host: isProduction ? 'default' : '127.0.0.1',
+  host: '127.0.0.1',
   password: process.env.REDIS_AUTH,
-  port: process.env.REDIS_PORT || '6379',
+  port: '6379',
 };
 
 export function createRedisInstance(config = redisConfig) {
