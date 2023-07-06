@@ -1,12 +1,17 @@
+import { Button } from 'components/atoms/Button';
 import { LayoutMain } from 'components/layouts/LayoutMain';
 import { URLShortener } from 'components/screens/URLShortener';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { isShortDomain } from 'types/constants';
+import { Window, brandUrl, brandUrlShortDomain } from 'types/constants';
 import { LocaleProp } from 'types/locale';
 
 const Home = () => {
-  if (isShortDomain) {
-    return null;
+  if (Window()?.location.hostname.includes(brandUrlShortDomain)) {
+    return (
+      <a href={brandUrl} className="flex justify-center">
+        <Button text="Go to clickdi.top" />
+      </a>
+    );
   }
   return (
     <LayoutMain>

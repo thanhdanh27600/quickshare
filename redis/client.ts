@@ -1,5 +1,5 @@
 import { Redis, RedisOptions } from 'ioredis';
-import { isProduction } from 'types/constants';
+import { isProduction } from '../types/constants';
 
 const redisConfig = {
   host: isProduction ? 'cache' : '127.0.0.1',
