@@ -1,6 +1,7 @@
 import { URLTracking } from 'components/screens/URLTracking';
 import { GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { pgFullDomain } from 'utils/guards';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { hash } = context.query;
@@ -24,4 +25,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 }
 
-export default URLTracking;
+export default pgFullDomain(URLTracking);

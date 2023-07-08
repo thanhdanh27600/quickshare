@@ -8,6 +8,7 @@ import requestIp from 'request-ip';
 import { BASE_URL_SHORT, brandUrlShortDomain, isProduction, PLATFORM_AUTH, Window } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { encrypt } from 'utils/crypto';
+import { pgShortDomain } from 'utils/guards';
 import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
 
@@ -115,4 +116,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 }
 
-export default ForwardURL;
+export default pgShortDomain(ForwardURL);
