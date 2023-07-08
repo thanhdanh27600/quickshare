@@ -1,18 +1,12 @@
-import { Button } from 'components/atoms/Button';
 import { LayoutMain } from 'components/layouts/LayoutMain';
 import { URLShortener } from 'components/screens/URLShortener';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Window, brandUrl, brandUrlShortDomain } from 'types/constants';
+import { isShortDomain } from 'types/constants';
 import { LocaleProp } from 'types/locale';
+import { pgFullDomain } from 'utils/guards';
 
 const Home = () => {
-  if (Window()?.location.hostname.includes(brandUrlShortDomain)) {
-    return (
-      <a href={brandUrl} className="flex justify-center">
-        <Button text="Go to clickdi.top" />
-      </a>
-    );
-  }
+  console.log('isShortDomain', isShortDomain);
   return (
     <LayoutMain>
       <div className="container-xl mx-auto min-h-[80vh] p-4 max-sm:py-8 md:mt-8 md:max-w-5xl">
@@ -22,7 +16,7 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default pgFullDomain(Home);
 
 export const getServerSideProps = async ({ locale }: LocaleProp) => ({
   props: {

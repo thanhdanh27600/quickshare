@@ -4,6 +4,7 @@ import { useTrans } from 'utils/i18next';
 
 export const BrandHead = () => {
   const { t } = useTrans();
+  if (isShortDomain) return null;
   return (
     <Head>
       {/* Primary Meta Tags */}
@@ -23,13 +24,6 @@ export const BrandHead = () => {
       <meta property="twitter:title" content={t('brandTitle')} />
       <meta property="twitter:description" content={t('brandDescription')} />
       <meta property="twitter:image" content={`${BASE_URL}/api/og?title=${encodeURIComponent(t('ogBrand'))}`} />
-      {isShortDomain && (
-        <>
-          <meta name="title" content={''} />
-          <meta name="description" content={''} />
-          <meta property="og:image" content={''} />
-        </>
-      )}
     </Head>
   );
 };

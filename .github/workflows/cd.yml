@@ -35,8 +35,18 @@ jobs:
           context: .
           build-args: |
             "GEOLITE2_LICENSE_KEY=${{ secrets.GEOLITE2_LICENSE_KEY }}"
+            NEXT_PUBLIC_SHORT_DOMAIN=false
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          build-args: |
+            "GEOLITE2_LICENSE_KEY=${{ secrets.GEOLITE2_LICENSE_KEY }}"
+            NEXT_PUBLIC_SHORT_DOMAIN=true
+          push: true
+          tags: ghcr.io/${{ github.repository }}:short-latest
   deploy:
     needs: build
     runs-on: ubuntu-latest

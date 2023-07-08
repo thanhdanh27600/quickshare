@@ -1,7 +1,9 @@
 import { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
+import { isShortDomain } from 'types/constants';
 
 export default function Document() {
+  if (isShortDomain) return null;
   return (
     <Html>
       <Head>

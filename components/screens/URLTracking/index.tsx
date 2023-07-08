@@ -13,10 +13,10 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
-import { brandUrl, isShortDomain, Window } from 'types/constants';
+import { isShortDomain } from 'types/constants';
 import { MIXPANEL_EVENT } from 'types/utils';
 import { UAParser } from 'ua-parser-js';
-import { detectReferer, Referer } from 'utils/agent';
+import { Referer, detectReferer } from 'utils/agent';
 import { getCountryName } from 'utils/country';
 import { useTrans } from 'utils/i18next';
 import { PAGE_SIZE, QueryKey, strictRefetch } from 'utils/requests';
@@ -36,7 +36,7 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
   );
 
   if (isShortDomain) {
-    Window()?.location.replace(brandUrl);
+    return null;
   }
 
   const getStatsQuery = useCallback(async () => getStats({ hash, token }), [hash, token]);
