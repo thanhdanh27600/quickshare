@@ -9,7 +9,7 @@ export const brandUrlShortDomain = 'clid.top';
 
 export const Window = () => ('object' === typeof window && window ? (window as any) : undefined);
 export const isProduction = process.env.NODE_ENV === 'production';
-export const isShortDomain = process.env.SHORT_DOMAIN === 'true';
+export const isShortDomain = process.env.NEXT_PUBLIC_SHORT_DOMAIN === 'true';
 
 export const baseUrl = (useShortDomain: boolean = false) => {
   if (isProduction) {

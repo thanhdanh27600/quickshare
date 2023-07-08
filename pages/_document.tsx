@@ -3,7 +3,6 @@ import Script from 'next/script';
 import { isShortDomain } from 'types/constants';
 
 export default function Document() {
-  if (isShortDomain) return null;
   return (
     <Html>
       <Head>
@@ -31,14 +30,18 @@ export default function Document() {
         <meta charSet="utf-8" />
         <meta httpEquiv="content-language" content="en-us" />
         <meta httpEquiv="content-language" content="vi-vn" />
-        <meta
-          name="URL shortener, risk-free and cost-free as always"
-          content="Shorten and track all clicks, convenient, user-friendly and always free."
-        />
-        <meta
-          name="Rút gọn link, hoàn toàn miễn phí"
-          content="Rút gọn và theo dõi tất cả lượt click, trực quan, dễ sử dụng và luôn luôn miễn phí"
-        />
+        {!isShortDomain && (
+          <>
+            <meta
+              name="URL shortener, risk-free and cost-free as always"
+              content="Shorten and track all clicks, convenient, user-friendly and always free."
+            />
+            <meta
+              name="Rút gọn link, hoàn toàn miễn phí"
+              content="Rút gọn và theo dõi tất cả lượt click, trực quan, dễ sử dụng và luôn luôn miễn phí"
+            />
+          </>
+        )}
 
         <link rel="stylesheet" href={`/lib/styles.min.css`} />
       </Head>

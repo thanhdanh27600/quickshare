@@ -13,7 +13,6 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
-import { isShortDomain } from 'types/constants';
 import { MIXPANEL_EVENT } from 'types/utils';
 import { UAParser } from 'ua-parser-js';
 import { Referer, detectReferer } from 'utils/agent';
@@ -34,10 +33,6 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
   const [history, setHistory] = useState<(UrlShortenerHistory & { urlForwardMeta: UrlForwardMeta[] }) | undefined>(
     undefined,
   );
-
-  if (isShortDomain) {
-    return null;
-  }
 
   const getStatsQuery = useCallback(async () => getStats({ hash, token }), [hash, token]);
   /* now data has only 1 history */

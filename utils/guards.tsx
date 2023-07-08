@@ -8,10 +8,10 @@ interface Option {
   returnIfFalse?: JSX.Element;
 }
 
-const DefaultNotFound = (
-  <div className="flex flex-col justify-center">
+const DefaultNotFound = () => (
+  <div className="mt-8 flex flex-col items-center justify-center">
     <p className="text-center">404 - PAGE NOT FOUND</p>
-    <a href={brandUrl} className="">
+    <a href={brandUrl} className="mt-4">
       <Button text="Go to clickdi.top" />
     </a>
   </div>
