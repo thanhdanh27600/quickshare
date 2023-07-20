@@ -6,7 +6,7 @@ name: CD
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [production]
+    branches: [short]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -35,27 +35,22 @@ jobs:
           context: .
           build-args: |
             "GEOLITE2_LICENSE_KEY=${{ secrets.GEOLITE2_LICENSE_KEY }}"
-            NEXT_PUBLIC_SHORT_DOMAIN=false
+            NEXT_PUBLIC_SHORT_DOMAIN=true
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: ghcr.io/${{ github.repository }}:short-latest
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy using ssh
+      - name: Deploy short using ssh
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+          host: ${{ secrets.HOST_SHORT }}
+          username: ${{ secrets.USERNAME_SHORT }}
+          password: ${{ secrets.PASSWORD_SHORT }}
           port: 22
           script: |
-            cd ~/clickdi
-            sh ./backup.sh
-            docker login -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
+            cd ~/dolph-utils
             docker compose pull
             docker compose up -d
             docker system prune -f
-            sh ./migrate.sh
-            sh ./puppeteer.sh
-            
