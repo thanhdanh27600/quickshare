@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { brandUrl } from 'types/constants';
+import { BASE_URL } from 'types/constants';
 
 export const API = axios.create({
-  // baseURL: BASE_URL,
-  baseURL: brandUrl,
+  baseURL: BASE_URL,
 });
 
 API.interceptors.response.use(
