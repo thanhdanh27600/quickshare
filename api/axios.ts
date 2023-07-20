@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { BASE_URL, BASE_URL_SHORT, isShortDomain } from 'types/constants';
+import { brandUrl } from 'types/constants';
 
 export const API = axios.create({
-  baseURL: isShortDomain ? BASE_URL_SHORT : BASE_URL,
+  // baseURL: BASE_URL,
+  baseURL: brandUrl,
 });
 
 API.interceptors.response.use(
