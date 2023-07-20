@@ -1,3 +1,4 @@
+import { allowCors } from 'api/axios';
 import geoIp from 'geoip-country';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Forward } from 'types/forward';
@@ -5,7 +6,7 @@ import prisma from '../db/prisma';
 import { logger } from '../utils/logger';
 import HttpStatusCode from '../utils/statusCode';
 
-export const handler = async (req: NextApiRequest, res: NextApiResponse<Forward>) => {
+export const handler = allowCors(async (req: NextApiRequest, res: NextApiResponse<Forward>) => {
   try {
     require('utils/loggerServer').info(req);
     if (req.method !== 'POST') {
@@ -73,4 +74,4 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse<Forward>
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
       .json({ errorMessage: (error as any).message || 'Something when wrong.' });
   }
-};
+});
