@@ -3,13 +3,14 @@ export const LIMIT_URL_SECOND = LIMIT_URL_HOUR * 3600;
 export const LIMIT_URL_REQUEST = 5;
 export const LIMIT_RECENT_HISTORY = 5;
 export const NUM_CHARACTER_HASH = 3;
+export const localUrl = 'http://localhost:5000';
 export const brandUrl = 'https://clickdi.top';
 export const brandUrlShort = 'https://clid.top';
 export const brandUrlShortDomain = 'clid.top';
-
 export const Window = () => ('object' === typeof window && window ? (window as any) : undefined);
 export const isProduction = process.env.NODE_ENV === 'production';
 export const isShortDomain = process.env.NEXT_PUBLIC_SHORT_DOMAIN === 'true';
+export const allowedDomains = isProduction ? [brandUrl, brandUrlShort] : [localUrl, brandUrl, brandUrlShort];
 
 export const baseUrl = (useShortDomain: boolean = false) => {
   if (isProduction) {
@@ -17,7 +18,7 @@ export const baseUrl = (useShortDomain: boolean = false) => {
   }
   return typeof location === 'object'
     ? `${location.protocol}//` + location.hostname + (location.port ? ':' + location.port : '')
-    : 'http://localhost:5000';
+    : localUrl;
 };
 export const BASE_URL = baseUrl();
 export const BASE_URL_SHORT = baseUrl(true);
