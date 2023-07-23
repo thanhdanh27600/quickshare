@@ -1,5 +1,7 @@
 export const LIMIT_URL_HOUR = 1;
 export const LIMIT_URL_SECOND = LIMIT_URL_HOUR * 3600;
+export const LIMIT_SHORTENED_HOUR = 24;
+export const LIMIT_SHORTENED_SECOND = LIMIT_SHORTENED_HOUR * 3600;
 export const LIMIT_URL_REQUEST = 5;
 export const LIMIT_RECENT_HISTORY = 5;
 export const NUM_CHARACTER_HASH = 3;
@@ -26,9 +28,18 @@ export const REDIS_KEY = {
   HASH_LIMIT: 'limit',
   HASH_HISTORY_BY_ID: 'hHistory',
   HASH_SHORTEN_BY_HASHED_URL: 'hShort',
+} as const;
+type RedisKeys = keyof typeof REDIS_KEY;
+type RedisKeyValues = (typeof REDIS_KEY)[RedisKeys];
+
+export const getRedisKey = (key: RedisKeyValues, value: string) => {
+  return `${key}:${value}`;
 };
 
 export const MIX_PANEL_TOKEN = process.env.NEXT_PUBLIC_MIX_PANEL_TOKEN;
 export const PLATFORM_AUTH = process.env.NEXT_PUBLIC_PLATFORM_AUTH;
 export const SERVER_AUTH = process.env.NEXT_PUBLIC_SERVER_AUTH;
 export const TE = () => Window()?.te;
+export const RabbitMQChannel = {
+  SHORTENED: 'shortened',
+};
