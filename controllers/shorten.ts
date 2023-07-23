@@ -3,7 +3,15 @@ import requestIp from 'request-ip';
 import { z } from 'zod';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
-import { LIMIT_URL_HOUR, LIMIT_URL_REQUEST, LIMIT_URL_SECOND, NUM_CHARACTER_HASH, REDIS_KEY } from '../types/constants';
+import {
+  LIMIT_SHORTENED_SECOND,
+  LIMIT_URL_HOUR,
+  LIMIT_URL_REQUEST,
+  LIMIT_URL_SECOND,
+  NUM_CHARACTER_HASH,
+  REDIS_KEY,
+  getRedisKey,
+} from '../types/constants';
 import { ShortenUrl } from '../types/shorten';
 import { decrypt } from '../utils/crypto';
 import HttpStatusCode from '../utils/statusCode';
@@ -29,7 +37,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse<ShortenU
       });
     }
     // check or reset get link limit
-    const keyLimit = `${REDIS_KEY.HASH_LIMIT}:${ip}`;
+    const keyLimit = getRedisKey(REDIS_KEY.HASH_LIMIT, ip);
     const ttl = await redis.ttl(keyLimit);
     if (ttl < 0) {
       await redis.set(keyLimit, 0);
@@ -45,35 +53,37 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse<ShortenU
     // generate hash
     else {
       // check hash collapse
-      let targetHash = generateRandomString(NUM_CHARACTER_HASH);
-      let hashShortenedLinkKey = `${REDIS_KEY.HASH_SHORTEN_BY_HASHED_URL}:${targetHash}`;
-      let isExist = await redis.hexists(hashShortenedLinkKey, 'createdAt');
+      let targetHash = '';
+      let hashShortenedLinkKey = '';
+      let isExist = 1;
       let timesLimit = 0;
       // regenerate if collapse
       while (isExist) {
-        console.log('timesLimit', timesLimit);
+        timesLimit > 0 && console.log('timesLimit', timesLimit);
         if (timesLimit++ > 10 /** U better buy lucky ticket */) {
           throw new Error('Bad URL, please try again');
         }
         targetHash = generateRandomString(NUM_CHARACTER_HASH);
-        hashShortenedLinkKey = `${REDIS_KEY.HASH_SHORTEN_BY_HASHED_URL}:${targetHash}`;
-        isExist = await redis.hexists(hashShortenedLinkKey, 'createdAt');
+        hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASHED_URL, targetHash);
+        isExist = await redis.hexists(hashShortenedLinkKey, 'url');
       }
       // write hash to cache, increment limit
-      const dataHashShortenLink = ['createdAt', new Date().getTime()];
+      const dataHashShortenLink = ['url', url, 'updatedAt', new Date().getTime()];
       await redis.hset(hashShortenedLinkKey, dataHashShortenLink);
+      await redis.expire(hashShortenedLinkKey, LIMIT_SHORTENED_SECOND);
       await redis.incr(keyLimit);
-      const keyHash = `${REDIS_KEY.HASH_HISTORY_BY_ID}:${ip}`;
+      const keyHash = getRedisKey(REDIS_KEY.HASH_HISTORY_BY_ID, ip);
       // retrive client id and write to db
       let clientRedisId = await redis.hget(keyHash, 'dbId');
       if (!clientRedisId) {
+        // cache missed
         const clientDb = await prisma.urlShortenerRecord.findFirst({
           where: {
             ip,
           },
         });
         if (!clientDb) {
-          // cache missed
+          // new client's ip
           let record = await prisma.urlShortenerRecord.findFirst({
             where: { ip },
           });

@@ -14,6 +14,7 @@
     "migrate": "prisma migrate deploy"
   },
   "dependencies": {
+    "@cloudamqp/amqp-client": "^2.1.1",
     "@prisma/client": "4.9.0",
     "@styled-icons/feather": "^10.47.0",
     "@tailwindcss/line-clamp": "^0.4.2",
