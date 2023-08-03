@@ -23,7 +23,7 @@
   "country": "Country",
   "userAgent": "User Agent",
   "date": "Date",
-  "clickedByHuman": "Unique click",
+  "clickedByHuman": "Total click",
   "copyRawInfo": "copy raw info",
   "trackingLive": "Live link tracking",
   "shareFacebook": "Share Facebook",
