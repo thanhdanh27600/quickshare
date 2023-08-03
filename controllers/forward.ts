@@ -1,6 +1,8 @@
 import { allowCors } from 'api/axios';
 import geoIp from 'geoip-country';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { redis } from 'redis/client';
+import { LIMIT_SHORTENED_SECOND, REDIS_KEY, getRedisKey } from 'types/constants';
 import { Forward } from 'types/forward';
 import prisma from '../db/prisma';
 import { logger } from '../utils/logger';
@@ -30,43 +32,23 @@ export const handler = allowCors(async (req: NextApiRequest, res: NextApiRespons
     if (!lookupIp) {
       logger.warn(!ip ? 'ip not found' : `geoIp cannot determined ${ip}`);
     }
+    const data = { hash, ip, userAgent, fromClientSide, lookupIp };
+    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASHED_URL, hash);
+    const shortenedUrlCache = await redis.hget(hashShortenedLinkKey, 'url');
+    if (shortenedUrlCache) {
+      // RabbitMQService.publish({
+      //   type: MessageType.FORWARD,
+      //   data,
+      // });
 
-    let history = await prisma.urlShortenerHistory.findUnique({
-      where: {
-        hash,
-      },
-    });
-
-    if (!history) {
-      await prisma.$disconnect();
-      return res.status(HttpStatusCode.BAD_REQUEST).send({
-        errorMessage: 'No URL was found',
-        errorCode: 'BAD_REQUEST',
-      });
+      // cache hit
+      console.log('cache hit');
+      postProcessForward(data);
+      return res.status(HttpStatusCode.OK).json({ history: { url: shortenedUrlCache } as any });
     }
-
-    const meta = await prisma.urlForwardMeta.upsert({
-      where: {
-        userAgent_ip_urlShortenerHistoryId: {
-          ip,
-          userAgent,
-          urlShortenerHistoryId: history.id,
-        },
-      },
-      update: {
-        countryCode: lookupIp?.country,
-        fromClientSide: !!fromClientSide,
-      },
-      create: {
-        ip,
-        userAgent,
-        urlShortenerHistoryId: history.id,
-        countryCode: lookupIp?.country,
-        fromClientSide: !!fromClientSide,
-      },
-    });
-    await prisma.$disconnect();
-    return res.status(HttpStatusCode.OK).json({ history });
+    // cache missed
+    console.log('cache missed');
+    await postProcessForward(data, res);
   } catch (error) {
     console.error(error);
     await prisma.$disconnect();
@@ -75,3 +57,53 @@ export const handler = allowCors(async (req: NextApiRequest, res: NextApiRespons
       .json({ errorMessage: (error as any).message || 'Something when wrong.' });
   }
 });
+
+export const postProcessForward = async (payload: any, res?: NextApiResponse<Forward>) => {
+  const { hash, ip, userAgent, fromClientSide, lookupIp } = payload;
+  let history = await prisma.urlShortenerHistory.findUnique({
+    where: {
+      hash,
+    },
+  });
+
+  if (!history) {
+    await prisma.$disconnect();
+    return res
+      ? res.status(HttpStatusCode.BAD_REQUEST).send({
+          errorMessage: 'No URL was found',
+          errorCode: 'BAD_REQUEST',
+        })
+      : null;
+  }
+
+  await prisma.urlForwardMeta.upsert({
+    where: {
+      userAgent_ip_urlShortenerHistoryId: {
+        ip,
+        userAgent,
+        urlShortenerHistoryId: history.id,
+      },
+    },
+    update: {
+      countryCode: lookupIp?.country,
+      fromClientSide: !!fromClientSide,
+    },
+    create: {
+      ip,
+      userAgent,
+      urlShortenerHistoryId: history.id,
+      countryCode: lookupIp?.country,
+      fromClientSide: !!fromClientSide,
+    },
+  });
+  await prisma.$disconnect();
+
+  if (res) {
+    // write back to cache
+    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASHED_URL, hash);
+    const dataHashShortenLink = ['url', history.url, 'updatedAt', new Date().getTime()];
+    await redis.hset(hashShortenedLinkKey, dataHashShortenLink);
+    await redis.expire(hashShortenedLinkKey, LIMIT_SHORTENED_SECOND);
+    return res.status(HttpStatusCode.OK).json({ history });
+  }
+};
