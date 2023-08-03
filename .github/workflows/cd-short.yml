@@ -50,7 +50,7 @@ jobs:
           password: ${{ secrets.PASSWORD_SHORT }}
           port: 22
           script: |
-            cd ~/dolph-utils
+            cd ~/clickdi
             docker compose pull
             docker compose up -d
             docker system prune -f
