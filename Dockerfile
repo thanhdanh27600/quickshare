@@ -6,6 +6,8 @@ CMD ["echo", "NEXT_PUBLIC_SHORT_DOMAIN=$NEXT_PUBLIC_SHORT_DOMAIN"]
 WORKDIR /app
 COPY package.json yarn.lock prisma .env scripts/update_ip_db.sh ./
 RUN npm install
+# add sharp for image production
+RUN npm install sharp
 # Update IP Database
 # ENV GEOLITE2_LICENSE_KEY ${GEOLITE2_LICENSE_KEY}
 # RUN ./update_ip_db.sh
