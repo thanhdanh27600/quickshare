@@ -1,41 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Clickdi - URL Shortener
 
-## Getting Started
+Lightweight web application for shortening URLs, along with real-time click tracking, differentiate between real and unique clicks, free to use and modify.
 
-First, run the development server:
+## What's this
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- **Shortening URLs**: Shorten link to 3 unique hash xxx (clid.top/xxx), link saved by IP, no sign in required tracking shortened link goes publicly, unless set new password
 
-docker run -p 6379:6379 -d redis
-docker exec -it ... sh
+- **Detect Uniqe Clicks**: Tracks clicks on the shortened URLs in real-time (polling)
 
+- **Detect Human Clicks**: Distinguish genuine clicks from bots or automated scripts
 
-Open [http://localhost:5000](http://localhost:5000) with your browser to see the result.
+- **Free to Use**: Free to clone, modify, and distribute.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## How to Build
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:5000/api/hello](http://localhost:5000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+*To be updated*
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Contact
 
-## Learn More
+For any further questions or inquiries, you can reach out to the maintainers of this project:
 
-To learn more about Next.js, take a look at the following resources:
+- Maintainer Name: Dolph
+- Maintainer Email: dolph.pham@gmail.com
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-
-gpg --symmetric --cipher-algo AES256 .env.production
+If you read this. Thank you & happy coding.
