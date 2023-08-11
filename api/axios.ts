@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { BASE_URL } from 'types/constants';
+import { BASE_URL } from '../types/constants';
 
 export const API = axios.create({
   baseURL: BASE_URL,
