@@ -1,10 +1,10 @@
-import { allowCors } from 'api/axios';
 import geoIp from 'geoip-country';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { redis } from 'redis/client';
-import { LIMIT_SHORTENED_SECOND, REDIS_KEY, getRedisKey } from 'types/constants';
-import { Forward } from 'types/forward';
+import { allowCors } from '../api/axios';
 import prisma from '../db/prisma';
+import { redis } from '../redis/client';
+import { LIMIT_SHORTENED_SECOND, REDIS_KEY, getRedisKey } from '../types/constants';
+import { Forward } from '../types/forward';
 import { logger } from '../utils/logger';
 import HttpStatusCode from '../utils/statusCode';
 
