@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiHandler } from 'next';
 import { z } from 'zod';
 import { QR } from '../types/qr';
 import { errorHandler } from '../utils/axios';
@@ -6,7 +6,7 @@ import { decrypt } from '../utils/crypto';
 import HttpStatusCode from '../utils/statusCode';
 import { validateQrSchema } from '../utils/validateMiddleware';
 
-export const handler = async (req: NextApiRequest, res: NextApiResponse<QR>) => {
+export const handler: NextApiHandler<QR> = async (req, res) => {
   try {
     require('utils/loggerServer').info(req);
     if (req.method !== 'GET') {

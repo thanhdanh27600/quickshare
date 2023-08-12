@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler } from 'next';
 import requestIp from 'request-ip';
 import { z } from 'zod';
 import prisma from '../db/prisma';
@@ -18,7 +18,7 @@ import HttpStatusCode from '../utils/statusCode';
 import { generateRandomString, isValidUrl } from '../utils/text';
 import { validateShortenSchema } from '../utils/validateMiddleware';
 
-export const handler = async (req: NextApiRequest, res: NextApiResponse<ShortenUrl>) => {
+export const handler: NextApiHandler<ShortenUrl> = async (req, res) => {
   try {
     require('../utils/loggerServer').info(req);
     if (req.method !== 'GET') {
