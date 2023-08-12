@@ -37,7 +37,7 @@ jobs:
             "GEOLITE2_LICENSE_KEY=${{ secrets.GEOLITE2_LICENSE_KEY }}"
             NEXT_PUBLIC_SHORT_DOMAIN=true
           push: true
-          tags: ghcr.io/${{ github.repository }}:short-test
+          tags: ghcr.io/${{ github.repository }}:short-latest
   deploy:
     needs: build
     runs-on: ubuntu-latest
