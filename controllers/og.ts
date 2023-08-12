@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiHandler } from 'next';
 import puppeteer from 'puppeteer';
 import { z } from 'zod';
 import { isProduction } from '../types/constants';
@@ -126,7 +126,7 @@ function getFontSize(title = '') {
   return '5rem';
 }
 
-export const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
+export const handler: NextApiHandler = async (req, res) => {
   try {
     require('utils/loggerServer').info(req);
     if (req.method !== 'GET') {
