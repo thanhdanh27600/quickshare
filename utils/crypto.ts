@@ -28,7 +28,9 @@ export const decryptS = (token: string) => {
     let decrypted = '';
     if (SERVER_AUTH) {
       const bytes = CryptoJS.AES.decrypt(token, SERVER_AUTH);
-      decrypted = bytes.toString(CryptoJS.enc.Utf8).split('###')[0];
+      const tokens = bytes.toString(CryptoJS.enc.Utf8).split('###');
+      decrypted = tokens[0];
+      const createdAt = Number(tokens[1]);
     }
     return decrypted;
   } catch (error) {

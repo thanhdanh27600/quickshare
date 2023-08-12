@@ -6,15 +6,8 @@ import { pgFullDomain } from 'utils/guards';
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { hash } = context.query;
   try {
-    // const stats = await getStats({
-    //   hash: hash ? (hash[0] as string) : undefined,
-    // });
-    // const record = stats.record;
-    // const history = stats.history;
     return {
       props: {
-        // record: record || null,
-        // history: history || null,
         hash: hash ? (hash[0] as string) : '',
         ...(await serverSideTranslations(context.locale ?? 'vi', ['common'])),
       },

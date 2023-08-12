@@ -49,7 +49,7 @@ export const getStats = async ({
   });
   const rs = await API.get(`/api/stats?${q}`, {
     headers: {
-      ...withAuth(),
+      ...withAuth(token),
     },
   });
   const data = rs.data;
