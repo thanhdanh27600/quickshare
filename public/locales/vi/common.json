@@ -31,6 +31,7 @@
   "shareLinkedIn": "Chia sẻ LinkedIn",
   "downloadQR": "Tải QR",
   "author": "Người tạo",
+  "shortCreatedAt": "Ngày tạo",
   "errorNoTracking": "Không tồn tại link theo dõi này.",
   "setPassword": "Đặt mật khẩu",
   "minCharacter": "Ít nhất {{n}} ký tự",

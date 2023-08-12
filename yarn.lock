@@ -1847,15 +1847,10 @@ camelize@^1.0.0:
   resolved "https://registry.yarnpkg.com/camelize/-/camelize-1.0.1.tgz#89b7e16884056331a35d6b5ad064332c91daa6c3"
   integrity sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==
 
-caniuse-lite@^1.0.30001400, caniuse-lite@^1.0.30001406, caniuse-lite@^1.0.30001426:
-  version "1.0.30001449"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001449.tgz"
-  integrity sha512-CPB+UL9XMT/Av+pJxCKGhdx+yg1hzplvFJQlJ2n68PyQGMz9L/E2zCyLdOL8uasbouTUgnPl+y0tccI/se+BEw==
-
-caniuse-lite@^1.0.30001503:
-  version "1.0.30001507"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001507.tgz#fae53f6286e7564783eadea9b447819410a59534"
-  integrity sha512-SFpUDoSLCaE5XYL2jfqe9ova/pbQHEmbheDf5r4diNwbAgR3qxM9NQtfsiSscjqoya5K7kFcHPUQ+VsUkIJR4A==
+caniuse-lite@^1.0.30001400, caniuse-lite@^1.0.30001406, caniuse-lite@^1.0.30001426, caniuse-lite@^1.0.30001503:
+  version "1.0.30001519"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001519.tgz"
+  integrity sha512-0QHgqR+Jv4bxHMp8kZ1Kn8CH55OikjKJ6JmKkZYP1F3D7w+lnFXF70nG5eNfsZS89jadi5Ywy5UCSKLAglIRkg==
 
 chalk@^2.0.0:
   version "2.4.2"
@@ -2098,10 +2093,10 @@ data-uri-to-buffer@^4.0.0:
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-4.0.1.tgz#d8feb2b2881e6a4f58c2e08acfd0e2834e26222e"
   integrity sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==
 
-dayjs@^1.11.7:
-  version "1.11.7"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.7.tgz#4b296922642f70999544d1144a2c25730fce63e2"
-  integrity sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==
+dayjs@^1.11.9:
+  version "1.11.9"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.9.tgz#9ca491933fadd0a60a2c19f6c237c03517d71d1a"
+  integrity sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==
 
 debug@4, debug@4.3.4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.4:
   version "4.3.4"

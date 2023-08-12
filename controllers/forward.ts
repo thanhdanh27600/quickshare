@@ -1,6 +1,5 @@
 import geoIp from 'geoip-country';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { allowCors } from '../api/axios';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import { LIMIT_SHORTENED_SECOND, REDIS_KEY, getRedisKey } from '../types/constants';
@@ -8,7 +7,7 @@ import { Forward } from '../types/forward';
 import { logger } from '../utils/logger';
 import HttpStatusCode from '../utils/statusCode';
 
-export const handler = allowCors(async (req: NextApiRequest, res: NextApiResponse<Forward>) => {
+export const handler = async (req: NextApiRequest, res: NextApiResponse<Forward>) => {
   try {
     require('utils/loggerServer').info(req);
     if (req.method !== 'POST') {
@@ -42,12 +41,12 @@ export const handler = allowCors(async (req: NextApiRequest, res: NextApiRespons
       // });
 
       // cache hit
-      console.log('cache hit');
-      postProcessForward(data);
+      console.log('cache hit', data);
+      postProcessForward(data); // bypass process
       return res.status(HttpStatusCode.OK).json({ history: { url: shortenedUrlCache } as any });
     }
     // cache missed
-    console.log('cache missed');
+    console.log('cache missed', data);
     await postProcessForward(data, res);
   } catch (error) {
     console.error(error);
@@ -56,7 +55,7 @@ export const handler = allowCors(async (req: NextApiRequest, res: NextApiRespons
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
       .json({ errorMessage: (error as any).message || 'Something when wrong.' });
   }
-});
+};
 
 export const postProcessForward = async (payload: any, res?: NextApiResponse<Forward>) => {
   const { hash, ip, userAgent, fromClientSide, lookupIp } = payload;

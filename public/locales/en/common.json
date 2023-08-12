@@ -31,6 +31,7 @@
   "shareLinkedIn": "Share LinkedIn",
   "downloadQR": "Download QR",
   "author": "Author",
+  "shortCreatedAt": "Created at",
   "errorNoTracking": "No tracking was found.",
   "setPassword": "Set password",
   "minCharacter": "Minimum {{n}} characters",
