@@ -1,18 +1,20 @@
+export const localUrl = 'http://localhost:5000';
+export const brandUrl = 'https://clickdi.top';
+export const brandUrlShort = 'https://clid.top';
+export const brandUrlShortDomain = 'clid.top';
+export const isProduction = process.env.NODE_ENV === 'production';
+export const isShortDomain = process.env.NEXT_PUBLIC_SHORT_DOMAIN === 'true';
+export const allowedDomains = isProduction ? [brandUrl, brandUrlShort] : [localUrl, brandUrl, brandUrlShort];
+export const Window = () => ('object' === typeof window && window ? (window as any) : undefined);
+
 export const LIMIT_URL_HOUR = 1;
 export const LIMIT_URL_SECOND = LIMIT_URL_HOUR * 3600;
+export const LIMIT_TOKEN_MILLISECOND = isProduction ? 3600e3 : 60e3;
 export const LIMIT_SHORTENED_HOUR = 24;
 export const LIMIT_SHORTENED_SECOND = LIMIT_SHORTENED_HOUR * 3600;
 export const LIMIT_URL_REQUEST = 5;
 export const LIMIT_RECENT_HISTORY = 5;
 export const NUM_CHARACTER_HASH = 3;
-export const localUrl = 'http://localhost:5000';
-export const brandUrl = 'https://clickdi.top';
-export const brandUrlShort = 'https://clid.top';
-export const brandUrlShortDomain = 'clid.top';
-export const Window = () => ('object' === typeof window && window ? (window as any) : undefined);
-export const isProduction = process.env.NODE_ENV === 'production';
-export const isShortDomain = process.env.NEXT_PUBLIC_SHORT_DOMAIN === 'true';
-export const allowedDomains = isProduction ? [brandUrl, brandUrlShort] : [localUrl, brandUrl, brandUrlShort];
 
 export const baseUrl = (useShortDomain: boolean = false) => {
   if (isProduction) {
@@ -40,6 +42,3 @@ export const MIX_PANEL_TOKEN = process.env.NEXT_PUBLIC_MIX_PANEL_TOKEN;
 export const PLATFORM_AUTH = process.env.NEXT_PUBLIC_PLATFORM_AUTH;
 export const SERVER_AUTH = process.env.NEXT_PUBLIC_SERVER_AUTH;
 export const TE = () => Window()?.te;
-export const RabbitMQChannel = {
-  SHORTENED: 'shortened',
-};

@@ -7,26 +7,26 @@ import { Button } from 'components/atoms/Button';
 import { Modal } from 'components/atoms/Modal';
 import { LayoutMain } from 'components/layouts/LayoutMain';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
-import dayjs from 'dayjs';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
+import {} from 'types/constants';
 import { MIXPANEL_EVENT } from 'types/utils';
 import { UAParser } from 'ua-parser-js';
 import { Referer, detectReferer } from 'utils/agent';
 import { getCountryName } from 'utils/country';
+import date, { DATE_FULL_FORMAT } from 'utils/date';
 import { useTrans } from 'utils/i18next';
 import { PAGE_SIZE, QueryKey, strictRefetch } from 'utils/requests';
 import { capitalize, copyToClipBoard, truncate } from 'utils/text';
 import { SetPassword } from './SetPassword';
 import { ValidateToken } from './ValidateToken';
 
-export const URLTracking = ({ /**  record, history, SSR then Client fetch */ hash }: { hash: string }) => {
-  const { t } = useTrans();
+export const URLTracking = ({ hash }: { hash: string }) => {
+  const { t, locale } = useTrans();
   const router = useRouter();
-  const [token, setToken] = useState('');
   const [needValidate, setNeedValidate] = useState<boolean>();
   const [parsedUA, setParsedUA] = useState();
   const [qc, setQc] = useState<number | undefined>(undefined);
@@ -34,7 +34,7 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
     undefined,
   );
 
-  const getStatsQuery = useCallback(async () => getStats({ hash, token }), [hash, token]);
+  const getStatsQuery = useCallback(async () => getStats({ hash }), [hash]);
   /* now data has only 1 history */
   const { data, isLoading, isSuccess, refetch } = useQuery({
     queryKey: QueryKey.STATS,
@@ -117,7 +117,13 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
         <div className="mx-auto max-w-7xl py-5 px-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              {data?.record && <span> {`${t('author')}: ${data?.record.ip}`}</span>}
+              {data?.record && <p> {`${t('author')}: ${data?.record.ip}`}</p>}
+              {data?.record && (
+                <p>
+                  {' '}
+                  {`${t('shortCreatedAt')}: ${date(data?.record.createdAt).locale(locale).format(DATE_FULL_FORMAT)}`}
+                </p>
+              )}
               {history?.url && (
                 <a className="block" href={history.url} target="_blank" title={history.url}>
                   URL:{' '}
@@ -212,7 +218,7 @@ export const URLTracking = ({ /**  record, history, SSR then Client fetch */ has
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
                           <Calendar className="mr-1 w-4" />
-                          {m.updatedAt ? dayjs(m.updatedAt).format('MMMM DD YYYY, HH:mm:ss') : t('unknown')}
+                          {m.updatedAt ? date(m.updatedAt).locale(locale).format(DATE_FULL_FORMAT) : t('unknown')}
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-right font-medium text-gray-900">
                           {m.fromClientSide ? (
