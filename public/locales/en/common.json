@@ -15,6 +15,7 @@
   "feedbackForgotSubject": "[CLICKDI.TOP] Forgot Password",
   "feedbackBody": "Sorry for the inconvenience, please provide more information (image would be helpful):",
   "feedbackForgotBody": "Sorry for the inconvenience, please send a ticket with content of the shortened link and sent via email associated with that shortened link. We will reset your password asap.",
+  "shortenedURL": "Shortened URL",
   "shortenSuccess": "That was fast! URL has been successfully shortened.",
   "urlShortener": "URL Shortener",
   "viewMore": "View more",
