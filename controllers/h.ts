@@ -49,7 +49,7 @@ export const handler: NextApiHandler<any> = api(async (req, res) => {
       sender: 'Dolph Notify',
       to: 'dolph.pham@gmail.com',
       subject: '[Clickdi] Heartbeat',
-      text: `${t ? TEMPLATE[t] || '' : ''}`,
+      text: `${TEMPLATE[t] || ''}`,
       attachments: [
         {
           filename: `clickdi-${date().format()}.pdf`,
