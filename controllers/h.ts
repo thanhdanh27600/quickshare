@@ -2,6 +2,7 @@ import { NextApiHandler } from 'next';
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import puppeteer from 'puppeteer';
+import { isProduction } from 'types/constants';
 import { api } from 'utils/axios';
 import date from 'utils/date';
 import HttpStatusCode from 'utils/statusCode';
@@ -25,7 +26,11 @@ export const handler: NextApiHandler<any> = api(async (req, res) => {
       pass: process.env.GMAIL_PASSWORD,
     },
   });
-  const browser = await puppeteer.launch({});
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disabled-setupid-sandbox', '--disable-gpu'],
+    executablePath: isProduction ? '/usr/bin/chromium-browser' : undefined,
+  });
 
   const page = await browser.newPage();
   await page.goto('https://clickdi.top', {
