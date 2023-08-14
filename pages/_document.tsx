@@ -1,6 +1,6 @@
 import { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
-import { isShortDomain } from 'types/constants';
+import { cdn, isShortDomain } from 'types/constants';
 
 export default function Document() {
   return (
@@ -43,12 +43,12 @@ export default function Document() {
           </>
         )}
 
-        <link rel="stylesheet" href={`/lib/styles.min.css`} />
+        <link rel="stylesheet" href={cdn(`/lib/styles.min.css`)} />
       </Head>
       <body>
         <Main />
         <NextScript />
-        <Script src={`/lib/styles.min.js`} id="external-styles" strategy="beforeInteractive" />
+        <Script src={cdn(`/lib/styles.min.js`)} id="external-styles" strategy="beforeInteractive" />
       </body>
     </Html>
   );
