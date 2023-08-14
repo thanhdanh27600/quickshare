@@ -4,7 +4,7 @@ export const brandUrlShort = 'https://clid.top';
 export const brandUrlShortDomain = 'clid.top';
 export const isProduction = process.env.NODE_ENV === 'production';
 export const cdnUrl = 'https://cdn.jsdelivr.net/gh/thanhdanh27600/clickdi@production/public';
-export const cdn = (file: string) => `${isProduction ? cdnUrl : ''}/${file}`;
+export const cdn = (file: string) => `${isProduction ? cdnUrl : ''}${file}`;
 export const isShortDomain = process.env.NEXT_PUBLIC_SHORT_DOMAIN === 'true';
 export const allowedDomains = isProduction ? [brandUrl, brandUrlShort] : [localUrl, brandUrl, brandUrlShort];
 export const Window = () => ('object' === typeof window && window ? (window as any) : undefined);

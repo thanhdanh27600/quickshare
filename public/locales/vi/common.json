@@ -15,6 +15,7 @@
   "feedbackForgotSubject": "[CLICKDI.TOP] Quên mật khẩu",
   "feedbackBody": "Rất tiếc không làm bạn hài lòng, hãy cung cấp thêm thông tin nhé (có ảnh thì tuyệt vời):",
   "feedbackForgotBody": "Rất tiếc không làm bạn hài lòng. Vui lòng gửi ticket với nội dung là link rút gọn, dùng email đăng ký cho link để gửi. Link sẽ mở khóa sớm nhất có thể.",
+  "shortenedURL": "URL rút gọn",
   "shortenSuccess": "Rút gọn link thành công!",
   "urlShortener": "Rút gọn link",
   "viewMore": "Xem thêm",
