@@ -12,7 +12,6 @@ import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { QueryKey, strictRefetch } from 'utils/requests';
 import { FeedbackLink, FeedbackTemplate } from './FeedbackLink';
-
 type URLStatsForm = {
   hash: string;
 };
@@ -20,8 +19,9 @@ type URLStatsForm = {
 export const URLStats = () => {
   const { t, locale } = useTrans();
 
-  const onSubmit: SubmitHandler<URLStatsForm> = (data) => {
-    fetchTracking.mutate({ hash: data.hash.replace(BASE_URL_SHORT + '/', '') });
+  const onSubmit: SubmitHandler<URLStatsForm> = ({ hash: h }) => {
+    const hash = h.startsWith(BASE_URL_SHORT.replace(`${location.protocol}//`, '')) ? `${location.protocol}//` + h : h;
+    fetchTracking.mutate({ hash: hash.replace(BASE_URL_SHORT + '/', '') });
   };
 
   const fetchTracking = useMutation(QueryKey.STATS, getStats);
@@ -54,7 +54,11 @@ export const URLStats = () => {
         message: t('errorNoTracking'),
       });
     } else {
-      location.href = linkWithLanguage(`${BASE_URL}/v/${getValues('hash').replace(BASE_URL_SHORT + '/', '')}`, locale);
+      const h = getValues('hash');
+      const hash = h.startsWith(BASE_URL_SHORT.replace(`${location.protocol}//`, ''))
+        ? `${location.protocol}//` + h
+        : h;
+      location.href = linkWithLanguage(`${BASE_URL}/v/${hash.replace(BASE_URL_SHORT + '/', '')}`, locale);
     }
   }, [fetchTracking.isSuccess, fetchTracking.isError]);
 
@@ -94,7 +98,10 @@ export const URLStats = () => {
             {...register('hash', {
               required: { message: t('errorNoInput'), value: true },
               validate: function (values) {
-                return values.startsWith(BASE_URL_SHORT) && /^.{3}$/.test(values.replace(BASE_URL_SHORT + '/', ''))
+                const v = values.startsWith(BASE_URL_SHORT.replace(`${location.protocol}//`, ''))
+                  ? `${location.protocol}//` + values
+                  : values;
+                return v.startsWith(BASE_URL_SHORT) && /^.{3}$/.test(v.replace(BASE_URL_SHORT + '/', ''))
                   ? undefined
                   : t('errorInvalidForward', { name: `${BASE_URL_SHORT}/xxx` });
               },

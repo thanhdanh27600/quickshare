@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
-import {} from 'types/constants';
+import { BASE_URL_SHORT } from 'types/constants';
 import { MIXPANEL_EVENT } from 'types/utils';
 import { UAParser } from 'ua-parser-js';
 import { Referer, detectReferer } from 'utils/agent';
@@ -102,6 +102,7 @@ export const URLTracking = ({ hash }: { hash: string }) => {
   const hasData = !!history?.urlForwardMeta?.length;
   const hasPassword = history?.password !== null;
   const hasMore = hasData && (history?.urlForwardMeta?.length || 0) % PAGE_SIZE === 0;
+  const clickableUrl = history ? (history.url.startsWith('http') ? history.url : `//${history.url}`) : '';
 
   return (
     <LayoutMain>
@@ -124,8 +125,20 @@ export const URLTracking = ({ hash }: { hash: string }) => {
                   {`${t('shortCreatedAt')}: ${date(data?.record.createdAt).locale(locale).format(DATE_FULL_FORMAT)}`}
                 </p>
               )}
+              {history?.hash && (
+                <a
+                  className="block"
+                  href={`${BASE_URL_SHORT}/${history.hash}`}
+                  target="_blank"
+                  title={`${BASE_URL_SHORT}/${history.hash}`}>
+                  {t('shortenedURL')}:{' '}
+                  <span className="text-cyan-500 underline decoration-1 hover:decoration-wavy">
+                    {`${BASE_URL_SHORT}/${history.hash}`.replace(`${location.protocol}//`, '')}
+                  </span>
+                </a>
+              )}
               {history?.url && (
-                <a className="block" href={history.url} target="_blank" title={history.url}>
+                <a className="block" href={clickableUrl} target="_blank" title={history.url}>
                   URL:{' '}
                   <span className="text-cyan-500 underline decoration-1 hover:decoration-wavy">
                     {truncate(history.url)}

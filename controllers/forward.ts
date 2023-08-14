@@ -1,5 +1,5 @@
 import geoIp from 'geoip-country';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import { LIMIT_SHORTENED_SECOND, REDIS_KEY, getRedisKey } from '../types/constants';
@@ -7,7 +7,7 @@ import { Forward } from '../types/forward';
 import { logger } from '../utils/logger';
 import HttpStatusCode from '../utils/statusCode';
 
-export const handler = async (req: NextApiRequest, res: NextApiResponse<Forward>) => {
+export const handler : NextApiHandler<Forward> = async (req, res) => {
   try {
     require('utils/loggerServer').info(req);
     if (req.method !== 'POST') {
