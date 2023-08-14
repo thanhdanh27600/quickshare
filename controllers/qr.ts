@@ -20,7 +20,6 @@ export const handler: NextApiHandler<QR> = api(async (req, res) => {
   }
   const QRCode = require('qrcode');
   let qr = '';
-  await new Promise((a, b) => b('dhaha'));
   qr = await QRCode.toDataURL(text, { width: 300, margin: 1 });
   return res.status(HttpStatusCode.OK).json({ qr });
 });
