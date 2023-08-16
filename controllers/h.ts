@@ -7,17 +7,10 @@ import { api } from 'utils/axios';
 import date from 'utils/date';
 import HttpStatusCode from 'utils/statusCode';
 
-const TEMPLATE = {
-  OK: `Machine is working as expected, ${date().toString()}`,
-  FAIL: `Error! Machine is down!, ${date().toString()}`,
-} as const;
-
 export const handler: NextApiHandler<any> = api(async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
   }
-  const body = req.body;
-  const t = body.t as keyof typeof TEMPLATE;
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com', // e.g., Gmail, Outlook
     port: 587,
@@ -49,7 +42,7 @@ export const handler: NextApiHandler<any> = api(async (req, res) => {
       sender: 'Dolph Notify',
       to: 'dolph.pham@gmail.com',
       subject: '[Clickdi] Heartbeat',
-      text: `${TEMPLATE[t] || ''}`,
+      text: `Machine is working as expected, ${date().toString()}`,
       attachments: [
         {
           filename: `clickdi-${date().format()}.pdf`,
@@ -61,7 +54,7 @@ export const handler: NextApiHandler<any> = api(async (req, res) => {
         },
       ],
     };
-
+    await browser.close();
     await transporter.sendMail(mailOptions);
     res.status(200).send('Email sent successfully');
   } catch (error) {
