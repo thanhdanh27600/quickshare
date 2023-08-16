@@ -190,8 +190,7 @@ export const handler: NextApiHandler = async (req, res) => {
     const element = await page.$('#body');
     const image = await element?.screenshot({ type: 'jpeg' });
     await browser.close();
-    //  image as response, or debug with compiledHTML
-
+    
     res.writeHead(200, {
       'Content-Type': 'image/jpeg',
       'Cache-Control': `immutable, no-transform, s-max-age=2592000, max-age=2592000`,
