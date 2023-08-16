@@ -54,8 +54,8 @@ export const handler: NextApiHandler<any> = api(async (req, res) => {
         },
       ],
     };
-    await browser.close();
     await transporter.sendMail(mailOptions);
+    await browser.close();
     res.status(200).send('Email sent successfully');
   } catch (error) {
     console.error('Error sending email:', error);
