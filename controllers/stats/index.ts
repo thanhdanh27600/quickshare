@@ -1,24 +1,18 @@
 import { Prisma } from '@prisma/client';
-import { NextApiRequest, NextApiResponse } from 'next';
 import requestIp from 'request-ip';
-import { z } from 'zod';
 import prisma from '../../db/prisma';
 import { LIMIT_RECENT_HISTORY, PLATFORM_AUTH } from '../../types/constants';
 import { Stats } from '../../types/stats';
-import { errorHandler } from '../../utils/axios';
+import { api, errorHandler } from '../../utils/axios';
 import { decryptS, encryptS } from '../../utils/crypto';
 import { parseIntSafe } from '../../utils/number';
 import { withQueryCursor } from '../../utils/requests';
 import HttpStatusCode from '../../utils/statusCode';
 import { validateStatsSchema } from '../../utils/validateMiddleware';
 
-export const handler = async (req: NextApiRequest, res: NextApiResponse<Stats>) => {
-  try {
-    require('utils/loggerServer').info(req);
+export const handler = api<Stats>(
+  async (req, res) => {
     const ip = requestIp.getClientIp(req) as string;
-    if (req.method !== 'GET') {
-      return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
-    }
     await validateStatsSchema.parseAsync({
       query: { ...req.query, ip },
     });
@@ -85,15 +79,8 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse<Stats>) 
     return res
       .status(HttpStatusCode.OK)
       .json({ record: history?.UrlShortenerRecord, history: history ? [history] : null });
-  } catch (error) {
-    console.error(error);
-    if (error instanceof z.ZodError) {
-      return res.status(400).json(error.issues);
-    }
-    res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .json({ errorMessage: (error as any).message || 'Something when wrong.' });
-  }
-};
+  },
+  ['GET'],
+);
 
 export * as verify from './verify';

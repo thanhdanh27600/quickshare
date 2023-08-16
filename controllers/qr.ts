@@ -1,11 +1,10 @@
-import { NextApiHandler } from 'next';
 import { QR } from '../types/qr';
 import { api, errorHandler } from '../utils/axios';
 import { decrypt } from '../utils/crypto';
 import HttpStatusCode from '../utils/statusCode';
 import { validateQrSchema } from '../utils/validateMiddleware';
 
-export const handler: NextApiHandler<QR> = api(async (req, res) => {
+export const handler = api<QR>(async (req, res) => {
   if (req.method !== 'GET') {
     return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
   }

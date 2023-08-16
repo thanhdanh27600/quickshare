@@ -29,7 +29,6 @@ const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
     }
     if (redirect) {
       location.replace(redirect);
-      return;
     } else {
       // start client-side forward
       forwardUrl.mutate({
@@ -46,8 +45,12 @@ const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
     if (!Window()) {
       return;
     }
-    if (forwardUrl.isIdle) return;
-    if (loading) return;
+    if (forwardUrl.isIdle) {
+      return;
+    }
+    if (loading) {
+      return;
+    }
     if (!url) {
       mixpanel.track(MIXPANEL_EVENT.FORWARD, {
         status: MIXPANEL_STATUS.FAILED,
@@ -95,7 +98,7 @@ const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
-    if (isProduction && context.req.headers['host'] !== brandUrlShortDomain) {
+    if (isProduction && context.req.headers?.host !== brandUrlShortDomain) {
       return {
         props: { redirect: '/' },
       };

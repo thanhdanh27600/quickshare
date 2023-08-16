@@ -1,6 +1,4 @@
-import type { NextApiHandler } from 'next';
 import requestIp from 'request-ip';
-import { z } from 'zod';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import {
@@ -13,24 +11,21 @@ import {
   getRedisKey,
 } from '../types/constants';
 import { ShortenUrl } from '../types/shorten';
+import { api } from '../utils/axios';
 import { decrypt } from '../utils/crypto';
 import HttpStatusCode from '../utils/statusCode';
-import { generateRandomString, isValidUrl } from '../utils/text';
+import { generateRandomString } from '../utils/text';
 import { validateShortenSchema } from '../utils/validateMiddleware';
 
-export const handler: NextApiHandler<ShortenUrl> = async (req, res) => {
-  try {
-    require('../utils/loggerServer').info(req);
-    if (req.method !== 'GET') {
-      return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
-    }
+export const handler = api<ShortenUrl>(
+  async (req, res) => {
     const ip = requestIp.getClientIp(req) || '';
     let url = req.query.url as string;
     await validateShortenSchema.parseAsync({
       query: { url, ip },
     });
     url = decrypt(decodeURI(url));
-    if (!isValidUrl(url)) {
+    if (!url) {
       return res.status(HttpStatusCode.BAD_REQUEST).send({
         errorMessage: 'Wrong URL format, please try again',
         errorCode: 'INVALID_URL',
@@ -100,23 +95,21 @@ export const handler: NextApiHandler<ShortenUrl> = async (req, res) => {
       }
       const dataHashClient = ['lastUrl', url, 'lastHash', targetHash, 'dbId', clientRedisId];
       await redis.hset(keyHash, dataHashClient);
+      let record = await prisma.urlShortenerRecord.findFirst({ where: { id: +clientRedisId } });
+      if (!record)
+        record = await prisma.urlShortenerRecord.create({
+          data: { ip },
+        });
       const history = await prisma.urlShortenerHistory.create({
         data: {
           url,
           hash: targetHash,
-          urlShortenerRecordId: +clientRedisId!,
+          urlShortenerRecordId: +record.id,
         },
       });
       console.log('history', history);
       return res.status(HttpStatusCode.OK).json({ url, hash: targetHash });
     }
-  } catch (error) {
-    console.error(error);
-    if (error instanceof z.ZodError) {
-      return res.status(HttpStatusCode.BAD_REQUEST).json(error.issues);
-    }
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .json({ errorMessage: (error as any).message || 'Something when wrong.' });
-  }
-};
+  },
+  ['GET'],
+);

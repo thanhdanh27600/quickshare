@@ -49,7 +49,9 @@ export const LanguageSelect = () => {
     router.push({ pathname, query }, asPath, { locale: newLocale });
   };
 
-  if (!currentLanguage) return null;
+  if (!currentLanguage) {
+    return null;
+  }
 
   return (
     <div className="flex">

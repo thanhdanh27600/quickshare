@@ -19,6 +19,15 @@ type URLStatsForm = {
 export const URLStats = () => {
   const { t, locale } = useTrans();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    setValue,
+    setError,
+  } = useForm<URLStatsForm>();
+
   const onSubmit: SubmitHandler<URLStatsForm> = ({ hash: h }) => {
     const hash = h.startsWith(BASE_URL_SHORT.replace(`${location.protocol}//`, '')) ? `${location.protocol}//` + h : h;
     fetchTracking.mutate({ hash: hash.replace(BASE_URL_SHORT + '/', '') });
@@ -30,25 +39,19 @@ export const URLStats = () => {
     queryFn: async () => getStats({ hash: '' }),
     refetchInterval: -1,
     ...strictRefetch,
+    onSuccess(data) {
+      setValue('hash', data?.history?.at(0) ? `${BASE_URL_SHORT}/${data?.history[0].hash}` : '');
+    },
   });
   const recentHistories = fetchRecord.data?.history;
-  const hasHistory = recentHistories?.length || 0 > 0;
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    setValue,
-    setError,
-  } = useForm<URLStatsForm>({
-    defaultValues: { hash: hasHistory ? `${BASE_URL_SHORT}/${fetchRecord.data?.history![0].hash}` : '' },
-  });
+  const hasHistory = (recentHistories?.length || 0) > 0;
 
   const error = errors.hash?.message; /** form error */
 
   useEffect(() => {
-    if (!fetchTracking.isSuccess && (fetchTracking.error as any)?.message !== 'UNAUTHORIZED') return;
+    if (!fetchTracking.isSuccess && (fetchTracking.error as any)?.message !== 'UNAUTHORIZED') {
+      return;
+    }
     if (!fetchTracking.data?.history && (fetchTracking.error as any)?.message !== 'UNAUTHORIZED') {
       setError('hash', {
         message: t('errorNoTracking'),
@@ -105,6 +108,7 @@ export const URLStats = () => {
                   ? undefined
                   : t('errorInvalidForward', { name: `${BASE_URL_SHORT}/xxx` });
               },
+              deps: [],
             })}
             buttonProps={{
               text: t('continue'),
