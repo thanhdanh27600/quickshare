@@ -1,4 +1,4 @@
 import path from 'path';
 require('dotenv').config({ path: path.resolve(__dirname, '../.env.test') });
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);

@@ -1,6 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { Response } from 'types/api';
 import { z } from 'zod';
+import { isProduction } from '../types/constants';
 import HttpStatusCode from './statusCode';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
@@ -17,10 +18,12 @@ export function errorHandler<T extends Response>(
 }
 
 export const catchErrorHandler = (res: NextApiResponse, error?: any) => {
-  require('./loggerServer').error(error);
+  if (!isProduction) console.error('[Error]', error);
   if (error instanceof z.ZodError) {
+    require('./loggerServer').warn(error);
     return res.status(HttpStatusCode.BAD_REQUEST).json(error.issues);
   }
+  require('./loggerServer').error(error);
   return res
     .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
     .json({ errorMessage: error.message || 'Something when wrong.' });

@@ -6,6 +6,7 @@
     "dev": "nodemon --exec 'next dev -p 5000'",
     "test": "jest --logHeapUsage --forceExit",
     "migrate:dev": "npx prisma migrate dev --name",
+    "migrate:status": "npx prisma migrate status",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
