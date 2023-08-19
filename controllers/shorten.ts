@@ -1,3 +1,4 @@
+import { UrlShortenerRecord } from '@prisma/client';
 import requestIp from 'request-ip';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
@@ -68,6 +69,7 @@ export const handler = api<ShortenUrl>(
       await redis.expire(hashShortenedLinkKey, LIMIT_SHORTENED_SECOND);
       await redis.incr(keyLimit);
       const keyHash = getRedisKey(REDIS_KEY.HASH_HISTORY_BY_ID, ip);
+      let record: UrlShortenerRecord | null = null;
       // retrive client id and write to db
       let clientRedisId = await redis.hget(keyHash, 'dbId');
       if (!clientRedisId) {
@@ -79,7 +81,7 @@ export const handler = api<ShortenUrl>(
         });
         if (!clientDb) {
           // new client's ip
-          let record = await prisma.urlShortenerRecord.findFirst({
+          record = await prisma.urlShortenerRecord.findFirst({
             where: { ip },
           });
           if (!record) {
@@ -95,7 +97,7 @@ export const handler = api<ShortenUrl>(
       }
       const dataHashClient = ['lastUrl', url, 'lastHash', targetHash, 'dbId', clientRedisId];
       await redis.hset(keyHash, dataHashClient);
-      let record = await prisma.urlShortenerRecord.findFirst({ where: { id: +clientRedisId } });
+      record = record ?? (await prisma.urlShortenerRecord.findFirst({ where: { ip } }));
       if (!record)
         record = await prisma.urlShortenerRecord.create({
           data: { ip },

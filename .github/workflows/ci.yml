@@ -19,7 +19,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
+      - name: Decrypt secret
+        run: ./scripts/decrypt_secret.sh
+        env:
+          SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
       - run: npm i
       - run: npm run lint
-      # - run: npm run test
-      # - run: npm test
+      - run: npm run test

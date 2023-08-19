@@ -3,9 +3,13 @@ module.exports = {
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules', '/.next'],
   setupFilesAfterEnv: ['./test/index.ts'],
-  globals: {
-    'ts-jest': {
-      isolatedModules: true,
-    },
+  transform: {
+    '^.+\\.{ts|tsx}?$': [
+      'ts-jest',
+      {
+        isolatedModules: true,
+        tsConfig: 'tsconfig.json',
+      },
+    ],
   },
 };

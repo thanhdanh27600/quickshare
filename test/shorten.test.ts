@@ -78,10 +78,12 @@ describe('Test /api/shorten...', () => {
     });
 
     it('Should shortened URL OK', async () => {
-      await redis.set(key, 0);
+      await redis.expire(key, 0);
+
       const { req, res } = createMocks({
         method: 'GET',
         query: { url: 'U2FsdGVkX19lPT7tc2v+EAQ+q+S+QmgedQXJPLAhhjZDskrGAPv+kdWEm624npUtHaEGmCTcJHbFaYeZAv+FQw==' },
+        headers: { 'x-forwarded-for': ip },
       });
       await controller.shorten.handler(req, res);
       expect(res._getStatusCode()).toBe(HttpStatusCode.OK);
