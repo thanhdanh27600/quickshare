@@ -3,6 +3,7 @@ export const brandUrl = 'https://clickdi.top';
 export const brandUrlShort = 'https://clid.top';
 export const brandUrlShortDomain = 'clid.top';
 export const isProduction = process.env.NODE_ENV === 'production';
+export const isTest = process.env.NODE_ENV === 'test';
 export const cdnUrl = 'https://cdn.jsdelivr.net/gh/thanhdanh27600/clickdi@production/public';
 export const cdn = (file: string) => `${isProduction ? cdnUrl : ''}${file}`;
 export const isShortDomain = process.env.NEXT_PUBLIC_SHORT_DOMAIN === 'true';

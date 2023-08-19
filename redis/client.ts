@@ -1,8 +1,7 @@
 import { Redis, RedisOptions } from 'ioredis';
-import { isProduction } from '../types/constants';
 
 const redisConfig = {
-  host: isProduction ? 'cache' : '127.0.0.1',
+  host: process.env.REDIS_HOST,
   password: process.env.REDIS_AUTH,
   port: '6379',
 };

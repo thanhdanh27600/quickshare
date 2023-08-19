@@ -1,18 +1,15 @@
 import geoIp from 'geoip-country';
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import { LIMIT_SHORTENED_SECOND, REDIS_KEY, getRedisKey } from '../types/constants';
 import { Forward } from '../types/forward';
+import { api } from '../utils/axios';
 import { logger } from '../utils/logger';
 import HttpStatusCode from '../utils/statusCode';
 
-export const handler : NextApiHandler<Forward> = async (req, res) => {
-  try {
-    require('utils/loggerServer').info(req);
-    if (req.method !== 'POST') {
-      return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
-    }
+export const handler = api(
+  async (req, res) => {
     const hash = req.body.hash as string;
     const userAgent = req.body.userAgent as string;
     const ip = req.body.ip as string;
@@ -35,11 +32,6 @@ export const handler : NextApiHandler<Forward> = async (req, res) => {
     const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASHED_URL, hash);
     const shortenedUrlCache = await redis.hget(hashShortenedLinkKey, 'url');
     if (shortenedUrlCache) {
-      // RabbitMQService.publish({
-      //   type: MessageType.FORWARD,
-      //   data,
-      // });
-
       // cache hit
       console.log('cache hit', data);
       postProcessForward(data); // bypass process
@@ -48,14 +40,9 @@ export const handler : NextApiHandler<Forward> = async (req, res) => {
     // cache missed
     console.log('cache missed', data);
     await postProcessForward(data, res);
-  } catch (error) {
-    console.error(error);
-    await prisma.$disconnect();
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .json({ errorMessage: (error as any).message || 'Something when wrong.' });
-  }
-};
+  },
+  ['POST'],
+);
 
 export const postProcessForward = async (payload: any, res?: NextApiResponse<Forward>) => {
   const { hash, ip, userAgent, fromClientSide, lookupIp } = payload;

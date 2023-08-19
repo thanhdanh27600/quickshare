@@ -35,10 +35,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-encrypt.sh
 *.env
 *.env.test
 *.env.production
 prisma/*.db*
 /logs
 *.log
+scripts/migrate/

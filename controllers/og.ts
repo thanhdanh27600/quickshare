@@ -1,8 +1,8 @@
 import Handlebars from 'handlebars';
-import { NextApiHandler } from 'next';
 import puppeteer from 'puppeteer';
 import { z } from 'zod';
 import { isProduction } from '../types/constants';
+import { api } from '../utils/axios';
 import { decrypt } from '../utils/crypto';
 import HttpStatusCode from '../utils/statusCode';
 import { validateOgSchema } from '../utils/validateMiddleware';
@@ -126,85 +126,87 @@ function getFontSize(title = '') {
   return '5rem';
 }
 
-export const handler: NextApiHandler = async (req, res) => {
-  try {
-    require('utils/loggerServer').info(req);
-    if (req.method !== 'GET') {
-      return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
+export const handler = api(
+  async (req, res) => {
+    try {
+      require('utils/loggerServer').info(req);
+      if (req.method !== 'GET') {
+        return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
+      }
+      const title = decrypt(decodeURIComponent(req.query.title as string));
+      await validateOgSchema.parseAsync({
+        query: { title: !!title ? title : undefined },
+      });
+      // compile templateStyles
+      const compiledStyles = Handlebars.compile(templateStylesOg)({
+        bgUrl: req.query.bgUrl,
+        fontSize: getFontSize(title),
+      });
+
+      // compile templateHTML
+      const compiledHTML = Handlebars.compile(templateHTMLOg)({
+        logoUrl: req.query.logoUrl,
+        title,
+        tags: req.query.tags,
+        path: req.query.path,
+        styles: compiledStyles,
+      });
+
+      const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disabled-setupid-sandbox', '--disable-gpu'],
+        defaultViewport: {
+          width: 1200,
+          height: 630,
+          deviceScaleFactor: 1,
+        },
+        executablePath: isProduction ? '/usr/bin/chromium-browser' : undefined,
+      });
+      const page = await browser.newPage();
+
+      // Set the content to our rendered HTML
+      await page.setContent(compiledHTML, { waitUntil: 'domcontentloaded' });
+      // Wait until all images and fonts have loaded
+      await page.evaluate(async () => {
+        const selectors = Array.from(document.querySelectorAll('img'));
+        await Promise.all([
+          document.fonts.ready,
+          ...selectors.map((img) => {
+            // Image has already finished loading, let’s see if it worked
+            if (img.complete) {
+              // Image loaded and has presence
+              if (img.naturalHeight !== 0) return;
+              // Image failed, so it has no height
+              throw new Error('Image failed to load');
+            }
+            // Image hasn’t loaded yet, added an event listener to know when it does
+            return new Promise((resolve, reject) => {
+              img.addEventListener('load', resolve);
+              img.addEventListener('error', reject);
+            });
+          }),
+        ]);
+      });
+
+      const element = await page.$('#body');
+      const image = await element?.screenshot({ type: 'jpeg' });
+      await browser.close();
+
+      res.writeHead(200, {
+        'Content-Type': 'image/jpeg',
+        'Cache-Control': `immutable, no-transform, s-max-age=2592000, max-age=2592000`,
+      });
+      res.end(image);
+      // res.status(200).send(compiledHTML);
+    } catch (error) {
+      console.error(error);
+      if (error instanceof z.ZodError) {
+        return res.status(HttpStatusCode.BAD_REQUEST).json(error.issues);
+      }
+      res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .json({ errorMessage: (error as any).message || 'Something when wrong.' });
     }
-    const title = decrypt(decodeURIComponent(req.query.title as string));
-    await validateOgSchema.parseAsync({
-      query: { title: !!title ? title : undefined },
-    });
-    // compile templateStyles
-    const compiledStyles = Handlebars.compile(templateStylesOg)({
-      bgUrl: req.query.bgUrl,
-      fontSize: getFontSize(title),
-    });
-
-    // compile templateHTML
-    const compiledHTML = Handlebars.compile(templateHTMLOg)({
-      logoUrl: req.query.logoUrl,
-      title,
-      tags: req.query.tags,
-      path: req.query.path,
-      styles: compiledStyles,
-    });
-
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disabled-setupid-sandbox', '--disable-gpu'],
-      defaultViewport: {
-        width: 1200,
-        height: 630,
-        deviceScaleFactor: 1,
-      },
-      executablePath: isProduction ? '/usr/bin/chromium-browser' : undefined,
-    });
-    const page = await browser.newPage();
-
-    // Set the content to our rendered HTML
-    await page.setContent(compiledHTML, { waitUntil: 'domcontentloaded' });
-    // Wait until all images and fonts have loaded
-    await page.evaluate(async () => {
-      const selectors = Array.from(document.querySelectorAll('img'));
-      await Promise.all([
-        document.fonts.ready,
-        ...selectors.map((img) => {
-          // Image has already finished loading, let’s see if it worked
-          if (img.complete) {
-            // Image loaded and has presence
-            if (img.naturalHeight !== 0) return;
-            // Image failed, so it has no height
-            throw new Error('Image failed to load');
-          }
-          // Image hasn’t loaded yet, added an event listener to know when it does
-          return new Promise((resolve, reject) => {
-            img.addEventListener('load', resolve);
-            img.addEventListener('error', reject);
-          });
-        }),
-      ]);
-    });
-
-    const element = await page.$('#body');
-    const image = await element?.screenshot({ type: 'jpeg' });
-    await browser.close();
-    //  image as response, or debug with compiledHTML
-
-    res.writeHead(200, {
-      'Content-Type': 'image/jpeg',
-      'Cache-Control': `immutable, no-transform, s-max-age=2592000, max-age=2592000`,
-    });
-    res.end(image);
-    // res.status(200).send(compiledHTML);
-  } catch (error) {
-    console.error(error);
-    if (error instanceof z.ZodError) {
-      return res.status(HttpStatusCode.BAD_REQUEST).json(error.issues);
-    }
-    res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .json({ errorMessage: (error as any).message || 'Something when wrong.' });
-  }
-};
+  },
+  ['GET'],
+);

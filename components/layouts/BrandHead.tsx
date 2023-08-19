@@ -4,7 +4,9 @@ import { useTrans } from 'utils/i18next';
 
 export const BrandHead = () => {
   const { t } = useTrans();
-  if (isShortDomain) return null;
+  if (isShortDomain) {
+    return null;
+  }
   return (
     <Head>
       {/* Primary Meta Tags */}

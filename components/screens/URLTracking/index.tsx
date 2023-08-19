@@ -68,6 +68,7 @@ export const URLTracking = ({ hash }: { hash: string }) => {
             urlForwardMeta: [...h.urlForwardMeta, ...(!!data.history?.length ? data.history[0].urlForwardMeta! : [])],
           };
         }
+        return undefined;
       });
     },
   });
@@ -82,14 +83,16 @@ export const URLTracking = ({ hash }: { hash: string }) => {
   const onLoadMore = () => {
     setQc((_) => {
       const _qc = history?.urlForwardMeta?.at(-1)?.id;
-      if (!statsMore.isLoading) statsMore.mutate({ hash, queryCursor: _qc });
+      if (!statsMore.isLoading) {
+        statsMore.mutate({ hash, queryCursor: _qc });
+      }
       return _qc;
     });
   };
 
   useEffect(() => {
-    if (isSuccess) {
-      if (!data?.record && !data?.history) router.replace('/');
+    if (isSuccess && !data?.record && !data?.history) {
+      router.replace('/');
     }
   }, [isSuccess]);
 
@@ -97,7 +100,9 @@ export const URLTracking = ({ hash }: { hash: string }) => {
     mixpanel.track(MIXPANEL_EVENT.TRACKING);
   }, []);
 
-  if (isLoading) return null;
+  if (isLoading) {
+    return null;
+  }
 
   const hasData = !!history?.urlForwardMeta?.length;
   const hasPassword = history?.password !== null;

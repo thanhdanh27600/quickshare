@@ -1,7 +1,10 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { Response } from 'types/api';
 import { z } from 'zod';
+import { isProduction } from '../types/constants';
 import HttpStatusCode from './statusCode';
+
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
 
 export function errorHandler<T extends Response>(
   res: NextApiResponse<T>,
@@ -15,19 +18,24 @@ export function errorHandler<T extends Response>(
 }
 
 export const catchErrorHandler = (res: NextApiResponse, error?: any) => {
-  require('utils/loggerServer').error(error);
+  if (!isProduction) console.error('[Error]', error);
   if (error instanceof z.ZodError) {
+    require('./loggerServer').warn(error);
     return res.status(HttpStatusCode.BAD_REQUEST).json(error.issues);
   }
+  require('./loggerServer').error(error);
   return res
     .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
     .json({ errorMessage: error.message || 'Something when wrong.' });
 };
 
 export const api =
-  <T>(f: NextApiHandler<T>) =>
-  async (req: NextApiRequest, res: NextApiResponse<T>) => {
-    require('utils/loggerServer').info(req);
+  <T extends Response = any>(f: NextApiHandler<T>, allowMethods?: HttpMethod[]) =>
+  async (req: NextApiRequest, res: NextApiResponse<T | Response>) => {
+    require('./loggerServer').info(req);
+    if (allowMethods && !allowMethods.includes(req.method as HttpMethod)) {
+      return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
+    }
     try {
       await f(req, res);
     } catch (error: any) {

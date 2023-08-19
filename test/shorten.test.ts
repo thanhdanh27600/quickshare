@@ -57,6 +57,7 @@ describe('Test /api/shorten...', () => {
 
     it('Should throw error when reached limit request', async () => {
       await redis.expire(key, 0);
+      const requests = [];
 
       for (let i = 0; i < 5; i++) {
         let { req, res } = createMocks({
@@ -66,8 +67,9 @@ describe('Test /api/shorten...', () => {
           },
           headers: { 'x-forwarded-for': ip },
         });
-        await controller.shorten.handler(req, res);
+        requests.push(controller.shorten.handler(req, res));
       }
+      await Promise.all(requests);
       const { req, res } = createMocks({
         method: 'GET',
         query: { url: 'U2FsdGVkX19lPT7tc2v+EAQ+q+S+QmgedQXJPLAhhjZDskrGAPv+kdWEm624npUtHaEGmCTcJHbFaYeZAv+FQw==' },
@@ -78,10 +80,12 @@ describe('Test /api/shorten...', () => {
     });
 
     it('Should shortened URL OK', async () => {
-      await redis.set(key, 0);
+      await redis.expire(key, 0);
+
       const { req, res } = createMocks({
         method: 'GET',
         query: { url: 'U2FsdGVkX19lPT7tc2v+EAQ+q+S+QmgedQXJPLAhhjZDskrGAPv+kdWEm624npUtHaEGmCTcJHbFaYeZAv+FQw==' },
+        headers: { 'x-forwarded-for': ip },
       });
       await controller.shorten.handler(req, res);
       expect(res._getStatusCode()).toBe(HttpStatusCode.OK);
