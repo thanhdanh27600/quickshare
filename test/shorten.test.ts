@@ -83,7 +83,6 @@ describe('Test /api/shorten...', () => {
       const { req, res } = createMocks({
         method: 'GET',
         query: { url: 'U2FsdGVkX19lPT7tc2v+EAQ+q+S+QmgedQXJPLAhhjZDskrGAPv+kdWEm624npUtHaEGmCTcJHbFaYeZAv+FQw==' },
-        headers: { 'x-forwarded-for': ip },
       });
       await controller.shorten.handler(req, res);
       expect(res._getStatusCode()).toBe(HttpStatusCode.OK);

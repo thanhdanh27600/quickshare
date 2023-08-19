@@ -1,19 +1,29 @@
 import pino from 'pino';
-import { isProduction } from '../types/constants';
+import { isProduction, isTest } from '../types/constants';
 
-const fileTransport = pino.transport({
-  target: 'pino/file',
-  options: { destination: isProduction ? `pino.log` : `./logs/pino.log` },
-});
-
-module.exports = pino(
-  {
-    formatters: {
-      level: (label: string) => {
-        return { level: label.toUpperCase() };
+module.exports = isTest
+  ? {
+      info(message: any) {
+        console.log('[INFO]: ', message);
       },
-    },
-    timestamp: pino.stdTimeFunctions.isoTime,
-  },
-  fileTransport,
-);
+      warn(message: any) {
+        console.warn('[WARN]: ', message);
+      },
+      error(message: any) {
+        console.error('[WARN]: ', message);
+      },
+    }
+  : pino(
+      {
+        formatters: {
+          level: (label: string) => {
+            return { level: label.toUpperCase() };
+          },
+        },
+        timestamp: pino.stdTimeFunctions.isoTime,
+      },
+      pino.transport({
+        target: 'pino/file',
+        options: { destination: isProduction ? `pino.log` : `./logs/pino.log` },
+      }),
+    );
