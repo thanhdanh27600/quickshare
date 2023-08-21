@@ -7,7 +7,7 @@ name: CI
 
 on:
   push:
-    branches: [staging]
+    branches: [staging-temp]
 
 jobs:
   CI:
