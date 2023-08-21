@@ -44,4 +44,4 @@ jobs:
           app-name: 'dolph'
           slot-name: 'production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_1234 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6D36D7A4251D49969616B92A50D8D2DD }}
