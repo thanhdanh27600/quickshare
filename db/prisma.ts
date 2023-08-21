@@ -1,8 +1,9 @@
 import { PrismaClient } from '@prisma/client';
+import { isProduction } from '../types/constants';
 
 let prisma: PrismaClient;
 
-if (process.env.NODE_ENV === 'production') {
+if (isProduction) {
   prisma = new PrismaClient();
 } else {
   if (!(global as any).prisma) {

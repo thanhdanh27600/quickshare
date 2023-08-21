@@ -18,10 +18,11 @@ export const DefaultNotFound = () => (
 );
 
 export const pg = <T,>(Component: FC<T>, option?: Option) => {
+  console.log('option', option);
   // Domain guard
   if (!!option && typeof option.fullDomain !== 'undefined') {
-    if (option.fullDomain && isShortDomain) return option.returnIfFalse || DefaultNotFound;
-    if (!option.fullDomain && !isShortDomain) return option.returnIfFalse || DefaultNotFound;
+    if (option.fullDomain && isShortDomain) return option.returnIfFalse ?? DefaultNotFound;
+    if (!option.fullDomain && !isShortDomain) return option.returnIfFalse ?? DefaultNotFound;
   }
   // Other guard
   // ...
