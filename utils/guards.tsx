@@ -5,10 +5,10 @@ import { brandUrl, isShortDomain } from '../types/constants';
 
 interface Option {
   fullDomain?: boolean;
-  returnIfFalse?: JSX.Element;
+  returnIfFalse?: FC | JSX.Element;
 }
 
-const DefaultNotFound = () => (
+export const DefaultNotFound = () => (
   <div className="mt-8 flex flex-col items-center justify-center">
     <p className="text-center">404 - PAGE NOT FOUND</p>
     <a href={brandUrl} className="mt-4">
@@ -28,5 +28,7 @@ export const pg = <T,>(Component: FC<T>, option?: Option) => {
   return Component;
 };
 
-export const pgFullDomain = <T,>(Component: FC<T>) => pg(Component, { fullDomain: true });
-export const pgShortDomain = <T,>(Component: FC<T>) => pg(Component, { fullDomain: false });
+export const pgFullDomain = <T,>(Component: FC<T>, option?: Omit<Option, 'fullDomain'>) =>
+  pg(Component, { fullDomain: true, ...option });
+export const pgShortDomain = <T,>(Component: FC<T>, option?: Omit<Option, 'fullDomain'>) =>
+  pg(Component, { fullDomain: false, ...option });
