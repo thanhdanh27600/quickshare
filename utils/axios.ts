@@ -42,3 +42,9 @@ export const api =
       return catchErrorHandler(res, error);
     }
   };
+
+export const badRequest = (res: NextApiResponse) =>
+  res.status(HttpStatusCode.BAD_REQUEST).send({
+    errorMessage: 'You have submitted wrong data, please try again',
+    errorCode: 'BAD_REQUEST',
+  });

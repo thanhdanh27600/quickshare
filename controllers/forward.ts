@@ -4,7 +4,7 @@ import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import { LIMIT_SHORTENED_SECOND, REDIS_KEY, getRedisKey } from '../types/constants';
 import { Forward } from '../types/forward';
-import { api } from '../utils/axios';
+import { api, badRequest } from '../utils/axios';
 import { logger } from '../utils/logger';
 import HttpStatusCode from '../utils/statusCode';
 
@@ -15,10 +15,7 @@ export const handler = api(
     const ip = req.body.ip as string;
     const fromClientSide = req.body.fromClientSide as string;
     if (!hash) {
-      return res.status(HttpStatusCode.BAD_REQUEST).send({
-        errorMessage: 'You have submitted wrong data, please try again',
-        errorCode: 'BAD_REQUEST',
-      });
+      return badRequest(res);
     }
     let lookupIp;
     if (ip) {
@@ -53,13 +50,7 @@ export const postProcessForward = async (payload: any, res?: NextApiResponse<For
   });
 
   if (!history) {
-    await prisma.$disconnect();
-    return res
-      ? res.status(HttpStatusCode.BAD_REQUEST).send({
-          errorMessage: 'No URL was found',
-          errorCode: 'BAD_REQUEST',
-        })
-      : null;
+    return res ? badRequest(res) : null;
   }
 
   await prisma.urlForwardMeta.upsert({
@@ -82,7 +73,6 @@ export const postProcessForward = async (payload: any, res?: NextApiResponse<For
       fromClientSide: !!fromClientSide,
     },
   });
-  await prisma.$disconnect();
 
   if (res) {
     // write back to cache
