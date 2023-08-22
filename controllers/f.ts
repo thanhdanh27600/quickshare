@@ -1,4 +1,4 @@
-import HttpStatusCode from 'utils/statusCode';
+import HttpStatusCode from '../utils/statusCode';
 import prisma from '../db/prisma';
 import { api, badRequest } from '../utils/axios';
 

@@ -1,5 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { Response } from 'types/api';
+import { Response } from '../types/api';
 import { z } from 'zod';
 import { isProduction } from '../types/constants';
 import HttpStatusCode from './statusCode';
