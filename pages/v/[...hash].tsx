@@ -1,7 +1,11 @@
-import { URLTracking } from 'components/screens/URLTracking';
 import { GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import dynamic from 'next/dynamic';
 import { pgFullDomain } from 'utils/guards';
+
+const URLTracking = dynamic(() => import('../../components/screens/URLTracking').then((mod) => mod.URLTracking));
+
+const Component = (props: any) => <URLTracking hash={props.hash} />;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { hash } = context.query;
@@ -18,4 +22,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 }
 
-export default pgFullDomain(URLTracking);
+export default pgFullDomain(Component);
