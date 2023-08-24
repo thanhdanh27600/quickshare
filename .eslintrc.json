@@ -20,7 +20,7 @@
     "no-new": 2,
     "no-octal-escape": 2,
     "no-param-reassign": 2,
-    "no-process-env": 1,
+    "no-process-env": 0,
     "no-proto": 2,
     "no-redeclare": 2,
     "no-return-assign": 2,
@@ -39,8 +39,8 @@
       }
     ],
     "block-scoped-var": 1,
-    "consistent-return": 2,
-    "curly": 2,
+    "consistent-return": 0,
+    "curly": 0,
     "default-case": 1,
     // the dot goes with the property when doing multiline
     "dot-location": [1, "property"],
@@ -51,7 +51,7 @@
     "no-caller": 2,
     "no-case-declarations": 1,
     "no-div-regex": 1,
-    "no-else-return": 1,
+    "no-else-return": 2,
     "no-empty-pattern": 1,
     "no-eq-null": 1,
     "no-eval": 2,
