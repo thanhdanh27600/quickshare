@@ -24,7 +24,8 @@
   "country": "Quốc gia",
   "userAgent": "User Agent",
   "date": "Thời gian",
-  "clickedByHuman": "Số lượt click",
+  "totalClick": "Số lượt click",
+  "clickedByHuman": "Click thật / bot",
   "copyRawInfo": "copy đầy đủ",
   "trackingLive": "Theo dõi link trực tiếp",
   "shareFacebook": "Chia sẻ Facebook",
@@ -45,10 +46,12 @@
   "unlock": "Mở khóa",
   "inputManyTimes": "Nhập quá nhiều lần. Refresh trang và thử lại.",
   "autoUpdate": "Tự động cập nhật",
+  "refresh": "Cập nhật lại",
   "noData": "Chưa có dữ liệu",
   "helpShortUrlHead": "- Rút gọn mọi link thành 3 ký tự định danh xxx (clid.top/xxx)\n- Link lưu theo IP, không cần đăng nhập\n- Để theo dõi link, vào \"Xem thêm\"\n- Theo dõi link rút gọn là công khai, trừ khi đặt mật khẩu",
   "ogBrand": "U2FsdGVkX1/peYMg6O52ZA6SJEW4ehfDrnQIHtZraMP+Dby16K1dgvrghOpE0DRGJLK9GyCc911FkTbB8jlOt6BzKSZY9FJ8npAFD0HnaBU=",
   "brandTitle": "Clickdi - Rút gọn link miễn phí",
   "brandDescription": "Clickdi rút gọn URL miễn phí. Clickdi rút gọn link nhanh chóng, giúp bạn theo dõi các đường dẫn được rút gọn, số lượng lượt nhấp chuột, vị trí của và các dữ liệu liên quan khác.",
-  "advancedView": "Xem nâng cao"
+  "advancedView": "Xem nâng cao",
+  "loadMore": "Xem thêm"
 }
