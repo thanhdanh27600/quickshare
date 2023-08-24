@@ -121,9 +121,9 @@ function getFontSize(title = '') {
   const titleLength = title.length;
   if (titleLength > 100) return '2.5rem';
   if (titleLength > 80) return '3rem';
-  if (titleLength > 60) return '3.5rem';
-  if (titleLength > 40) return '4rem';
-  if (titleLength > 30) return '4.5rem';
+  if (titleLength > 60) return '3.75rem';
+  if (titleLength > 40) return '4.25rem';
+  if (titleLength > 30) return '4.75rem';
   return '5rem';
 }
 
