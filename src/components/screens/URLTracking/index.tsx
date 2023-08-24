@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
-import { BASE_URL_SHORT } from 'types/constants';
+import { BASE_URL_SHORT, Window } from 'types/constants';
 import { MIXPANEL_EVENT } from 'types/utils';
 import { UAParser } from 'ua-parser-js';
 import { Referer, detectReferer } from 'utils/agent';
@@ -153,9 +153,20 @@ export const URLTracking = ({ hash }: { hash: string }) => {
             </div>
             {!hasPassword && <SetPassword hash={hash} />}
           </div>
-          <div className="mt-2 text-sm text-gray-500">
-            <span className={clsx(!!qc ? 'text-red-500' : 'text-green-500')}>•</span> <span>{t('autoUpdate')}</span>
-            <RefreshCw className="absolute mt-1 ml-1 w-2" />
+          <div className={clsx('mt-2 flex items-end justify-between text-sm text-gray-500', !!qc && 'pr-4')}>
+            <p className="text-lg capitalize text-cyan-500">
+              {`${t('totalClick')}: `}{' '}
+              <span className="text-3xl font-bold">{(history as any)?._count?.urlForwardMeta}</span>
+            </p>
+            <button
+              disabled={!qc}
+              className={clsx(qc && 'transition-all hover:text-cyan-500')}
+              onClick={() => Window()?.location.reload()}>
+              <span className={clsx('text-sm', !!qc ? 'text-red-500 ' : 'text-green-500')}>•</span>{' '}
+              {!qc && <span>{t('autoUpdate')}</span>}
+              {!!qc && <span className={clsx(qc && 'hover:underline')}>{t('refresh')}</span>}
+              {!!qc && <RefreshCw className="absolute mt-1 ml-1 w-2" />}
+            </button>
           </div>
 
           <div className="relative mt-2 shadow-md">
@@ -176,9 +187,7 @@ export const URLTracking = ({ hash }: { hash: string }) => {
                       <span className="">{t('date')}</span>
                     </th>
                     <th className="px-6 py-3 text-right">
-                      <span className="float-right block w-32">
-                        {t('clickedByHuman')} ({(history as any)?._count?.urlForwardMeta})
-                      </span>
+                      <span className="float-right block w-32">{t('clickedByHuman')}</span>
                     </th>
                   </tr>
                 </thead>
@@ -255,7 +264,7 @@ export const URLTracking = ({ hash }: { hash: string }) => {
                     <tr>
                       <td colSpan={5}>
                         <div className="flex justify-center py-4">
-                          <Button text="Load more" onClick={onLoadMore} loading={statsMore.isLoading} />
+                          <Button text={t('loadMore')} onClick={onLoadMore} loading={statsMore.isLoading} />
                         </div>
                       </td>
                     </tr>

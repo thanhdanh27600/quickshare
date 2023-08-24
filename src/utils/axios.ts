@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { Response } from '../types/api';
 import { z } from 'zod';
+import { Response } from '../types/api';
 import { isProduction } from '../types/constants';
 import HttpStatusCode from './statusCode';
 
@@ -43,8 +43,12 @@ export const api =
     }
   };
 
-export const badRequest = (res: NextApiResponse) =>
+export const successHandler = <T = any>(res: NextApiResponse<T>, data: T) => {
+  return res.status(HttpStatusCode.OK).json(data);
+};
+
+export const badRequest = (res: NextApiResponse, message?: string) =>
   res.status(HttpStatusCode.BAD_REQUEST).send({
-    errorMessage: 'You have submitted wrong data, please try again',
+    errorMessage: message ?? 'You have submitted wrong data, please try again',
     errorCode: 'BAD_REQUEST',
   });

@@ -1,9 +1,9 @@
 import { TOptions } from 'i18next';
 import { useTranslation } from 'next-i18next';
-import common from 'public/locales/vi/common.json';
 import { UseTranslationOptions } from 'react-i18next';
 import { BASE_URL } from 'types/constants';
 import { Locale, Locales, locales } from 'types/locale';
+import common from '../../public/locales/vi/common.json';
 
 export type LanguageNamespaces = {
   common: keyof typeof common;

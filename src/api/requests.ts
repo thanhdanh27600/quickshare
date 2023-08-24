@@ -6,8 +6,8 @@ import { ShortenUrl } from 'types/shorten';
 import { Stats } from 'types/stats';
 import { API, withAuth } from './axios';
 
-export const createShortenUrlRequest = async (url: string) => {
-  const rs = await API.get(`/api/shorten?url=${url}`);
+export const getOrCreateShortenUrlRequest = async ({ url, hash }: { url?: string; hash?: string }) => {
+  const rs = await API.get(hash ? `/api/shorten?hash=${hash}` : `/api/shorten?url=${url}`);
   const data = rs.data;
   return data as ShortenUrl;
 };

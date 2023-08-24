@@ -6,9 +6,18 @@ export const validateShortenSchema = z.object({
     ip: z.string({
       required_error: 'IP is required',
     }),
-    url: z.string({
-      required_error: 'Url is required',
-    }),
+    url: z
+      .string({
+        description: 'Url is required',
+      })
+      .nullable(),
+    hash: z.nullable(
+      z
+        .string({
+          required_error: 'Hash is required',
+        })
+        .refine((value) => (!value ? true : /^.{3}$/.test(value || '')), 'Wrong hash format'),
+    ),
   }),
 });
 

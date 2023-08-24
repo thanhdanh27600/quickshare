@@ -12,7 +12,7 @@ import {
   getRedisKey,
 } from '../types/constants';
 import { ShortenUrl } from '../types/shorten';
-import { api } from '../utils/axios';
+import { api, badRequest, successHandler } from '../utils/axios';
 import { decrypt } from '../utils/crypto';
 import HttpStatusCode from '../utils/statusCode';
 import { generateRandomString } from '../utils/text';
@@ -21,18 +21,29 @@ import { validateShortenSchema } from '../utils/validateMiddleware';
 export const handler = api<ShortenUrl>(
   async (req, res) => {
     const ip = requestIp.getClientIp(req) || '';
-    let url = req.query.url as string;
+    let url = (req.query.url as string) || null;
+    let hash = (req.query.hash as string) || null;
     await validateShortenSchema.parseAsync({
-      query: { url, ip },
+      query: { url, hash, ip },
     });
-    url = decrypt(decodeURI(url));
-    if (!url) {
+    url = decrypt(decodeURI(url || ''));
+    if (!url && !hash) {
       return res.status(HttpStatusCode.BAD_REQUEST).send({
-        errorMessage: 'Wrong URL format, please try again',
+        errorMessage: 'Wrong shorten format, please try again',
         errorCode: 'INVALID_URL',
       });
     }
-    // check or reset get link limit
+    // if hash then retrieve from cache & db
+    if (hash) {
+      const keyHash = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASHED_URL, hash);
+      let url = await redis.hget(keyHash, 'url');
+      if (!url) {
+        url = (await prisma.urlShortenerHistory.findFirst({ where: { hash } }))?.url || '';
+      }
+      if (url) return successHandler(res, { url, hash });
+      return badRequest(res, "No URL was found on your request. Let's shorten one!");
+    }
+    // check or reset get request limit
     const keyLimit = getRedisKey(REDIS_KEY.HASH_LIMIT, ip);
     const ttl = await redis.ttl(keyLimit);
     if (ttl < 0) {
@@ -57,11 +68,15 @@ export const handler = api<ShortenUrl>(
       while (isExist) {
         timesLimit > 0 && console.log('timesLimit', timesLimit);
         if (timesLimit++ > 10 /** U better buy lucky ticket */) {
-          throw new Error('Bad URL, please try again');
+          throw new Error('Bad URL after digging our hash, please try again!');
         }
         targetHash = generateRandomString(NUM_CHARACTER_HASH);
         hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASHED_URL, targetHash);
         isExist = await redis.hexists(hashShortenedLinkKey, 'url');
+        // also check db if not collapse in cache
+        if (!isExist) {
+          isExist = !!(await prisma.urlShortenerHistory.findFirst({ where: { hash: targetHash } })) ? 1 : 0;
+        }
       }
       // write hash to cache, increment limit
       const dataHashShortenLink = ['url', url, 'updatedAt', new Date().getTime()];
@@ -71,8 +86,8 @@ export const handler = api<ShortenUrl>(
       const keyHash = getRedisKey(REDIS_KEY.HASH_HISTORY_BY_ID, ip);
       let record: UrlShortenerRecord | null = null;
       // retrive client id and write to db
-      let clientRedisId = await redis.hget(keyHash, 'dbId');
-      if (!clientRedisId) {
+      let clientCacheId = await redis.hget(keyHash, 'dbId');
+      if (!clientCacheId) {
         // cache missed
         const clientDb = await prisma.urlShortenerRecord.findFirst({
           where: {
@@ -89,13 +104,13 @@ export const handler = api<ShortenUrl>(
               data: { ip },
             });
           }
-          clientRedisId = record.id + '';
+          clientCacheId = record.id + '';
         } else {
           // cache hit
-          clientRedisId = clientDb.id + '';
+          clientCacheId = clientDb.id + '';
         }
       }
-      const dataHashClient = ['lastUrl', url, 'lastHash', targetHash, 'dbId', clientRedisId];
+      const dataHashClient = ['lastUrl', url, 'lastHash', targetHash, 'dbId', clientCacheId];
       await redis.hset(keyHash, dataHashClient);
       record = record ?? (await prisma.urlShortenerRecord.findFirst({ where: { ip } }));
       if (!record)
@@ -110,7 +125,7 @@ export const handler = api<ShortenUrl>(
         },
       });
       console.log('history', history);
-      return res.status(HttpStatusCode.OK).json({ url, hash: targetHash });
+      return successHandler(res, { url, hash: targetHash });
     }
   },
   ['GET'],

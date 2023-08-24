@@ -10,7 +10,7 @@ export const Input = forwardRef((props: Props, ref: ForwardedRef<HTMLInputElemen
       {...props}
       ref={ref}
       className={clsx(
-        'block h-16 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5  text-gray-900 focus:shadow-[0_0_8px_0_#06b6d4] focus:outline-none focus:ring-cyan-500 sm:text-xl',
+        'block h-16 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:shadow-[0_0_8px_0_#06b6d4] focus:outline-none focus:ring-cyan-500 disabled:text-gray-400 sm:text-xl',
         props.className,
       )}
     />

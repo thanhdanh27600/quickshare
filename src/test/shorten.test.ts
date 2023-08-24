@@ -37,7 +37,7 @@ describe('Test /api/shorten...', () => {
       await controller.shorten.handler(req, res);
       expect(res._getStatusCode()).toBe(HttpStatusCode.BAD_REQUEST);
       expect(res._getData()).toEqual({
-        errorMessage: 'Wrong URL format, please try again',
+        errorMessage: 'Wrong shorten format, please try again',
         errorCode: 'INVALID_URL',
       });
     });
@@ -50,7 +50,7 @@ describe('Test /api/shorten...', () => {
       await controller.shorten.handler(req, res);
       expect(res._getStatusCode()).toBe(HttpStatusCode.BAD_REQUEST);
       expect(res._getData()).toEqual({
-        errorMessage: 'Wrong URL format, please try again',
+        errorMessage: 'Wrong shorten format, please try again',
         errorCode: 'INVALID_URL',
       });
     });
