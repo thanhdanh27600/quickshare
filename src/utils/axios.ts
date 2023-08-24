@@ -12,6 +12,7 @@ export function errorHandler<T extends Response>(
 ) {
   switch (code) {
     case HttpStatusCode.UNAUTHORIZED:
+    default:
       return res.status(HttpStatusCode.UNAUTHORIZED).json({ errorMessage: 'UNAUTHORIZED' } as any);
   }
   return res.status(HttpStatusCode.NOT_FOUND).json({ errorMessage: 'Not found' } as any);

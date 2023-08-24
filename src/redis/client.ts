@@ -22,7 +22,7 @@ export function createRedisInstance(config = redisConfig) {
     };
 
     if (config.port) {
-      options.port = +config.port;
+      options.port = Number(config.port);
     }
 
     if (config.password) {

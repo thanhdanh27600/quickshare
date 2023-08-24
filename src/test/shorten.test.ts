@@ -90,8 +90,8 @@ describe('Test /api/shorten...', () => {
       await controller.shorten.handler(req, res);
       expect(res._getStatusCode()).toBe(HttpStatusCode.OK);
       const data = JSON.parse(res._getData());
-      expect(data['url']).toBe('https://example.com');
-      expect(data['hash'].length).toBe(NUM_CHARACTER_HASH);
+      expect(data?.url).toBe('https://example.com');
+      expect(data?.hash.length).toBe(NUM_CHARACTER_HASH);
     });
   });
 });
