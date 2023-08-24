@@ -1,11 +1,13 @@
 import { getForwardUrl } from 'api/requests';
 import mixpanel from 'mixpanel-browser';
 import { GetServerSidePropsContext } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
 import { BASE_URL, brandUrlShortDomain, isProduction, PLATFORM_AUTH, Window } from 'types/constants';
+import { Locale } from 'types/locale';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { encrypt } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
@@ -20,6 +22,7 @@ interface Props {
 }
 
 const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
+  const { t, locale } = useTrans();
   const forwardUrl = useMutation(QueryKey.FORWARD, getForwardUrl);
   const loading = forwardUrl.isLoading && !forwardUrl.isError;
 
@@ -40,7 +43,6 @@ const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
     }
   }, []);
 
-  const { t } = useTrans();
   useEffect(() => {
     if (!Window()) {
       return;
@@ -71,9 +73,10 @@ const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
     location.replace(`${url.includes('http') ? '' : '//'}${url}`);
   }, [forwardUrl]);
 
+  const ogTitle = t('ogTitle', { hash });
   let encodeTitle = '';
   if (PLATFORM_AUTH) {
-    encodeTitle = encrypt(`Shared Link <${hash}>. Click Now!`);
+    encodeTitle = encrypt(ogTitle);
   }
 
   return (
@@ -83,13 +86,22 @@ const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://facebook.com/clickditop/ " />
-        <meta property="og:title" content={`I'm sharing link <${hash}> with you. Let's explore!`} />
-        <meta property="og:image" content={`${BASE_URL}/api/og?title=${encodeURIComponent(encodeTitle)}`} />
+        <meta property="og:title" content={ogTitle} />
+        <meta property="og:description" content={t('ogDescription')} />
+        <meta
+          property="og:image"
+          content={`${BASE_URL}/api/og?title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
+        />
+
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://twitter.com/clickditop" />
-        <meta property="twitter:title" content={`I'm sharing link <${hash}> with you. Let's explore!`} />
-        <meta property="twitter:image" content={`${BASE_URL}/api/og?title=${encodeURIComponent(encodeTitle)}`} />
+        {/* <meta property="twitter:url" content="https://twitter.com/clickditop" /> */}
+        <meta property="twitter:title" content={ogTitle} />
+        <meta property="twitter:description" content={t('ogDescription')} />
+        <meta
+          property="twitter:image"
+          content={`${BASE_URL}/api/og?title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
+        />
       </Head>
       {error ? <p>{t(error as any)}</p> : <></>}
     </>
@@ -111,7 +123,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       userAgent: context.req.headers['user-agent'],
       ip,
     });
-    return { props: { url: forwardUrl.history?.url, hash: hash ? (hash[0] as string) : '', ip } };
+    return {
+      props: {
+        url: forwardUrl.history?.url,
+        hash: hash ? (hash[0] as string) : '',
+        ip,
+        ...(await serverSideTranslations(context.locale ?? Locale.Vietnamese, ['common'])),
+      },
+    };
   } catch (error: any) {
     console.error('ForwardURL error', error);
     return { props: { error: error.message || 'somethingWrong' } };

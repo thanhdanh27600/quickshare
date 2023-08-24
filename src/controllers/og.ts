@@ -1,7 +1,9 @@
 import Handlebars from 'handlebars';
 import puppeteer from 'puppeteer';
-import { isProduction } from '../types/constants';
-import { api } from '../utils/axios';
+import { redis } from '../redis/client';
+import { REDIS_KEY, getRedisKey, isProduction } from '../types/constants';
+import { Locale } from '../types/locale';
+import { api, badRequest } from '../utils/axios';
 import { decrypt } from '../utils/crypto';
 import HttpStatusCode from '../utils/statusCode';
 import { validateOgSchema } from '../utils/validateMiddleware';
@@ -20,7 +22,7 @@ const templateHTMLOg = `
         {{#if logoUrl}}
           <img src="{{logoUrl}}" alt="logo" />
         {{else}}
-          <span>clickdi.TOP</span>
+          <span>CLICKDI.top</span>
         {{/if}}
       </div>
       <div class="title">{{title}}</div>
@@ -131,16 +133,29 @@ export const handler = api(
     if (req.method !== 'GET') {
       return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
     }
+    const locale = req.query.locale as string;
     const title = decrypt(decodeURIComponent(req.query.title as string));
     await validateOgSchema.parseAsync({
       query: { title: !!title ? title : undefined },
     });
+    let hashMatch = title.match(/<...>/);
+    if (!hashMatch) return badRequest(res);
+    const hash = hashMatch[0].slice(1, -1);
+    // get from cache
+    const ogKey = getRedisKey(REDIS_KEY.OG_BY_HASH, `${hash}-${locale || Locale.Vietnamese}`);
+    const imageCache = await redis.get(ogKey);
+    if (imageCache) {
+      res.writeHead(200, {
+        'Content-Type': 'image/jpeg',
+        'Cache-Control': `immutable, no-transform, s-max-age=604800, max-age=604800`,
+      });
+      return res.end(Buffer.from(imageCache, 'base64'));
+    }
     // compile templateStyles
     const compiledStyles = Handlebars.compile(templateStylesOg)({
       bgUrl: req.query.bgUrl,
       fontSize: getFontSize(title),
     });
-
     // compile templateHTML
     const compiledHTML = Handlebars.compile(templateHTMLOg)({
       logoUrl: req.query.logoUrl,
@@ -149,7 +164,7 @@ export const handler = api(
       path: req.query.path,
       styles: compiledStyles,
     });
-
+    // puppeteer render and screenshot
     const browser = await puppeteer.launch({
       headless: true,
       args: ['--no-sandbox', '--disabled-setupid-sandbox', '--disable-gpu'],
@@ -189,12 +204,14 @@ export const handler = api(
     const element = await page.$('#body');
     const image = await element?.screenshot({ type: 'jpeg' });
     await browser.close();
-
+    // write og to cache
+    console.log(`write ${ogKey} to cache`);
+    await redis.setex(ogKey, isProduction ? 604800 /* 7days */ : 60, image?.toString('base64') || '');
     res.writeHead(200, {
       'Content-Type': 'image/jpeg',
-      'Cache-Control': `immutable, no-transform, s-max-age=2592000, max-age=2592000`,
+      'Cache-Control': `immutable, no-transform, s-max-age=604800, max-age=604800`,
     });
-    res.end(image);
+    return res.end(image);
     // res.status(200).send(compiledHTML);
   },
   ['GET'],
