@@ -1,4 +1,6 @@
 {
+  "ogTitle": "Share link <{{hash}}> with everyone. Find out now!",
+  "ogDescription": "Clickdi sharing links like a pro.",
   "giveFeedback": "Give feedback",
   "errorNoUrl": "Please enter the URL to continue",
   "errorInvalidUrl": "Invalid URL, please try again",

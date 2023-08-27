@@ -26,7 +26,7 @@ export const handler = api(
       logger.warn(!ip ? 'ip not found' : `geoIp cannot determined ${ip}`);
     }
     const data = { hash, ip, userAgent, fromClientSide, lookupIp };
-    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASHED_URL, hash);
+    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
     const shortenedUrlCache = await redis.hget(hashShortenedLinkKey, 'url');
     if (shortenedUrlCache) {
       // cache hit
@@ -76,7 +76,7 @@ export const postProcessForward = async (payload: any, res?: NextApiResponse<For
 
   if (res) {
     // write back to cache
-    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASHED_URL, hash);
+    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
     const dataHashShortenLink = ['url', history.url, 'updatedAt', new Date().getTime()];
     await redis.hset(hashShortenedLinkKey, dataHashShortenLink);
     await redis.expire(hashShortenedLinkKey, LIMIT_SHORTENED_SECOND);

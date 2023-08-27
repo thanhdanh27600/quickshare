@@ -9,12 +9,13 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
-import { BASE_URL_SHORT, PLATFORM_AUTH } from 'types/constants';
+import { BASE_URL_SHORT, NUM_CHARACTER_HASH, PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { encrypt } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
 import { urlRegex } from 'utils/text';
+import { URLSharePreview } from './URLSharePreview';
 
 type URLShortenerForm = {
   url: string;
@@ -131,9 +132,13 @@ export const URLShortenerInput = () => {
       </form>
       <p className="mt-4 text-red-400">{error}</p>
       {hasData && shortenedUrl && (
-        <URLShortenerResult shortenedUrl={shortenedUrl} setCopied={setCopied} copied={copied} />
+        <>
+          <URLShortenerResult shortenedUrl={shortenedUrl} setCopied={setCopied} copied={copied} />
+          <hr className="mt-6 mb-4" />
+          <URLSharePreview hash={shortenedUrl.slice(-NUM_CHARACTER_HASH)} />
+          <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
+        </>
       )}
-      <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { URLShortenerInput } from 'components/sections/UrlShortenerInput';
+import { URLShortenerInput } from 'components/sections/URLShortenerInput';
 import { URLStats } from 'components/sections/URLStatsInput';
 
 export const URLShortener = () => {
