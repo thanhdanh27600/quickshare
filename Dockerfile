@@ -17,10 +17,9 @@ RUN npm install sharp
 FROM dependencies AS builder
 WORKDIR /app
 COPY . .
+RUN chmod -R 777 ./scripts
 RUN if [ "$NEXT_PUBLIC_SHORT_DOMAIN" = "true" ] ; then ./scripts/short_clean_build.sh; else echo 'Keep building original src'; fi
 RUN npm run build
-# COPY ./prod.env ./.env
-# RUN npm run db:push
 RUN chmod -R 777 ./prisma
 
 # Production image, copy all the files and run next
