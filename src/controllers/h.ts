@@ -17,7 +17,16 @@ export const handler = api(
     });
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disabled-setupid-sandbox', '--disable-gpu'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process',
+        '--disable-gpu',
+      ],
       executablePath: isProduction ? '/usr/bin/chromium-browser' : undefined,
     });
 
