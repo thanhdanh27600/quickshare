@@ -32,7 +32,8 @@ export const BASE_URL_SHORT = baseUrl(true);
 export const REDIS_KEY = {
   HASH_LIMIT: 'limit',
   HASH_HISTORY_BY_ID: 'hHistory',
-  HASH_SHORTEN_BY_HASHED_URL: 'hShort',
+  HASH_SHORTEN_BY_HASH_URL: 'hShort',
+  OG_BY_HASH: 'og',
 } as const;
 type RedisKeys = keyof typeof REDIS_KEY;
 type RedisKeyValues = (typeof REDIS_KEY)[RedisKeys];
