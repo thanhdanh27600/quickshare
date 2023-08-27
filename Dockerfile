@@ -5,7 +5,6 @@ ARG NEXT_PUBLIC_SHORT_DOMAIN
 CMD ["echo", "NEXT_PUBLIC_SHORT_DOMAIN=$NEXT_PUBLIC_SHORT_DOMAIN"]
 WORKDIR /app
 COPY package.json yarn.lock prisma .env scripts/update_ip_db.sh ./
-RUN if [ "$NEXT_PUBLIC_SHORT_DOMAIN" = "true" ] ; then ./scripts/short_clean_build.sh; else echo 'Keep building original src'; fi
 RUN npm install
 # add sharp for image production
 RUN npm install sharp
@@ -18,6 +17,7 @@ RUN npm install sharp
 FROM dependencies AS builder
 WORKDIR /app
 COPY . .
+RUN if [ "$NEXT_PUBLIC_SHORT_DOMAIN" = "true" ] ; then ./scripts/short_clean_build.sh; else echo 'Keep building original src'; fi
 RUN npm run build
 # COPY ./prod.env ./.env
 # RUN npm run db:push
