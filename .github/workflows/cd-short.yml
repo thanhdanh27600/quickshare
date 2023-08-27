@@ -38,19 +38,19 @@ jobs:
             NEXT_PUBLIC_SHORT_DOMAIN=true
           push: true
           tags: ghcr.io/${{ github.repository }}:short-latest
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy short using ssh
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST_SHORT }}
-          username: ${{ secrets.USERNAME_SHORT }}
-          password: ${{ secrets.PASSWORD_SHORT }}
-          port: 22
-          script: |
-            cd ~/clickdi
-            docker compose pull
-            docker compose up -d
-            docker system prune -f
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Deploy short using ssh
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.HOST_SHORT }}
+  #         username: ${{ secrets.USERNAME_SHORT }}
+  #         password: ${{ secrets.PASSWORD_SHORT }}
+  #         port: 22
+  #         script: |
+  #           cd ~/clickdi
+  #           docker compose pull
+  #           docker compose up -d
+  #           docker system prune -f
