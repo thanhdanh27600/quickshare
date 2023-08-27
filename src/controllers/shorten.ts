@@ -35,7 +35,7 @@ export const handler = api<ShortenUrl>(
     }
     // if hash then retrieve from cache & db
     if (hash) {
-      const keyHash = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASHED_URL, hash);
+      const keyHash = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
       let url = await redis.hget(keyHash, 'url');
       if (!url) {
         url = (await prisma.urlShortenerHistory.findFirst({ where: { hash } }))?.url || '';
@@ -71,7 +71,7 @@ export const handler = api<ShortenUrl>(
         throw new Error('Bad URL after digging our hash, please try again!');
       }
       targetHash = generateRandomString(NUM_CHARACTER_HASH);
-      hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASHED_URL, targetHash);
+      hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, targetHash);
       isExist = await redis.hexists(hashShortenedLinkKey, 'url');
       // also check db if not collapse in cache
       if (!isExist) {
@@ -89,29 +89,18 @@ export const handler = api<ShortenUrl>(
     let clientCacheId = await redis.hget(keyHash, 'dbId');
     if (!clientCacheId) {
       // cache missed
-      const clientDb = await prisma.urlShortenerRecord.findFirst({
-        where: {
-          ip,
-        },
-      });
-      if (!clientDb) {
-        // new client's ip
-        record = await prisma.urlShortenerRecord.findFirst({
-          where: { ip },
+      record = await prisma.urlShortenerRecord.findFirst({ where: { ip } });
+      // new client's ip
+      if (!record) {
+        record = await prisma.urlShortenerRecord.create({
+          data: { ip },
         });
-        if (!record) {
-          record = await prisma.urlShortenerRecord.create({
-            data: { ip },
-          });
-        }
-        clientCacheId = String(record.id);
-      } else {
-        // cache hit
-        clientCacheId = String(clientDb.id);
       }
+      clientCacheId = String(record.id);
     }
     const dataHashClient = ['lastUrl', url, 'lastHash', targetHash, 'dbId', clientCacheId];
     await redis.hset(keyHash, dataHashClient);
+    await redis.expire(keyHash, LIMIT_SHORTENED_SECOND);
     record = record ?? (await prisma.urlShortenerRecord.findFirst({ where: { ip } }));
     if (!record)
       record = await prisma.urlShortenerRecord.create({

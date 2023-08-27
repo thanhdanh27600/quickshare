@@ -1,4 +1,6 @@
 {
+  "ogTitle": "Chia sẻ link <{{hash}}> với mọi người. Khám phá ngay!",
+  "ogDescription": "Clickdi chia sẻ URL nhanh chóng, chuyên nghiệp.",
   "giveFeedback": "Báo cáo lỗi",
   "errorNoUrl": "Vui lòng nhập URL để tiếp tục",
   "errorInvalidUrl": "URL không hợp lệ, hãy thử lại",
