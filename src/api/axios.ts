@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cors from 'cors';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { BASE_URL, BASE_URL_SHORT, alternateBrandUrl } from '../types/constants';
+import { BASE_URL, alternateBrandUrl, brandUrl, brandUrlShort } from '../types/constants';
 
 export const API = axios.create({
   baseURL: BASE_URL,
@@ -24,7 +24,7 @@ export function withAuth(token?: string) {
 }
 
 const cors = Cors({
-  origin: [BASE_URL, BASE_URL_SHORT, ...alternateBrandUrl],
+  origin: [brandUrl, brandUrlShort, ...alternateBrandUrl],
   methods: ['GET', 'POST', 'PUT', 'PATCH'],
 });
 
@@ -33,7 +33,7 @@ export const allowCors = (handler: any) => async (req: NextApiRequest, res: Next
     res.status(200).end();
     return;
   }
-  return cors(req, res, async () => {
+  cors(req, res, async () => {
     return await handler(req, res);
   });
 };
