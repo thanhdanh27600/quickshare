@@ -11,11 +11,10 @@ export async function middleware(request: NextRequest) {
   // retrieve the HTTP "Origin" header
   // from the incoming request
   const origin = request.headers.get('origin');
-  console.log('origin', origin);
   // if the origin is an allowed one,
   // add it to the 'Access-Control-Allow-Origin' header
-  if (!origin) return res;
-  if (allowedOrigins.includes(origin)) {
+  console.log('origin', origin);
+  if (!!origin && allowedOrigins.includes(origin)) {
     res.headers.append('Access-Control-Allow-Origin', origin);
   }
   // add the remaining CORS headers to the response
@@ -25,7 +24,6 @@ export async function middleware(request: NextRequest) {
     'Access-Control-Allow-Headers',
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
   );
-
   return res;
 }
 
