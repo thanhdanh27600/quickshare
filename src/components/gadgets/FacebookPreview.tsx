@@ -6,7 +6,7 @@ import { useTrans } from 'utils/i18next';
 
 export const FacebookPreview = ({ hash, ogTitle, ogDomain, ogDescription }: Partial<UrlShortenerHistory>) => {
   const { t, locale } = useTrans();
-  const title = ogTitle ?? t('ogTitle', { hash: hash || 'XXX' });
+  const title = ogTitle || t('ogTitle', { hash: hash || 'XXX' });
   let encodeTitle = '';
   if (PLATFORM_AUTH) {
     encodeTitle = encrypt(title);
@@ -14,7 +14,7 @@ export const FacebookPreview = ({ hash, ogTitle, ogDomain, ogDescription }: Part
   return (
     <div className="w-fit bg-gray-100/75 max-[420px]:overflow-scroll">
       <div className="w-[420px]">
-        <div className="h-[221px] w-full border border-solid border-gray-200 bg-cover bg-no-repeat">
+        <div className="h-[220.5px] w-full border border-solid border-gray-200 bg-cover bg-no-repeat">
           <iframe
             className="relative origin-top-left scale-[0.35]"
             width={1200}
@@ -29,9 +29,11 @@ export const FacebookPreview = ({ hash, ogTitle, ogDomain, ogDescription }: Part
             {ogDomain ?? brandUrlShortDomain}
           </span>
           <div className="text-left">
-            <div className="font-facebook text-[16px] font-semibold text-[#1d2129]">{title}</div>
+            <div className="font-facebook text-[16px] font-semibold text-[#1d2129] line-clamp-2">{title}</div>
           </div>
-          <span className="font-facebook text-sm text-[#606770]">{ogDescription ?? t('ogDescription')}</span>
+          <span className="mt-0.5 font-facebook text-sm text-[#606770] line-clamp-2">
+            {ogDescription ?? t('ogDescription')}
+          </span>
         </div>
       </div>
     </div>

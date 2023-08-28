@@ -56,5 +56,6 @@
   "advancedView": "Advanced info",
   "loadMore": "Load more",
   "editPreview": "More options",
-  "save": "Save"
+  "save": "Save",
+  "maximumCharaters": "Maximum of {{n}} characters"
 }

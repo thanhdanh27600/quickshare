@@ -56,5 +56,6 @@
   "advancedView": "Xem nâng cao",
   "loadMore": "Xem thêm",
   "editPreview": "Chỉnh sửa",
-  "save": "Lưu thay đổi"
+  "save": "Lưu thay đổi",
+  "maximumCharaters": "Tối đa {{n}} ký tự"
 }

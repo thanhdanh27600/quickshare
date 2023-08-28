@@ -1,5 +1,6 @@
 import geoIp from 'geoip-country';
 import { NextApiResponse } from 'next';
+import { isEmpty } from 'ramda';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import { LIMIT_SHORTENED_SECOND, REDIS_KEY, getRedisKey } from '../types/constants';
@@ -27,11 +28,11 @@ export const handler = api(
     }
     const data = { hash, ip, userAgent, fromClientSide, lookupIp };
     const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
-    const shortenedUrlCache = await redis.hget(hashShortenedLinkKey, 'url');
-    if (shortenedUrlCache) {
+    const shortenedUrlCache = await redis.hgetall(hashShortenedLinkKey);
+    if (!isEmpty(shortenedUrlCache)) {
       // cache hit
       postProcessForward(data); // bypass process
-      return res.status(HttpStatusCode.OK).json({ history: { url: shortenedUrlCache } as any });
+      return res.status(HttpStatusCode.OK).json({ history: shortenedUrlCache as any });
     }
     // cache missed
     await postProcessForward(data, res);
@@ -75,7 +76,16 @@ export const postProcessForward = async (payload: any, res?: NextApiResponse<For
   if (res) {
     // write back to cache
     const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
-    const dataHashShortenLink = ['url', history.url, 'updatedAt', new Date().getTime()];
+    const dataHashShortenLink = [
+      'url',
+      history.url,
+      'ogTitle',
+      history.ogTitle,
+      'ogDescription',
+      history.ogDescription,
+      'updatedAt',
+      new Date().getTime(),
+    ];
     await redis.hset(hashShortenedLinkKey, dataHashShortenLink);
     await redis.expire(hashShortenedLinkKey, LIMIT_SHORTENED_SECOND);
     return res.status(HttpStatusCode.OK).json({ history });

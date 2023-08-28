@@ -1,6 +1,7 @@
 import memoize from 'fast-memoize';
 import { stringify } from 'querystring';
 import { Forward } from 'types/forward';
+import { Locale } from 'types/locale';
 import { QR } from 'types/qr';
 import { ShortenUrl } from 'types/shorten';
 import { Stats } from 'types/stats';
@@ -16,12 +17,15 @@ export const updateShortenUrlRequest = async ({
   hash,
   ogTitle,
   ogDescription,
+  locale,
 }: {
   hash: string;
   ogDescription?: string;
   ogTitle?: string;
+  locale: Locale;
 }) => {
   const rs = await API.put(`/api/shorten/update`, {
+    locale,
     hash,
     ogTitle,
     ogDescription,
@@ -32,16 +36,18 @@ export const updateShortenUrlRequest = async ({
 
 export const getForwardUrl = async ({
   hash,
+  locale,
   userAgent,
   ip,
   fromClientSide,
 }: {
   hash: string;
+  locale: string;
   userAgent?: string;
   ip?: string | null;
   fromClientSide?: boolean;
 }) => {
-  const rs = await API.post(`/api/forward`, { hash, userAgent, ip, fromClientSide });
+  const rs = await API.post(`/api/forward`, { hash, locale, userAgent, ip, fromClientSide });
   const data = rs.data;
   return data as Forward;
 };
