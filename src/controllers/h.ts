@@ -5,6 +5,7 @@ import prisma from '../db/prisma';
 import { isProduction } from '../types/constants';
 import { api } from '../utils/axios';
 import date from '../utils/date';
+
 export const handler = api(
   async (req, res) => {
     const transporter = nodemailer.createTransport({
@@ -50,6 +51,11 @@ export const handler = api(
         text: `- Machine is working as expected, ${date().toString()}.\n- Last 5 forwards:${JSON.stringify(
           await prisma.urlForwardMeta.findMany({
             include: { UrlShortenerHistory: true },
+            where: {
+              AND: {
+                userAgent: { not: { contains: 'curl' } },
+              },
+            },
             take: 5,
             orderBy: { updatedAt: 'desc' },
           }),
