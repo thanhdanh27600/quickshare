@@ -1,4 +1,5 @@
 import { getQr } from 'api/requests';
+import { useBearStore } from 'bear';
 import clsx from 'clsx';
 import { Button } from 'components/atoms/Button';
 import mixpanel from 'mixpanel-browser';
@@ -11,15 +12,19 @@ import { encrypt } from 'utils/crypto';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { QueryKey, strictRefetch } from 'utils/requests';
 import { copyToClipBoard } from 'utils/text';
+import { URLAdvancedSetting } from './URLAdvancedSetting';
 
 interface Props {
   setCopied: (s: boolean) => void;
   copied: boolean;
-  shortenedUrl: string;
 }
 
-export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) => {
+export const URLShortenerResult = ({ setCopied, copied }: Props) => {
   const { t, locale } = useTrans('common');
+  const { shortenSlice } = useBearStore();
+  const getShortenUrl = shortenSlice((state) => state.getShortenUrl);
+  const shortenUrl = getShortenUrl();
+
   const onCopy = () => {
     if (copied) {
       toast.success('Copied');
@@ -28,18 +33,18 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
       status: MIXPANEL_STATUS.OK,
     });
     setCopied(true);
-    copyToClipBoard(shortenedUrl);
+    copyToClipBoard(shortenUrl);
   };
   let token = '';
   if (PLATFORM_AUTH) {
-    token = encrypt(shortenedUrl.replace(`${BASE_URL_SHORT}/`, ''));
+    token = encrypt(shortenUrl.replace(`${BASE_URL_SHORT}/`, ''));
   } else {
     console.error('Not found PLATFORM_AUTH');
   }
 
   const query = useQuery({
     queryKey: QueryKey.QR,
-    queryFn: async () => getQr(shortenedUrl, token),
+    queryFn: async () => getQr(shortenUrl, token),
     ...strictRefetch,
   });
 
@@ -47,11 +52,11 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
     <div className="mt-4">
       <h2 className="text-xl">🚀 {t('shortenSuccess')}</h2>
       <div className="mt-2 flex justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-6 sm:py-8 md:py-10">
-        <a href={linkWithLanguage(shortenedUrl, locale)} target="_blank" className="flex-1">
+        <a href={linkWithLanguage(shortenUrl, locale)} target="_blank" className="flex-1">
           <p
             className="text-center text-2xl font-bold text-gray-800 transition-all hover:text-cyan-500 hover:underline sm:text-3xl md:text-4xl"
-            title={shortenedUrl}>
-            {linkWithLanguage(shortenedUrl, locale).replace(/https:\/\//i, '')}
+            title={shortenUrl}>
+            {linkWithLanguage(shortenUrl, locale).replace(/https:\/\//i, '')}
           </p>
         </a>
         <button
@@ -78,29 +83,32 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
           <span className="">{copied ? 'Copied' : 'Copy'}</span>
         </button>
       </div>
-      <div className="mt-4 flex flex-col flex-wrap justify-between gap-8 sm:flex-row sm:items-center">
+      <div className="mt-4">
+        <URLAdvancedSetting />
+      </div>
+      <div className="flex flex-col flex-wrap justify-between gap-8 sm:flex-row sm:items-center">
         <a
-          href={linkWithLanguage(shortenedUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`), locale)}
+          href={linkWithLanguage(shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`), locale)}
           target="_blank"
           className="cursor-pointer text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
           {t('trackingLive')}
         </a>
         <div className="flex flex-col items-center gap-2 sm:flex-row">
-          <a href={`http://www.facebook.com/sharer.php?u=${shortenedUrl}`} target="_blank">
+          <a href={`http://www.facebook.com/sharer.php?u=${shortenUrl}`} target="_blank">
             <Button
               text={t('shareFacebook')}
               className="h-fit !bg-[#3b5998] !bg-none hover:!bg-[#4c70ba]"
               TextClassname="!text-sm !p-0"
             />
           </a>
-          <a href={`https://twitter.com/share?url=${shortenedUrl}`} target="_blank">
+          <a href={`https://twitter.com/share?url=${shortenUrl}`} target="_blank">
             <Button
               text={t('shareTwitter')}
               className="h-fit !bg-[#409dd5] !bg-none hover:!bg-[#6ab2de]"
               TextClassname="!text-sm !p-0"
             />
           </a>
-          <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${shortenedUrl}`} target="_blank">
+          <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${shortenUrl}`} target="_blank">
             <Button
               text={t('shareLinkedIn')}
               className="h-fit !bg-[#0077b5] !bg-none hover:!bg-[#007ebf]"
@@ -110,7 +118,7 @@ export const URLShortenerResult = ({ setCopied, copied, shortenedUrl }: Props) =
           {query.data?.qr && (
             <div className="mt-1 flex flex-col items-center gap-2">
               <Image src={query.data?.qr} alt="QR-Code" width={84} height={84} />
-              <a href={query.data?.qr} download={`QR-${shortenedUrl.replace(`${BASE_URL_SHORT}/`, '')}`}>
+              <a href={query.data?.qr} download={`QR-${shortenUrl.replace(`${BASE_URL_SHORT}/`, '')}`}>
                 <Button
                   text={t('downloadQR')}
                   TextClassname="!text-sm !p-0 text-gray-900"

@@ -41,7 +41,7 @@ export const SetPassword = ({ hash }: { hash: string }) => {
       toast.error(t('somethingWrong'));
     },
     onSuccess: async (data) => {
-      mixpanel.track(MIXPANEL_EVENT.SET_PASSWORD, { status: MIXPANEL_STATUS.OK });
+      mixpanel.track(MIXPANEL_EVENT.SET_PASSWORD, { status: MIXPANEL_STATUS.OK, data });
       await queryClient.invalidateQueries(QueryKey.STATS);
       closeModalRef.current?.click();
       toast.success(t('updated'));

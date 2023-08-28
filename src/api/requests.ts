@@ -12,6 +12,24 @@ export const getOrCreateShortenUrlRequest = async ({ url, hash }: { url?: string
   return data as ShortenUrl;
 };
 
+export const updateShortenUrlRequest = async ({
+  hash,
+  ogTitle,
+  ogDescription,
+}: {
+  hash: string;
+  ogDescription?: string;
+  ogTitle?: string;
+}) => {
+  const rs = await API.put(`/api/shorten/update`, {
+    hash,
+    ogTitle,
+    ogDescription,
+  });
+  const data = rs.data;
+  return data as ShortenUrl;
+};
+
 export const getForwardUrl = async ({
   hash,
   userAgent,

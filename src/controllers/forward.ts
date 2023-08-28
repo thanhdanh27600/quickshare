@@ -30,12 +30,10 @@ export const handler = api(
     const shortenedUrlCache = await redis.hget(hashShortenedLinkKey, 'url');
     if (shortenedUrlCache) {
       // cache hit
-      console.log('cache hit', data);
       postProcessForward(data); // bypass process
       return res.status(HttpStatusCode.OK).json({ history: { url: shortenedUrlCache } as any });
     }
     // cache missed
-    console.log('cache missed', data);
     await postProcessForward(data, res);
   },
   ['POST'],

@@ -21,6 +21,30 @@ export const validateShortenSchema = z.object({
   }),
 });
 
+export const validateUpdateShortenSchema = z.object({
+  hash: z
+    .string({
+      required_error: 'Hash is required',
+    })
+    .refine((value) => (!value ? true : /^.{3}$/.test(value || '')), 'Wrong hash format'),
+  ogTitle: z.optional(
+    z.string({
+      required_error: 'Title is required',
+    }),
+  ),
+  ogDescription: z.optional(
+    z.string({
+      required_error: 'Description is required',
+    }),
+  ),
+  // ogImgSrc: z.string({
+  //   required_error: 'Description is required',
+  // }),
+  // ogDomain: z.string({
+  //   required_error: 'Description is required',
+  // }),
+});
+
 export const validateOgSchema = z.object({
   query: z.object({
     title: z.string({
