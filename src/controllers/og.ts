@@ -167,7 +167,16 @@ export const handler = api(
     // puppeteer render and screenshot
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disabled-setupid-sandbox', '--disable-gpu'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process',
+        '--disable-gpu',
+      ],
       defaultViewport: {
         width: 1200,
         height: 630,

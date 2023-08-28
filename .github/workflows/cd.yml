@@ -38,24 +38,24 @@ jobs:
             NEXT_PUBLIC_SHORT_DOMAIN=false
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
-  # deploy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Deploy using ssh
-  #       uses: appleboy/ssh-action@master
-  #       with:
-  #         host: ${{ secrets.HOST }}
-  #         username: ${{ secrets.USERNAME }}
-  #         password: ${{ secrets.PASSWORD }}
-  #         port: 22
-  #         script: |
-  #           cd ~/clickdi
-  #           sh ./backup.sh
-  #           docker login -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
-  #           docker compose pull
-  #           docker compose down
-  #           docker compose up -d
-  #           docker system prune -f
-  #           sh ./migrate.sh
-  #           sh ./puppeteer.sh
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: 22
+          script: |
+            cd ~/clickdi
+            # sh ./backup.sh
+            sudo docker login -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
+            sudo docker compose pull
+            sudo docker compose down
+            sudo docker compose up -d
+            sudo docker system prune -f
+            sudo sh ./migrate.sh
+            sudo sh ./puppeteer.sh
