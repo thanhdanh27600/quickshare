@@ -1,9 +1,10 @@
+import { UrlShortenerHistory } from '@prisma/client';
 import { BASE_URL, PLATFORM_AUTH, brandUrlShortDomain } from 'types/constants';
-import { ShareUrlMeta } from 'types/shorten';
+
 import { encrypt } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
 
-export const FacebookPreview = ({ hash, ogTitle, ogDomain, ogDescription }: ShareUrlMeta) => {
+export const FacebookPreview = ({ hash, ogTitle, ogDomain, ogDescription }: Partial<UrlShortenerHistory>) => {
   const { t, locale } = useTrans();
   const title = ogTitle ?? t('ogTitle', { hash: hash || 'XXX' });
   let encodeTitle = '';
@@ -13,12 +14,16 @@ export const FacebookPreview = ({ hash, ogTitle, ogDomain, ogDescription }: Shar
   return (
     <div className="w-fit bg-gray-100/75 max-[420px]:overflow-scroll">
       <div className="w-[420px]">
-        <div
-          className="h-[221px] w-full border border-solid border-gray-200 bg-cover bg-no-repeat"
-          style={{
-            backgroundImage: `url(${BASE_URL}/api/og?title=${encodeURIComponent(encodeTitle)}&locale=${locale})`,
-          }}
-        />
+        <div className="h-[221px] w-full border border-solid border-gray-200 bg-cover bg-no-repeat">
+          <iframe
+            className="relative origin-top-left scale-[0.35]"
+            width={1200}
+            height={630}
+            src={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(
+              encodeTitle,
+            )}&locale=${locale}&preview=true`}
+          />
+        </div>
         <div className="border border-t-0 border-solid border-gray-200 py-2 px-2.5">
           <span className="border-separate text-ellipsis whitespace-nowrap break-words font-facebook text-sm uppercase text-[#606770]">
             {ogDomain ?? brandUrlShortDomain}

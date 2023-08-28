@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { BASE_URL } from '../types/constants';
+import { BASE_URL, alternateBrandUrl, brandUrl, brandUrlShort } from '../types/constants';
 
 export const API = axios.create({
   baseURL: BASE_URL,
@@ -22,9 +22,16 @@ export function withAuth(token?: string) {
   };
 }
 
+const allowedOrigins = [brandUrl, brandUrlShort, ...[alternateBrandUrl]];
+
 export const allowCors = (handler: any) => async (req: NextApiRequest, res: NextApiResponse) => {
+  const origin = req.headers?.origin;
+  console.log('origin', origin);
+  if (!!origin && allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader(
     'Access-Control-Allow-Headers',

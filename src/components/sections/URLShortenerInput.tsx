@@ -1,5 +1,6 @@
 import { getOrCreateShortenUrlRequest } from 'api/requests';
 import { AxiosError } from 'axios';
+import { useBearStore } from 'bear';
 import { InputWithButton } from 'components/atoms/Input';
 import { HelpTooltip } from 'components/gadgets/HelpTooltip';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
@@ -9,13 +10,12 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
-import { BASE_URL_SHORT, NUM_CHARACTER_HASH, PLATFORM_AUTH } from 'types/constants';
+import { PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { encrypt } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
 import { urlRegex } from 'utils/text';
-import { URLSharePreview } from './URLSharePreview';
 
 type URLShortenerForm = {
   url: string;
@@ -23,10 +23,13 @@ type URLShortenerForm = {
 
 export const URLShortenerInput = () => {
   const router = useRouter();
-  const [shortenedUrl, setShortenedUrl] = useState('');
   const [localError, setLocalError] = useState('');
   const [copied, setCopied] = useState(false);
+  const { shortenSlice } = useBearStore();
   const { t } = useTrans('common');
+
+  const [getShortenUrl, setShortenUrl] = shortenSlice((state) => [state.getShortenUrl, state.setShortenHistory]);
+  const shortenUrl = getShortenUrl();
   const queryClient = useQueryClient();
   const {
     register,
@@ -58,12 +61,12 @@ export const URLShortenerInput = () => {
     },
     onSuccess: (data, variables, context) => {
       if (data.hash && data.url) {
-        setShortenedUrl(`${BASE_URL_SHORT}/${data.hash}`);
+        setShortenUrl(data);
         queryClient.invalidateQueries(QueryKey.RECORD);
         setValue('url', data.url);
         mixpanel.track(MIXPANEL_EVENT.SHORTEN, {
           status: MIXPANEL_STATUS.OK,
-          ...data,
+          data,
         });
         const queryParams = { ...router.query, ...{ hash: data.hash } };
         router.push({ pathname: router.pathname, query: queryParams });
@@ -131,11 +134,9 @@ export const URLShortenerInput = () => {
         />
       </form>
       <p className="mt-4 text-red-400">{error}</p>
-      {hasData && shortenedUrl && (
+      {hasData && shortenUrl && (
         <>
-          <URLShortenerResult shortenedUrl={shortenedUrl} setCopied={setCopied} copied={copied} />
-          <hr className="mt-6 mb-4" />
-          <URLSharePreview hash={shortenedUrl.slice(-NUM_CHARACTER_HASH)} />
+          <URLShortenerResult setCopied={setCopied} copied={copied} />
           <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
         </>
       )}
