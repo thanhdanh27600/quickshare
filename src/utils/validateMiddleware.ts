@@ -22,6 +22,9 @@ export const validateShortenSchema = z.object({
 });
 
 export const validateUpdateShortenSchema = z.object({
+  locale: z.string({
+    required_error: 'Locale is required',
+  }),
   hash: z
     .string({
       required_error: 'Hash is required',
