@@ -19,6 +19,9 @@ export const LIMIT_SHORTENED_SECOND = LIMIT_SHORTENED_HOUR * 3600;
 export const LIMIT_URL_REQUEST = 5;
 export const LIMIT_RECENT_HISTORY = 5;
 export const NUM_CHARACTER_HASH = 3;
+export const LIMIT_OG_TITLE_LENGTH = 150;
+export const LIMIT_OG_DESCRIPTION_LENGTH = 300;
+export const OG_IMAGE_DIMENSION = '1200 x 630';
 
 export const baseUrl = (useShortDomain: boolean = false) => {
   if (isProduction) {

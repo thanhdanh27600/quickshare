@@ -1,13 +1,4 @@
+import { UrlShortenerHistory } from '@prisma/client';
 import { Response } from './api';
 
-export type ShortenUrl = Response & {
-  url?: string;
-  hash?: string;
-};
-
-export interface ShareUrlMeta {
-  hash?: string;
-  ogDomain?: string;
-  ogTitle?: string;
-  ogDescription?: string;
-}
+export type ShortenUrl = Response & Partial<UrlShortenerHistory>;

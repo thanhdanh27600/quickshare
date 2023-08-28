@@ -1,7 +1,7 @@
 import { UrlShortenerRecord } from '@prisma/client';
 import requestIp from 'request-ip';
-import prisma from '../db/prisma';
-import { redis } from '../redis/client';
+import prisma from '../../db/prisma';
+import { redis } from '../../redis/client';
 import {
   LIMIT_SHORTENED_SECOND,
   LIMIT_URL_HOUR,
@@ -10,13 +10,13 @@ import {
   NUM_CHARACTER_HASH,
   REDIS_KEY,
   getRedisKey,
-} from '../types/constants';
-import { ShortenUrl } from '../types/shorten';
-import { api, badRequest, successHandler } from '../utils/axios';
-import { decrypt } from '../utils/crypto';
-import HttpStatusCode from '../utils/statusCode';
-import { generateRandomString } from '../utils/text';
-import { validateShortenSchema } from '../utils/validateMiddleware';
+} from '../../types/constants';
+import { ShortenUrl } from '../../types/shorten';
+import { api, badRequest, successHandler } from '../../utils/axios';
+import { decrypt } from '../../utils/crypto';
+import HttpStatusCode from '../../utils/statusCode';
+import { generateRandomString } from '../../utils/text';
+import { validateShortenSchema } from '../../utils/validateMiddleware';
 
 export const handler = api<ShortenUrl>(
   async (req, res) => {
@@ -33,14 +33,11 @@ export const handler = api<ShortenUrl>(
         errorCode: 'INVALID_URL',
       });
     }
+    const logger = require('../../utils/loggerServer');
     // if hash then retrieve from cache & db
     if (hash) {
-      const keyHash = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
-      let url = await redis.hget(keyHash, 'url');
-      if (!url) {
-        url = (await prisma.urlShortenerHistory.findFirst({ where: { hash } }))?.url || '';
-      }
-      if (url) return successHandler(res, { url, hash });
+      const history = await prisma.urlShortenerHistory.findUnique({ where: { hash } });
+      if (history) return successHandler(res, history);
       return badRequest(res, "No URL was found on your request. Let's shorten one!");
     }
     // check or reset get request limit
@@ -66,7 +63,9 @@ export const handler = api<ShortenUrl>(
     let timesLimit = 0;
     // regenerate if collapse
     while (isExist) {
-      if (timesLimit > 0) console.log('timesLimit', timesLimit);
+      if (timesLimit > 0) {
+        logger.warn('timesLimit', timesLimit);
+      }
       if (timesLimit++ > 10 /** U better buy lucky ticket */) {
         throw new Error('Bad URL after digging our hash, please try again!');
       }
@@ -75,7 +74,7 @@ export const handler = api<ShortenUrl>(
       isExist = await redis.hexists(hashShortenedLinkKey, 'url');
       // also check db if not collapse in cache
       if (!isExist) {
-        isExist = !!(await prisma.urlShortenerHistory.findFirst({ where: { hash: targetHash } })) ? 1 : 0;
+        isExist = !!(await prisma.urlShortenerHistory.findUnique({ where: { hash: targetHash } })) ? 1 : 0;
       }
     }
     // write hash to cache, increment limit
@@ -113,8 +112,9 @@ export const handler = api<ShortenUrl>(
         urlShortenerRecordId: Number(record.id),
       },
     });
-    console.log('history', history);
-    return successHandler(res, { url, hash: targetHash });
+    return successHandler(res, history);
   },
   ['GET'],
 );
+
+export * as update from './update';

@@ -1,6 +1,7 @@
 import mixpanel from 'mixpanel-browser';
 import React from 'react';
 import { MIXPANEL_EVENT } from 'types/utils';
+import { logger } from 'utils/logger';
 
 class ErrorBoundary extends React.Component {
   constructor(props: any) {
@@ -16,8 +17,11 @@ class ErrorBoundary extends React.Component {
   }
   componentDidCatch(error: any, errorInfo: any) {
     // You can use your own error logging service here
-    console.log({ error, errorInfo });
-    mixpanel.track(MIXPANEL_EVENT.CRASH);
+    logger.error({ error, errorInfo });
+    mixpanel.track(MIXPANEL_EVENT.CRASH, {
+      error,
+      errorInfo,
+    });
   }
   render() {
     if ((this.state as any).hasError) {

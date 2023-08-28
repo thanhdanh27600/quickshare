@@ -90,7 +90,7 @@ const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
         <meta property="og:description" content={t('ogDescription')} />
         <meta
           property="og:image"
-          content={`${BASE_URL}/api/og?title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
+          content={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
         />
 
         {/* Twitter */}
@@ -100,7 +100,7 @@ const ForwardURL = ({ url, hash, ip, error, redirect }: Props) => {
         <meta property="twitter:description" content={t('ogDescription')} />
         <meta
           property="twitter:image"
-          content={`${BASE_URL}/api/og?title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
+          content={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
         />
       </Head>
       {error ? <p>{t(error as any)}</p> : <></>}

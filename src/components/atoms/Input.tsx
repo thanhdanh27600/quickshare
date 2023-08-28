@@ -1,23 +1,46 @@
 import clsx from 'clsx';
-import { DetailedHTMLProps, ForwardedRef, forwardRef, InputHTMLAttributes } from 'react';
+import { DetailedHTMLProps, ForwardedRef, forwardRef, InputHTMLAttributes, TextareaHTMLAttributes } from 'react';
 import { Button, ButtonProps } from './Button';
 
-interface Props extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {}
+interface InputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+  btnSize?: 'md' | 'lg';
+}
 
-export const Input = forwardRef((props: Props, ref: ForwardedRef<HTMLInputElement>) => {
+export const Input = forwardRef((props: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
+  const { btnSize = 'lg', ...otherProps } = props;
   return (
     <input
-      {...props}
+      {...otherProps}
       ref={ref}
       className={clsx(
-        'block h-16 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:shadow-[0_0_8px_0_#06b6d4] focus:outline-none focus:ring-cyan-500 disabled:text-gray-400 sm:text-xl',
+        'block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:shadow-[0_0_8px_0_#06b6d4] focus:outline-none focus:ring-cyan-500 disabled:text-gray-400 ',
+        {
+          'h-16 sm:text-xl': btnSize === 'lg',
+          'h-8': btnSize === 'md',
+        },
         props.className,
       )}
     />
   );
 });
-Input.displayName = 'Input';
-interface InputWithButtonProps extends Props {
+
+interface TextareaProps extends DetailedHTMLProps<TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {}
+export const Texarea = forwardRef((props: TextareaProps, ref: ForwardedRef<HTMLTextAreaElement>) => {
+  const { ...otherProps } = props;
+  return (
+    <textarea
+      {...otherProps}
+      ref={ref}
+      className={clsx(
+        'block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:shadow-[0_0_8px_0_#06b6d4] focus:outline-none focus:ring-cyan-500 disabled:text-gray-400 ',
+
+        props.className,
+      )}
+    />
+  );
+});
+
+interface InputWithButtonProps extends InputProps {
   buttonChild?: string | JSX.Element;
   buttonProps: ButtonProps;
   Prefix?: JSX.Element;
