@@ -52,10 +52,10 @@ jobs:
           script: |
             cd ~/clickdi
             # sh ./backup.sh
-            docker login -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
-            docker compose pull
-            docker compose down
-            docker compose up -d
-            docker system prune -f
-            sh ./migrate.sh
-            sh ./puppeteer.sh
+            sudo docker login -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
+            sudo docker compose pull
+            sudo docker compose down
+            sudo docker compose up -d
+            sudo docker system prune -f
+            sudo sh ./migrate.sh
+            sudo sh ./puppeteer.sh
