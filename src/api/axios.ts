@@ -1,7 +1,6 @@
 import axios from 'axios';
-import Cors from 'cors';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { BASE_URL, alternateBrandUrl, brandUrl, brandUrlShort } from '../types/constants';
+import { BASE_URL } from '../types/constants';
 
 export const API = axios.create({
   baseURL: BASE_URL,
@@ -23,17 +22,20 @@ export function withAuth(token?: string) {
   };
 }
 
-const cors = Cors({
-  origin: [brandUrl, brandUrlShort, ...alternateBrandUrl],
-  methods: ['GET', 'POST', 'PUT', 'PATCH'],
-});
-
+/**
+ * @deprecated The method should not be used
+ */
 export const allowCors = (handler: any) => async (req: NextApiRequest, res: NextApiResponse) => {
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+  );
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
-  cors(req, res, async () => {
-    return await handler(req, res);
-  });
+  return await handler(req, res);
 };
