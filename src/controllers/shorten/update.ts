@@ -1,7 +1,7 @@
-import { redis } from 'redis/client';
-import { REDIS_KEY, getRedisKey } from 'types/constants';
-import { Locale } from 'types/locale';
 import prisma from '../../db/prisma';
+import { redis } from '../../redis/client';
+import { REDIS_KEY, getRedisKey } from '../../types/constants';
+import { Locale } from '../../types/locale';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import { validateUpdateShortenSchema } from '../../utils/validateMiddleware';
