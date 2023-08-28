@@ -28,7 +28,7 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
   const loading = forwardUrl.isLoading && !forwardUrl.isError;
   const url = history?.url;
   const ogTitle = history?.ogTitle || t('ogTitle', { hash });
-  const ogDescription = history?.ogTitle || t('ogDescription');
+  const ogDescription = history?.ogDescription || t('ogDescription');
 
   useEffect(() => {
     if (!Window()) {
