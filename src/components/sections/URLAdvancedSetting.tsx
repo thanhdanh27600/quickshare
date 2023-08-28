@@ -5,7 +5,7 @@ import { useTrans } from 'utils/i18next';
 import { URLSharePreview } from './URLSharePreview';
 
 export const URLAdvancedSetting = () => {
-  const { t } = useTrans();
+  const { t, locale } = useTrans();
 
   const title = (
     <span className="relative">
@@ -20,7 +20,7 @@ export const URLAdvancedSetting = () => {
     <Accordion title={title}>
       <>
         <URLSharePreview />
-        <AdvancedSettingUrlForm />
+        <AdvancedSettingUrlForm key={locale} />
         <hr className="my-8" />
       </>
     </Accordion>

@@ -10,23 +10,26 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { LIMIT_OG_DESCRIPTION_LENGTH, LIMIT_OG_TITLE_LENGTH, brandUrlShortDomain } from 'types/constants';
+import { Locale } from 'types/locale';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { debounce } from 'utils/data';
 import { useTrans } from 'utils/i18next';
 import { logger } from 'utils/logger';
 import { QueryKey } from 'utils/requests';
 
+type ShortenSettingPayload = Partial<UrlShortenerHistory> & { locale?: Locale };
+
 export const AdvancedSettingUrlForm = () => {
-  const { t } = useTrans();
+  const { t, locale } = useTrans();
   const { shortenSlice } = useBearStore();
   const [shortenHistory, setShortenHistoryForm] = shortenSlice((state) => [
     state.shortenHistory,
     state.setShortenHistoryForm,
   ]);
   const defaultValues = {
-    ogTitle: shortenHistory?.ogTitle ?? t('ogTitle', { hash: shortenHistory?.hash ?? 'XXX' }),
-    ogDescription: shortenHistory?.ogDescription ?? t('ogDescription'),
-    ogDomain: shortenHistory?.ogDomain ?? brandUrlShortDomain,
+    ogTitle: shortenHistory?.ogTitle || t('ogTitle', { hash: shortenHistory?.hash ?? 'XXX' }),
+    ogDescription: shortenHistory?.ogDescription || t('ogDescription'),
+    ogDomain: shortenHistory?.ogDomain || brandUrlShortDomain,
     ogImgSrc: shortenHistory?.ogImgSrc,
   };
 
@@ -35,11 +38,11 @@ export const AdvancedSettingUrlForm = () => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<Partial<UrlShortenerHistory>>({
+  } = useForm<ShortenSettingPayload>({
     defaultValues,
   });
 
-  const handleUpdate = useCallback((history: Partial<UrlShortenerHistory>) => {
+  const handleUpdate = useCallback((history: ShortenSettingPayload) => {
     setShortenHistoryForm(history);
   }, []);
 
@@ -49,11 +52,18 @@ export const AdvancedSettingUrlForm = () => {
 
   useEffect(() => {
     debouncedUpdate({
-      ...shortenHistory,
       ogTitle,
       ogDescription,
     });
-  }, [ogTitle, ogDescription, shortenHistory]);
+  }, [ogTitle, ogDescription]);
+
+  useEffect(() => {
+    if (shortenHistory)
+      debouncedUpdate({
+        ogTitle: shortenHistory.ogDescription || t('ogTitle', { hash: shortenHistory.hash ?? 'XXX' }),
+        ogDescription: shortenHistory.ogDescription || t('ogDescription'),
+      });
+  }, [shortenHistory]);
 
   const updateShortenUrl = useMutation(QueryKey.SHORTEN_UPDATE, {
     mutationFn: updateShortenUrlRequest,
@@ -72,10 +82,11 @@ export const AdvancedSettingUrlForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<Partial<UrlShortenerHistory>> = async (values) => {
+  const onSubmit: SubmitHandler<ShortenSettingPayload> = async (values) => {
     if (!shortenHistory?.hash) return;
     updateShortenUrl.mutate({
       hash: shortenHistory.hash,
+      locale,
       ogDescription: values.ogDescription || undefined,
       ogTitle: values.ogTitle || undefined,
     });
@@ -92,14 +103,15 @@ export const AdvancedSettingUrlForm = () => {
             btnSize="md"
             {...register('ogTitle', {
               required: { message: t('errorNoInput'), value: true },
-              maxLength: { message: `Maximum of ${LIMIT_OG_TITLE_LENGTH} charactors`, value: LIMIT_OG_TITLE_LENGTH },
+              maxLength: { message: t('maximumCharaters', { n: LIMIT_OG_TITLE_LENGTH }), value: LIMIT_OG_TITLE_LENGTH },
             })}
+            maxLength={LIMIT_OG_TITLE_LENGTH}
             disabled={updateShortenUrl.isLoading}
           />
           <ErrorMessage
             errors={errors}
             name="ogTitle"
-            render={(error) => <p className="mt-4 text-red-400">{error.message}</p>}
+            render={(error) => <p className="text-red-400">{error.message}</p>}
           />
         </div>
         <div className="mt-4">
@@ -107,10 +119,19 @@ export const AdvancedSettingUrlForm = () => {
           <Textarea
             {...register('ogDescription', {
               required: { message: t('errorNoInput'), value: true },
-              maxLength: { message: `Maximum of ${LIMIT_OG_DESCRIPTION_LENGTH}}`, value: LIMIT_OG_DESCRIPTION_LENGTH },
+              maxLength: {
+                message: t('maximumCharaters', { n: LIMIT_OG_DESCRIPTION_LENGTH }),
+                value: LIMIT_OG_DESCRIPTION_LENGTH,
+              },
             })}
+            maxLength={LIMIT_OG_DESCRIPTION_LENGTH}
             rows={3}
             disabled={updateShortenUrl.isLoading}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="ogDescription"
+            render={(error) => <p className="text-red-400">{error.message}</p>}
           />
         </div>
         <Button type="submit" text={t('save')} className="mt-4" loading={updateShortenUrl.isLoading} />

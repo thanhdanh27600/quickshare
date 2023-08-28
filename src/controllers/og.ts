@@ -52,6 +52,7 @@ const templateStylesOg = `
 }
 body {
   padding: 3rem;
+  margin: 0;
   width: 1200px;
   height: 630px;
   overflow: hidden;
@@ -93,7 +94,7 @@ main {
 }
 .title {
   font-size: {{fontSize}};
-  margin: 0.25rem 0;
+  margin: 0.25rem;
   font-weight: bold;
   color: #fff;
   text-shadow: .15em .15em 0 hsl(200 50% 30%);
