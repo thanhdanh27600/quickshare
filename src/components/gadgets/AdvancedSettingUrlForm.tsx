@@ -3,7 +3,7 @@ import { UrlShortenerHistory } from '@prisma/client';
 import { updateShortenUrlRequest } from 'api/requests';
 import { useBearStore } from 'bear';
 import { Button } from 'components/atoms/Button';
-import { Input, Texarea } from 'components/atoms/Input';
+import { Input, Textarea } from 'components/atoms/Input';
 import mixpanel from 'mixpanel-browser';
 import { useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -23,13 +23,11 @@ export const AdvancedSettingUrlForm = () => {
     state.shortenHistory,
     state.setShortenHistoryForm,
   ]);
-  if (!shortenHistory) return null;
-
   const defaultValues = {
-    ogTitle: shortenHistory.ogTitle ?? t('ogTitle', { hash: shortenHistory.hash || 'XXX' }),
-    ogDescription: shortenHistory.ogDescription ?? t('ogDescription'),
-    ogDomain: shortenHistory.ogDomain ?? brandUrlShortDomain,
-    ogImgSrc: shortenHistory.ogImgSrc,
+    ogTitle: shortenHistory?.ogTitle ?? t('ogTitle', { hash: shortenHistory?.hash ?? 'XXX' }),
+    ogDescription: shortenHistory?.ogDescription ?? t('ogDescription'),
+    ogDomain: shortenHistory?.ogDomain ?? brandUrlShortDomain,
+    ogImgSrc: shortenHistory?.ogImgSrc,
   };
 
   const {
@@ -75,13 +73,15 @@ export const AdvancedSettingUrlForm = () => {
   });
 
   const onSubmit: SubmitHandler<Partial<UrlShortenerHistory>> = async (values) => {
-    if (!shortenHistory.hash) return;
+    if (!shortenHistory?.hash) return;
     updateShortenUrl.mutate({
       hash: shortenHistory.hash,
       ogDescription: values.ogDescription || undefined,
       ogTitle: values.ogTitle || undefined,
     });
   };
+
+  if (!shortenHistory) return null;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -104,7 +104,7 @@ export const AdvancedSettingUrlForm = () => {
         </div>
         <div className="mt-4">
           <label>Description</label>
-          <Texarea
+          <Textarea
             {...register('ogDescription', {
               required: { message: t('errorNoInput'), value: true },
               maxLength: { message: `Maximum of ${LIMIT_OG_DESCRIPTION_LENGTH}}`, value: LIMIT_OG_DESCRIPTION_LENGTH },

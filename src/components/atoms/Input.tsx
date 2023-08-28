@@ -23,9 +23,10 @@ export const Input = forwardRef((props: InputProps, ref: ForwardedRef<HTMLInputE
     />
   );
 });
+Input.displayName = 'Input';
 
 interface TextareaProps extends DetailedHTMLProps<TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {}
-export const Texarea = forwardRef((props: TextareaProps, ref: ForwardedRef<HTMLTextAreaElement>) => {
+export const Textarea = forwardRef((props: TextareaProps, ref: ForwardedRef<HTMLTextAreaElement>) => {
   const { ...otherProps } = props;
   return (
     <textarea
@@ -39,6 +40,7 @@ export const Texarea = forwardRef((props: TextareaProps, ref: ForwardedRef<HTMLT
     />
   );
 });
+Textarea.displayName = 'Textarea';
 
 interface InputWithButtonProps extends InputProps {
   buttonChild?: string | JSX.Element;
