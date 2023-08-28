@@ -5,7 +5,6 @@ import { REDIS_KEY, getRedisKey, isProduction } from '../types/constants';
 import { Locale } from '../types/locale';
 import { api, badRequest } from '../utils/axios';
 import { decrypt } from '../utils/crypto';
-import HttpStatusCode from '../utils/statusCode';
 import { validateOgSchema } from '../utils/validateMiddleware';
 
 const templateHTMLOg = `
@@ -129,18 +128,15 @@ function getFontSize(title = '') {
 
 export const handler = api(
   async (req, res) => {
-    require('utils/loggerServer').info(req);
-    if (req.method !== 'GET') {
-      return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
-    }
     const locale = req.query.locale as string;
+    const hash = req.query.hash as string;
+    const isPreview = (req.query.preview as string) === 'true';
     const title = decrypt(decodeURIComponent(req.query.title as string));
     await validateOgSchema.parseAsync({
       query: { title: !!title ? title : undefined },
     });
-    let hashMatch = title.match(/<...>/);
+    let hashMatch = hash?.match(/.../);
     if (!hashMatch) return badRequest(res);
-    const hash = hashMatch[0].slice(1, -1);
     // get from cache
     const ogKey = getRedisKey(REDIS_KEY.OG_BY_HASH, `${hash}-${locale || Locale.Vietnamese}`);
     const imageCache = await redis.get(ogKey);
@@ -164,6 +160,9 @@ export const handler = api(
       path: req.query.path,
       styles: compiledStyles,
     });
+
+    if (isPreview) return res.status(200).send(compiledHTML);
+
     // puppeteer render and screenshot
     const browser = await puppeteer.launch({
       headless: true,
@@ -221,7 +220,6 @@ export const handler = api(
       'Cache-Control': `immutable, no-transform, s-max-age=604800, max-age=604800`,
     });
     return res.end(image);
-    // res.status(200).send(compiledHTML);
   },
   ['GET'],
 );

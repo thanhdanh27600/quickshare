@@ -12,6 +12,7 @@ import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { QueryKey, strictRefetch } from 'utils/requests';
 import { FeedbackLink, FeedbackTemplate } from './FeedbackLink';
+
 type URLStatsForm = {
   hash: string;
 };
@@ -65,8 +66,8 @@ export const URLStats = () => {
     }
   }, [fetchTracking.isSuccess, fetchTracking.isError]);
 
-  const title = [
-    <span className="relative" key="accordion-viewmore">
+  const title = (
+    <span className="relative">
       {t('viewMore')}
       {hasHistory && (
         <span className="absolute bottom-2 -right-7 flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-sm">
@@ -74,8 +75,8 @@ export const URLStats = () => {
           {Number(recentHistories?.length) >= LIMIT_RECENT_HISTORY && '+'}
         </span>
       )}
-    </span>,
-  ];
+    </span>
+  );
 
   return (
     <Accordion title={title}>

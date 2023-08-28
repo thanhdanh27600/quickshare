@@ -17,7 +17,7 @@ export const Button = (props: ButtonProps) => {
     <button
       {...otherProps}
       className={clsx(
-        'rounded-lg bg-gradient-to-br px-5 py-2 text-center text-sm font-medium transition-all focus:ring-2',
+        'rounded-lg bg-gradient-to-br px-5 py-2 text-center text-sm font-medium transition-all focus:ring-2 disabled:from-cyan-300 disabled:to-blue-400 disabled:text-gray-300',
         {
           'from-cyan-500 to-blue-500 py-2.5 text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-cyan-400':
             variant === 'filled',
@@ -25,7 +25,8 @@ export const Button = (props: ButtonProps) => {
             variant === 'outlined',
         },
         props.className,
-      )}>
+      )}
+      disabled={props.loading || props.disabled}>
       <span
         className={clsx(
           'flex min-w-max justify-center',

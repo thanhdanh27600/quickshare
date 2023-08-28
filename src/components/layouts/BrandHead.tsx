@@ -19,19 +19,13 @@ export const BrandHead = () => {
       <meta property="og:url" content="https://facebook.com/clickditop/" />
       <meta property="og:title" content={t('brandTitle')} />
       <meta property="og:description" content={t('brandDescription')} />
-      <meta
-        property="og:image"
-        content={`${BASE_URL}/api/og?title=${encodeURIComponent(t('ogBrand'))}&locale=${locale}`}
-      />
+      <meta property="og:image" content={`${BASE_URL}/assets/clickdi-banner-${locale}.jpeg`} />
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content="https://twitter.com/clickditop" />
       <meta property="twitter:title" content={t('brandTitle')} />
       <meta property="twitter:description" content={t('brandDescription')} />
-      <meta
-        property="twitter:image"
-        content={`${BASE_URL}/api/og?title=${encodeURIComponent(t('ogBrand'))}&locale=${locale}`}
-      />
+      <meta property="og:image" content={`${BASE_URL}/assets/clickdi-banner-${locale}.jpeg`} />
     </Head>
   );
 };

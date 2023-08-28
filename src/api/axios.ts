@@ -25,7 +25,7 @@ export function withAuth(token?: string) {
 const allowedOrigins = [brandUrl, brandUrlShort, ...[alternateBrandUrl]];
 
 export const allowCors = (handler: any) => async (req: NextApiRequest, res: NextApiResponse) => {
-  const origin = req.headers['origin'];
+  const origin = req.headers?.origin;
   console.log('origin', origin);
   if (!!origin && allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
