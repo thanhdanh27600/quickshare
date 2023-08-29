@@ -12,7 +12,7 @@ export const UploadImage = ({ onSuccess }: { onSuccess: (url: string) => void })
         options={{
           maxFileSize: 5e6,
           maxImageHeight: 2400,
-          croppingAspectRatio: 1.9 /* 1200/630 */,
+          croppingAspectRatio: 1200 / 630,
           cropping: true,
           multiple: false,
           showSkipCropButton: false,
@@ -24,7 +24,6 @@ export const UploadImage = ({ onSuccess }: { onSuccess: (url: string) => void })
         signatureEndpoint="/api/cld"
         uploadPreset="clickdi"
         onSuccess={(result, widget) => {
-          console.log('result', result);
           setResource(result?.info);
           const url = (result?.info as any)?.secure_url;
           if (url) {

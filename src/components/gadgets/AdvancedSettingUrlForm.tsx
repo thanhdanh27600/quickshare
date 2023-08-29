@@ -98,8 +98,8 @@ export const AdvancedSettingUrlForm = () => {
       hash: shortenHistory.hash,
       locale,
       ogImgSrc: values.ogImgSrc || undefined,
-      ogDescription: values.ogDescription || undefined,
-      ogTitle: values.ogTitle || undefined,
+      ogDescription: values.ogDescription?.trim() || undefined,
+      ogTitle: values.ogTitle?.trim() || undefined,
     });
   };
 

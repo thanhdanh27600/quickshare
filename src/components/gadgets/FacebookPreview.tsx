@@ -1,4 +1,5 @@
 import { UrlShortenerHistory } from '@prisma/client';
+import { CldImage } from 'next-cloudinary';
 import { BASE_URL, PLATFORM_AUTH, brandUrlShortDomain } from 'types/constants';
 
 import { encrypt } from 'utils/crypto';
@@ -16,7 +17,13 @@ export const FacebookPreview = ({ hash, ogTitle, ogDomain, ogDescription, ogImgS
       <div className="ml-auto w-[315px] bg-gray-100/75 sm:w-[420px]">
         <div className="w-full border border-solid border-gray-200 bg-cover bg-no-repeat sm:h-[220.5px]">
           {ogImgSrc ? (
-            <img className="h-full w-full object-cover" src={ogImgSrc} />
+            <CldImage
+              height={221}
+              width={315}
+              alt={'clickdi-banner'}
+              className="h-full w-full object-cover"
+              src={ogImgSrc}
+            />
           ) : (
             <iframe
               className="relative origin-top-left scale-[0.35]"
