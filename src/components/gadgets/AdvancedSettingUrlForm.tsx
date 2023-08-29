@@ -5,6 +5,7 @@ import { useBearStore } from 'bear';
 import { Button } from 'components/atoms/Button';
 import { Input, Textarea } from 'components/atoms/Input';
 import mixpanel from 'mixpanel-browser';
+import dynamic from 'next/dynamic';
 import { useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
@@ -18,6 +19,8 @@ import { logger } from 'utils/logger';
 import { QueryKey } from 'utils/requests';
 
 type ShortenSettingPayload = Partial<UrlShortenerHistory> & { locale?: Locale };
+
+const UploadImage = dynamic(() => import('../atoms/UploadImage').then((mod) => mod.UploadImage));
 
 export const AdvancedSettingUrlForm = () => {
   const { t, locale } = useTrans();
@@ -35,6 +38,7 @@ export const AdvancedSettingUrlForm = () => {
 
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
     watch,
@@ -42,11 +46,16 @@ export const AdvancedSettingUrlForm = () => {
     defaultValues,
   });
 
+  const onUpdateImgSrc = (url: string) => {
+    setValue('ogImgSrc', url);
+    setShortenHistoryForm({ ogImgSrc: url });
+  };
+
   const handleUpdate = useCallback((history: ShortenSettingPayload) => {
     setShortenHistoryForm(history);
   }, []);
 
-  const debouncedUpdate = useCallback(debounce(handleUpdate, 1000), []);
+  const debouncedUpdate = useCallback(debounce(handleUpdate, 600), []);
 
   const [ogTitle, ogDescription] = watch(['ogTitle', 'ogDescription']);
 
@@ -60,8 +69,9 @@ export const AdvancedSettingUrlForm = () => {
   useEffect(() => {
     if (shortenHistory)
       debouncedUpdate({
-        ogTitle: shortenHistory.ogDescription || t('ogTitle', { hash: shortenHistory.hash ?? 'XXX' }),
+        ogTitle: shortenHistory.ogTitle || t('ogTitle', { hash: shortenHistory.hash ?? 'XXX' }),
         ogDescription: shortenHistory.ogDescription || t('ogDescription'),
+        ogImgSrc: shortenHistory.ogImgSrc,
       });
   }, [shortenHistory]);
 
@@ -87,8 +97,9 @@ export const AdvancedSettingUrlForm = () => {
     updateShortenUrl.mutate({
       hash: shortenHistory.hash,
       locale,
-      ogDescription: values.ogDescription || undefined,
-      ogTitle: values.ogTitle || undefined,
+      ogImgSrc: values.ogImgSrc || undefined,
+      ogDescription: values.ogDescription?.trim() || undefined,
+      ogTitle: values.ogTitle?.trim() || undefined,
     });
   };
 
@@ -98,21 +109,30 @@ export const AdvancedSettingUrlForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mt-4">
         <div>
-          <label>Title</label>
-          <Input
-            btnSize="md"
-            {...register('ogTitle', {
-              required: { message: t('errorNoInput'), value: true },
-              maxLength: { message: t('maximumCharaters', { n: LIMIT_OG_TITLE_LENGTH }), value: LIMIT_OG_TITLE_LENGTH },
-            })}
-            maxLength={LIMIT_OG_TITLE_LENGTH}
-            disabled={updateShortenUrl.isLoading}
-          />
-          <ErrorMessage
-            errors={errors}
-            name="ogTitle"
-            render={(error) => <p className="text-red-400">{error.message}</p>}
-          />
+          <label>Upload image</label>
+          <div className="mt-2">
+            <UploadImage onSuccess={onUpdateImgSrc} />
+          </div>
+          <div className="mt-4">
+            <label>Title</label>
+            <Input
+              btnSize="md"
+              {...register('ogTitle', {
+                required: { message: t('errorNoInput'), value: true },
+                maxLength: {
+                  message: t('maximumCharaters', { n: LIMIT_OG_TITLE_LENGTH }),
+                  value: LIMIT_OG_TITLE_LENGTH,
+                },
+              })}
+              maxLength={LIMIT_OG_TITLE_LENGTH}
+              disabled={updateShortenUrl.isLoading}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="ogTitle"
+              render={(error) => <p className="text-red-400">{error.message}</p>}
+            />
+          </div>
         </div>
         <div className="mt-4">
           <label>Description</label>

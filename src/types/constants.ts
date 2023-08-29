@@ -48,5 +48,5 @@ export const getRedisKey = (key: RedisKeyValues, value: string) => {
 
 export const MIX_PANEL_TOKEN = process.env.NEXT_PUBLIC_MIX_PANEL_TOKEN;
 export const PLATFORM_AUTH = process.env.NEXT_PUBLIC_PLATFORM_AUTH;
-export const SERVER_AUTH = process.env.NEXT_PUBLIC_SERVER_AUTH;
+export const SERVER_AUTH = process.env.SERVER_AUTH;
 export const TE = () => Window()?.te;

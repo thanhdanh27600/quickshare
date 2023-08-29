@@ -6,6 +6,7 @@ import HttpStatusCode from '../utils/statusCode';
 
 const ip = '0.0.0.0';
 const key = `limit:${ip}`;
+const exampleUrl = 'U2FsdGVkX1+hDFakyw7MPSqI3JDQ6rXZF0vjpJ1ZOLIf5qp+9ByNbpiiJYIE+4ZYSAw1M2fIIfzcn5YaoYVCkA==';
 
 describe('Test /api/shorten...', () => {
   describe('Shortened URL', () => {
@@ -63,7 +64,7 @@ describe('Test /api/shorten...', () => {
         let { req, res } = createMocks({
           method: 'GET',
           query: {
-            url: 'U2FsdGVkX19lPT7tc2v+EAQ+q+S+QmgedQXJPLAhhjZDskrGAPv+kdWEm624npUtHaEGmCTcJHbFaYeZAv+FQw==',
+            url: exampleUrl,
           },
           headers: { 'x-forwarded-for': ip },
         });
@@ -72,7 +73,7 @@ describe('Test /api/shorten...', () => {
       await Promise.all(requests);
       const { req, res } = createMocks({
         method: 'GET',
-        query: { url: 'U2FsdGVkX19lPT7tc2v+EAQ+q+S+QmgedQXJPLAhhjZDskrGAPv+kdWEm624npUtHaEGmCTcJHbFaYeZAv+FQw==' },
+        query: { url: exampleUrl },
         headers: { 'x-forwarded-for': ip },
       });
       await controller.shorten.handler(req, res);
@@ -84,7 +85,7 @@ describe('Test /api/shorten...', () => {
 
       const { req, res } = createMocks({
         method: 'GET',
-        query: { url: 'U2FsdGVkX19lPT7tc2v+EAQ+q+S+QmgedQXJPLAhhjZDskrGAPv+kdWEm624npUtHaEGmCTcJHbFaYeZAv+FQw==' },
+        query: { url: exampleUrl },
         headers: { 'x-forwarded-for': ip },
       });
       await controller.shorten.handler(req, res);

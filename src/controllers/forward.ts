@@ -83,6 +83,8 @@ export const postProcessForward = async (payload: any, res?: NextApiResponse<For
       history.ogTitle,
       'ogDescription',
       history.ogDescription,
+      'ogImgSrc',
+      history.ogImgSrc,
       'updatedAt',
       new Date().getTime(),
     ];
