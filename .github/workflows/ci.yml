@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 16.x
       - name: Decrypt secret
-        run: ./scripts/decrypt_secret.sh .env.test.gpg
+        run: ./scripts/decrypt_secret.sh .env.test.gpg ./.env.test
         env:
           SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
       - run: npm i
