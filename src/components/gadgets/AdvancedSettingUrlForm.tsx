@@ -25,10 +25,14 @@ const UploadImage = dynamic(() => import('../atoms/UploadImage').then((mod) => m
 export const AdvancedSettingUrlForm = () => {
   const { t, locale } = useTrans();
   const { shortenSlice } = useBearStore();
-  const [shortenHistory, setShortenHistoryForm] = shortenSlice((state) => [
-    state.shortenHistory,
-    state.setShortenHistoryForm,
-  ]);
+  const [shortenHistory, shortenHistoryMediaId, setShortenHistoryForm, setShortenHistoryMediaId] = shortenSlice(
+    (state) => [
+      state.shortenHistory,
+      state.shortenHistoryMediaId,
+      state.setShortenHistoryForm,
+      state.setShortenHistoryMediaId,
+    ],
+  );
   const defaultValues = {
     ogTitle: shortenHistory?.ogTitle || t('ogTitle', { hash: shortenHistory?.hash ?? 'XXX' }),
     ogDescription: shortenHistory?.ogDescription || t('ogDescription'),
@@ -46,8 +50,9 @@ export const AdvancedSettingUrlForm = () => {
     defaultValues,
   });
 
-  const onUpdateImgSrc = (url: string) => {
+  const onUpdateImgSrc = ({ url, mediaId }: any) => {
     setValue('ogImgSrc', url);
+    setShortenHistoryMediaId(mediaId);
     setShortenHistoryForm({ ogImgSrc: url });
   };
 
@@ -97,6 +102,7 @@ export const AdvancedSettingUrlForm = () => {
     updateShortenUrl.mutate({
       hash: shortenHistory.hash,
       locale,
+      mediaId: shortenHistoryMediaId || undefined,
       ogImgSrc: values.ogImgSrc || undefined,
       ogDescription: values.ogDescription?.trim() || undefined,
       ogTitle: values.ogTitle?.trim() || undefined,
@@ -109,12 +115,12 @@ export const AdvancedSettingUrlForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mt-4">
         <div>
-          <label>Upload image</label>
+          <label>{t('uploadImage')}</label>
           <div className="mt-2">
             <UploadImage onSuccess={onUpdateImgSrc} />
           </div>
           <div className="mt-4">
-            <label>Title</label>
+            <label>{t('title')}</label>
             <Input
               btnSize="md"
               {...register('ogTitle', {
@@ -135,7 +141,7 @@ export const AdvancedSettingUrlForm = () => {
           </div>
         </div>
         <div className="mt-4">
-          <label>Description</label>
+          <label>{t('description')}</label>
           <Textarea
             {...register('ogDescription', {
               required: { message: t('errorNoInput'), value: true },

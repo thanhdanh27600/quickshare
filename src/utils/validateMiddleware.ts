@@ -45,6 +45,11 @@ export const validateUpdateShortenSchema = z.object({
       required_error: 'Description is required',
     }),
   ),
+  mediaId: z.optional(
+    z.number({
+      invalid_type_error: 'Must be a number',
+    }),
+  ),
   // ogImgSrc: z.string({
   //   required_error: 'Description is required',
   // }),
@@ -86,5 +91,13 @@ export const validateQrSchema = z.object({
       })
       .min(5)
       .max(100),
+  }),
+});
+
+export const validateMediaSchema = z.object({
+  body: z.object({
+    url: z.string({
+      required_error: 'Url is required',
+    }),
   }),
 });

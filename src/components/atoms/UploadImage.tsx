@@ -1,9 +1,14 @@
 import { UploadCloud } from '@styled-icons/feather';
+import { API } from 'api/axios';
 import { CldUploadWidget } from 'next-cloudinary';
 import { MouseEventHandler, useState } from 'react';
 import { isProduction } from 'types/constants';
 
-export const UploadImage = ({ onSuccess }: { onSuccess: (url: string) => void }) => {
+export const UploadImage = ({
+  onSuccess,
+}: {
+  onSuccess: ({ url, mediaId }: { url: string; mediaId: number }) => void;
+}) => {
   const [resource, setResource] = useState<any>();
 
   return (
@@ -23,11 +28,12 @@ export const UploadImage = ({ onSuccess }: { onSuccess: (url: string) => void })
         }}
         signatureEndpoint="/api/cld"
         uploadPreset="clickdi"
-        onSuccess={(result, widget) => {
+        onSuccess={async (result, widget) => {
           setResource(result?.info);
           const url = (result?.info as any)?.secure_url;
-          if (url) {
-            onSuccess(url);
+          const rs = await API.post('/api/i', { url });
+          if (url && rs) {
+            onSuccess({ url, mediaId: rs.data.id });
           }
           widget.close();
         }}>

@@ -106,12 +106,15 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
               property="og:image"
               content={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
             />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="627" />
             <meta property="og:image:alt" content={t('ogDescription')} />
             <meta
               property="twitter:image"
               content={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
             />
             <meta name="twitter:image:alt" content={t('ogDescription')}></meta>
+            <meta property="twitter:card" content="summary_large_image" />
           </>
         )}
       </Head>

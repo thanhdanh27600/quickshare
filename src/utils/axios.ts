@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 import { Response } from '../types/api';
-import { isProduction } from '../types/constants';
+import { isProduction, isTest } from '../types/constants';
 import HttpStatusCode from './statusCode';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
@@ -12,14 +12,15 @@ export function errorHandler<T extends Response>(
 ) {
   switch (code) {
     case HttpStatusCode.UNAUTHORIZED:
-    default:
       return res.status(HttpStatusCode.UNAUTHORIZED).json({ errorMessage: 'UNAUTHORIZED' } as any);
+    case HttpStatusCode.NOT_FOUND:
+    default:
+      return res.status(HttpStatusCode.NOT_FOUND).json({ errorMessage: 'Not found' } as any);
   }
-  return res.status(HttpStatusCode.NOT_FOUND).json({ errorMessage: 'Not found' } as any);
 }
 
 export const catchErrorHandler = (res: NextApiResponse, error?: any) => {
-  if (!isProduction) console.error('[Error]', error);
+  if (!isProduction && !isTest) console.error('[Error]', error);
   if (error instanceof z.ZodError) {
     require('./loggerServer').warn(error);
     return res.status(HttpStatusCode.BAD_REQUEST).json(error.issues);
