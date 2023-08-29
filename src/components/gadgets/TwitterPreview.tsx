@@ -14,7 +14,7 @@ export const TwitterPreview = ({ hash, ogTitle, ogDomain, ogDescription, ogImgSr
   return (
     <div className="w-fit">
       <div className="ml-auto w-[315px] bg-gray-100/75 sm:w-[420px]">
-        <div className="w-full rounded-xl rounded-b-none border border-solid border-gray-200 bg-cover bg-no-repeat sm:h-[221px]">
+        <div className="h-[165.375px] w-full rounded-xl rounded-b-none border border-solid border-gray-200 bg-cover bg-no-repeat sm:h-[221px]">
           {ogImgSrc ? (
             <CldImage
               height={221}
@@ -25,7 +25,7 @@ export const TwitterPreview = ({ hash, ogTitle, ogDomain, ogDescription, ogImgSr
             />
           ) : (
             <iframe
-              className="relative origin-top-left scale-[0.35]"
+              className="relative origin-top-left scale-[0.2625] sm:scale-[0.35]"
               width={1200}
               height={630}
               src={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(
