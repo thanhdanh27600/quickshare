@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export const Header = () => {
   return (
-    <div className="mx-auto flex justify-between py-5 px-4 md:mx-auto md:max-w-7xl">
+    <div className="mx-auto flex justify-between py-5 px-4 sm:w-full md:mx-auto md:max-w-7xl">
       <Link href="/">
         <div className="flex w-fit cursor-pointer flex-col items-center gap-2">
           <BrandLogo

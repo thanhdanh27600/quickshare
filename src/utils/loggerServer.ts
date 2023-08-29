@@ -4,13 +4,13 @@ import { isProduction, isTest } from '../types/constants';
 module.exports = isTest
   ? {
       info(message: any) {
-        console.log('[INFO]: ', message);
+        //  console.log('[INFO]: ', message);
       },
       warn(message: any) {
-        console.warn('[WARN]: ', message);
+        //  console.warn('[WARN]: ', message);
       },
       error(message: any) {
-        console.error('[WARN]: ', message);
+        console.error('[ERROR]: ', message);
       },
     }
   : pino(

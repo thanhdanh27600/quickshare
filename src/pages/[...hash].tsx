@@ -2,6 +2,7 @@ import { UrlShortenerHistory } from '@prisma/client';
 import { getForwardUrl } from 'api/requests';
 import mixpanel from 'mixpanel-browser';
 import { GetServerSidePropsContext } from 'next';
+import { CldOgImage } from 'next-cloudinary';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import { useEffect } from 'react';
@@ -29,6 +30,7 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
   const url = history?.url;
   const ogTitle = history?.ogTitle || t('ogTitle', { hash });
   const ogDescription = history?.ogDescription || t('ogDescription');
+  const ogImgSrc = history?.ogImgSrc;
 
   useEffect(() => {
     if (!Window()) {
@@ -92,21 +94,31 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
         <meta property="og:url" content="https://facebook.com/clickditop/ " />
         <meta property="og:title" content={ogTitle} />
         <meta property="og:description" content={ogDescription} />
-        <meta
-          property="og:image"
-          content={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
-        />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         {/* <meta property="twitter:url" content="https://twitter.com/clickditop" /> */}
         <meta property="twitter:title" content={ogTitle} />
         <meta property="twitter:description" content={ogDescription} />
-        <meta
-          property="twitter:image"
-          content={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
-        />
+        {!ogImgSrc && (
+          <>
+            <meta
+              property="og:image"
+              content={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
+            />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="627" />
+            <meta property="og:image:alt" content={t('ogDescription')} />
+            <meta
+              property="twitter:image"
+              content={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
+            />
+            <meta name="twitter:image:alt" content={t('ogDescription')}></meta>
+            <meta property="twitter:card" content="summary_large_image" />
+          </>
+        )}
       </Head>
+      {ogImgSrc && <CldOgImage alt={t('ogDescription')} src={ogImgSrc} />}
       {error ? <p>{t(error as any)}</p> : <></>}
     </>
   );
@@ -129,7 +141,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       userAgent: context.req.headers['user-agent'],
       ip,
     });
-    console.log('forwardUrl', forwardUrl);
     return {
       props: {
         history: forwardUrl.history,
