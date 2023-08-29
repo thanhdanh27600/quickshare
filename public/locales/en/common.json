@@ -57,5 +57,8 @@
   "loadMore": "Load more",
   "editPreview": "More options",
   "save": "Save",
-  "maximumCharaters": "Maximum of {{n}} characters"
+  "maximumCharaters": "Maximum of {{n}} characters",
+  "uploadImage": "Upload image",
+  "title": "Title",
+  "description": "Description"
 }

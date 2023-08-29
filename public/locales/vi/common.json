@@ -57,5 +57,8 @@
   "loadMore": "Xem thêm",
   "editPreview": "Chỉnh sửa",
   "save": "Lưu thay đổi",
-  "maximumCharaters": "Tối đa {{n}} ký tự"
+  "maximumCharaters": "Tối đa {{n}} ký tự",
+  "uploadImage": "Upload ảnh",
+  "title": "Tiêu đề",
+  "description": "Mô tả ngắn"
 }

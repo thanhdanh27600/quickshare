@@ -45,7 +45,7 @@ export const handler = api<Stats>(
         hash,
       },
       include: {
-        urlForwardMeta: {
+        UrlForwardMeta: {
           orderBy: {
             updatedAt: Prisma.SortOrder.desc,
           },
