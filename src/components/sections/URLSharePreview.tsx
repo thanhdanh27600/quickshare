@@ -8,7 +8,7 @@ export const URLSharePreview = () => {
   if (!shortenHistoryForm) return null;
 
   return (
-    <div className="mt-4 flex flex-col items-center justify-between gap-8 lg:flex-row">
+    <div className="mx-auto mt-4 flex w-fit flex-col items-center justify-between gap-8 lg:flex-row">
       <div>
         <p className="mb-2 text-gray-500">{`Facebook`}</p>
         <FacebookPreview {...shortenHistoryForm} />

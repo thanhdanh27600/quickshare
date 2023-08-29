@@ -40,6 +40,11 @@ export const validateUpdateShortenSchema = z.object({
       required_error: 'Description is required',
     }),
   ),
+  ogImgSrc: z.optional(
+    z.string({
+      required_error: 'Description is required',
+    }),
+  ),
   // ogImgSrc: z.string({
   //   required_error: 'Description is required',
   // }),

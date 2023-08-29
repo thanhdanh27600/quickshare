@@ -37,7 +37,7 @@ export const Accordion = ({ children, title }: Props) => {
           className="!visible hidden border-0"
           data-te-collapse-item
           aria-labelledby={`heading${id}`}>
-          <div>{children}</div>
+          {children}
         </div>
       </div>
     </div>

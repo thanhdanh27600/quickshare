@@ -18,11 +18,11 @@ export const URLAdvancedSetting = () => {
 
   return (
     <Accordion title={title}>
-      <>
+      <div>
         <URLSharePreview />
         <AdvancedSettingUrlForm key={locale} />
         <hr className="my-8" />
-      </>
+      </div>
     </Accordion>
   );
 };

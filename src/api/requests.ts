@@ -17,11 +17,13 @@ export const updateShortenUrlRequest = async ({
   hash,
   ogTitle,
   ogDescription,
+  ogImgSrc,
   locale,
 }: {
   hash: string;
   ogDescription?: string;
   ogTitle?: string;
+  ogImgSrc?: string;
   locale: Locale;
 }) => {
   const rs = await API.put(`/api/shorten/update`, {
@@ -29,6 +31,7 @@ export const updateShortenUrlRequest = async ({
     hash,
     ogTitle,
     ogDescription,
+    ogImgSrc,
   });
   const data = rs.data;
   return data as ShortenUrl;
