@@ -52,7 +52,6 @@ export const URLShortenerInput = () => {
       setLocalError('');
     },
     onError: (error, variables, context) => {
-      console.log(`An error happened!`, error);
       mixpanel.track(MIXPANEL_EVENT.SHORTEN, {
         status: MIXPANEL_STATUS.FAILED,
         errorMessage: error,
