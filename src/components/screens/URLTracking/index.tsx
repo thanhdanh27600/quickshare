@@ -1,4 +1,3 @@
-import { UrlForwardMeta, UrlShortenerHistory } from '@prisma/client';
 import { Calendar, Copy, Globe, MapPin, RefreshCw, Search, UserCheck, UserX } from '@styled-icons/feather';
 import { JsonViewer } from '@textea/json-viewer';
 import { getStats, parseUA } from 'api/requests';
@@ -13,6 +12,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
 import { BASE_URL_SHORT, Window } from 'types/constants';
+import { UrlHistoryWithMeta } from 'types/stats';
 import { MIXPANEL_EVENT } from 'types/utils';
 import { UAParser } from 'ua-parser-js';
 import { Referer, detectReferer } from 'utils/agent';
@@ -30,10 +30,7 @@ export const URLTracking = ({ hash }: { hash: string }) => {
   const [needValidate, setNeedValidate] = useState<boolean>();
   const [parsedUA, setParsedUA] = useState();
   const [qc, setQc] = useState<number | undefined>(undefined);
-  const [history, setHistory] = useState<(UrlShortenerHistory & { urlForwardMeta: UrlForwardMeta[] }) | undefined>(
-    undefined,
-  );
-
+  const [history, setHistory] = useState<UrlHistoryWithMeta | undefined>(undefined);
   const getStatsQuery = useCallback(async () => getStats({ hash }), [hash]);
   /* now data has only 1 history */
   const { data, isLoading, isSuccess, refetch } = useQuery({
@@ -43,11 +40,7 @@ export const URLTracking = ({ hash }: { hash: string }) => {
     retry: false,
     ...strictRefetch,
     onSuccess(data) {
-      setHistory(
-        !!data.history?.length
-          ? (data.history[0] as UrlShortenerHistory & { urlForwardMeta: UrlForwardMeta[] })
-          : undefined,
-      );
+      setHistory(!!data.history?.length ? (data.history[0] as UrlHistoryWithMeta) : undefined);
     },
     onError(err: any) {
       if (err.message === 'UNAUTHORIZED') {
@@ -65,7 +58,10 @@ export const URLTracking = ({ hash }: { hash: string }) => {
         if (h) {
           return {
             ...h,
-            urlForwardMeta: [...h.urlForwardMeta, ...(!!data.history?.length ? data.history[0].urlForwardMeta! : [])],
+            UrlForwardMeta: [
+              ...(h.UrlForwardMeta || []),
+              ...(!!data.history?.length ? data.history[0].UrlForwardMeta || [] : []),
+            ],
           };
         }
         return undefined;
@@ -82,7 +78,7 @@ export const URLTracking = ({ hash }: { hash: string }) => {
 
   const onLoadMore = () => {
     setQc((_) => {
-      const _qc = history?.urlForwardMeta?.at(-1)?.id;
+      const _qc = history?.UrlForwardMeta?.at(-1)?.id;
       if (!statsMore.isLoading) {
         statsMore.mutate({ hash, queryCursor: _qc });
       }
@@ -104,9 +100,9 @@ export const URLTracking = ({ hash }: { hash: string }) => {
     return null;
   }
 
-  const hasData = !!history?.urlForwardMeta?.length;
+  const hasData = !!history?.UrlForwardMeta?.length;
   const hasPassword = history?.password !== null;
-  const hasMore = hasData && (history?.urlForwardMeta?.length || 0) % PAGE_SIZE === 0;
+  const hasMore = hasData && (history?.UrlForwardMeta?.length || 0) % PAGE_SIZE === 0;
   const clickableUrl = history ? (history.url.startsWith('http') ? history.url : `//${history.url}`) : '';
 
   return (
@@ -156,14 +152,14 @@ export const URLTracking = ({ hash }: { hash: string }) => {
           <div className={clsx('mt-2 flex items-end justify-between text-sm text-gray-500', !!qc && 'pr-4')}>
             <p className="text-lg capitalize text-cyan-500">
               {`${t('totalClick')}: `}{' '}
-              <span className="text-3xl font-bold">{(history as any)?._count?.urlForwardMeta}</span>
+              <span className="text-3xl font-bold">{(history as any)?._count?.UrlForwardMeta}</span>
             </p>
             <button
               disabled={!qc}
               className={clsx(qc && 'transition-all hover:text-cyan-500')}
               onClick={() => Window()?.location.reload()}>
-              <span className={clsx('text-sm', !!qc ? 'text-red-500 ' : 'text-green-500')}>•</span>{' '}
-              {!qc && <span>{t('autoUpdate')}</span>}
+              <span className={clsx('text-sm', !!qc ? 'text-red-500 ' : 'animate-ping text-green-500')}>•</span>{' '}
+              {!qc && <span className="">{t('autoUpdate')}</span>}
               {!!qc && <span className={clsx(qc && 'hover:underline')}>{t('refresh')}</span>}
               {!!qc && <RefreshCw className="absolute mt-1 ml-1 w-2" />}
             </button>
@@ -192,7 +188,7 @@ export const URLTracking = ({ hash }: { hash: string }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {history?.urlForwardMeta?.map((m, j) => {
+                  {history?.UrlForwardMeta?.map((m, j) => {
                     const UA = m.userAgent ? new UAParser(m.userAgent) : undefined;
                     const ref = detectReferer(m.userAgent);
                     return (
