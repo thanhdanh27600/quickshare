@@ -94,12 +94,14 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
           <span className="">{copied ? 'Copied' : 'Copy'}</span>
         </button>
       </div>
-      <a
-        href={linkWithLanguage(shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`), locale)}
-        target="_blank"
-        className="mt-2 flex w-full cursor-pointer justify-end text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
-        {t('trackingLive')}
-      </a>
+      <div className="mt-2 flex w-full justify-end">
+        <a
+          href={linkWithLanguage(shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`), locale)}
+          target="_blank"
+          className="cursor-pointer text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
+          {t('trackingLive')}
+        </a>
+      </div>
 
       <div className="mt-4">
         <URLAdvancedSetting />
