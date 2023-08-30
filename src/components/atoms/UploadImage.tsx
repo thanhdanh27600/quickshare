@@ -44,9 +44,9 @@ export const UploadImage = ({
           };
           return (
             <button
-              className="w-fit cursor-pointer rounded-lg border border-gray-300 p-4 transition-colors hover:bg-gray-100"
+              className="w-fit cursor-pointer rounded-lg border border-gray-300 p-6 transition-colors hover:bg-gray-100"
               onClick={handleOnClick}>
-              <UploadCloud className="h-8 w-8 text-gray-700" />
+              <UploadCloud className="h-8 w-8 stroke-[1.25px] text-gray-700" />
             </button>
           );
         }}

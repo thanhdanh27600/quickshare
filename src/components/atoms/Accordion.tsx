@@ -10,7 +10,7 @@ export const Accordion = ({ children, title }: Props) => {
   return (
     <div id={`accordion${id}`}>
       <div key={`k${id}`} className="rounded-none border-none border-neutral-200">
-        <h2 className="mb-0 hover:text-cyan-500 hover:underline" id={`heading${id}`}>
+        <h3 className="mb-0 hover:text-cyan-500 hover:underline" id={`heading${id}`}>
           <button
             className="[&:not([data-te-collapse-collapsed])]:text-primary group relative flex w-full items-center rounded-none border-0 py-4 text-left text-base transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none"
             type="button"
@@ -31,7 +31,7 @@ export const Accordion = ({ children, title }: Props) => {
             </span>
             <span className="ml-2 text-lg">{title || 'Heading'}</span>
           </button>
-        </h2>
+        </h3>
         <div
           id={`collapse${id}`}
           className="!visible hidden border-0"
