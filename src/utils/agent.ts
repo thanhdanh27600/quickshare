@@ -72,7 +72,6 @@ export function detectReferer(userAgent?: string | null): Referer {
 
 export function detectCrawler(userAgent: string): Crawler {
   const ua = userAgent.toLowerCase();
-  console.log('ua detectCrawler', ua);
   let check = false;
 
   check = ua.includes('facebookexternalhit') || ua.includes('facebook.com/externalhit');

@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { Button } from 'components/atoms/Button';
 import mixpanel from 'mixpanel-browser';
 import Image from 'next/image';
+import { useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { useQuery } from 'react-query';
 import { BASE_URL, BASE_URL_SHORT, PLATFORM_AUTH } from 'types/constants';
@@ -26,14 +27,13 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
   const shortenUrl = getShortenUrl();
 
   const onCopy = () => {
-    if (copied) {
-      toast.success('Copied');
-    }
     mixpanel.track(MIXPANEL_EVENT.LINK_COPY, {
       status: MIXPANEL_STATUS.OK,
+      shortenUrl,
     });
     setCopied(true);
     copyToClipBoard(shortenUrl);
+    toast.success('Copied');
   };
   let token = '';
   if (PLATFORM_AUTH) {
@@ -47,6 +47,17 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
     queryFn: async () => getQr(shortenUrl, token),
     ...strictRefetch,
   });
+
+  useEffect(() => {
+    if (!copied) return;
+    let timeout = setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [copied]);
 
   return (
     <div className="mt-4">
@@ -83,16 +94,19 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
           <span className="">{copied ? 'Copied' : 'Copy'}</span>
         </button>
       </div>
-      <div className="mt-4">
-        <URLAdvancedSetting />
-      </div>
-      <div className="flex flex-col flex-wrap justify-between gap-8 sm:flex-row sm:items-center">
+      <div className="mt-2 flex w-full justify-end">
         <a
           href={linkWithLanguage(shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`), locale)}
           target="_blank"
           className="cursor-pointer text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
           {t('trackingLive')}
         </a>
+      </div>
+
+      <div className="mt-4">
+        <URLAdvancedSetting />
+      </div>
+      <div className="flex justify-center max-sm:mt-4 sm:justify-end">
         <div className="flex flex-col items-center gap-2 sm:flex-row">
           <a href={`http://www.facebook.com/sharer.php?u=${shortenUrl}`} target="_blank">
             <Button
