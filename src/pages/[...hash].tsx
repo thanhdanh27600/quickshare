@@ -8,10 +8,10 @@ import Head from 'next/head';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
-import { BASE_URL, brandUrlShortDomain, isProduction, PLATFORM_AUTH, Window } from 'types/constants';
+import { BASE_URL_OG, brandUrlShortDomain, isProduction, Window } from 'types/constants';
 import { Locale } from 'types/locale';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
-import { encrypt } from 'utils/crypto';
+import { encodeToBase64 } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
 
@@ -80,10 +80,7 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
     location.replace(`${url.includes('http') ? '' : '//'}${url}`);
   }, [forwardUrl]);
 
-  let encodeTitle = '';
-  if (PLATFORM_AUTH) {
-    encodeTitle = encrypt(ogTitle);
-  }
+  const encodeTitle = encodeToBase64(ogTitle);
 
   return (
     <>
@@ -104,14 +101,14 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
           <>
             <meta
               property="og:image"
-              content={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
+              content={`${BASE_URL_OG}/api/og?hash=${hash}&title=${encodeTitle}&locale=${locale}`}
             />
             <meta property="og:image:width" content="1200" />
             <meta property="og:image:height" content="627" />
             <meta property="og:image:alt" content={t('ogDescription')} />
             <meta
               property="twitter:image"
-              content={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(encodeTitle)}&locale=${locale}`}
+              content={`${BASE_URL_OG}/api/og?hash=${hash}&title=${encodeTitle}&locale=${locale}`}
             />
             <meta name="twitter:image:alt" content={t('ogDescription')}></meta>
             <meta property="twitter:card" content="summary_large_image" />
