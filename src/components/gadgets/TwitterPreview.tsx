@@ -1,16 +1,14 @@
 import { UrlShortenerHistory } from '@prisma/client';
 import { CldImage } from 'next-cloudinary';
-import { BASE_URL, PLATFORM_AUTH, brandUrlShortDomain } from 'types/constants';
-import { encrypt } from 'utils/crypto';
+import { BASE_URL_OG, brandUrlShortDomain } from 'types/constants';
+import { encodeToBase64 } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
 
 export const TwitterPreview = ({ hash, ogTitle, ogDomain, ogDescription, ogImgSrc }: Partial<UrlShortenerHistory>) => {
   const { t, locale } = useTrans();
   const title = ogTitle || t('ogTitle', { hash: hash || 'XXX' });
-  let encodeTitle = '';
-  if (PLATFORM_AUTH) {
-    encodeTitle = encrypt(title);
-  }
+  const encodeTitle = encodeToBase64(title);
+
   return (
     <div className="w-fit">
       <div className="ml-auto w-[315px] bg-gray-100/75 sm:w-[420px]">
@@ -28,9 +26,7 @@ export const TwitterPreview = ({ hash, ogTitle, ogDomain, ogDescription, ogImgSr
               className="relative origin-top-left scale-[0.2625] sm:scale-[0.35]"
               width={1200}
               height={630}
-              src={`${BASE_URL}/api/og?hash=${hash}&title=${encodeURIComponent(
-                encodeTitle,
-              )}&locale=${locale}&preview=true`}
+              src={`${BASE_URL_OG}/api/og?hash=${hash}&title=${encodeTitle}&locale=${locale}&preview=true`}
             />
           )}
         </div>
