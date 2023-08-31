@@ -46,3 +46,24 @@ export const encryptS = (word: string) => {
   }
   return encrypted;
 };
+
+export function encodeToBase64(input: string): string {
+  const buffer = Buffer.from(input);
+  return buffer.toString('base64');
+}
+
+export function decodeFromBase64(input: string) {
+  const buffer = Buffer.from(input, 'base64');
+  return buffer.toString('utf-8');
+}
+
+export function isValidBase64(input: string) {
+  try {
+    const buffer = Buffer.from(input, 'base64');
+    const decodedString = buffer.toString('utf-8');
+    const reencodedString = Buffer.from(decodedString).toString('base64');
+    return reencodedString === input;
+  } catch (error) {
+    return false;
+  }
+}

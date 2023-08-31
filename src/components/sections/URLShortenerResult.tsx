@@ -1,3 +1,4 @@
+import { Facebook, Linkedin, Twitter } from '@styled-icons/feather';
 import { getQr } from 'api/requests';
 import { useBearStore } from 'bear';
 import clsx from 'clsx';
@@ -110,28 +111,30 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
         <div className="flex flex-col items-center gap-2 sm:flex-row">
           <a href={`http://www.facebook.com/sharer.php?u=${shortenUrl}`} target="_blank">
             <Button
-              text={t('shareFacebook')}
+              text={<Facebook className="h-6 w-6 fill-white" />}
               className="h-fit !bg-[#3b5998] !bg-none hover:!bg-[#4c70ba]"
               TextClassname="!text-sm !p-0"
             />
           </a>
           <a href={`https://twitter.com/share?url=${shortenUrl}`} target="_blank">
             <Button
-              text={t('shareTwitter')}
+              text={<Twitter className="h-6 w-6 fill-white" />}
               className="h-fit !bg-[#409dd5] !bg-none hover:!bg-[#6ab2de]"
               TextClassname="!text-sm !p-0"
             />
           </a>
           <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${shortenUrl}`} target="_blank">
             <Button
-              text={t('shareLinkedIn')}
+              text={<Linkedin className="h-6 w-6 fill-white" />}
               className="h-fit !bg-[#0077b5] !bg-none hover:!bg-[#007ebf]"
               TextClassname="!text-sm !p-0"
             />
           </a>
           {query.data?.qr && (
-            <div className="mt-1 flex flex-col items-center gap-2">
-              <Image src={query.data?.qr} alt="QR-Code" width={84} height={84} />
+            <div className="flex flex-col items-center gap-2">
+              <div className="border border-cyan-500 p-1">
+                <Image src={query.data?.qr} alt="QR-Code" width={84} height={84} />
+              </div>
               <a href={query.data?.qr} download={`QR-${shortenUrl.replace(`${BASE_URL_SHORT}/`, '')}`}>
                 <Button
                   text={t('downloadQR')}
