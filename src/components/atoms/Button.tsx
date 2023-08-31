@@ -5,7 +5,7 @@ import { Loading } from './Loading';
 type ButtonVariants = 'filled' | 'outlined';
 
 export interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
-  text?: string;
+  text?: string | React.ReactNode;
   TextClassname?: ClassValue;
   variant?: ButtonVariants;
   loading?: boolean;

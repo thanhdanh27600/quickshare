@@ -214,7 +214,6 @@ export const handler = api(
     const image = await element?.screenshot({ type: 'jpeg' });
     await browser.close();
     // write og to cache
-    console.log(`write ${ogKey} to cache`);
     await redis.setex(ogKey, isProduction ? 604800 /* 7days */ : 60, image?.toString('base64') || '');
     res.writeHead(200, {
       'Content-Type': 'image/jpeg',

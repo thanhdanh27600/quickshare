@@ -1,11 +1,35 @@
-import { ThumbsUp } from '@styled-icons/feather';
+import { Facebook, ThumbsUp, Twitter } from '@styled-icons/feather';
 import { Accordion } from 'components/atoms/Accordion';
+import { Tab, Tabs } from 'components/atoms/Tabs';
 import { AdvancedSettingUrlForm } from 'components/gadgets/AdvancedSettingUrlForm';
+import { useState } from 'react';
 import { useTrans } from 'utils/i18next';
 import { URLSharePreview } from './URLSharePreview';
 
+const tabs: Tab[] = [
+  {
+    content: (
+      <span className="flex items-center gap-2">
+        <Facebook className="w-5" />
+        Facebook
+      </span>
+    ),
+    key: 'Facebook',
+  },
+  {
+    content: (
+      <span className="flex items-center gap-2">
+        <Twitter className="w-5" />
+        Twitter
+      </span>
+    ),
+    key: 'Twitter',
+  },
+];
+
 export const URLAdvancedSetting = () => {
   const { t, locale } = useTrans();
+  const [selectedKey, setSelectedKey] = useState(tabs[0]?.key);
 
   const title = (
     <span className="relative">
@@ -19,7 +43,8 @@ export const URLAdvancedSetting = () => {
   return (
     <Accordion title={title}>
       <div>
-        <URLSharePreview />
+        <Tabs tabs={tabs} selectedKey={selectedKey} setSelectedKey={setSelectedKey} />
+        <URLSharePreview selectedKey={selectedKey} />
         <AdvancedSettingUrlForm key={locale} />
         <hr className="my-8" />
       </div>
