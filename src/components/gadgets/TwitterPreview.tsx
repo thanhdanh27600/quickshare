@@ -1,13 +1,13 @@
 import { UrlShortenerHistory } from '@prisma/client';
 import { CldImage } from 'next-cloudinary';
 import { BASE_URL_OG, brandUrlShortDomain } from 'types/constants';
-import { encodeToBase64 } from 'utils/crypto';
+import { encodeBase64 } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
 
 export const TwitterPreview = ({ hash, ogTitle, ogDomain, ogDescription, ogImgSrc }: Partial<UrlShortenerHistory>) => {
   const { t, locale } = useTrans();
   const title = ogTitle || t('ogTitle', { hash: hash || 'XXX' });
-  const encodeTitle = encodeToBase64(title);
+  const encodeTitle = encodeBase64(title);
 
   return (
     <div className="w-fit">
