@@ -26,6 +26,7 @@
     "@types/ramda": "^0.29.3",
     "add": "^2.0.6",
     "axios": "^1.2.6",
+    "base64url": "^3.0.1",
     "cloudinary": "^1.40.0",
     "clsx": "^1.2.1",
     "crypto-js": "^4.1.1",
