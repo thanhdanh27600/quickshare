@@ -11,7 +11,7 @@ import requestIp from 'request-ip';
 import { BASE_URL_OG, brandUrlShortDomain, isProduction, Window } from 'types/constants';
 import { Locale } from 'types/locale';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
-import { encodeToBase64 } from 'utils/crypto';
+import { encodeBase64 } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
 
@@ -80,7 +80,7 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
     location.replace(`${url.includes('http') ? '' : '//'}${url}`);
   }, [forwardUrl]);
 
-  const encodeTitle = encodeToBase64(ogTitle);
+  const encodeTitle = encodeBase64(ogTitle);
 
   return (
     <>
