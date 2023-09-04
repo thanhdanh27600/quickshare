@@ -24,15 +24,20 @@ interface Props {
 export const URLShortenerResult = ({ setCopied, copied }: Props) => {
   const { t, locale } = useTrans('common');
   const { shortenSlice } = useBearStore();
-  const getShortenUrl = shortenSlice((state) => state.getShortenUrl);
+  const [getShortenUrl, getHash] = shortenSlice((state) => [state.getShortenUrl, state.getHash]);
   const shortenUrl = getShortenUrl();
 
   const onShare = () => {
+    console.table({
+      title: t('ogTitle', { hash: getHash() }),
+      text: t('ogDescription'),
+      url: shortenUrl,
+    });
     share(
       {
-        title: 'My Website',
-        text: 'Check out this cool website!',
-        url: 'https://example.com',
+        title: t('ogTitle', { hash: getHash() }),
+        text: t('ogDescription'),
+        url: shortenUrl,
       },
       t,
     );
@@ -74,7 +79,7 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
   return (
     <div className="mt-4">
       <h2 className="text-xl">🚀 {t('shortenSuccess')}</h2>
-      <div className="mt-2 flex justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-6 sm:py-8 md:py-10">
+      <div className="mt-2 flex flex-wrap justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-6 sm:py-8 md:py-10">
         <a href={linkWithLanguage(shortenUrl, locale)} target="_blank" className="flex-1">
           <p
             className="boujee-text text-center text-2xl font-bold transition-all hover:text-cyan-500 hover:underline sm:text-3xl md:text-4xl"

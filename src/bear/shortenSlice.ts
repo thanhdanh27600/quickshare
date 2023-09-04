@@ -9,6 +9,7 @@ export interface ShortenSlice {
   shortenHistoryForm?: Partial<UrlShortenerHistory>;
   setShortenHistoryForm: (history?: Partial<UrlShortenerHistory>) => void;
   getShortenUrl: () => string;
+  getHash: () => string;
   shortenHistoryMediaId?: number;
   setShortenHistoryMediaId: (id: number) => void;
 }
@@ -18,6 +19,7 @@ const slice: StateCreator<ShortenSlice> = (set, get) => ({
   shortenHistoryForm: undefined,
   shortenHistoryMediaId: undefined,
   getShortenUrl: () => (!!get().shortenHistory ? `${BASE_URL_SHORT}/${get().shortenHistory?.hash}` : ''),
+  getHash: () => (!!get().shortenHistory ? get().shortenHistory?.hash || '' : ''),
 
   setShortenHistory: (history) => set((state) => ({ shortenHistory: { ...state.shortenHistory, ...history } })),
   setShortenHistoryForm: (history) =>
