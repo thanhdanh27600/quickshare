@@ -104,7 +104,7 @@ export const URLShortenerInput = () => {
   }, [isSubmitting]);
 
   return (
-    <div className="solid rounded-lg border p-4 pt-8 shadow-card sm:px-8 sm:py-8 sm:pt-10">
+    <div className="solid rounded-lg border p-4 pt-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
       <h1 className="mb-4 flex gap-1 text-4xl">
         {t('urlShortener')}
         <HelpTooltip />
@@ -121,6 +121,7 @@ export const URLShortenerInput = () => {
           })}
           disabled={loading}
           buttonProps={{
+            animation: true,
             text: t('generate'),
             variant: 'filled',
             type: 'submit',
@@ -130,6 +131,7 @@ export const URLShortenerInput = () => {
           onFocus={() => {
             mixpanel.track(MIXPANEL_EVENT.INPUT_URL, { status: MIXPANEL_STATUS.OK });
           }}
+          className="pl-5"
         />
       </form>
       <p className="mt-4 text-red-400">{error}</p>

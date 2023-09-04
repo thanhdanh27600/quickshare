@@ -11,6 +11,7 @@ interface Props {
   tabs: Tab[];
   selectedKey: string;
   setSelectedKey: (key: string) => void;
+  className?: string;
 }
 
 export const Tabs = (props: Props) => {
@@ -22,17 +23,16 @@ export const Tabs = (props: Props) => {
   };
 
   return (
-    <div className="border-b border-gray-200 ">
+    <div className={clsx('border-b border-gray-200', props.className)}>
       <ul className="-mb-px flex flex-wrap text-center text-sm font-medium text-gray-500">
         {tabs.map((tab) => {
           const selected = selectedKey === tab.key;
           return (
             <li className="mr-2" key={`tab-${tab.key}`}>
-              <a
-                href={`#${tab.key}`}
+              <button
                 onClick={handleClick(tab)}
                 className={clsx(
-                  'group inline-flex items-center justify-center rounded-t-lg border-b-2 border-transparent p-4',
+                  'group inline-flex items-center justify-center rounded-t-lg border-b-2 border-transparent p-4 py-2',
                   !tab.disabled && !selected && 'hover:border-gray-300 hover:text-gray-600',
                   !tab.disabled &&
                     selected &&
@@ -40,7 +40,7 @@ export const Tabs = (props: Props) => {
                   tab.disabled && 'cursor-not-allowed text-gray-400',
                 )}>
                 <div className={clsx()}>{tab.content}</div>
-              </a>
+              </button>
             </li>
           );
         })}

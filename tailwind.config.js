@@ -13,6 +13,7 @@ module.exports = {
       fontFamily: {
         facebook: 'Helvetica,Arial,sans-serif',
         twitter: '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,Helvetica Neue,sans-serif',
+        discord: '"gg sans","Noto Sans","Helvetica Neue",Helvetica,Arial,sans-serif',
       },
     },
   },

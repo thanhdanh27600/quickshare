@@ -79,8 +79,8 @@ export const URLStats = () => {
   );
 
   return (
-    <Accordion title={title}>
-      <div className="solid rounded-lg border p-4 py-8 shadow-card sm:px-8 sm:py-8 sm:pt-10">
+    <Accordion title={title} className="mt-16">
+      <div className="solid rounded-lg border p-4 py-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
         <h1 className="mb-4 text-4xl">{t('tracking')}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
           <InputWithButton
@@ -115,7 +115,7 @@ export const URLStats = () => {
               text: t('continue'),
               variant: 'filled',
               type: 'submit',
-              className: 'bg-gray-500 bg-none',
+              className: 'bg-gray-500 bg-none hover:bg-gray-500/80',
               TextClassname: 'text-sm sm:text-xl',
             }}
             className={clsx(hasHistory ? 'pl-16' : 'pl-4')}

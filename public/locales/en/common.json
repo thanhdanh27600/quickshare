@@ -60,5 +60,6 @@
   "maximumCharaters": "Maximum of {{n}} characters",
   "uploadImage": "Upload image",
   "title": "Title",
-  "description": "Description"
+  "description": "Description",
+  "errorSharing": "Your browser not supports sharing, try copy instead!"
 }

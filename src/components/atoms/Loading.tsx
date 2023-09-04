@@ -6,7 +6,7 @@ export const Loading = ({ text, className }: { text?: string; className?: string
       <div role="status">
         <svg
           aria-hidden="true"
-          className={clsx('h-8 w-8 animate-spin fill-cyan-300 text-gray-200', className)}
+          className={clsx('h-8 w-8 animate-spin fill-cyan-500 text-gray-200', className)}
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg">
