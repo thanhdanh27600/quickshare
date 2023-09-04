@@ -1,5 +1,4 @@
 import { BrandIconText, BrandLogo } from 'components/atoms/BrandIcon';
-import { LanguageSelect } from 'components/gadgets/LanguageSelect';
 import Link from 'next/link';
 
 export const Header = () => {
@@ -14,9 +13,6 @@ export const Header = () => {
           <BrandIconText width={80} />
         </div>
       </Link>
-      <div className="flex items-center gap-4">
-        <LanguageSelect />
-      </div>
     </div>
   );
 };

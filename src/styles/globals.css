@@ -6,3 +6,23 @@
     font-family: 'Signika Negative', system-ui, sans-serif;
   }
 }
+@layer utilities {
+  .boujee-text {
+    --bg-size: 300%;
+    --color-one: #06b6d4;
+    --color-two: #5e3dd3;
+    background: linear-gradient(90deg, var(--color-one), var(--color-two), var(--color-one)) 0 0 / var(--bg-size) 100%;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: gradient 10s infinite linear;
+  }
+  .gradient-bg {
+    --bg-size: 300%;
+    --color-one: #06b6d4;
+    --color-two: #c084fc;
+    background: linear-gradient(90deg, var(--color-one), var(--color-two), var(--color-two), var(--color-one)) 0 0 /
+      var(--bg-size) 20%;
+    animation: gradient 10s ease infinite;
+  }
+}

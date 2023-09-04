@@ -50,8 +50,9 @@ export const AdvancedSettingUrlForm = () => {
     defaultValues,
   });
 
-  const onUpdateImgSrc = ({ url, mediaId }: any) => {
+  const onUpdateImgSrc = ({ url, mediaId, ogImgPublicId }: any) => {
     setValue('ogImgSrc', url);
+    setValue('ogImgPublicId', ogImgPublicId);
     setShortenHistoryMediaId(mediaId);
     setShortenHistoryForm({ ogImgSrc: url });
   };
@@ -104,6 +105,7 @@ export const AdvancedSettingUrlForm = () => {
       locale,
       mediaId: shortenHistoryMediaId || undefined,
       ogImgSrc: values.ogImgSrc || undefined,
+      ogImgPublicId: values.ogImgPublicId || undefined,
       ogDescription: values.ogDescription?.trim() || undefined,
       ogTitle: values.ogTitle?.trim() || undefined,
     });

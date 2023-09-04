@@ -1,7 +1,7 @@
+import base64url from 'base64url';
 import CryptoJS from 'crypto-js';
 import { PLATFORM_AUTH, SERVER_AUTH } from '../types/constants';
 import { logger } from './logger';
-import base64url from 'base64url';
 export const decrypt = (token: string) => {
   try {
     let decrypted = '';
@@ -48,5 +48,5 @@ export const encryptS = (word: string) => {
   return encrypted;
 };
 
-export const encodeBase64 = base64url.encode
-export const decodeBase64 = base64url.decode
+export const encodeBase64 = base64url.encode;
+export const decodeBase64 = base64url.decode;

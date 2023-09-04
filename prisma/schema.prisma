@@ -32,6 +32,7 @@ model UrlShortenerHistory {
   ogDomain             String?
   ogDescription        String?
   ogImgSrc             String?
+  ogImgPublicId        String?
   UrlShortenerRecord   UrlShortenerRecord @relation(fields: [urlShortenerRecordId], references: [id], onDelete: Cascade)
   UrlForwardMeta       UrlForwardMeta[]
   urlShortenerRecordId Int

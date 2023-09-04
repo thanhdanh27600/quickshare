@@ -7,7 +7,9 @@ export const LayoutMain = ({ children }: React.PropsWithChildren) => {
     <>
       <BrandHead />
       <Header />
-      <div className="container-xl mx-auto min-h-[80vh] p-4 max-sm:py-8 md:mt-8 md:max-w-5xl">{children}</div>
+      <div className="container-xl mx-auto mb-0 min-h-[80vh] p-4 max-sm:overflow-auto max-sm:py-8 sm:mb-16 md:mt-8 md:max-w-5xl">
+        {children}
+      </div>
       <Footer />
     </>
   );

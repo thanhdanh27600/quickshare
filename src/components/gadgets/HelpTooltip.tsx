@@ -10,11 +10,15 @@ export const HelpTooltip = () => {
   const [keep, setKeep] = useState(false);
 
   useEffect(() => {
+    let timeout: any;
     if (show && !keep) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         setShow(false);
-      }, 500);
-    }
+      }, 100);
+    } else timeout = undefined;
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
   }, [show, keep]);
 
   return (
