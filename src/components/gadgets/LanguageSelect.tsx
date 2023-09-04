@@ -70,7 +70,7 @@ export const LanguageSelect = () => {
       <div
         className={clsx(
           'absolute inset-x-auto z-10 m-0 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow-xl',
-          open && '!block translate-y-[46px] -translate-x-24 md:-translate-x-8',
+          open && '!block translate-y-[-96px] -translate-x-24 md:-translate-x-8',
         )}>
         <ul className="text-sm text-gray-900" aria-labelledby="states-button">
           <LanguageOptions changeLanguage={changeLanguage} setOpen={setOpen} />

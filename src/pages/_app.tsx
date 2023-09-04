@@ -2,10 +2,13 @@ import ErrorBoundary from 'components/gadgets/ErrorBoundary';
 import mixpanel from 'mixpanel-browser';
 import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
+import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { isProduction, MIX_PANEL_TOKEN } from 'types/constants';
+import { MIX_PANEL_TOKEN, Window, isProduction } from 'types/constants';
 import { trackLanded } from 'types/utils';
+import date from 'utils/date';
+import '../styles/common.scss';
 import '../styles/globals.css';
 
 const queryClient = new QueryClient();
@@ -20,6 +23,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       ignore_dnt: isProduction,
     });
   }
+
+  useEffect(() => {
+    // debug zone
+    if (Window()) {
+      (window as any).date = date;
+    }
+  }, []);
 
   return (
     <ErrorBoundary>

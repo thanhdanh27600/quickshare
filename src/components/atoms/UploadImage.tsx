@@ -3,11 +3,12 @@ import { API } from 'api/axios';
 import { CldUploadWidget } from 'next-cloudinary';
 import { MouseEventHandler, useState } from 'react';
 import { isProduction } from 'types/constants';
+import date from 'utils/date';
 
 export const UploadImage = ({
   onSuccess,
 }: {
-  onSuccess: ({ url, mediaId }: { url: string; mediaId: number }) => void;
+  onSuccess: ({ url, mediaId, ogImgPublicId }: { url: string; mediaId: number; ogImgPublicId: string }) => void;
 }) => {
   const [resource, setResource] = useState<any>();
 
@@ -25,15 +26,17 @@ export const UploadImage = ({
           showPoweredBy: false,
           showUploadMoreButton: false,
           maxFiles: 1,
+          tags: [date().format('YYYY-MMM'), 'unused'],
         }}
         signatureEndpoint="/api/cld"
         uploadPreset="clickdi"
         onSuccess={async (result, widget) => {
           setResource(result?.info);
           const url = (result?.info as any)?.secure_url;
-          const rs = await API.post('/api/i', { url });
+          const public_id = (result?.info as any)?.public_id;
+          const rs = await API.post('/api/i', { url, public_id });
           if (url && rs) {
-            onSuccess({ url, mediaId: rs.data.id });
+            onSuccess({ url, ogImgPublicId: public_id, mediaId: rs.data.id });
           }
           widget.close();
         }}>

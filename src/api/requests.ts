@@ -18,6 +18,7 @@ export const updateShortenUrlRequest = async ({
   ogTitle,
   ogDescription,
   ogImgSrc,
+  ogImgPublicId,
   mediaId,
   locale,
 }: {
@@ -25,6 +26,7 @@ export const updateShortenUrlRequest = async ({
   ogDescription?: string;
   ogTitle?: string;
   ogImgSrc?: string;
+  ogImgPublicId?: string;
   mediaId?: number;
   locale: Locale;
 }) => {
@@ -34,6 +36,7 @@ export const updateShortenUrlRequest = async ({
     ogTitle,
     ogDescription,
     ogImgSrc,
+    ogImgPublicId,
     mediaId,
   });
   const data = rs.data;

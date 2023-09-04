@@ -3,12 +3,13 @@ import { useId } from 'react';
 interface Props {
   children: JSX.Element;
   title?: string | JSX.Element;
+  className?: string;
 }
 
-export const Accordion = ({ children, title }: Props) => {
+export const Accordion = ({ children, title, className }: Props) => {
   const id = useId().replaceAll(':', '-');
   return (
-    <div id={`accordion${id}`}>
+    <div id={`accordion${id}`} className={className}>
       <div key={`k${id}`} className="rounded-none border-none border-neutral-200">
         <h3 className="mb-0 hover:text-cyan-500 hover:underline" id={`heading${id}`}>
           <button

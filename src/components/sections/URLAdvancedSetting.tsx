@@ -2,6 +2,7 @@ import { Facebook, ThumbsUp, Twitter } from '@styled-icons/feather';
 import { Accordion } from 'components/atoms/Accordion';
 import { Tab, Tabs } from 'components/atoms/Tabs';
 import { AdvancedSettingUrlForm } from 'components/gadgets/AdvancedSettingUrlForm';
+import { Discord } from 'components/icons/Discord';
 import { useState } from 'react';
 import { useTrans } from 'utils/i18next';
 import { URLSharePreview } from './URLSharePreview';
@@ -24,6 +25,15 @@ const tabs: Tab[] = [
       </span>
     ),
     key: 'Twitter',
+  },
+  {
+    content: (
+      <span className="flex items-center gap-2">
+        <Discord className="w-5" />
+        Discord
+      </span>
+    ),
+    key: 'Discord',
   },
 ];
 

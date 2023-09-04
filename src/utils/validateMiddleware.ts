@@ -35,16 +35,9 @@ export const validateUpdateShortenSchema = z.object({
       required_error: 'Title is required',
     }),
   ),
-  ogDescription: z.optional(
-    z.string({
-      required_error: 'Description is required',
-    }),
-  ),
-  ogImgSrc: z.optional(
-    z.string({
-      required_error: 'Description is required',
-    }),
-  ),
+  ogDescription: z.optional(z.string({})),
+  ogImgSrc: z.optional(z.string({})),
+  ogImgPublicId: z.optional(z.string({})),
   mediaId: z.optional(
     z.number({
       invalid_type_error: 'Must be a number',

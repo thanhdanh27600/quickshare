@@ -1,4 +1,4 @@
-import { Facebook, Linkedin, Twitter } from '@styled-icons/feather';
+import { Facebook, Share2, Twitter } from '@styled-icons/feather';
 import { getQr } from 'api/requests';
 import { useBearStore } from 'bear';
 import clsx from 'clsx';
@@ -13,7 +13,7 @@ import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { encrypt } from 'utils/crypto';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { QueryKey, strictRefetch } from 'utils/requests';
-import { copyToClipBoard } from 'utils/text';
+import { copyToClipBoard, share } from 'utils/text';
 import { URLAdvancedSetting } from './URLAdvancedSetting';
 
 interface Props {
@@ -26,6 +26,17 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
   const { shortenSlice } = useBearStore();
   const getShortenUrl = shortenSlice((state) => state.getShortenUrl);
   const shortenUrl = getShortenUrl();
+
+  const onShare = () => {
+    share(
+      {
+        title: 'My Website',
+        text: 'Check out this cool website!',
+        url: 'https://example.com',
+      },
+      t,
+    );
+  };
 
   const onCopy = () => {
     mixpanel.track(MIXPANEL_EVENT.LINK_COPY, {
@@ -66,7 +77,7 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
       <div className="mt-2 flex justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-6 sm:py-8 md:py-10">
         <a href={linkWithLanguage(shortenUrl, locale)} target="_blank" className="flex-1">
           <p
-            className="text-center text-2xl font-bold text-gray-800 transition-all hover:text-cyan-500 hover:underline sm:text-3xl md:text-4xl"
+            className="boujee-text text-center text-2xl font-bold transition-all hover:text-cyan-500 hover:underline sm:text-3xl md:text-4xl"
             title={shortenUrl}>
             {linkWithLanguage(shortenUrl, locale).replace(/https:\/\//i, '')}
           </p>
@@ -109,6 +120,12 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
       </div>
       <div className="flex justify-center max-sm:mt-4 sm:justify-end">
         <div className="flex flex-col items-center gap-2 sm:flex-row">
+          <Button
+            text={<Share2 className="h-6 w-6 fill-white" />}
+            className="h-fit !bg-gray-400 !bg-none hover:!bg-gray-400/80"
+            TextClassname="!text-sm !p-0"
+            onClick={onShare}
+          />
           <a href={`http://www.facebook.com/sharer.php?u=${shortenUrl}`} target="_blank">
             <Button
               text={<Facebook className="h-6 w-6 fill-white" />}
@@ -123,26 +140,21 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
               TextClassname="!text-sm !p-0"
             />
           </a>
-          <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${shortenUrl}`} target="_blank">
-            <Button
-              text={<Linkedin className="h-6 w-6 fill-white" />}
-              className="h-fit !bg-[#0077b5] !bg-none hover:!bg-[#007ebf]"
-              TextClassname="!text-sm !p-0"
-            />
-          </a>
+
           {query.data?.qr && (
-            <div className="flex flex-col items-center gap-2">
+            <a
+              href={query.data?.qr}
+              download={`QR-${shortenUrl.replace(`${BASE_URL_SHORT}/`, '')}`}
+              className="flex flex-col items-center gap-2">
               <div className="border border-cyan-500 p-1">
                 <Image src={query.data?.qr} alt="QR-Code" width={84} height={84} />
               </div>
-              <a href={query.data?.qr} download={`QR-${shortenUrl.replace(`${BASE_URL_SHORT}/`, '')}`}>
-                <Button
-                  text={t('downloadQR')}
-                  TextClassname="!text-sm !p-0 text-gray-900"
-                  className="!bg-gray-200 !bg-none hover:!bg-gray-300"
-                />
-              </a>
-            </div>
+              <Button
+                text={t('downloadQR')}
+                TextClassname="!text-sm !p-0 text-gray-900"
+                className="!bg-gray-200 !bg-none hover:!bg-gray-300"
+              />
+            </a>
           )}
         </div>
       </div>

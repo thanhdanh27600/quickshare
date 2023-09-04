@@ -8,7 +8,7 @@
   "errorNoInput": "Vui lòng nhập thông tin để tiếp tục",
   "errorInvalidInput": "Thông tin không hợp lệ, hãy thử lại",
   "somethingWrong": "Có gì đó sai sai :(, để tụi tui xem lại",
-  "generate": "Ẩn link",
+  "generate": "Rút link",
   "tracking": "Theo dõi link",
   "continue": "Tiếp tục",
   "forgotPassword": "Quên mật khẩu",
@@ -60,5 +60,6 @@
   "maximumCharaters": "Tối đa {{n}} ký tự",
   "uploadImage": "Upload ảnh",
   "title": "Tiêu đề",
-  "description": "Mô tả ngắn"
+  "description": "Mô tả ngắn",
+  "errorSharing": "Trình duyệt của bạn không hỗ trợ share. Dùng copy link nhé!"
 }
