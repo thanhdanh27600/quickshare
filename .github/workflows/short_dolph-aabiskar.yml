@@ -14,24 +14,27 @@ jobs:
     runs-on: 'ubuntu-latest'
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-    - name: Log in to registry
-      uses: docker/login-action@v2
-      with:
-        registry: https://ghcr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_fce7aa16b14b42228cfff08e0bf30eea }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_f0d7b2aab3f541168721da1c2f41fbad }}
+      - name: Log in to registry
+        uses: docker/login-action@v2
+        with:
+          registry: https://ghcr.io/
+          username: ${{ secrets.AzureAppService_ContainerUsername_fce7aa16b14b42228cfff08e0bf30eea }}
+          password: ${{ secrets.AzureAppService_ContainerPassword_f0d7b2aab3f541168721da1c2f41fbad }}
 
-    - name: Build and push container image to registry
-      uses: docker/build-push-action@v3
-      with:
-        push: true
-        tags: ghcr.io/${{ secrets.AzureAppService_ContainerUsername_fce7aa16b14b42228cfff08e0bf30eea }}/thanhdanh27600/clickdi:${{ github.sha }}
-        file: ./Dockerfile
+      - name: Decrypt secret
+        run: ./scripts/decrypt_secret.sh .env.production.gpg ./.env
+
+      - name: Build and push container image to registry
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ghcr.io/${{ secrets.AzureAppService_ContainerUsername_fce7aa16b14b42228cfff08e0bf30eea }}/thanhdanh27600/clickdi:${{ github.sha }}
+          file: ./Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
@@ -41,11 +44,11 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-    - name: Deploy to Azure Web App
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'dolph-aabiskar'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_34ea2a2c3814419db187c95dee1d90fa }}
-        images: 'ghcr.io/${{ secrets.AzureAppService_ContainerUsername_fce7aa16b14b42228cfff08e0bf30eea }}/thanhdanh27600/clickdi:${{ github.sha }}'
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'dolph-aabiskar'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_34ea2a2c3814419db187c95dee1d90fa }}
+          images: 'ghcr.io/${{ secrets.AzureAppService_ContainerUsername_fce7aa16b14b42228cfff08e0bf30eea }}/thanhdanh27600/clickdi:${{ github.sha }}'
