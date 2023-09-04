@@ -9,7 +9,7 @@ const OgImage = ({ ogImgSrc, hash, encodeTitle }: Partial<UrlShortenerHistory & 
     <CldImage height={221} width={315} alt={'clickdi-banner'} className="h-full w-full object-contain" src={ogImgSrc} />
   ) : (
     <iframe
-      className="relative origin-top-left scale-[0.2625] sm:scale-[0.35]"
+      className="relative origin-top-left scale-[0.25] sm:scale-[0.35]"
       width={1200}
       height={630}
       src={`${BASE_URL_OG}/api/og?hash=${hash}&title=${encodeTitle}&preview=true`}
@@ -23,8 +23,8 @@ export const FacebookPreview = ({ hash, ogTitle, ogDomain, ogDescription, ogImgS
 
   return (
     <div className="w-fit">
-      <div className="ml-auto w-[315px] bg-gray-100/75 sm:w-[420px]">
-        <div className="h-[165.375px] w-full border border-solid border-gray-200 bg-cover bg-no-repeat sm:h-[220.5px]">
+      <div className="ml-auto w-[300px] bg-gray-100/75 sm:w-[420px]">
+        <div className="h-[157.5px] w-full border border-solid border-gray-200 bg-cover bg-no-repeat sm:h-[220.5px]">
           <OgImage encodeTitle={encodeTitle} hash={hash} ogImgSrc={ogImgSrc} />
         </div>
         <div className="border border-t-0 border-solid border-gray-200 py-2 px-2.5">
@@ -50,8 +50,8 @@ export const TwitterPreview = ({ hash, ogTitle, ogDomain, ogDescription, ogImgSr
 
   return (
     <div className="w-fit">
-      <div className="ml-auto w-[315px] bg-gray-100/75 sm:w-[420px]">
-        <div className="h-[165.375px] w-full rounded-xl rounded-b-none border border-solid border-gray-200 bg-cover bg-no-repeat sm:h-[221px]">
+      <div className="ml-auto w-[300px] bg-gray-100/75 sm:w-[420px]">
+        <div className="h-[157.5px] w-full rounded-xl rounded-b-none border border-solid border-gray-200 bg-cover bg-no-repeat sm:h-[221px]">
           <OgImage encodeTitle={encodeTitle} hash={hash} ogImgSrc={ogImgSrc} />
         </div>
         <div className="rounded-xl rounded-t-none border border-t-0 border-solid border-gray-200 py-3 px-2.5">
@@ -77,7 +77,7 @@ export const DiscordPreview = ({ hash, ogTitle, ogDomain, ogDescription, ogImgSr
 
   return (
     <div className="w-fit">
-      <div className="ml-auto w-[315px] rounded-lg bg-[#2B2D31] sm:w-[420px]">
+      <div className="ml-auto w-[300px] rounded-lg bg-[#2B2D31] sm:w-[420px]">
         <div className="p-4 pl-2">
           <div className="border-l-2 border-solid border-l-white pl-4">
             <div className="text-left">

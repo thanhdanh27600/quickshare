@@ -37,7 +37,7 @@ jobs:
             "GEOLITE2_LICENSE_KEY=${{ secrets.GEOLITE2_LICENSE_KEY }}"
             NEXT_PUBLIC_SHORT_DOMAIN=true
           push: true
-          tags: ghcr.io/${{ github.repository }}:short-latest-${{ github.sha }}
+          tags: ghcr.io/${{ github.repository }}:short-latest
   # deploy:
   #   needs: build
   #   runs-on: ubuntu-latest
@@ -69,4 +69,4 @@ jobs:
           app-name: 'dolph-aabiskar'
           slot-name: 'production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_34EA2A2C3814419DB187C95DEE1D90FA }}
-          images: 'ghcr.io/thanhdanh27600/clickdi:short-latest-${{ github.sha }}'
+          images: 'ghcr.io/thanhdanh27600/clickdi:short-latest'
