@@ -73,4 +73,3 @@ jobs:
           app-name: 'clickdi'
           slot-name: 'production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CLICKDI }}
-          configuration-file: 'docker-compose.yml'
