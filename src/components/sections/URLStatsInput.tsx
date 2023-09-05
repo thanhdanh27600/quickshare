@@ -7,10 +7,11 @@ import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
-import { BASE_URL, BASE_URL_SHORT, LIMIT_RECENT_HISTORY, Window } from 'types/constants';
+import { BASE_URL, BASE_URL_SHORT, LIMIT_RECENT_HISTORY } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { QueryKey, strictRefetch } from 'utils/requests';
+import { truncateMiddle } from 'utils/text';
 import { FeedbackLink, FeedbackTemplate } from './FeedbackLink';
 
 type URLStatsForm = {
@@ -62,7 +63,7 @@ export const URLStats = () => {
       const hash = h.startsWith(BASE_URL_SHORT.replace(`${location.protocol}//`, ''))
         ? `${location.protocol}//` + h
         : h;
-      Window().open(linkWithLanguage(`${BASE_URL}/v/${hash.replace(BASE_URL_SHORT + '/', '')}`, locale));
+      location.href = linkWithLanguage(`${BASE_URL}/v/${hash.replace(BASE_URL_SHORT + '/', '')}`, locale);
     }
   }, [fetchTracking.isSuccess, fetchTracking.isError]);
 
@@ -90,7 +91,7 @@ export const URLStats = () => {
                 <Dropdown
                   ContainerProps={{ className: 'absolute h-55 w-fit text-sm' }}
                   options={(fetchRecord.data?.history || []).map((h, idx) => ({
-                    label: `${idx + 1}. ${h.url} (${h.hash})`,
+                    label: `${idx + 1}. ${truncateMiddle(h.url)} (${h.hash})`,
                     value: `${BASE_URL_SHORT}/${h.hash}`,
                   }))}
                   handleSelect={(value) => {
