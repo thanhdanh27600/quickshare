@@ -20,7 +20,7 @@ import { getCountryName } from 'utils/country';
 import date, { DATE_FULL_FORMAT } from 'utils/date';
 import { useTrans } from 'utils/i18next';
 import { PAGE_SIZE, QueryKey, strictRefetch } from 'utils/requests';
-import { capitalize, copyToClipBoard, truncate } from 'utils/text';
+import { capitalize, copyToClipBoard, truncateMiddle } from 'utils/text';
 import { SetPassword } from './SetPassword';
 import { ValidateToken } from './ValidateToken';
 
@@ -142,7 +142,7 @@ export const URLTracking = ({ hash }: { hash: string }) => {
                 <a className="block" href={clickableUrl} target="_blank" title={history.url}>
                   URL:{' '}
                   <span className="text-cyan-500 underline decoration-1 hover:decoration-wavy">
-                    {truncate(history.url)}
+                    {truncateMiddle(history.url)}
                   </span>
                 </a>
               )}
