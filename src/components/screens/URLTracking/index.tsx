@@ -6,6 +6,7 @@ import { Button } from 'components/atoms/Button';
 import { Modal } from 'components/atoms/Modal';
 import { LayoutMain } from 'components/layouts/LayoutMain';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
+import isbot from 'isbot';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -15,7 +16,6 @@ import { BASE_URL_SHORT, Window } from 'types/constants';
 import { UrlHistoryWithMeta } from 'types/stats';
 import { MIXPANEL_EVENT } from 'types/utils';
 import { UAParser } from 'ua-parser-js';
-import { Referer, detectReferer } from 'utils/agent';
 import { getCountryName } from 'utils/country';
 import date, { DATE_FULL_FORMAT } from 'utils/date';
 import { useTrans } from 'utils/i18next';
@@ -190,7 +190,7 @@ export const URLTracking = ({ hash }: { hash: string }) => {
                 <tbody>
                   {history?.UrlForwardMeta?.map((m, j) => {
                     const UA = m.userAgent ? new UAParser(m.userAgent) : undefined;
-                    const ref = detectReferer(m.userAgent);
+                    const ref = m.userAgent ? isbot.find(m.userAgent) : undefined;
                     return (
                       <tr key={`meta-${j}`} className="border-b bg-white">
                         <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
@@ -249,7 +249,7 @@ export const URLTracking = ({ hash }: { hash: string }) => {
                           ) : (
                             <>
                               <UserX className="mr-1 w-6 stroke-2 text-red-500" />
-                              {ref !== Referer.UNKNOWN && <p>{ref}</p>}
+                              {ref && <p>{ref}</p>}
                             </>
                           )}
                         </td>

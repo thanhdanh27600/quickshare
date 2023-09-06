@@ -28,11 +28,6 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
   const shortenUrl = getShortenUrl();
 
   const onShare = () => {
-    console.table({
-      title: t('ogTitle', { hash: getHash() }),
-      text: t('ogDescription'),
-      url: shortenUrl,
-    });
     share(
       {
         title: t('ogTitle', { hash: getHash() }),
@@ -124,7 +119,7 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
         <URLAdvancedSetting />
       </div>
       <div className="flex justify-center max-sm:mt-4 sm:justify-end">
-        <div className="flex flex-col items-center gap-2 sm:flex-row">
+        <div className="flex flex-col items-center gap-3 sm:flex-row">
           <Button
             text={<Share2 className="h-6 w-6 fill-white" />}
             className="h-fit !bg-gray-400 !bg-none hover:!bg-gray-400/80"
@@ -138,14 +133,15 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
               TextClassname="!text-sm !p-0"
             />
           </a>
-          <a href={`https://twitter.com/share?url=${shortenUrl}`} target="_blank">
+          <a
+            href={`https://twitter.com/intent/tweet?text=${t('ogTitle', { hash: getHash() })}&url=${shortenUrl}`}
+            target="_blank">
             <Button
               text={<Twitter className="h-6 w-6 fill-white" />}
               className="h-fit !bg-[#409dd5] !bg-none hover:!bg-[#6ab2de]"
               TextClassname="!text-sm !p-0"
             />
           </a>
-
           {query.data?.qr && (
             <a
               href={query.data?.qr}
