@@ -1,16 +1,18 @@
-import { isProduction } from 'types/constants';
-import { UseBoundStore } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { Window, isProduction } from 'types/constants';
 import exampleSlice from './exampleSlice';
 import shortenSlice from './shortenSlice';
 import utilitySlice from './utilitySlice';
 
-export const withDevTools = (slice: UseBoundStore<any>) => devtools(slice, { enabled: !isProduction });
-
 export const useBearStore = () => {
-  return {
+  const store = {
     exampleSlice,
     utilitySlice,
     shortenSlice,
   };
+
+  if (!isProduction && Window()) {
+    Window().bear = store;
+  }
+
+  return store;
 };

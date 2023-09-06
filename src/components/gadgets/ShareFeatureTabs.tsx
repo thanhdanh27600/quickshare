@@ -2,6 +2,8 @@ import { Clipboard, Link } from '@styled-icons/feather';
 import { useBearStore } from 'bear';
 import { FeatureTabKey } from 'bear/utilitySlice';
 import { Tabs } from 'components/atoms/Tabs';
+import { useRouter } from 'next/router';
+import { isProduction } from 'types/constants';
 
 const tabs = [
   {
@@ -25,9 +27,28 @@ const tabs = [
 ];
 
 export const ShareFeatureTabs = () => {
+  const router = useRouter();
   const { utilitySlice } = useBearStore();
-  const [selectedKey, setSelectedKey] = utilitySlice((state) => [state.featureTab, state.setFeatureTab]);
+  const [selectedTab, setFeatureTab] = utilitySlice((state) => [state.featureTab, state.setFeatureTab]);
+
+  const handleSelectTab = (tab: string) => {
+    setFeatureTab(tab);
+    if (router.asPath === '/note' && tab === FeatureTabKey.SHARE_LINK) {
+      router.replace('/');
+    }
+    if (router.asPath === '/' && tab === FeatureTabKey.SHARE_TEXT) {
+      router.replace('/note');
+    }
+  };
+
+  if (isProduction) return null;
+
   return (
-    <Tabs selectedKey={selectedKey} setSelectedKey={setSelectedKey} tabs={tabs} className="ml-2 mb-2 border-b-0" />
+    <Tabs
+      selectedKey={selectedTab}
+      setSelectedKey={handleSelectTab}
+      tabs={tabs}
+      className="ml-2  -mt-4 mb-4 border-b-0 "
+    />
   );
 };

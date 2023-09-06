@@ -47,7 +47,7 @@ export const HelpTooltip = () => {
             }
           }}
           className="absolute bottom-1 w-[300px] border border-cyan-300 bg-gray-50 p-4 text-sm transition-all max-sm:right-0 max-sm:translate-x-[95px] sm:left-5">
-          <p className="whitespace-pre-line text-gray-700">{t('helpShortUrlHead')}</p>
+          <h2 className="whitespace-pre-line text-gray-700">{t('helpShortUrlHead')}</h2>
         </div>
       </Tooltip>
     </div>
