@@ -31,7 +31,7 @@ export const Button = (props: ButtonProps) => {
       disabled={props.loading || props.disabled}>
       <span className={clsx('flex min-w-max items-center justify-center', TextClassname)}>
         <span className={clsx(loading && 'max-sm:hidden')}>{text}</span>
-        {props.loading && <Loading className="ml-2 !h-5 !w-5" />}
+        {props.loading && <Loading className={clsx(loading && 'sm:ml-2', '!h-5 !w-5')} />}
       </span>
     </button>
   );

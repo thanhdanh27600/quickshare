@@ -28,7 +28,7 @@ export const URLShortenerInput = () => {
   const { shortenSlice } = useBearStore();
   const { t } = useTrans('common');
 
-  const [getShortenUrl, setShortenUrl] = shortenSlice((state) => [state.getShortenUrl, state.setShortenHistory]);
+  const [getShortenUrl, setShortenHistory] = shortenSlice((state) => [state.getShortenUrl, state.setShortenHistory]);
   const shortenUrl = getShortenUrl();
   const queryClient = useQueryClient();
   const {
@@ -60,7 +60,7 @@ export const URLShortenerInput = () => {
     },
     onSuccess: (data, variables, context) => {
       if (data.hash && data.url) {
-        setShortenUrl(data);
+        setShortenHistory(data);
         queryClient.invalidateQueries(QueryKey.RECORD);
         setValue('url', data.url);
         mixpanel.track(MIXPANEL_EVENT.SHORTEN, {
