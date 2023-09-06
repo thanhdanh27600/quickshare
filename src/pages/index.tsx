@@ -8,7 +8,7 @@ import { pgFullDomain } from 'utils/guards';
 
 const URLShortener = dynamic(() => import('../components/screens/URLShortener').then((mod) => mod.URLShortener));
 
-const MainPage = () => {
+export const MainPage = () => {
   return (
     <LayoutMain>
       <URLShortener />

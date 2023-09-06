@@ -5,6 +5,7 @@ import { InputWithButton } from 'components/atoms/Input';
 import { HelpTooltip } from 'components/gadgets/HelpTooltip';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLShortenerResult } from 'components/sections/URLShortenerResult';
+import { URLStats } from 'components/sections/URLStatsInput';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -21,7 +22,7 @@ type URLShortenerForm = {
   url: string;
 };
 
-export const URLShortenerInput = () => {
+const URLShortenerInput = () => {
   const router = useRouter();
   const [localError, setLocalError] = useState('');
   const [copied, setCopied] = useState(false);
@@ -142,5 +143,14 @@ export const URLShortenerInput = () => {
         </>
       )}
     </div>
+  );
+};
+
+export const UrlShortener = () => {
+  return (
+    <>
+      <URLShortenerInput />
+      <URLStats />
+    </>
   );
 };
