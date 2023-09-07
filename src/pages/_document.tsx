@@ -44,6 +44,7 @@ export default function Document() {
         )}
 
         <link rel="stylesheet" href={cdn(`/lib/styles.min.css`)} />
+        <Script strategy="beforeInteractive" src="https://tinymce.vietnamese.cloud/tinymce/tinymce.min.js"></Script>
       </Head>
       <body>
         <Main />

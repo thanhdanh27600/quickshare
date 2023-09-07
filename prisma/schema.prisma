@@ -17,6 +17,7 @@ model UrlShortenerRecord {
 
   ip      String                @unique
   history UrlShortenerHistory[]
+  Note    Note[]
 }
 
 model UrlShortenerHistory {
@@ -62,4 +63,18 @@ model Media {
   url                   String               @unique
   urlShortenerHistoryId Int?                 @unique
   UrlShortenerHistory   UrlShortenerHistory? @relation(fields: [urlShortenerHistoryId], references: [id], onDelete: Cascade)
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  hash                 String             @unique
+  uuid                 String             @unique
+  text                 String
+  email                String?
+  password             String?
+  UrlShortenerRecord   UrlShortenerRecord @relation(fields: [urlShortenerRecordId], references: [id], onDelete: Cascade)
+  urlShortenerRecordId Int
 }

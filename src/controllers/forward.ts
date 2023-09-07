@@ -76,18 +76,7 @@ export const postProcessForward = async (payload: any, res?: NextApiResponse<For
   if (res) {
     // write back to cache
     const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
-    const dataHashShortenLink = [
-      'url',
-      history.url,
-      'ogTitle',
-      history.ogTitle,
-      'ogDescription',
-      history.ogDescription,
-      'ogImgSrc',
-      history.ogImgSrc,
-      'updatedAt',
-      new Date().getTime(),
-    ];
+    const dataHashShortenLink = ['url', history.url, 'updatedAt', new Date().getTime()];
     await redis.hset(hashShortenedLinkKey, dataHashShortenLink);
     await redis.expire(hashShortenedLinkKey, LIMIT_SHORTENED_SECOND);
     return res.status(HttpStatusCode.OK).json({ history });

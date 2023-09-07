@@ -1,16 +1,8 @@
 import { UrlShortenerRecord } from '@prisma/client';
 import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
-import { redis } from '../../redis/client';
-import {
-  LIMIT_SHORTENED_SECOND,
-  LIMIT_URL_HOUR,
-  LIMIT_URL_REQUEST,
-  LIMIT_URL_SECOND,
-  NUM_CHARACTER_HASH,
-  REDIS_KEY,
-  getRedisKey,
-} from '../../types/constants';
+import { shortenCacheService } from '../../services/cacheServices/shorten.service';
+import { LIMIT_URL_HOUR, LIMIT_URL_REQUEST, NUM_CHARACTER_HASH } from '../../types/constants';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import { decrypt } from '../../utils/crypto';
@@ -23,6 +15,7 @@ export const handler = api<ShortenUrl>(
     const ip = requestIp.getClientIp(req) || '';
     let url = (req.query.url as string) || null;
     let hash = (req.query.hash as string) || null;
+
     await validateShortenSchema.parseAsync({
       query: { url, hash, ip },
     });
@@ -33,7 +26,7 @@ export const handler = api<ShortenUrl>(
         errorCode: 'INVALID_URL',
       });
     }
-    const logger = require('../../utils/loggerServer');
+
     // if hash then retrieve from cache & db
     if (hash) {
       const history = await prisma.urlShortenerHistory.findUnique({ where: { hash } });
@@ -41,65 +34,48 @@ export const handler = api<ShortenUrl>(
       return badRequest(res, "No URL was found on your request. Let's shorten one!");
     }
     // check or reset get request limit
-    const keyLimit = getRedisKey(REDIS_KEY.HASH_LIMIT, ip);
-    const ttl = await redis.ttl(keyLimit);
-    if (ttl < 0) {
-      await redis.set(keyLimit, 0);
-      await redis.expire(keyLimit, LIMIT_URL_SECOND);
-    }
-    const curLimit = (await redis.get(keyLimit)) || '';
+    const curLimit = await shortenCacheService.limitIp(ip);
     if (parseFloat(curLimit) >= LIMIT_URL_REQUEST) {
       return res.status(HttpStatusCode.TOO_MANY_REQUESTS).send({
         errorMessage: `Exceeded ${LIMIT_URL_REQUEST} shorten links, please comeback after ${LIMIT_URL_HOUR} hours.`,
         errorCode: 'UNAUTHORIZED',
       });
     }
-    // generate hash
-
     // check hash collapse
-    let targetHash = '';
-    let hashShortenedLinkKey = '';
+    let newHash = '';
     let isExist = 1;
     let timesLimit = 0;
-    // regenerate if collapse
+
+    // generate hash
+    const logger = require('../../utils/loggerServer');
     while (isExist) {
       if (timesLimit > 0) {
-        logger.warn('timesLimit', timesLimit);
+        logger.warn('timesLimit occured', timesLimit);
       }
       if (timesLimit++ > 10 /** U better buy lucky ticket */) {
+        logger.error('timesLimit reached', timesLimit);
         throw new Error('Bad URL after digging our hash, please try again!');
       }
-      targetHash = generateRandomString(NUM_CHARACTER_HASH);
-      hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, targetHash);
-      isExist = await redis.hexists(hashShortenedLinkKey, 'url');
-      // also check db if not collapse in cache
+      newHash = generateRandomString(NUM_CHARACTER_HASH);
+      isExist = await shortenCacheService.existHash(newHash);
+      // also double check db if not collapse in cache
       if (!isExist) {
-        isExist = !!(await prisma.urlShortenerHistory.findUnique({ where: { hash: targetHash } })) ? 1 : 0;
+        isExist = !!(await prisma.urlShortenerHistory.findUnique({ where: { hash: newHash } })) ? 1 : 0;
       }
     }
-    // write hash to cache, increment limit
-    const dataHashShortenLink = ['url', url, 'updatedAt', new Date().getTime()];
-    await redis.hset(hashShortenedLinkKey, dataHashShortenLink);
-    await redis.expire(hashShortenedLinkKey, LIMIT_SHORTENED_SECOND);
-    await redis.incr(keyLimit);
-    const keyHash = getRedisKey(REDIS_KEY.HASH_HISTORY_BY_ID, ip);
+
+    // write hash to cache
+    const dataHashShorten = ['url', url, 'updatedAt', new Date().getTime()];
+    await shortenCacheService.postShortenHash({ ip, hash: newHash, data: dataHashShorten });
+
+    // write to db
     let record: UrlShortenerRecord | null = null;
-    // retrive client id and write to db
-    let clientCacheId = await redis.hget(keyHash, 'dbId');
-    if (!clientCacheId) {
-      // cache missed
-      record = await prisma.urlShortenerRecord.findFirst({ where: { ip } });
-      // new client's ip
-      if (!record) {
-        record = await prisma.urlShortenerRecord.create({
-          data: { ip },
-        });
-      }
-      clientCacheId = String(record.id);
+    record = await prisma.urlShortenerRecord.findFirst({ where: { ip } });
+    if (!record) {
+      record = await prisma.urlShortenerRecord.create({
+        data: { ip },
+      });
     }
-    const dataHashClient = ['lastUrl', url, 'lastHash', targetHash, 'dbId', clientCacheId];
-    await redis.hset(keyHash, dataHashClient);
-    await redis.expire(keyHash, LIMIT_SHORTENED_SECOND);
     record = record ?? (await prisma.urlShortenerRecord.findFirst({ where: { ip } }));
     if (!record)
       record = await prisma.urlShortenerRecord.create({
@@ -108,7 +84,7 @@ export const handler = api<ShortenUrl>(
     const history = await prisma.urlShortenerHistory.create({
       data: {
         url,
-        hash: targetHash,
+        hash: newHash,
         urlShortenerRecordId: Number(record.id),
       },
     });

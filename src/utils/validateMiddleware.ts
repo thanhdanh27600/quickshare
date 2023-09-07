@@ -94,3 +94,28 @@ export const validateMediaSchema = z.object({
     }),
   }),
 });
+
+export const validateNoteSchema = z.object({
+  ip: z.string({
+    required_error: 'IP is required',
+  }),
+  text: z.string({
+    description: 'Text is required',
+  }),
+  hash: z.nullable(
+    z
+      .string({
+        required_error: 'Hash is required',
+      })
+      .refine((value) => (!value ? true : /^.{3}$/.test(value || '')), 'Wrong hash format'),
+  ),
+});
+
+export const validateNoteUpdateSchema = z.object({
+  uuid: z.string({
+    required_error: 'Uuid is required',
+  }),
+  text: z.string({
+    required_error: 'Text is required',
+  }),
+});

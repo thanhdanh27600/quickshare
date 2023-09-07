@@ -1,68 +1,46 @@
-import { forwardRef, useState } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Quill styles
+import { useEffect } from 'react';
+import { tinymce } from 'types/constants';
 
-const fontSizeArr = [
-  '10px',
-  '12px',
-  '14px',
-  '16px',
-  '18px', // default
-  '20px',
-  '24px',
-  '32px',
-  '42px',
-  '54px',
-  '68px',
-  '84px',
-  '98px',
-];
-
-var Size = ReactQuill.Quill.import('attributors/style/size');
-Size.whitelist = fontSizeArr;
-ReactQuill.Quill.register(Size, true);
-
-const TextEditor = forwardRef<ReactQuill>((props, ref) => {
-  const [editorHtml, setEditorHtml] = useState<string>('');
-
-  const modules = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike', { color: [] }, { background: [] }, 'link', 'image'],
-      [
-        { list: 'ordered' },
-        { list: 'bullet' },
-        { header: [1, 2, 3, 4, 5, 6, false] },
-        { size: fontSizeArr },
-        { align: [] },
+const TextEditor = ({defaultValue}: {defaultValue?: string}) => {
+  useEffect(() => {
+    if (!tinymce) return;
+    tinymce.init({
+      selector: `#text-editor`,
+      height: 500,
+      plugins: [
+        'advlist',
+        'autolink',
+        'lists',
+        'link',
+        'image',
+        'charmap',
+        'preview',
+        'anchor',
+        'searchreplace',
+        'visualblocks',
         'code',
-        'clean',
+        'fullscreen',
+        'insertdatetime',
+        'media',
+        'table',
+        'help',
+        'wordcount',
       ],
-    ],
-  };
+      toolbar:
+        'bold italic backcolor link image alignleft aligncenter ' +
+        'alignright alignjustify | bullist numlist outdent indent | ' +
+        'undo redo | blocks | ' +
+        'removeformat | help',
+      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+    });
+  }, []);
 
-  const formats = [
-    'header',
-    'color',
-    'code',
-    'size',
-    'background',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'list',
-    'bullet',
-    'link',
-    'image',
-  ];
-
-  const handleChange = (html: string) => {
-    setEditorHtml(html);
-  };
   return (
-    <ReactQuill ref={ref} value={editorHtml} onChange={handleChange} modules={modules} formats={formats} {...props} />
+    <div>
+      <textarea className="w-full h-[500px]" id={'text-editor'} defaultValue={defaultValue} placeholder='Write your note here...'></textarea>
+    </div>
   );
-});
+}
 TextEditor.displayName = 'TextEditor';
 
 export default TextEditor;

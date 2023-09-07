@@ -32,12 +32,11 @@ export const ShareFeatureTabs = () => {
   const [selectedTab, setFeatureTab] = utilitySlice((state) => [state.featureTab, state.setFeatureTab]);
 
   const handleSelectTab = (tab: string) => {
-    setFeatureTab(tab);
-    if (router.asPath === '/note' && tab === FeatureTabKey.SHARE_LINK) {
-      router.replace('/');
+    if (router.pathname === '/note' && tab === FeatureTabKey.SHARE_LINK) {
+      location.href = '/';
     }
-    if (router.asPath === '/' && tab === FeatureTabKey.SHARE_TEXT) {
-      router.replace('/note');
+    if (router.pathname === '/' && tab === FeatureTabKey.SHARE_TEXT) {
+      location.href = '/note';
     }
   };
 
@@ -48,7 +47,7 @@ export const ShareFeatureTabs = () => {
       selectedKey={selectedTab}
       setSelectedKey={handleSelectTab}
       tabs={tabs}
-      className="ml-2  -mt-4 mb-4 border-b-0 "
+      className="-mt-4  mb-4 ml-2 border-b-0 "
     />
   );
 };

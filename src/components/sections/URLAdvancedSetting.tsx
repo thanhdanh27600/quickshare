@@ -44,14 +44,14 @@ export const URLAdvancedSetting = () => {
   const title = (
     <span className="relative">
       {t('editPreview')}
-      <span className="absolute bottom-0 -right-6 flex h-6 w-6 animate-bounce items-center justify-center rounded-full text-sm">
+      <span className="absolute -right-6 bottom-0 flex h-6 w-6 animate-bounce items-center justify-center rounded-full text-sm">
         <ThumbsUp className="w-4 text-cyan-500" />
       </span>
     </span>
   );
 
   return (
-    <Accordion title={title}>
+    <Accordion title={title} defaultOpen>
       <div>
         <Tabs tabs={tabs} selectedKey={selectedKey} setSelectedKey={setSelectedKey} />
         <URLSharePreview selectedKey={selectedKey} />

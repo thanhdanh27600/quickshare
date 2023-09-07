@@ -35,8 +35,7 @@ export const BASE_URL = baseUrl();
 export const BASE_URL_SHORT = baseUrl(true);
 export const BASE_URL_OG = isProduction ? 'https://og.clickdi.top' : 'http://localhost:7071';
 export const REDIS_KEY = {
-  HASH_LIMIT: 'limit',
-  HASH_HISTORY_BY_ID: 'hHistory',
+  LIMIT_SHORTEN: 'limitShort',
   HASH_SHORTEN_BY_HASH_URL: 'hShort',
   OG_BY_HASH: 'og',
 } as const;
@@ -51,3 +50,4 @@ export const MIX_PANEL_TOKEN = process.env.NEXT_PUBLIC_MIX_PANEL_TOKEN;
 export const PLATFORM_AUTH = process.env.NEXT_PUBLIC_PLATFORM_AUTH;
 export const SERVER_AUTH = process.env.SERVER_AUTH;
 export const TE = () => Window()?.te;
+export const tinymce = (Window() as any)?.tinymce;

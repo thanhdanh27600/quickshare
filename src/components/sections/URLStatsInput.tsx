@@ -71,7 +71,7 @@ export const URLStats = () => {
     <span className="relative">
       {t('viewMore')}
       {hasHistory && (
-        <span className="absolute bottom-2 -right-7 flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-sm">
+        <span className="absolute -right-7 bottom-2 flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-sm">
           {recentHistories?.length}
           {Number(recentHistories?.length) >= LIMIT_RECENT_HISTORY && '+'}
         </span>

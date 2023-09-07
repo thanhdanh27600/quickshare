@@ -61,5 +61,6 @@
   "uploadImage": "Upload ảnh",
   "title": "Tiêu đề",
   "description": "Mô tả ngắn",
-  "errorSharing": "Trình duyệt của bạn không hỗ trợ share. Dùng copy link nhé!"
+  "errorSharing": "Trình duyệt của bạn không hỗ trợ share. Dùng copy link nhé!",
+  "publish": "Xuất bản"
 }

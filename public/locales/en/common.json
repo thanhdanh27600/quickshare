@@ -61,5 +61,6 @@
   "uploadImage": "Upload image",
   "title": "Title",
   "description": "Description",
-  "errorSharing": "Your browser not supports sharing, try copy instead!"
+  "errorSharing": "Your browser not supports sharing, try copy instead!",
+  "publish": "Pubish"
 }

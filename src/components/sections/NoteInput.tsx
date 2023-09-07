@@ -1,17 +1,15 @@
 import { Button } from 'components/atoms/Button';
 import { HelpTooltip } from 'components/gadgets/HelpTooltip';
 import TextEditor from 'components/gadgets/TextEditor';
-import { useRef } from 'react';
+import { tinymce } from 'types/constants';
 import { useTrans } from 'utils/i18next';
 
 export const NoteInput = () => {
   const { t } = useTrans();
-  const editorRef = useRef<any>(null);
+
 
   const onSubmit = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current);
-    }
+      console.log(tinymce.activeEditor.getContent())
   };
 
   return (
@@ -20,9 +18,9 @@ export const NoteInput = () => {
         {t('urlShortener')}
         <HelpTooltip />
       </h1>
-      <TextEditor ref={editorRef} />
+      <TextEditor defaultValue={'<h2>haha</h2>'} />
       <Button
-        text={'Publish'}
+        text={t('publish')}
         onClick={onSubmit}
         className="mx-auto mt-4 flex w-fit min-w-[5rem] justify-center"
         animation

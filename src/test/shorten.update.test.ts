@@ -2,10 +2,11 @@ import { Media, UrlShortenerHistory } from '@prisma/client';
 import { createMocks } from 'node-mocks-http';
 import * as controller from '../controllers';
 import { redis } from '../redis/client';
+import { REDIS_KEY } from '../types/constants';
 import HttpStatusCode from '../utils/statusCode';
 
 const ip = '0.0.0.1';
-const key = `limit:${ip}`;
+const key = `${REDIS_KEY.LIMIT_SHORTEN}:${ip}`;
 const exampleUrl = 'U2FsdGVkX1+hDFakyw7MPSqI3JDQ6rXZF0vjpJ1ZOLIf5qp+9ByNbpiiJYIE+4ZYSAw1M2fIIfzcn5YaoYVCkA==';
 
 describe('Test /api/shorten/update...', () => {

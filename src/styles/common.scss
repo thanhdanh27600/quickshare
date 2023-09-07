@@ -4,40 +4,13 @@
   }
 }
 
-.quill {
-  .ql-container {
-    font-family: 'Signika Negative', system-ui, sans-serif !important;
-    font-size: inherit !important;
-    .ql-editor {
-      min-height: 300px;
-    }
-    border-bottom-left-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
-    border-color: rgb(209 213 219) !important;
+.tox-tinymce {
+  .tox-promotion,
+  .tox-statusbar__branding,
+  .tox-statusbar__help-text {
+    display: none;
   }
-  .ql-toolbar {
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
-    border-color: rgb(209 213 219) !important;
-    .ql-formats {
-      padding: 0.5rem;
-      margin-right: 0 !important;
-    }
-    .ql-formats:not(:last-child) {
-      padding-right: 0.5rem;
-      border-right: 1px solid rgb(209, 213, 219);
-    }
-  }
-  .ql-snow {
-    .ql-picker {
-      &.ql-size {
-        .ql-picker-label,
-        .ql-picker-item {
-          &::before {
-            content: attr(data-value) !important;
-          }
-        }
-      }
-    }
+  .tox-statusbar__text-container {
+    justify-content: space-between !important;
   }
 }

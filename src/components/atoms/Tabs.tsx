@@ -36,7 +36,7 @@ export const Tabs = (props: Props) => {
                   !tab.disabled && !selected && 'hover:border-gray-300 hover:text-gray-600',
                   !tab.disabled &&
                     selected &&
-                    'border-cyan-500 text-cyan-500 hover:border-cyan-400 hover:text-cyan-400',
+                    '!border-cyan-500 text-cyan-500 hover:border-cyan-400 hover:text-cyan-400',
                   tab.disabled && 'cursor-not-allowed text-gray-400',
                 )}>
                 <div className={clsx()}>{tab.content}</div>
