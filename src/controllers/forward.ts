@@ -1,12 +1,10 @@
-import geoIp from 'geoip-country';
 import { NextApiResponse } from 'next';
-import { isEmpty } from 'ramda';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import { LIMIT_SHORTENED_SECOND, REDIS_KEY, getRedisKey } from '../types/constants';
 import { Forward } from '../types/forward';
+import { ipLookup } from '../utils/agent';
 import { api, badRequest } from '../utils/axios';
-import { logger } from '../utils/logger';
 import HttpStatusCode from '../utils/statusCode';
 
 export const handler = api(
@@ -15,21 +13,12 @@ export const handler = api(
     const userAgent = req.body.userAgent as string;
     const ip = req.body.ip as string;
     const fromClientSide = req.body.fromClientSide as string;
-    if (!hash) {
-      return badRequest(res);
-    }
-    let lookupIp;
-    if (ip) {
-      lookupIp = geoIp.lookup(ip);
-    }
-
-    if (!lookupIp) {
-      logger.warn(!ip ? 'ip not found' : `geoIp cannot determined ${ip}`);
-    }
+    if (!hash) return badRequest(res);
+    const lookupIp = ipLookup(ip);
     const data = { hash, ip, userAgent, fromClientSide, lookupIp };
     const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
-    const shortenedUrlCache = await redis.hgetall(hashShortenedLinkKey);
-    if (!isEmpty(shortenedUrlCache)) {
+    const shortenedUrlCache = await redis.hget(hashShortenedLinkKey, 'url');
+    if (shortenedUrlCache) {
       // cache hit
       postProcessForward(data); // bypass process
       return res.status(HttpStatusCode.OK).json({ history: shortenedUrlCache as any });
@@ -41,6 +30,7 @@ export const handler = api(
 );
 
 export const postProcessForward = async (payload: any, res?: NextApiResponse<Forward>) => {
+  const cacheMissed = !!res;
   const { hash, ip, userAgent, fromClientSide, lookupIp } = payload;
   let history = await prisma.urlShortenerHistory.findUnique({
     where: {
@@ -49,7 +39,7 @@ export const postProcessForward = async (payload: any, res?: NextApiResponse<For
   });
 
   if (!history) {
-    return res ? badRequest(res) : null;
+    return cacheMissed ? badRequest(res) : null;
   }
 
   await prisma.urlForwardMeta.upsert({
@@ -73,7 +63,7 @@ export const postProcessForward = async (payload: any, res?: NextApiResponse<For
     },
   });
 
-  if (res) {
+  if (cacheMissed) {
     // write back to cache
     const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
     const dataHashShortenLink = ['url', history.url, 'updatedAt', new Date().getTime()];

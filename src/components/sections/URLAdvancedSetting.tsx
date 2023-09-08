@@ -56,7 +56,6 @@ export const URLAdvancedSetting = () => {
         <Tabs tabs={tabs} selectedKey={selectedKey} setSelectedKey={setSelectedKey} />
         <URLSharePreview selectedKey={selectedKey} />
         <AdvancedSettingUrlForm key={locale} />
-        <hr className="my-8" />
       </div>
     </Accordion>
   );

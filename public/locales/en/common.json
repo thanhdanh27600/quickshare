@@ -62,5 +62,7 @@
   "title": "Title",
   "description": "Description",
   "errorSharing": "Your browser not supports sharing, try copy instead!",
-  "publish": "Pubish"
+  "publish": "Pubish",
+  "shareLink": "Share link",
+  "shareNote": "Share note"
 }

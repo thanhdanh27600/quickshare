@@ -114,11 +114,7 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
           {t('trackingLive')}
         </a>
       </div>
-
-      <div className="mt-4">
-        <URLAdvancedSetting />
-      </div>
-      <div className="flex justify-center max-sm:mt-4 sm:justify-end">
+      <div className="mt-4 flex justify-center sm:justify-end">
         <div className="flex flex-col items-center gap-3 sm:flex-row">
           <Button
             text={<Share2 className="h-6 w-6 fill-white" />}
@@ -159,6 +155,8 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
           )}
         </div>
       </div>
+      <hr className="my-10" />
+      <URLAdvancedSetting />
     </div>
   );
 };

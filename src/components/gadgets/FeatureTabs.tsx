@@ -4,13 +4,14 @@ import { FeatureTabKey } from 'bear/utilitySlice';
 import { Tabs } from 'components/atoms/Tabs';
 import { useRouter } from 'next/router';
 import { isProduction } from 'types/constants';
+import { useTrans } from 'utils/i18next';
 
-const tabs = [
+const tabs = (t: any) => [
   {
     content: (
       <span className="flex items-center gap-2">
         <Link className="w-5" />
-        Chia se Link
+        {t('shareLink')}
       </span>
     ),
     key: FeatureTabKey.SHARE_LINK,
@@ -19,17 +20,18 @@ const tabs = [
     content: (
       <span className="flex items-center gap-2">
         <Clipboard className="w-5" />
-        Chia se text
+        {t('shareNote')}
       </span>
     ),
     key: FeatureTabKey.SHARE_TEXT,
   },
 ];
 
-export const ShareFeatureTabs = () => {
+export const FeatureTabs = () => {
   const router = useRouter();
+  const { t } = useTrans();
   const { utilitySlice } = useBearStore();
-  const [selectedTab, setFeatureTab] = utilitySlice((state) => [state.featureTab, state.setFeatureTab]);
+  const [selectedTab] = utilitySlice((state) => [state.featureTab, state.setFeatureTab]);
 
   const handleSelectTab = (tab: string) => {
     if (router.pathname === '/note' && tab === FeatureTabKey.SHARE_LINK) {
@@ -42,12 +44,5 @@ export const ShareFeatureTabs = () => {
 
   if (isProduction) return null;
 
-  return (
-    <Tabs
-      selectedKey={selectedTab}
-      setSelectedKey={handleSelectTab}
-      tabs={tabs}
-      className="-mt-4  mb-4 ml-2 border-b-0 "
-    />
-  );
+  return <Tabs selectedKey={selectedTab} setSelectedKey={handleSelectTab} tabs={tabs(t)} className="border-b-0 " />;
 };
