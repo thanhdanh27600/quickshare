@@ -8,7 +8,7 @@ import { pgFullDomain } from 'utils/guards';
 
 export const MainPage = ({ feature }: { feature: FeatureTabKey }) => {
   return (
-    <LayoutMain size={feature === FeatureTabKey.SHARE_TEXT ? 'full' : 'compact'}>
+    <LayoutMain>
       <Home feature={feature} />
     </LayoutMain>
   );

@@ -11,12 +11,15 @@ export const isShortDomain = process.env.NEXT_PUBLIC_SHORT_DOMAIN === 'true';
 export const allowedDomains = isProduction ? [brandUrl, brandUrlShort] : [localUrl, brandUrl, brandUrlShort];
 export const Window = () => ('object' === typeof window && window ? (window as any) : undefined);
 
-export const LIMIT_URL_HOUR = 1;
-export const LIMIT_URL_SECOND = LIMIT_URL_HOUR * 3600;
+export const LIMIT_FEATURE_HOUR = 1;
+export const LIMIT_FEATURE_SECOND = LIMIT_FEATURE_HOUR * 3600;
 export const LIMIT_TOKEN_MILLISECOND = isProduction ? 3600e3 : 60e3;
 export const LIMIT_SHORTENED_HOUR = 24;
 export const LIMIT_SHORTENED_SECOND = LIMIT_SHORTENED_HOUR * 3600;
-export const LIMIT_URL_REQUEST = 5;
+export const LIMIT_NOTE_HOUR = 168; // 7 days
+export const LIMIT_NOTE_SECOND = LIMIT_NOTE_HOUR * 3600;
+export const LIMIT_SHORTEN_REQUEST = 5;
+export const LIMIT_NOTE_REQUEST = 5;
 export const LIMIT_RECENT_HISTORY = 5;
 export const NUM_CHARACTER_HASH = 3;
 export const LIMIT_OG_TITLE_LENGTH = 100;
@@ -36,7 +39,9 @@ export const BASE_URL_SHORT = baseUrl(true);
 export const BASE_URL_OG = isProduction ? 'https://og.clickdi.top' : 'http://localhost:7071';
 export const REDIS_KEY = {
   LIMIT_SHORTEN: 'limitShort',
-  HASH_SHORTEN_BY_HASH_URL: 'hShort',
+  LIMIT_NOTE: 'limitNote',
+  MAP_SHORTEN_BY_HASH: 'hShort',
+  MAP_NOTE_BY_HASH: 'hNote',
   OG_BY_HASH: 'og',
 } as const;
 type RedisKeys = keyof typeof REDIS_KEY;

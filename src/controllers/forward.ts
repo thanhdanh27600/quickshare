@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import { LIMIT_SHORTENED_SECOND, REDIS_KEY, getRedisKey } from '../types/constants';
-import { Forward } from '../types/forward';
+import { Forward, ForwardMeta } from '../types/forward';
 import { ipLookup } from '../utils/agent';
 import { api, badRequest } from '../utils/axios';
 import HttpStatusCode from '../utils/statusCode';
@@ -12,12 +12,12 @@ export const handler = api(
     const hash = req.body.hash as string;
     const userAgent = req.body.userAgent as string;
     const ip = req.body.ip as string;
-    const fromClientSide = req.body.fromClientSide as string;
+    const fromClientSide = !!req.body.fromClientSide;
     if (!hash) return badRequest(res);
-    const lookupIp = ipLookup(ip);
+    const lookupIp = ipLookup(ip) || undefined;
     const data = { hash, ip, userAgent, fromClientSide, lookupIp };
-    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
-    const shortenedUrlCache = await redis.hget(hashShortenedLinkKey, 'url');
+    const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
+    const shortenedUrlCache = await redis.hget(hashKey, 'url');
     if (shortenedUrlCache) {
       // cache hit
       postProcessForward(data); // bypass process
@@ -29,7 +29,7 @@ export const handler = api(
   ['POST'],
 );
 
-export const postProcessForward = async (payload: any, res?: NextApiResponse<Forward>) => {
+export const postProcessForward = async (payload: ForwardMeta, res?: NextApiResponse<Forward>) => {
   const cacheMissed = !!res;
   const { hash, ip, userAgent, fromClientSide, lookupIp } = payload;
   let history = await prisma.urlShortenerHistory.findUnique({
@@ -52,20 +52,20 @@ export const postProcessForward = async (payload: any, res?: NextApiResponse<For
     },
     update: {
       countryCode: lookupIp?.country,
-      fromClientSide: !!fromClientSide,
+      fromClientSide,
     },
     create: {
       ip,
       userAgent,
       urlShortenerHistoryId: history.id,
       countryCode: lookupIp?.country,
-      fromClientSide: !!fromClientSide,
+      fromClientSide,
     },
   });
 
   if (cacheMissed) {
     // write back to cache
-    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
+    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
     const dataHashShortenLink = ['url', history.url, 'updatedAt', new Date().getTime()];
     await redis.hset(hashShortenedLinkKey, dataHashShortenLink);
     await redis.expire(hashShortenedLinkKey, LIMIT_SHORTENED_SECOND);

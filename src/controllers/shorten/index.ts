@@ -2,7 +2,7 @@ import { UrlShortenerRecord } from '@prisma/client';
 import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
 import { shortenCacheService } from '../../services/cacheServices/shorten.service';
-import { LIMIT_URL_HOUR, LIMIT_URL_REQUEST, NUM_CHARACTER_HASH } from '../../types/constants';
+import { LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST, NUM_CHARACTER_HASH } from '../../types/constants';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import { decrypt } from '../../utils/crypto';
@@ -34,27 +34,27 @@ export const handler = api<ShortenUrl>(
       return badRequest(res, "No URL was found on your request. Let's shorten one!");
     }
     // check or reset get request limit
-    const curLimit = await shortenCacheService.limitIp(ip);
-    if (parseFloat(curLimit) >= LIMIT_URL_REQUEST) {
+    const reachedFeatureLimit = await shortenCacheService.limitFeature(ip);
+    if (reachedFeatureLimit) {
       return res.status(HttpStatusCode.TOO_MANY_REQUESTS).send({
-        errorMessage: `Exceeded ${LIMIT_URL_REQUEST} shorten links, please comeback after ${LIMIT_URL_HOUR} hours.`,
+        errorMessage: `Exceeded ${LIMIT_SHORTEN_REQUEST} shorten links, please comeback after ${LIMIT_FEATURE_HOUR} hours.`,
         errorCode: 'UNAUTHORIZED',
       });
     }
-    // check hash collapse
+
+    // generate hash
     let newHash = '';
     let isExist = 1;
     let timesLimit = 0;
 
-    // generate hash
     const logger = require('../../utils/loggerServer');
     while (isExist) {
       if (timesLimit > 0) {
-        logger.warn('timesLimit occured', timesLimit);
+        logger.warn('timesLimit shorten occured', timesLimit);
       }
       if (timesLimit++ > 10 /** U better buy lucky ticket */) {
-        logger.error('timesLimit reached', timesLimit);
-        throw new Error('Bad URL after digging our hash, please try again!');
+        logger.error('timesLimit shorten reached', timesLimit);
+        throw new Error('Bad request after digging our hash, please try again!');
       }
       newHash = generateRandomString(NUM_CHARACTER_HASH);
       isExist = await shortenCacheService.existHash(newHash);

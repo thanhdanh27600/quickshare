@@ -105,7 +105,7 @@ const URLShortenerInput = () => {
   }, [isSubmitting]);
 
   return (
-    <div className="solid rounded-lg border p-4 pt-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
+    <div className="solid container mx-auto max-w-5xl rounded-lg border p-4 pt-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
       <h1 className="mb-4 flex gap-1 text-4xl">
         {t('urlShortener')}
         <HelpTooltip />
@@ -136,12 +136,8 @@ const URLShortenerInput = () => {
         />
       </form>
       <p className="mt-4 text-red-400">{error}</p>
-      {hasData && shortenUrl && (
-        <>
-          <URLShortenerResult setCopied={setCopied} copied={copied} />
-          <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
-        </>
-      )}
+      {hasData && shortenUrl && <URLShortenerResult setCopied={setCopied} copied={copied} />}
+      <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
     </div>
   );
 };

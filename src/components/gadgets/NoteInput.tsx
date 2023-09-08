@@ -2,12 +2,14 @@ import { Button } from 'components/atoms/Button';
 import TextEditor from 'components/gadgets/TextEditor';
 import { tinymce } from 'types/constants';
 import { useTrans } from 'utils/i18next';
+import { copyToClipBoard } from 'utils/text';
 
 export const NoteInput = () => {
   const { t } = useTrans();
 
   const onSubmit = () => {
     console.log(tinymce.activeEditor.getContent());
+    copyToClipBoard(encodeURIComponent(tinymce.activeEditor.getContent()));
   };
 
   return (

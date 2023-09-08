@@ -10,7 +10,7 @@ export function generateRandomString(numChars: number): string {
 }
 
 // export function testGenerateRandomString(numChars: number): string {
-//   const possibleChars = 'abe';
+//   const possibleChars = '123';
 //   let randomString = '';
 //   for (let i = 0; i < numChars; i++) {
 //     randomString += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));

@@ -155,7 +155,6 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
           )}
         </div>
       </div>
-      <hr className="my-10" />
       <URLAdvancedSetting />
     </div>
   );

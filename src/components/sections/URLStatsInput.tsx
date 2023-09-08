@@ -81,7 +81,7 @@ export const URLStats = () => {
 
   return (
     <Accordion title={title} className="mt-16">
-      <div className="solid rounded-lg border p-4 py-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
+      <div className="solid container mx-auto max-w-5xl rounded-lg border p-4 py-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
         <h1 className="mb-4 text-4xl">{t('tracking')}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
           <InputWithButton
