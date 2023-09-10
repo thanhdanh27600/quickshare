@@ -44,8 +44,7 @@ describe('Test /api/forward...', () => {
       expect(res1._getStatusCode()).toBe(HttpStatusCode.BAD_REQUEST);
       const { req: req2, res: res2 } = createMocks({
         method: 'POST',
-        body: { userAgent, hash: '!@#' },
-        headers: { 'x-forwarded-for': ip },
+        body: { userAgent, ip, hash: '!@#' },
       });
       await handler(req2, res2);
       expect(res2._getStatusCode()).toBe(HttpStatusCode.BAD_REQUEST);
@@ -79,8 +78,7 @@ describe('Test /api/forward...', () => {
       const history1: UrlShortenerHistory = JSON.parse(res1._getData());
       const { req: req2, res: res2 } = createMocks({
         method: 'POST',
-        body: { hash: history1.hash, userAgent },
-        headers: { 'x-forwarded-for': ip },
+        body: { hash: history1.hash, userAgent, ip },
       });
       await handler(req2, res2);
       expect(res2._getStatusCode()).toBe(HttpStatusCode.OK);

@@ -5,7 +5,7 @@ import { GetServerSidePropsContext } from 'next';
 import { CldOgImage } from 'next-cloudinary';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
-import qs from 'querystring';
+import { stringify } from 'querystring';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
@@ -83,6 +83,8 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
 
   const encodeTitle = encodeBase64(ogTitle);
 
+  if (!!error) return <PageNotFound />;
+
   return (
     <>
       {/* CUSTOM HEAD */}
@@ -100,13 +102,13 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
         <meta property="twitter:description" content={ogDescription} />
         {!ogImgSrc && (
           <>
-            <meta property="og:image" content={`${BASE_URL_OG}/api/og?${qs.stringify({ hash, test: encodeTitle })}`} />
+            <meta property="og:image" content={`${BASE_URL_OG}/api/og?${stringify({ hash, title: encodeTitle })}`} />
             <meta property="og:image:width" content="1200" />
             <meta property="og:image:height" content="627" />
             <meta property="og:image:alt" content={t('ogDescription')} />
             <meta
               property="twitter:image"
-              content={`${BASE_URL_OG}/api/og?${qs.stringify({ hash, test: encodeTitle })}`}
+              content={`${BASE_URL_OG}/api/og?${stringify({ hash, title: encodeTitle })}`}
             />
             <meta name="twitter:image:alt" content={t('ogDescription')}></meta>
             <meta property="twitter:card" content="summary_large_image" />
@@ -114,7 +116,6 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
         )}
       </Head>
       {ogImgSrc && <CldOgImage alt={t('ogDescription')} src={ogImgSrc} />}
-      {error ? <PageNotFound /> : <></>}
     </>
   );
 };

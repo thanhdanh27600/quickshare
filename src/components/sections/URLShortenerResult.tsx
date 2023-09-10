@@ -11,7 +11,7 @@ import { useQuery } from 'react-query';
 import { BASE_URL, BASE_URL_SHORT, PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { encrypt } from 'utils/crypto';
-import { useTrans } from 'utils/i18next';
+import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { QueryKey, strictRefetch } from 'utils/requests';
 import { copyToClipBoard, share } from 'utils/text';
 import { URLAdvancedSetting } from './URLAdvancedSetting';
@@ -108,7 +108,7 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
       </div>
       <div className="mt-2 flex w-full justify-end">
         <a
-          href={shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`)}
+          href={linkWithLanguage(shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`), locale)}
           target="_blank"
           className="cursor-pointer text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
           {t('trackingLive')}

@@ -1,7 +1,7 @@
 import { UrlShortenerHistory } from '@prisma/client';
 import clsx from 'clsx';
 import { CldImage } from 'next-cloudinary';
-import qs from 'querystring';
+import { stringify } from 'querystring';
 import { BASE_URL_OG, brandUrlShortDomain } from 'types/constants';
 import { encodeBase64 } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
@@ -26,7 +26,7 @@ const OgImage = ({
       className={clsx('relative origin-top-left scale-[0.2485] sm:scale-[0.349]', className)}
       width={1200}
       height={630}
-      src={`${BASE_URL_OG}/api/og?${qs.stringify({
+      src={`${BASE_URL_OG}/api/og?${stringify({
         hash,
         title: encodeTitle,
         theme,
