@@ -27,6 +27,7 @@ export const Accordion = ({ children, title, defaultOpen, className }: Props) =>
             className="[&:not([data-te-collapse-collapsed])]:text-primary group relative flex w-full items-center rounded-none border-0 py-4 text-left text-base transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none"
             type="button"
             data-te-collapse-init
+            data-te-collapse-collapsed
             data-te-target={`#${collapseId}`}
             aria-controls={collapseId}>
             <span className="h-4 w-4 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:mr-0 group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none">

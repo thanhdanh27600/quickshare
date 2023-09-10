@@ -32,16 +32,24 @@ export const updateShortenUrlRequest = async ({
   mediaId?: number;
   locale: Locale;
 }) => {
-  const rs = await API.put(`/api/shorten/update`, {
-    locale,
-    hash,
-    ogTitle,
-    ogDescription,
-    ogImgSrc,
-    ogImgPublicId,
-    theme,
-    mediaId,
-  });
+  const rs = await API.put(
+    `/api/shorten/update`,
+    {
+      locale,
+      hash,
+      ogTitle,
+      ogDescription,
+      ogImgSrc,
+      ogImgPublicId,
+      theme,
+      mediaId,
+    },
+    {
+      headers: {
+        ...withAuth(),
+      },
+    },
+  );
   const data = rs.data;
   return data as ShortenUrl;
 };
@@ -68,7 +76,6 @@ export const getStats = async ({
   hash,
   email,
   password,
-  token,
   queryCursor,
 }: {
   hash: string;
@@ -85,7 +92,7 @@ export const getStats = async ({
   });
   const rs = await API.get(`/api/stats?${q}`, {
     headers: {
-      ...withAuth(token),
+      ...withAuth(),
     },
   });
   const data = rs.data;

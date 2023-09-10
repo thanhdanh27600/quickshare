@@ -119,6 +119,7 @@ export const URLStats = () => {
               type: 'submit',
               className: 'bg-gray-500 bg-none hover:bg-gray-500/80',
               TextClassname: 'text-sm sm:text-xl',
+              hoverTransform: false,
             }}
             className={clsx(hasHistory ? 'pl-16' : 'pl-4')}
             onFocus={() => {

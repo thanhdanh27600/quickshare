@@ -6,16 +6,16 @@ import HttpStatusCode from './statusCode';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
 
-export function errorHandler<T extends Response>(
-  res: NextApiResponse<T>,
-  code: HttpStatusCode = HttpStatusCode.UNAUTHORIZED,
-) {
+export type ErrorResponse = { code?: HttpStatusCode; mesesage?: string };
+
+export function errorHandler<T extends Response>(res: NextApiResponse<T>, error?: ErrorResponse) {
+  const { code, mesesage } = error || { code: HttpStatusCode.UNAUTHORIZED, mesesage: '' };
   switch (code) {
     case HttpStatusCode.UNAUTHORIZED:
-      return res.status(HttpStatusCode.UNAUTHORIZED).json({ errorMessage: 'UNAUTHORIZED' } as any);
+      return res.status(HttpStatusCode.UNAUTHORIZED).json({ errorMessage: mesesage || 'UNAUTHORIZED' } as any);
     case HttpStatusCode.NOT_FOUND:
     default:
-      return res.status(HttpStatusCode.NOT_FOUND).json({ errorMessage: 'Not found' } as any);
+      return res.status(HttpStatusCode.NOT_FOUND).json({ errorMessage: mesesage || 'Not found' } as any);
   }
 }
 

@@ -37,7 +37,7 @@ const tabs: Tab[] = [
   },
 ];
 
-export const URLAdvancedSetting = () => {
+export const URLAdvancedSetting = ({ defaultOpen = true }: { defaultOpen?: boolean }) => {
   const { t, locale } = useTrans();
   const [selectedKey, setSelectedKey] = useState(tabs[0]?.key);
 
@@ -51,7 +51,7 @@ export const URLAdvancedSetting = () => {
   );
 
   return (
-    <Accordion title={title} defaultOpen>
+    <Accordion title={title} defaultOpen={defaultOpen}>
       <div>
         <Tabs tabs={tabs} selectedKey={selectedKey} setSelectedKey={setSelectedKey} />
         <URLSharePreview selectedKey={selectedKey} />

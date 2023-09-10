@@ -30,8 +30,10 @@ export const handler = api<ShortenUrl>(
     // if hash then retrieve from cache & db
     if (hash) {
       const history = await prisma.urlShortenerHistory.findUnique({ where: { hash } });
-      if (history) return successHandler(res, history);
-      return badRequest(res, "No URL was found on your request. Let's shorten one!");
+      if (!history || !!history.password) {
+        return badRequest(res, "No URL was found on your request. Let's shorten one!");
+      }
+      return successHandler(res, history);
     }
     // check or reset get request limit
     const reachedFeatureLimit = await shortenCacheService.limitFeature(ip);

@@ -19,7 +19,6 @@ export const handler = api<Stats>(
     const hash = req.query.h as string;
     const email = req.query.e as string;
     const password = req.query.p as string;
-    const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
     const queryCursor = req.query.qc ? parseIntSafe(req.query.qc as string) : undefined;
     let record;
     let history;
@@ -56,6 +55,7 @@ export const handler = api<Stats>(
       },
     });
     if (history && history?.password) {
+      const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
       if (!token || decryptS(token) !== history.id.toString()) {
         return errorHandler(res);
       }
