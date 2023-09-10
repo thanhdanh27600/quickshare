@@ -69,4 +69,4 @@ jobs:
           app-name: 'qsh'
           slot-name: 'production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_QUICKSHARE_SHORT }}
-          images: 'ghcr.io/thanhdanh27600/clickdi:short-latest'
+          images: 'ghcr.io/thanhdanh27600/${{ github.repository }}:short-latest'
