@@ -1,5 +1,4 @@
 import { NextApiResponse } from 'next';
-import requestIp from 'request-ip';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import { shortenCacheService } from '../services/cacheServices';
@@ -14,7 +13,7 @@ export const handler = api<Forward>(
   async (req, res) => {
     const hash = req.body.hash as string;
     const userAgent = req.body.userAgent as string;
-    const ip = requestIp.getClientIp(req)!;
+    const ip = req.body.ip as string;
     const fromClientSide = !!req.body.fromClientSide;
 
     await validateForwardSchema.parseAsync({
