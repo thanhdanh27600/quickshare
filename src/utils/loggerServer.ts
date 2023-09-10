@@ -7,7 +7,7 @@ module.exports = isTest
         //  console.log('[INFO]: ', message);
       },
       warn(message: any) {
-        console.warn('[WARN]: ', message);
+        // console.warn('[WARN]: ', message);
       },
       error(message: any) {
         console.error('[ERROR]: ', message);
