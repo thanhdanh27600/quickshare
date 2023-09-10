@@ -10,10 +10,19 @@ export interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTML
   variant?: ButtonVariants;
   loading?: boolean;
   animation?: boolean;
+  hoverTransform?: boolean;
 }
 
 export const Button = (props: ButtonProps) => {
-  const { text = 'Button', variant = 'filled', loading, animation, TextClassname, ...otherProps } = props;
+  const {
+    text = 'Button',
+    variant = 'filled',
+    loading,
+    animation,
+    hoverTransform = true,
+    TextClassname,
+    ...otherProps
+  } = props;
   return (
     <button
       {...otherProps}
@@ -22,7 +31,8 @@ export const Button = (props: ButtonProps) => {
         {
           'py-2.5 text-white focus:outline-none focus:ring-cyan-400': variant === 'filled',
           'hover:gradient-bg from-purple-600 to-cyan-600/80': animation,
-          'from-blue-600  to-cyan-500 hover:opacity-80 hover:shadow-btn-hover': !animation,
+          'from-blue-600  to-cyan-500': !animation,
+          'hover:-translate-y-1 hover:translate-x-1 hover:opacity-80 hover:shadow-btn-hover': hoverTransform,
           'relative inline-flex items-center justify-center overflow-hidden border border-cyan-300 bg-none p-1 text-gray-900  hover:text-cyan-500 focus:outline-none focus:ring-cyan-400':
             variant === 'outlined',
         },

@@ -1,20 +1,25 @@
-# Clickdi - URL Shortener
+# Quickshare - URL Shortener
 
-Lightweight web application for shortening URLs, along with real-time click tracking, differentiate between real and unique clicks, free to use and modify.
+Lightweight web application for create notes and shortening URLs, along with real-time click tracking, differentiate between real and unique clicks, free to use.
 
 ## What's this
 
-- **Shortening URLs**: Shorten link to 3 unique hash xxx (clid.top/xxx), link saved by IP, no sign in required tracking shortened link goes publicly, unless set new password
+- **Creat Note & Shorten URLs**: Create note super easy with shortened link to 3 unique hash xxx (qsh.at/xxx), link then saved by IP, no sign in required.
 
-- **Detect Uniqe Clicks**: Tracks clicks on the shortened URLs in real-time (polling)
+- **Tracking URLs**: Resource management (note & shortened link) goes publicly, unless set new password. 
+
+- **Detect Unique Clicks**: Tracks clicks on the shortened URLs in polling time
 
 - **Detect Human Clicks**: Distinguish genuine clicks from bots or automated scripts
 
-- **Free to Use**: Free to clone, modify, and distribute.
+- **Free to Use**: Start to use [https://quickshare.at](https://quickshare.at)
+, always free
 
 ## How to Build
 
-*To be updated*
+- Copy `.env.example` and modify to your credential
+- Remove `.gpg` files
+- `yarn install` & `yarn dev`
 
 ## Contact
 

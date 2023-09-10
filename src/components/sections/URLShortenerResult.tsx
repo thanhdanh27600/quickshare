@@ -49,7 +49,7 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
   };
   let token = '';
   if (PLATFORM_AUTH) {
-    token = encrypt(shortenUrl.replace(`${BASE_URL_SHORT}/`, ''));
+    token = encrypt(getHash());
   } else {
     console.error('Not found PLATFORM_AUTH');
   }

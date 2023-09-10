@@ -51,6 +51,7 @@ export const URLStats = () => {
   const error = errors.hash?.message; /** form error */
 
   useEffect(() => {
+    console.log('fetchTracking', fetchTracking);
     if (!fetchTracking.isSuccess && (fetchTracking.error as any)?.message !== 'UNAUTHORIZED') {
       return;
     }
@@ -119,6 +120,7 @@ export const URLStats = () => {
               type: 'submit',
               className: 'bg-gray-500 bg-none hover:bg-gray-500/80',
               TextClassname: 'text-sm sm:text-xl',
+              hoverTransform: false,
             }}
             className={clsx(hasHistory ? 'pl-16' : 'pl-4')}
             onFocus={() => {

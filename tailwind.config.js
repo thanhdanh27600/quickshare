@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       boxShadow: {
         card: 'rgba(0, 0, 0, 0.1) 0px 10px 50px',
-        'btn-hover': '2px 2px 0 0 rgba(0,0,0,0.15);',
+        'btn-hover': '-5px 5px 5px 0 rgba(0,0,0,0.25);',
       },
       fontFamily: {
         facebook: 'Helvetica,Arial,sans-serif',

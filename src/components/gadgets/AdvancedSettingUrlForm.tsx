@@ -70,15 +70,15 @@ export const AdvancedSettingUrlForm = () => {
       ogDescription,
     });
   }, [ogTitle, ogDescription]);
+  console.log('ogTitle', ogTitle);
 
   useEffect(() => {
-    if (shortenHistory)
-      debouncedUpdate({
-        ogTitle: shortenHistory.ogTitle || t('ogTitle', { hash: shortenHistory.hash ?? 'XXX' }),
-        ogDescription: shortenHistory.ogDescription || t('ogDescription'),
-        ogImgSrc: shortenHistory.ogImgSrc,
-      });
-  }, [shortenHistory]);
+    debouncedUpdate({
+      ogTitle: shortenHistory?.ogTitle || t('ogTitle', { hash: shortenHistory?.hash ?? 'XXX' }),
+      ogDescription: shortenHistory?.ogDescription || t('ogDescription'),
+      ogImgSrc: shortenHistory?.ogImgSrc,
+    });
+  }, []);
 
   const updateShortenUrl = useMutation(QueryKey.SHORTEN_UPDATE, {
     mutationFn: updateShortenUrlRequest,

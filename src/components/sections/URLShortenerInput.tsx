@@ -123,6 +123,7 @@ const URLShortenerInput = () => {
           disabled={loading}
           buttonProps={{
             animation: true,
+            hoverTransform: false,
             text: t('generate'),
             variant: 'filled',
             type: 'submit',
