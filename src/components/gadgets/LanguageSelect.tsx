@@ -38,20 +38,17 @@ const LanguageOptions = ({ changeLanguage, setOpen }: { changeLanguage: (l: stri
 
 export const LanguageSelect = () => {
   const router = useRouter();
-  const { i18n } = useTrans();
+  const { locale } = useTrans();
   const [open, setOpen] = useState(false);
 
-  const currentLanguage = i18n.language as Locale;
-  const Icon = LangugageIcon[currentLanguage];
+  if (!locale) return null;
+
+  const Icon = LangugageIcon[locale];
 
   const changeLanguage = (newLocale: string) => {
     const { pathname, asPath, query } = router;
     router.push({ pathname, query }, asPath, { locale: newLocale });
   };
-
-  if (!currentLanguage) {
-    return null;
-  }
 
   return (
     <div className="flex">
@@ -59,18 +56,18 @@ export const LanguageSelect = () => {
         onClick={() => {
           setOpen((prev) => !prev);
         }}
-        className="z-10 inline-flex w-20 flex-shrink-0 items-center rounded-lg border border-gray-300 bg-gray-50 py-2.5 px-4 text-center text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100 md:w-36"
+        className="z-10 inline-flex w-20 flex-shrink-0 items-center rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-center text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100 md:w-36"
         type="button">
         <div className="flex w-full items-center gap-2">
           <Icon className="h-4" />
-          <span className="hidden md:block">{languages[currentLanguage]}</span>
+          <span className="hidden md:block">{languages[locale]}</span>
         </div>
         <DropdownIndicate />
       </button>
       <div
         className={clsx(
           'absolute inset-x-auto z-10 m-0 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow-xl',
-          open && '!block translate-y-[-96px] -translate-x-24 md:-translate-x-8',
+          open && '!block -translate-x-24 translate-y-[-96px] md:-translate-x-8',
         )}>
         <ul className="text-sm text-gray-900" aria-labelledby="states-button">
           <LanguageOptions changeLanguage={changeLanguage} setOpen={setOpen} />

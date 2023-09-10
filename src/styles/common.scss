@@ -3,3 +3,32 @@
     background-position: var(--bg-size) 0;
   }
 }
+
+.tox-tinymce {
+  .tox-promotion,
+  .tox-statusbar__branding,
+  .tox-statusbar__help-text {
+    display: none;
+  }
+  .tox-statusbar__text-container {
+    justify-content: space-between !important;
+  }
+}
+
+html {
+  ::-webkit-scrollbar {
+    width: 16px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 50px;
+    border: 4px solid #fff;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to top, #69009e55, #2cdfdf55);
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}

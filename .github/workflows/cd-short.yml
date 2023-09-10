@@ -66,7 +66,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'dolph-aabiskar'
+          app-name: 'qsh'
           slot-name: 'production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_34EA2A2C3814419DB187C95DEE1D90FA }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_QUICKSHARE_SHORT }}
           images: 'ghcr.io/thanhdanh27600/clickdi:short-latest'

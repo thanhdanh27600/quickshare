@@ -1,15 +1,18 @@
 import { Menu } from '@styled-icons/feather';
-import { DetailedHTMLProps, HTMLAttributes, MouseEvent } from 'react';
+import clsx from 'clsx';
+import { DetailedHTMLProps, HTMLAttributes, MouseEvent, ReactNode } from 'react';
 
 export type SelectOption<T> = {
-  label: string;
+  label: string | ReactNode;
   value: T;
 };
 
 interface Props<T> {
   ContainerProps?: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+  buttonClassName?: string;
   options: SelectOption<T>[];
   value?: T;
+  icon?: React.ReactNode;
   handleSelect: (value: T, e?: MouseEvent<HTMLDivElement>) => void;
 }
 
@@ -21,12 +24,19 @@ export function Dropdown<T>(props: Props<T>) {
           id="dropdown-button"
           data-te-dropdown-toggle-ref
           aria-expanded="false"
-          className="inline-flex h-16 flex-shrink-0 items-center rounded-l-lg border border-gray-300 bg-gray-100 py-2.5 px-4 text-center text-lg text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+          className={clsx(
+            'inline-flex h-16 flex-shrink-0 items-center border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-lg text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300',
+            props.buttonClassName,
+          )}
           type="button"
           data-te-dropdownanimation="off"
           data-te-offset={[0, 10]}>
-          {props.value as any}
-          <Menu className="w-4" />
+          {props.icon || (
+            <>
+              {props.value as any}
+              <Menu className="w-4" />
+            </>
+          )}
         </button>
         <ul
           aria-labelledby="dropdown-button"
@@ -37,11 +47,13 @@ export function Dropdown<T>(props: Props<T>) {
               <li key={`${option.label}-${index}`}>
                 <div
                   data-te-dropdown-item-ref
-                  className="p-4 hover:bg-gray-100"
+                  className={clsx('cursor-pointer rounded-lg p-4 hover:bg-gray-100', {
+                    'bg-gray-100/80': props.value === option.value,
+                  })}
                   onClick={(e) => {
                     props.handleSelect(option.value, e);
                   }}>
-                  <p className="line-clamp-2">{option.label}</p>
+                  <div className="line-clamp-2">{option.label}</div>
                 </div>
               </li>
             );

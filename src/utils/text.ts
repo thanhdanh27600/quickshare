@@ -10,7 +10,7 @@ export function generateRandomString(numChars: number): string {
 }
 
 // export function testGenerateRandomString(numChars: number): string {
-//   const possibleChars = 'abe';
+//   const possibleChars = '123';
 //   let randomString = '';
 //   for (let i = 0; i < numChars; i++) {
 //     randomString += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
@@ -20,6 +20,10 @@ export function generateRandomString(numChars: number): string {
 
 export const truncate = (text: string, l = 30) => {
   return text.length <= l ? text : text.substring(0, l) + '...';
+};
+
+export const truncateMiddle = (text: string, l = 30, r = 5) => {
+  return text.length <= l ? text : text.substring(0, l - r) + '...' + text.slice(-r);
 };
 
 export const urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i;

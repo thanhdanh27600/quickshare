@@ -25,19 +25,18 @@ const UploadImage = dynamic(() => import('../atoms/UploadImage').then((mod) => m
 export const AdvancedSettingUrlForm = () => {
   const { t, locale } = useTrans();
   const { shortenSlice } = useBearStore();
-  const [shortenHistory, shortenHistoryMediaId, setShortenHistoryForm, setShortenHistoryMediaId] = shortenSlice(
-    (state) => [
-      state.shortenHistory,
-      state.shortenHistoryMediaId,
-      state.setShortenHistoryForm,
-      state.setShortenHistoryMediaId,
-    ],
-  );
+  const [shortenHistory, shortenHistoryMediaId, setShortenHistory, setShortenHistoryMediaId] = shortenSlice((state) => [
+    state.shortenHistory,
+    state.shortenHistoryMediaId,
+    state.setShortenHistory,
+    state.setShortenHistoryMediaId,
+  ]);
   const defaultValues = {
     ogTitle: shortenHistory?.ogTitle || t('ogTitle', { hash: shortenHistory?.hash ?? 'XXX' }),
     ogDescription: shortenHistory?.ogDescription || t('ogDescription'),
     ogDomain: shortenHistory?.ogDomain || brandUrlShortDomain,
     ogImgSrc: shortenHistory?.ogImgSrc,
+    theme: shortenHistory?.theme,
   };
 
   const {
@@ -54,11 +53,11 @@ export const AdvancedSettingUrlForm = () => {
     setValue('ogImgSrc', url);
     setValue('ogImgPublicId', ogImgPublicId);
     setShortenHistoryMediaId(mediaId);
-    setShortenHistoryForm({ ogImgSrc: url });
+    setShortenHistory({ ogImgSrc: url });
   };
 
   const handleUpdate = useCallback((history: ShortenSettingPayload) => {
-    setShortenHistoryForm(history);
+    setShortenHistory(history);
   }, []);
 
   const debouncedUpdate = useCallback(debounce(handleUpdate, 600), []);
@@ -108,6 +107,7 @@ export const AdvancedSettingUrlForm = () => {
       ogImgPublicId: values.ogImgPublicId || undefined,
       ogDescription: values.ogDescription?.trim() || undefined,
       ogTitle: values.ogTitle?.trim() || undefined,
+      theme: shortenHistory.theme,
     });
   };
 

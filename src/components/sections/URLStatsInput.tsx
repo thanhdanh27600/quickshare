@@ -7,10 +7,11 @@ import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
-import { BASE_URL, BASE_URL_SHORT, LIMIT_RECENT_HISTORY, Window } from 'types/constants';
+import { BASE_URL, BASE_URL_SHORT, LIMIT_RECENT_HISTORY } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { QueryKey, strictRefetch } from 'utils/requests';
+import { truncateMiddle } from 'utils/text';
 import { FeedbackLink, FeedbackTemplate } from './FeedbackLink';
 
 type URLStatsForm = {
@@ -62,7 +63,7 @@ export const URLStats = () => {
       const hash = h.startsWith(BASE_URL_SHORT.replace(`${location.protocol}//`, ''))
         ? `${location.protocol}//` + h
         : h;
-      Window().open(linkWithLanguage(`${BASE_URL}/v/${hash.replace(BASE_URL_SHORT + '/', '')}`, locale));
+      location.href = linkWithLanguage(`${BASE_URL}/v/${hash.replace(BASE_URL_SHORT + '/', '')}`, locale);
     }
   }, [fetchTracking.isSuccess, fetchTracking.isError]);
 
@@ -70,7 +71,7 @@ export const URLStats = () => {
     <span className="relative">
       {t('viewMore')}
       {hasHistory && (
-        <span className="absolute bottom-2 -right-7 flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-sm">
+        <span className="absolute -right-7 bottom-2 flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-sm">
           {recentHistories?.length}
           {Number(recentHistories?.length) >= LIMIT_RECENT_HISTORY && '+'}
         </span>
@@ -80,7 +81,7 @@ export const URLStats = () => {
 
   return (
     <Accordion title={title} className="mt-16">
-      <div className="solid rounded-lg border p-4 py-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
+      <div className="solid container mx-auto max-w-5xl rounded-lg border p-4 py-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
         <h1 className="mb-4 text-4xl">{t('tracking')}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
           <InputWithButton
@@ -88,9 +89,10 @@ export const URLStats = () => {
             Prefix={
               hasHistory ? (
                 <Dropdown
+                  buttonClassName="rounded-l-lg"
                   ContainerProps={{ className: 'absolute h-55 w-fit text-sm' }}
                   options={(fetchRecord.data?.history || []).map((h, idx) => ({
-                    label: `${idx + 1}. ${h.url} (${h.hash})`,
+                    label: `${idx + 1}. ${truncateMiddle(h.url)} (${h.hash})`,
                     value: `${BASE_URL_SHORT}/${h.hash}`,
                   }))}
                   handleSelect={(value) => {

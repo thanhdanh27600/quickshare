@@ -6,7 +6,7 @@ import { MIXPANEL_EVENT } from 'types/utils';
 
 export const Footer = () => {
   return (
-    <footer className="gap-4 border-y border-gray-200 py-4 px-4 pt-4 sm:py-16">
+    <footer className="gap-4 border-y border-gray-200 px-4 py-4 pt-4 sm:py-8">
       <Modal id="donate" title="Donate 🙏" ConfirmButtonProps={{ ['data-te-modal-dismiss']: true } as any}>
         <div className="flex justify-center">
           <Image alt="Qr-Momo" src={'/assets/qr-momo.jpg'} width={180} height={0} />

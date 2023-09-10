@@ -6,12 +6,18 @@ export enum Locale {
 export type LocaleProp = { locale: Locale };
 
 export const locales = {
-  [Locale.Vietnamese]: Locale.Vietnamese,
   [Locale.English]: Locale.English,
+  [Locale.Vietnamese]: Locale.Vietnamese,
 } as const;
+
+export const regions = {
+  [Locale.Vietnamese]: 'vi_VN',
+  [Locale.English]: 'en_US',
+} as const;
+
 export const languages = {
-  [Locale.Vietnamese]: 'Tiếng Việt',
   [Locale.English]: 'English',
+  [Locale.Vietnamese]: 'Tiếng Việt',
 } as const;
 
 export type Locales = keyof typeof locales;

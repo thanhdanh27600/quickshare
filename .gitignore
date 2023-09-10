@@ -38,6 +38,7 @@ next-env.d.ts
 *.env
 *.env.test
 *.env.production
+*.log
 prisma/*.db*
 /logs
 *.log

@@ -17,6 +17,7 @@ model UrlShortenerRecord {
 
   ip      String                @unique
   history UrlShortenerHistory[]
+  Note    Note[]
 }
 
 model UrlShortenerHistory {
@@ -26,6 +27,7 @@ model UrlShortenerHistory {
 
   url                  String
   hash                 String             @unique
+  theme                String             @default("default")
   email                String?
   password             String?
   ogTitle              String?
@@ -48,10 +50,13 @@ model UrlForwardMeta {
   ip             String?
   fromClientSide Boolean? @default(false)
 
-  UrlShortenerHistory   UrlShortenerHistory @relation(fields: [urlShortenerHistoryId], references: [id], onDelete: Cascade)
-  urlShortenerHistoryId Int
+  UrlShortenerHistory   UrlShortenerHistory? @relation(fields: [urlShortenerHistoryId], references: [id], onDelete: Cascade)
+  urlShortenerHistoryId Int?
+  Note                  Note?                @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  noteId                Int?
 
   @@unique([userAgent, ip, urlShortenerHistoryId])
+  @@unique([userAgent, ip, noteId])
 }
 
 model Media {
@@ -62,4 +67,19 @@ model Media {
   url                   String               @unique
   urlShortenerHistoryId Int?                 @unique
   UrlShortenerHistory   UrlShortenerHistory? @relation(fields: [urlShortenerHistoryId], references: [id], onDelete: Cascade)
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  hash                 String             @unique
+  uuid                 String             @unique
+  text                 String
+  email                String?
+  password             String?
+  UrlShortenerRecord   UrlShortenerRecord @relation(fields: [urlShortenerRecordId], references: [id], onDelete: Cascade)
+  urlShortenerRecordId Int
+  UrlForwardMeta       UrlForwardMeta[]
 }
