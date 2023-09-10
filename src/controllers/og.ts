@@ -1,8 +1,8 @@
 import Handlebars from 'handlebars';
 import puppeteer from 'puppeteer';
+import { defaultLocale } from '../utils/i18next';
 import { redis } from '../redis/client';
 import { REDIS_KEY, getRedisKey, isProduction } from '../types/constants';
-import { Locale } from '../types/locale';
 import { api, badRequest } from '../utils/axios';
 import { decrypt } from '../utils/crypto';
 import { validateOgSchema } from '../utils/validateMiddleware';
@@ -139,7 +139,7 @@ export const handler = api(
     let hashMatch = hash?.match(/.../);
     if (!hashMatch) return badRequest(res);
     // get from cache
-    const ogKey = getRedisKey(REDIS_KEY.OG_BY_HASH, `${hash}-${locale || Locale.Vietnamese}`);
+    const ogKey = getRedisKey(REDIS_KEY.OG_BY_HASH, `${hash}-${locale || defaultLocale}`);
     const imageCache = await redis.get(ogKey);
     if (imageCache) {
       res.writeHead(200, {

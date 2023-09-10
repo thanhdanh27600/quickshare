@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       boxShadow: {
         card: 'rgba(0, 0, 0, 0.1) 0px 10px 50px',
+        'btn-hover': '5px 5px 0 0 rgba(0,0,0,0.15);',
       },
       fontFamily: {
         facebook: 'Helvetica,Arial,sans-serif',
@@ -17,5 +18,4 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/line-clamp')],
 };

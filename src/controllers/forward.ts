@@ -1,38 +1,36 @@
-import geoIp from 'geoip-country';
 import { NextApiResponse } from 'next';
-import { isEmpty } from 'ramda';
+import requestIp from 'request-ip';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
-import { LIMIT_SHORTENED_SECOND, REDIS_KEY, getRedisKey } from '../types/constants';
-import { Forward } from '../types/forward';
+import { shortenCacheService } from '../services/cacheServices';
+import { REDIS_KEY, getRedisKey } from '../types/constants';
+import { Forward, ForwardMeta } from '../types/forward';
+import { ipLookup } from '../utils/agent';
 import { api, badRequest } from '../utils/axios';
-import { logger } from '../utils/logger';
 import HttpStatusCode from '../utils/statusCode';
+import { validateForwardSchema } from '../utils/validateMiddleware';
 
-export const handler = api(
+export const handler = api<Forward>(
   async (req, res) => {
     const hash = req.body.hash as string;
     const userAgent = req.body.userAgent as string;
-    const ip = req.body.ip as string;
-    const fromClientSide = req.body.fromClientSide as string;
-    if (!hash) {
-      return badRequest(res);
-    }
-    let lookupIp;
-    if (ip) {
-      lookupIp = geoIp.lookup(ip);
-    }
+    const ip = requestIp.getClientIp(req)!;
+    const fromClientSide = !!req.body.fromClientSide;
 
-    if (!lookupIp) {
-      logger.warn(!ip ? 'ip not found' : `geoIp cannot determined ${ip}`);
-    }
+    await validateForwardSchema.parseAsync({
+      hash,
+      userAgent,
+      ip,
+    });
+
+    const lookupIp = ipLookup(ip) || undefined;
     const data = { hash, ip, userAgent, fromClientSide, lookupIp };
-    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
-    const shortenedUrlCache = await redis.hgetall(hashShortenedLinkKey);
-    if (!isEmpty(shortenedUrlCache)) {
+    const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
+    const shortenedUrlCache = await redis.hget(hashKey, 'url');
+    if (shortenedUrlCache) {
       // cache hit
       postProcessForward(data); // bypass process
-      return res.status(HttpStatusCode.OK).json({ history: shortenedUrlCache as any });
+      return res.status(HttpStatusCode.OK).json({ history: { url: shortenedUrlCache } });
     }
     // cache missed
     await postProcessForward(data, res);
@@ -40,7 +38,8 @@ export const handler = api(
   ['POST'],
 );
 
-export const postProcessForward = async (payload: any, res?: NextApiResponse<Forward>) => {
+export const postProcessForward = async (payload: ForwardMeta, res?: NextApiResponse<Forward>) => {
+  const cacheMissed = !!res;
   const { hash, ip, userAgent, fromClientSide, lookupIp } = payload;
   let history = await prisma.urlShortenerHistory.findUnique({
     where: {
@@ -49,7 +48,7 @@ export const postProcessForward = async (payload: any, res?: NextApiResponse<For
   });
 
   if (!history) {
-    return res ? badRequest(res) : null;
+    return cacheMissed ? badRequest(res) : null;
   }
 
   await prisma.urlForwardMeta.upsert({
@@ -62,34 +61,22 @@ export const postProcessForward = async (payload: any, res?: NextApiResponse<For
     },
     update: {
       countryCode: lookupIp?.country,
-      fromClientSide: !!fromClientSide,
+      fromClientSide,
     },
     create: {
       ip,
       userAgent,
       urlShortenerHistoryId: history.id,
       countryCode: lookupIp?.country,
-      fromClientSide: !!fromClientSide,
+      fromClientSide,
     },
   });
 
-  if (res) {
+  if (cacheMissed) {
     // write back to cache
-    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
-    const dataHashShortenLink = [
-      'url',
-      history.url,
-      'ogTitle',
-      history.ogTitle,
-      'ogDescription',
-      history.ogDescription,
-      'ogImgSrc',
-      history.ogImgSrc,
-      'updatedAt',
-      new Date().getTime(),
-    ];
-    await redis.hset(hashShortenedLinkKey, dataHashShortenLink);
-    await redis.expire(hashShortenedLinkKey, LIMIT_SHORTENED_SECOND);
+    // write hash to cache
+    const dataHashShorten = ['url', history.url, 'updatedAt', new Date().getTime()];
+    await shortenCacheService.postShortenHash({ ip, hash, data: dataHashShorten });
     return res.status(HttpStatusCode.OK).json({ history });
   }
 };

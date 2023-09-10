@@ -1,6 +1,6 @@
 {
   "ogTitle": "Chia sẻ link <{{hash}}> với mọi người. Khám phá ngay!",
-  "ogDescription": "Clickdi chia sẻ URL nhanh chóng, chuyên nghiệp.",
+  "ogDescription": "Quickshare chia sẻ note với rút gọn URLs nhanh chóng, chuyên nghiệp.",
   "giveFeedback": "Báo cáo lỗi",
   "errorNoUrl": "Vui lòng nhập URL để tiếp tục",
   "errorInvalidUrl": "URL không hợp lệ, hãy thử lại",
@@ -12,9 +12,9 @@
   "tracking": "Theo dõi link",
   "continue": "Tiếp tục",
   "forgotPassword": "Quên mật khẩu",
-  "feedbackURLSubject": "[CLICKDI.TOP] Hỗ trợ / Báo lỗi Rút Gọn Link",
-  "feedbackShortSubject": "[CLICKDI.TOP] Feedback / Bug Theo Dõi Link",
-  "feedbackForgotSubject": "[CLICKDI.TOP] Quên mật khẩu",
+  "feedbackURLSubject": "[QUICKSHARE.AT] Hỗ trợ / Báo lỗi Rút Gọn Link",
+  "feedbackShortSubject": "[QUICKSHARE.AT] Feedback / Bug Theo Dõi Link",
+  "feedbackForgotSubject": "[QUICKSHARE.AT] Quên mật khẩu",
   "feedbackBody": "Rất tiếc không làm bạn hài lòng, hãy cung cấp thêm thông tin nhé (có ảnh thì tuyệt vời):",
   "feedbackForgotBody": "Rất tiếc không làm bạn hài lòng. Vui lòng gửi ticket với nội dung là link rút gọn, dùng email đăng ký cho link để gửi. Link sẽ mở khóa sớm nhất có thể.",
   "shortenedURL": "URL rút gọn",
@@ -51,8 +51,8 @@
   "refresh": "Cập nhật lại",
   "noData": "Chưa có dữ liệu",
   "helpShortUrlHead": "- Rút gọn mọi link thành 3 ký tự định danh xxx (clid.top/xxx)\n- Link lưu theo IP, không cần đăng nhập\n- Để theo dõi link, vào \"Xem thêm\"\n- Theo dõi link rút gọn là công khai, trừ khi đặt mật khẩu",
-  "brandTitle": "Clickdi - Rút gọn link miễn phí",
-  "brandDescription": "Clickdi rút gọn URL miễn phí. Clickdi rút gọn link nhanh chóng, giúp bạn theo dõi các đường dẫn được rút gọn, số lượng lượt nhấp chuột, vị trí của và các dữ liệu liên quan khác.",
+  "brandTitle": "Quickshare - Tạo ghi chú cùng rút gọn link",
+  "brandDescription": "Tạo Ghi Chú Miễn Phí và Rút Gọn URLs. Quickshare lưu trữ note, ghi chú và theo dõi rút gọn link, số lượng nhấp chuột, vị trí của và mọi dữ liệu liên quan khác.",
   "advancedView": "Xem nâng cao",
   "loadMore": "Xem thêm",
   "editPreview": "Chỉnh sửa",
@@ -61,5 +61,8 @@
   "uploadImage": "Upload ảnh",
   "title": "Tiêu đề",
   "description": "Mô tả ngắn",
-  "errorSharing": "Trình duyệt của bạn không hỗ trợ share. Dùng copy link nhé!"
+  "errorSharing": "Trình duyệt của bạn không hỗ trợ share. Dùng copy link nhé!",
+  "publish": "Xuất bản",
+  "shareLink": "Chia sẻ link",
+  "shareNote": "Chia sẻ ghi chú"
 }

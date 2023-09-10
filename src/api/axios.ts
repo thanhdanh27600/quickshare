@@ -18,7 +18,7 @@ API.interceptors.response.use(
 
 export function withAuth(token?: string) {
   return {
-    'X-Platform-Auth': token ?? localStorage.getItem('clickdi-tk'),
+    'X-Platform-Auth': token ?? localStorage.getItem('quickshare-tk'),
   };
 }
 

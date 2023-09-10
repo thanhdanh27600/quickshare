@@ -1,13 +1,24 @@
-import { useId } from 'react';
+import { useEffect, useId } from 'react';
+import { TE } from 'types/constants';
 
 interface Props {
   children: JSX.Element;
   title?: string | JSX.Element;
   className?: string;
+  defaultOpen?: boolean;
 }
 
-export const Accordion = ({ children, title, className }: Props) => {
+export const Accordion = ({ children, title, defaultOpen, className }: Props) => {
   const id = useId().replaceAll(':', '-');
+  const collapseId = `collapse${id}`;
+  const TEInstance = TE();
+
+  useEffect(() => {
+    if (defaultOpen && TEInstance) {
+      TEInstance.Collapse.getOrCreateInstance(document.getElementById(collapseId))?.show();
+    }
+  }, [defaultOpen]);
+
   return (
     <div id={`accordion${id}`} className={className}>
       <div key={`k${id}`} className="rounded-none border-none border-neutral-200">
@@ -16,9 +27,8 @@ export const Accordion = ({ children, title, className }: Props) => {
             className="[&:not([data-te-collapse-collapsed])]:text-primary group relative flex w-full items-center rounded-none border-0 py-4 text-left text-base transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none"
             type="button"
             data-te-collapse-init
-            data-te-collapse-collapsed
-            data-te-target={`#collapse${id}`}
-            aria-controls={`collapse${id}`}>
+            data-te-target={`#${collapseId}`}
+            aria-controls={collapseId}>
             <span className="h-4 w-4 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:mr-0 group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +44,7 @@ export const Accordion = ({ children, title, className }: Props) => {
           </button>
         </h3>
         <div
-          id={`collapse${id}`}
+          id={collapseId}
           className="!visible hidden border-0"
           data-te-collapse-item
           aria-labelledby={`heading${id}`}>

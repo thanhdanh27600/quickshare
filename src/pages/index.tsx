@@ -1,26 +1,26 @@
+import { FeatureTabKey } from 'bear/utilitySlice';
 import { LayoutMain } from 'components/layouts/LayoutMain';
+import { Home } from 'components/screens/Home';
 import { RedirectShortDomain } from 'components/screens/RedirectShortDomain';
-// import { URLShortener } from 'components/screens/URLShortener';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import dynamic from 'next/dynamic';
 import { LocaleProp } from 'types/locale';
 import { pgFullDomain } from 'utils/guards';
+import { defaultLocale } from 'utils/i18next';
 
-const URLShortener = dynamic(() => import('../components/screens/URLShortener').then((mod) => mod.URLShortener));
-
-export const MainPage = () => {
+export const MainPage = ({ feature }: { feature: FeatureTabKey }) => {
   return (
     <LayoutMain>
-      <URLShortener />
+      <Home feature={feature} />
     </LayoutMain>
   );
 };
-const Home = pgFullDomain(MainPage, { returnIfFalse: RedirectShortDomain });
+const IndexPage = pgFullDomain(MainPage, { returnIfFalse: RedirectShortDomain });
 
 export const getServerSideProps = async ({ locale }: LocaleProp) => ({
   props: {
-    ...(await serverSideTranslations(locale ?? 'vi', ['common'])),
+    feature: FeatureTabKey.SHARE_LINK,
+    ...(await serverSideTranslations(locale ?? defaultLocale, ['common'])),
   },
 });
 
-export default Home;
+export default IndexPage;

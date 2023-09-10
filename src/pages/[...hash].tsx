@@ -5,15 +5,16 @@ import { GetServerSidePropsContext } from 'next';
 import { CldOgImage } from 'next-cloudinary';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
+import qs from 'querystring';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
 import { BASE_URL_OG, brandUrlShortDomain, isProduction, Window } from 'types/constants';
-import { Locale } from 'types/locale';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { encodeBase64 } from 'utils/crypto';
-import { useTrans } from 'utils/i18next';
+import { defaultLocale, useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
+import PageNotFound from './404';
 
 interface Props {
   history?: UrlShortenerHistory | null;
@@ -99,18 +100,21 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
         <meta property="twitter:description" content={ogDescription} />
         {!ogImgSrc && (
           <>
-            <meta property="og:image" content={`${BASE_URL_OG}/api/og?hash=${hash}&title=${encodeTitle}`} />
+            <meta property="og:image" content={`${BASE_URL_OG}/api/og?${qs.stringify({ hash, test: encodeTitle })}`} />
             <meta property="og:image:width" content="1200" />
             <meta property="og:image:height" content="627" />
             <meta property="og:image:alt" content={t('ogDescription')} />
-            <meta property="twitter:image" content={`${BASE_URL_OG}/api/og?hash=${hash}&title=${encodeTitle}`} />
+            <meta
+              property="twitter:image"
+              content={`${BASE_URL_OG}/api/og?${qs.stringify({ hash, test: encodeTitle })}`}
+            />
             <meta name="twitter:image:alt" content={t('ogDescription')}></meta>
             <meta property="twitter:card" content="summary_large_image" />
           </>
         )}
       </Head>
       {ogImgSrc && <CldOgImage alt={t('ogDescription')} src={ogImgSrc} />}
-      {error ? <p>{t(error as any)}</p> : <></>}
+      {error ? <PageNotFound /> : <></>}
     </>
   );
 };
@@ -122,7 +126,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         props: { redirect: '/' },
       };
     }
-    const locale = context.locale || Locale.Vietnamese;
+    const locale = context.locale || defaultLocale;
     const { hash } = context.query;
     const ip = requestIp.getClientIp(context.req);
     // start server-side forward

@@ -30,7 +30,7 @@ export const ValidateToken = ({ open, hash, refetch }: { hash: string; open?: bo
     try {
       const rs = await getStatsToken(hash, data.password);
       if (rs.token) {
-        localStorage.setItem('clickdi-tk', rs.token);
+        localStorage.setItem('quickshare-tk', rs.token);
         window.location.reload();
       }
     } catch (error) {

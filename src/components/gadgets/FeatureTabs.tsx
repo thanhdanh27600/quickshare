@@ -3,14 +3,15 @@ import { useBearStore } from 'bear';
 import { FeatureTabKey } from 'bear/utilitySlice';
 import { Tabs } from 'components/atoms/Tabs';
 import { useRouter } from 'next/router';
-import { isProduction } from 'types/constants';
+import { BASE_URL, isProduction } from 'types/constants';
+import { linkWithLanguage, useTrans } from 'utils/i18next';
 
-const tabs = [
+const tabs = (t: any) => [
   {
     content: (
       <span className="flex items-center gap-2">
         <Link className="w-5" />
-        Chia se Link
+        {t('shareLink')}
       </span>
     ),
     key: FeatureTabKey.SHARE_LINK,
@@ -19,36 +20,29 @@ const tabs = [
     content: (
       <span className="flex items-center gap-2">
         <Clipboard className="w-5" />
-        Chia se text
+        {t('shareNote')}
       </span>
     ),
     key: FeatureTabKey.SHARE_TEXT,
   },
 ];
 
-export const ShareFeatureTabs = () => {
+export const FeatureTabs = () => {
   const router = useRouter();
+  const { t, locale } = useTrans();
   const { utilitySlice } = useBearStore();
-  const [selectedTab, setFeatureTab] = utilitySlice((state) => [state.featureTab, state.setFeatureTab]);
+  const [selectedTab] = utilitySlice((state) => [state.featureTab, state.setFeatureTab]);
 
   const handleSelectTab = (tab: string) => {
-    setFeatureTab(tab);
-    if (router.asPath === '/note' && tab === FeatureTabKey.SHARE_LINK) {
-      router.replace('/');
+    if (router.pathname === '/note' && tab === FeatureTabKey.SHARE_LINK) {
+      location.href = `${BASE_URL}/${locale}`;
     }
-    if (router.asPath === '/' && tab === FeatureTabKey.SHARE_TEXT) {
-      router.replace('/note');
+    if (router.pathname === '/' && tab === FeatureTabKey.SHARE_TEXT) {
+      location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
     }
   };
 
   if (isProduction) return null;
 
-  return (
-    <Tabs
-      selectedKey={selectedTab}
-      setSelectedKey={handleSelectTab}
-      tabs={tabs}
-      className="ml-2  -mt-4 mb-4 border-b-0 "
-    />
-  );
+  return <Tabs selectedKey={selectedTab} setSelectedKey={handleSelectTab} tabs={tabs(t)} className="border-b-0 " />;
 };

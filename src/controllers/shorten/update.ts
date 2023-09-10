@@ -1,7 +1,5 @@
 import prisma from '../../db/prisma';
-import { redis } from '../../redis/client';
-import { REDIS_KEY, getRedisKey } from '../../types/constants';
-import { Locale } from '../../types/locale';
+import { shortenCacheService } from '../../services/cacheServices/shorten.service';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import { cloudinaryInstance } from '../../utils/cloudinary';
@@ -15,6 +13,7 @@ export const handler = api<ShortenUrl>(
     let ogDescription = req.body.ogDescription;
     let ogImgSrc = req.body.ogImgSrc;
     let ogImgPublicId = req.body.ogImgPublicId;
+    let theme = req.body.theme;
     let mediaId = req.body.mediaId;
     await validateUpdateShortenSchema.parseAsync({
       hash,
@@ -24,6 +23,7 @@ export const handler = api<ShortenUrl>(
       ogImgSrc,
       ogImgPublicId,
       mediaId,
+      theme,
     });
 
     if (mediaId) {
@@ -41,13 +41,11 @@ export const handler = api<ShortenUrl>(
         ogDescription,
         ogImgSrc,
         ogImgPublicId,
+        theme,
       },
     });
     // update cache
-    const ogKey = getRedisKey(REDIS_KEY.OG_BY_HASH, `${hash}-${locale || Locale.Vietnamese}`);
-    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.HASH_SHORTEN_BY_HASH_URL, hash);
-    redis.expire(ogKey, -1).then().catch();
-    redis.expire(hashShortenedLinkKey, -1).then().catch();
+    shortenCacheService.updateShortenHash(hash);
     // remove used tag
     if (ogImgPublicId) {
       cloudinaryInstance.uploader.remove_tag('unused', ogImgPublicId).then().catch();

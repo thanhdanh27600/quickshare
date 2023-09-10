@@ -11,7 +11,7 @@ import { useQuery } from 'react-query';
 import { BASE_URL, BASE_URL_SHORT, PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { encrypt } from 'utils/crypto';
-import { linkWithLanguage, useTrans } from 'utils/i18next';
+import { useTrans } from 'utils/i18next';
 import { QueryKey, strictRefetch } from 'utils/requests';
 import { copyToClipBoard, share } from 'utils/text';
 import { URLAdvancedSetting } from './URLAdvancedSetting';
@@ -75,11 +75,11 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
     <div className="mt-4">
       <h2 className="text-xl">🚀 {t('shortenSuccess')}</h2>
       <div className="mt-2 flex flex-wrap justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-6 sm:py-8 md:py-10">
-        <a href={linkWithLanguage(shortenUrl, locale)} target="_blank" className="flex-1">
+        <a href={shortenUrl} target="_blank" className="flex-1">
           <p
             className="boujee-text text-center text-2xl font-bold transition-all hover:text-cyan-500 hover:underline sm:text-3xl md:text-4xl"
             title={shortenUrl}>
-            {linkWithLanguage(shortenUrl, locale).replace(/https:\/\//i, '')}
+            {shortenUrl.replace(/https:\/\//i, '')}
           </p>
         </a>
         <button
@@ -108,17 +108,13 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
       </div>
       <div className="mt-2 flex w-full justify-end">
         <a
-          href={linkWithLanguage(shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`), locale)}
+          href={shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`)}
           target="_blank"
           className="cursor-pointer text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
           {t('trackingLive')}
         </a>
       </div>
-
-      <div className="mt-4">
-        <URLAdvancedSetting />
-      </div>
-      <div className="flex justify-center max-sm:mt-4 sm:justify-end">
+      <div className="mt-4 flex justify-center sm:justify-end">
         <div className="flex flex-col items-center gap-3 sm:flex-row">
           <Button
             text={<Share2 className="h-6 w-6 fill-white" />}
@@ -159,6 +155,7 @@ export const URLShortenerResult = ({ setCopied, copied }: Props) => {
           )}
         </div>
       </div>
+      <URLAdvancedSetting />
     </div>
   );
 };
