@@ -70,7 +70,6 @@ export const AdvancedSettingUrlForm = () => {
       ogDescription,
     });
   }, [ogTitle, ogDescription]);
-  console.log('ogTitle', ogTitle);
 
   useEffect(() => {
     debouncedUpdate({

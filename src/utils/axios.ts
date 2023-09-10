@@ -6,9 +6,9 @@ import HttpStatusCode from './statusCode';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
 
-type DefaultError = { code?: HttpStatusCode; mesesage?: string };
+export type ErrorResponse = { code?: HttpStatusCode; mesesage?: string };
 
-export function errorHandler<T extends Response>(res: NextApiResponse<T>, error?: DefaultError) {
+export function errorHandler<T extends Response>(res: NextApiResponse<T>, error?: ErrorResponse) {
   const { code, mesesage } = error || { code: HttpStatusCode.UNAUTHORIZED, mesesage: '' };
   switch (code) {
     case HttpStatusCode.UNAUTHORIZED:

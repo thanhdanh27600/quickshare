@@ -51,7 +51,6 @@ export const URLStats = () => {
   const error = errors.hash?.message; /** form error */
 
   useEffect(() => {
-    console.log('fetchTracking', fetchTracking);
     if (!fetchTracking.isSuccess && (fetchTracking.error as any)?.message !== 'UNAUTHORIZED') {
       return;
     }
