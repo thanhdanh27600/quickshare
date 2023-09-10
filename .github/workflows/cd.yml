@@ -72,4 +72,4 @@ jobs:
         with:
           app-name: 'clickdi'
           slot-name: 'production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CLICKDI }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_989EB3AE125049B0874AF4A057FB9E83 }}

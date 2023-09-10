@@ -57,12 +57,12 @@ export const handler = api(
         )}`,
         // attachments: [
         //   {
-        //     filename: `clickdi-${date().format()}.pdf`,
-        //     content: clickdiPage,
+        //     filename: `quickshare-${date().format()}.pdf`,
+        //     content: quicksharePage,
         //   },
         //   {
-        //     filename: `clid-${date().format()}.pdf`,
-        //     content: clidPage,
+        //     filename: `qsh-${date().format()}.pdf`,
+        //     content: qshPage,
         //   },
         // ],
       };

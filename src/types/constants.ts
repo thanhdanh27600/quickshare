@@ -5,7 +5,7 @@ export const brandUrlShortDomain = 'qsh.at';
 export const alternateBrandUrl = ['https://vietnamese.cloud'] as const;
 export const isProduction = process.env.NODE_ENV === 'production';
 export const isTest = process.env.NODE_ENV === 'test';
-export const cdnUrl = 'https://cdn.jsdelivr.net/gh/thanhdanh27600/clickdi@production/public';
+export const cdnUrl = 'https://cdn.jsdelivr.net/gh/thanhdanh27600/quickshare@production/public';
 export const cdn = (file: string) => `${isProduction ? cdnUrl : ''}${file}`;
 export const isShortDomain = process.env.NEXT_PUBLIC_SHORT_DOMAIN === 'true';
 export const allowedDomains = isProduction ? [brandUrl, brandUrlShort] : [localUrl, brandUrl, brandUrlShort];
