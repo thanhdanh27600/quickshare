@@ -29,7 +29,7 @@ export const UploadImage = ({
           tags: [date().format('YYYY-MMM'), 'unused'],
         }}
         signatureEndpoint="/api/cld"
-        uploadPreset="clickdi"
+        uploadPreset="quickshare"
         onSuccess={async (result, widget) => {
           setResource(result?.info);
           const url = (result?.info as any)?.secure_url;

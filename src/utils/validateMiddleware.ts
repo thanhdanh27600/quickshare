@@ -1,5 +1,7 @@
+import { keys } from 'ramda';
 import { z } from 'zod';
 import { isProduction } from '../types/constants';
+import { Theme, Themes } from '../types/og';
 
 export const validateShortenSchema = z.object({
   query: z.object({
@@ -38,6 +40,11 @@ export const validateUpdateShortenSchema = z.object({
   ogDescription: z.optional(z.string({})),
   ogImgSrc: z.optional(z.string({})),
   ogImgPublicId: z.optional(z.string({})),
+  theme: z.optional(
+    z.string().refine((t) => {
+      return keys(Themes).includes(t as Theme);
+    }, 'Invalid theme'),
+  ),
   mediaId: z.optional(
     z.number({
       invalid_type_error: 'Must be a number',
@@ -85,6 +92,22 @@ export const validateQrSchema = z.object({
       .min(5)
       .max(100),
   }),
+});
+
+export const validateForwardSchema = z.object({
+  ip: z.string({
+    required_error: 'IP is required',
+  }),
+  userAgent: z.string({
+    required_error: 'Agent is required',
+  }),
+  hash: z.nullable(
+    z
+      .string({
+        required_error: 'Hash is required',
+      })
+      .refine((value) => (!value ? true : /^.{3}$/.test(value || '')), 'Wrong hash format'),
+  ),
 });
 
 export const validateMediaSchema = z.object({

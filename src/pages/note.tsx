@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { isProduction } from 'types/constants';
 import { LocaleProp } from 'types/locale';
 import { pgFullDomain } from 'utils/guards';
+import { defaultLocale } from 'utils/i18next';
 
 const NoteComponent = ({ feature }: { feature: FeatureTabKey }) => {
   const { utilitySlice } = useBearStore();
@@ -30,7 +31,7 @@ const Note = pgFullDomain(NoteComponent, { returnIfFalse: RedirectShortDomain })
 export const getServerSideProps = async ({ locale }: LocaleProp) => ({
   props: {
     feature: FeatureTabKey.SHARE_TEXT,
-    ...(await serverSideTranslations(locale ?? 'vi', ['common'])),
+    ...(await serverSideTranslations(locale ?? defaultLocale, ['common'])),
   },
 });
 

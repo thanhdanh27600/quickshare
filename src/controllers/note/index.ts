@@ -1,7 +1,6 @@
 import base64url from 'base64url';
-import { NextApiHandler } from 'next';
+import { NextApiHandler, NextApiResponse } from 'next';
 import requestIp from 'request-ip';
-import { postProcessForward } from '../../controllers/forward';
 import prisma from '../../db/prisma';
 import { redis } from '../../redis/client';
 import { noteCacheService } from '../../services/cacheServices';
@@ -12,16 +11,17 @@ import {
   REDIS_KEY,
   getRedisKey,
 } from '../../types/constants';
+import { Forward, ForwardMeta } from '../../types/forward';
 import { NoteRs } from '../../types/note';
 import { ipLookup } from '../../utils/agent';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import HttpStatusCode from '../../utils/statusCode';
 import { generateRandomString } from '../../utils/text';
-import { validateNoteSchema } from '../../utils/validateMiddleware';
+import { validateForwardSchema, validateNoteSchema } from '../../utils/validateMiddleware';
 
 export const handler = api<NoteRs>(
   async (req, res) => {
-    const ip = requestIp.getClientIp(req) || '';
+    const ip = requestIp.getClientIp(req)!;
     let text = (req.body.text as string) || null;
     let hash = (req.body.hash as string) || null;
 
@@ -43,6 +43,7 @@ export const handler = api<NoteRs>(
         errorCode: 'UNAUTHORIZED',
       });
     }
+    noteCacheService.incLimitIp(ip);
 
     // generate hash
     let newHash = '';
@@ -80,7 +81,7 @@ export const handler = api<NoteRs>(
     const note = await prisma.note.create({
       data: { hash: newHash, text, uuid, urlShortenerRecordId: record.id },
     });
-    return successHandler(res, note);
+    return successHandler(res, { note });
   },
   ['POST'],
 );
@@ -88,8 +89,13 @@ export const handler = api<NoteRs>(
 const getNote: NextApiHandler<NoteRs> = async (req, res) => {
   let hash = req.body.hash as string;
   const userAgent = req.body.userAgent as string;
-  const ip = req.body.ip as string;
+  const ip = requestIp.getClientIp(req)!;
   const fromClientSide = !!req.body.fromClientSide;
+  await validateForwardSchema.parseAsync({
+    hash,
+    userAgent,
+    ip,
+  });
   if (!hash) return badRequest(res);
   const lookupIp = ipLookup(ip) || undefined;
   const hashKey = getRedisKey(REDIS_KEY.MAP_NOTE_BY_HASH, hash);
@@ -99,10 +105,53 @@ const getNote: NextApiHandler<NoteRs> = async (req, res) => {
   if (noteCacheText && noteCacheUuid) {
     // cache hit
     postProcessForward(data); // bypass process
-    return res.status(HttpStatusCode.OK).json({ text: noteCacheText, uuid: noteCacheUuid });
+    return res.status(HttpStatusCode.OK).json({ note: { text: noteCacheText, uuid: noteCacheUuid } });
   }
   // cache missed
-  await postProcessForward(data, res);
+  await postProcessForward(data, res as any);
+};
+
+export const postProcessForward = async (payload: ForwardMeta, res?: NextApiResponse<Forward>) => {
+  const cacheMissed = !!res;
+  const { hash, ip, userAgent, fromClientSide, lookupIp } = payload;
+  let note = await prisma.note.findUnique({
+    where: {
+      hash,
+    },
+  });
+
+  if (!note) {
+    return cacheMissed ? badRequest(res) : null;
+  }
+
+  await prisma.urlForwardMeta.upsert({
+    where: {
+      userAgent_ip_noteId: {
+        ip,
+        userAgent,
+        noteId: note.id,
+      },
+    },
+    update: {
+      countryCode: lookupIp?.country,
+      fromClientSide,
+    },
+    create: {
+      ip,
+      userAgent,
+      noteId: note.id,
+      countryCode: lookupIp?.country,
+      fromClientSide,
+    },
+  });
+
+  if (cacheMissed) {
+    // write back to cache
+    const dataHashNote = ['text', note.text, 'uuid', note.uuid, 'updatedAt', new Date().getTime()];
+    await noteCacheService.postNoteHash({ ip, hash, data: dataHashNote });
+
+    return res.status(HttpStatusCode.OK).json({ note });
+  }
 };
 
 export * as update from './update';

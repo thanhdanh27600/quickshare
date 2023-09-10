@@ -1,7 +1,7 @@
 export const localUrl = 'http://localhost:5000';
-export const brandUrl = 'https://clickdi.top';
-export const brandUrlShort = 'https://clid.top';
-export const brandUrlShortDomain = 'clid.top';
+export const brandUrl = 'https://quickshare.at';
+export const brandUrlShort = 'https://qsh.at';
+export const brandUrlShortDomain = 'qsh.at';
 export const alternateBrandUrl = ['https://vietnamese.cloud'] as const;
 export const isProduction = process.env.NODE_ENV === 'production';
 export const isTest = process.env.NODE_ENV === 'test';

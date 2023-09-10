@@ -45,7 +45,7 @@ export const handler = api(
         from: 'bvtvda@gmail.com',
         sender: 'Dolph Notify',
         to: 'dolph.pham@gmail.com',
-        subject: '[Clickdi] Heartbeat',
+        subject: '[Quickshare] Heartbeat',
         text: `- Machine is working as expected, ${date().toString()}.\n- Last 5 forwards:${JSON.stringify(
           await prisma.urlForwardMeta.findMany({
             include: { UrlShortenerHistory: true },

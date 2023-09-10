@@ -6,6 +6,7 @@ import { REDIS_KEY } from '../types/constants';
 import HttpStatusCode from '../utils/statusCode';
 
 const ip = '0.0.0.1';
+const locale = 'vi';
 const key = `${REDIS_KEY.LIMIT_SHORTEN}:${ip}`;
 const exampleUrl = 'U2FsdGVkX1+hDFakyw7MPSqI3JDQ6rXZF0vjpJ1ZOLIf5qp+9ByNbpiiJYIE+4ZYSAw1M2fIIfzcn5YaoYVCkA==';
 
@@ -45,7 +46,7 @@ describe('Test /api/shorten/update...', () => {
     it('Should throw error with wrong hash format', async () => {
       const { req, res } = createMocks({
         method: 'PUT',
-        query: { locale: 'vi', hash: 'xx' },
+        query: { locale, hash: 'xx' },
       });
       await handler(req, res);
       expect(res._getStatusCode()).toBe(HttpStatusCode.BAD_REQUEST);
@@ -83,7 +84,7 @@ describe('Test /api/shorten/update...', () => {
       const ogDescription = `ogDescription ${hash}`;
       const { req: req2, res: res2 } = createMocks({
         method: 'PUT',
-        body: { hash, locale: 'vi', ogTitle, ogDescription },
+        body: { hash, locale, ogTitle, ogDescription },
         headers: { 'x-forwarded-for': ip },
       });
       await handler(req2, res2);
@@ -114,7 +115,7 @@ describe('Test /api/shorten/update...', () => {
 
       const { req: req3, res: res3 } = createMocks({
         method: 'PUT',
-        body: { hash, locale: 'vi', mediaId: media.id },
+        body: { hash, locale, mediaId: media.id },
         headers: { 'x-forwarded-for': ip },
       });
       await handler(req3, res3);

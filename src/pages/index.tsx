@@ -5,6 +5,7 @@ import { RedirectShortDomain } from 'components/screens/RedirectShortDomain';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { LocaleProp } from 'types/locale';
 import { pgFullDomain } from 'utils/guards';
+import { defaultLocale } from 'utils/i18next';
 
 export const MainPage = ({ feature }: { feature: FeatureTabKey }) => {
   return (
@@ -18,7 +19,7 @@ const IndexPage = pgFullDomain(MainPage, { returnIfFalse: RedirectShortDomain })
 export const getServerSideProps = async ({ locale }: LocaleProp) => ({
   props: {
     feature: FeatureTabKey.SHARE_LINK,
-    ...(await serverSideTranslations(locale ?? 'vi', ['common'])),
+    ...(await serverSideTranslations(locale ?? defaultLocale, ['common'])),
   },
 });
 

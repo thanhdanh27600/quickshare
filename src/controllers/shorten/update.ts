@@ -13,6 +13,7 @@ export const handler = api<ShortenUrl>(
     let ogDescription = req.body.ogDescription;
     let ogImgSrc = req.body.ogImgSrc;
     let ogImgPublicId = req.body.ogImgPublicId;
+    let theme = req.body.theme;
     let mediaId = req.body.mediaId;
     await validateUpdateShortenSchema.parseAsync({
       hash,
@@ -22,6 +23,7 @@ export const handler = api<ShortenUrl>(
       ogImgSrc,
       ogImgPublicId,
       mediaId,
+      theme,
     });
 
     if (mediaId) {
@@ -39,6 +41,7 @@ export const handler = api<ShortenUrl>(
         ogDescription,
         ogImgSrc,
         ogImgPublicId,
+        theme,
       },
     });
     // update cache

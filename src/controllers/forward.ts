@@ -1,19 +1,28 @@
 import { NextApiResponse } from 'next';
+import requestIp from 'request-ip';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
-import { LIMIT_SHORTENED_SECOND, REDIS_KEY, getRedisKey } from '../types/constants';
+import { shortenCacheService } from '../services/cacheServices';
+import { REDIS_KEY, getRedisKey } from '../types/constants';
 import { Forward, ForwardMeta } from '../types/forward';
 import { ipLookup } from '../utils/agent';
 import { api, badRequest } from '../utils/axios';
 import HttpStatusCode from '../utils/statusCode';
+import { validateForwardSchema } from '../utils/validateMiddleware';
 
-export const handler = api(
+export const handler = api<Forward>(
   async (req, res) => {
     const hash = req.body.hash as string;
     const userAgent = req.body.userAgent as string;
-    const ip = req.body.ip as string;
+    const ip = requestIp.getClientIp(req)!;
     const fromClientSide = !!req.body.fromClientSide;
-    if (!hash) return badRequest(res);
+
+    await validateForwardSchema.parseAsync({
+      hash,
+      userAgent,
+      ip,
+    });
+
     const lookupIp = ipLookup(ip) || undefined;
     const data = { hash, ip, userAgent, fromClientSide, lookupIp };
     const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
@@ -21,7 +30,7 @@ export const handler = api(
     if (shortenedUrlCache) {
       // cache hit
       postProcessForward(data); // bypass process
-      return res.status(HttpStatusCode.OK).json({ history: shortenedUrlCache as any });
+      return res.status(HttpStatusCode.OK).json({ history: { url: shortenedUrlCache } });
     }
     // cache missed
     await postProcessForward(data, res);
@@ -65,10 +74,9 @@ export const postProcessForward = async (payload: ForwardMeta, res?: NextApiResp
 
   if (cacheMissed) {
     // write back to cache
-    const hashShortenedLinkKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
-    const dataHashShortenLink = ['url', history.url, 'updatedAt', new Date().getTime()];
-    await redis.hset(hashShortenedLinkKey, dataHashShortenLink);
-    await redis.expire(hashShortenedLinkKey, LIMIT_SHORTENED_SECOND);
+    // write hash to cache
+    const dataHashShorten = ['url', history.url, 'updatedAt', new Date().getTime()];
+    await shortenCacheService.postShortenHash({ ip, hash, data: dataHashShorten });
     return res.status(HttpStatusCode.OK).json({ history });
   }
 };

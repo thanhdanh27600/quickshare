@@ -41,6 +41,7 @@ export const handler = api<ShortenUrl>(
         errorCode: 'UNAUTHORIZED',
       });
     }
+    shortenCacheService.incLimitIp(ip);
 
     // generate hash
     let newHash = '';

@@ -3,8 +3,8 @@ import { useBearStore } from 'bear';
 import { FeatureTabKey } from 'bear/utilitySlice';
 import { Tabs } from 'components/atoms/Tabs';
 import { useRouter } from 'next/router';
-import { isProduction } from 'types/constants';
-import { useTrans } from 'utils/i18next';
+import { BASE_URL, isProduction } from 'types/constants';
+import { linkWithLanguage, useTrans } from 'utils/i18next';
 
 const tabs = (t: any) => [
   {
@@ -29,16 +29,16 @@ const tabs = (t: any) => [
 
 export const FeatureTabs = () => {
   const router = useRouter();
-  const { t } = useTrans();
+  const { t, locale } = useTrans();
   const { utilitySlice } = useBearStore();
   const [selectedTab] = utilitySlice((state) => [state.featureTab, state.setFeatureTab]);
 
   const handleSelectTab = (tab: string) => {
     if (router.pathname === '/note' && tab === FeatureTabKey.SHARE_LINK) {
-      location.href = '/';
+      location.href = `${BASE_URL}/${locale}`;
     }
     if (router.pathname === '/' && tab === FeatureTabKey.SHARE_TEXT) {
-      location.href = '/note';
+      location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
     }
   };
 

@@ -35,9 +35,7 @@ export class ShortenCache {
   }
   async postShortenHash({ ip, hash, data }: { ip: string; hash: string; data: any[] }) {
     const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
-    const keyLimit = getRedisKey(REDIS_KEY.LIMIT_SHORTEN, ip);
-
-    await Promise.all([redis.hset(hashKey, data), redis.expire(hashKey, LIMIT_SHORTENED_SECOND), redis.incr(keyLimit)]);
+    await Promise.all([redis.hset(hashKey, data), redis.expire(hashKey, LIMIT_SHORTENED_SECOND)]);
   }
 
   updateShortenHash(hash: string) {
