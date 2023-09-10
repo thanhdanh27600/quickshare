@@ -1,3 +1,4 @@
+import { UrlShortenerHistory } from '@prisma/client';
 import { redis } from '../../redis/client';
 import {
   LIMIT_FEATURE_SECOND,
@@ -33,8 +34,13 @@ export class ShortenCache {
     const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
     return await redis.hexists(hashKey, 'url');
   }
-  async postShortenHash({ ip, hash, data }: { ip: string; hash: string; data: any[] }) {
-    const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
+  async postShortenHash(history: UrlShortenerHistory) {
+    let rs: string[] = [];
+    Object.entries(history).forEach((cur) => {
+      if (cur[1]) rs.push(cur[0], cur[1].toString());
+    });
+    const data = [...rs, 'updatedAt', new Date().getTime()];
+    const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, history.hash);
     await Promise.all([redis.hset(hashKey, data), redis.expire(hashKey, LIMIT_SHORTENED_SECOND)]);
   }
 

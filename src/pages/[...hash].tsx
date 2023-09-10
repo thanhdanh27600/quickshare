@@ -29,6 +29,7 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
   const forwardUrl = useMutation(QueryKey.FORWARD, getForwardUrl);
   const loading = forwardUrl.isLoading && !forwardUrl.isError;
   const url = history?.url;
+  const theme = history?.theme;
   const ogTitle = history?.ogTitle || t('ogTitle', { hash });
   const ogDescription = history?.ogDescription || t('ogDescription');
   const ogImgSrc = history?.ogImgSrc;
@@ -102,13 +103,16 @@ const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
         <meta property="twitter:description" content={ogDescription} />
         {!ogImgSrc && (
           <>
-            <meta property="og:image" content={`${BASE_URL_OG}/api/og?${stringify({ hash, title: encodeTitle })}`} />
+            <meta
+              property="og:image"
+              content={`${BASE_URL_OG}/api/og?${stringify({ hash, theme, title: encodeTitle })}`}
+            />
             <meta property="og:image:width" content="1200" />
             <meta property="og:image:height" content="627" />
             <meta property="og:image:alt" content={t('ogDescription')} />
             <meta
               property="twitter:image"
-              content={`${BASE_URL_OG}/api/og?${stringify({ hash, title: encodeTitle })}`}
+              content={`${BASE_URL_OG}/api/og?${stringify({ hash, theme, title: encodeTitle })}`}
             />
             <meta name="twitter:image:alt" content={t('ogDescription')}></meta>
             <meta property="twitter:card" content="summary_large_image" />
