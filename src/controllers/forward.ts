@@ -73,9 +73,7 @@ export const postProcessForward = async (payload: ForwardMeta, res?: NextApiResp
 
   if (cacheMissed) {
     // write back to cache
-    // write hash to cache
-    const dataHashShorten = ['url', history.url, 'updatedAt', new Date().getTime()];
-    await shortenCacheService.postShortenHash({ ip, hash, data: dataHashShorten });
+    await shortenCacheService.postShortenHash(history);
     return res.status(HttpStatusCode.OK).json({ history });
   }
 };

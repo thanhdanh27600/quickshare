@@ -65,10 +65,6 @@ export const handler = api<ShortenUrl>(
       }
     }
 
-    // write hash to cache
-    const dataHashShorten = ['url', url, 'updatedAt', new Date().getTime()];
-    await shortenCacheService.postShortenHash({ ip, hash: newHash, data: dataHashShorten });
-
     // write to db
     let record: UrlShortenerRecord | null = null;
     record = await prisma.urlShortenerRecord.findFirst({ where: { ip } });
@@ -89,6 +85,8 @@ export const handler = api<ShortenUrl>(
         urlShortenerRecordId: Number(record.id),
       },
     });
+    // write hash to cache
+    await shortenCacheService.postShortenHash(history);
     return successHandler(res, history);
   },
   ['GET'],
