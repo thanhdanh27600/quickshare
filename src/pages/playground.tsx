@@ -7,7 +7,7 @@ const PlaygroundComponent = dynamic(() => import('../components/screens/Playgrou
 
 const Playground = () => {
   return (
-    <LayoutMain>
+    <LayoutMain featureTab={false}>
       <PlaygroundComponent />
     </LayoutMain>
   );

@@ -36,7 +36,7 @@ export const baseUrl = (useShortDomain: boolean = false) => {
 };
 export const BASE_URL = baseUrl();
 export const BASE_URL_SHORT = baseUrl(true);
-export const BASE_URL_OG = isProduction ? 'https://og.clickdi.top' : 'http://localhost:7071';
+export const BASE_URL_OG = isProduction ? 'https://og.quickshare.at' : 'http://localhost:7071';
 export const REDIS_KEY = {
   LIMIT_SHORTEN: 'limitShort',
   LIMIT_NOTE: 'limitNote',

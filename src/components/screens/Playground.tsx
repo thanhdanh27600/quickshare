@@ -1,4 +1,3 @@
-import TextEditor from 'components/gadgets/TextEditor';
 import { isProduction } from 'types/constants';
 
 export const Playground = () => {
@@ -9,8 +8,9 @@ export const Playground = () => {
   return (
     <>
       <h1 className="my-8 text-xl font-bold">Playground</h1>
-      <TextEditor />
-      <button onClick={log}>Log editor content</button>
+      {/* <FileUpload /> */}
+      {/* <TextEditor /> */}
+      {/* <button onClick={log}>Log editor content</button> */}
     </>
   );
 };
