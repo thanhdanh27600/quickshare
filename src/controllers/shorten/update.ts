@@ -54,7 +54,7 @@ export const handler = api<ShortenUrl>(
       },
     });
     // update cache
-    shortenCacheService.updateShortenHash(hash);
+    shortenCacheService.expireShortenHash(hash);
     // remove used tag
     if (ogImgPublicId) {
       cloudinaryInstance.uploader.remove_tag('unused', ogImgPublicId).then().catch();

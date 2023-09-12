@@ -50,6 +50,9 @@ export const postProcessForward = async (payload: ForwardMeta, res?: NextApiResp
     return cacheMissed ? badRequest(res) : null;
   }
 
+  // write back to cache
+  shortenCacheService.postShortenHash(history);
+
   await prisma.urlForwardMeta.upsert({
     where: {
       userAgent_ip_urlShortenerHistoryId: {
@@ -72,8 +75,6 @@ export const postProcessForward = async (payload: ForwardMeta, res?: NextApiResp
   });
 
   if (cacheMissed) {
-    // write back to cache
-    await shortenCacheService.postShortenHash(history);
     return res.status(HttpStatusCode.OK).json({ history });
   }
 };

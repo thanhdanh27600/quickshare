@@ -44,7 +44,7 @@ export class ShortenCache {
     await Promise.all([redis.hset(hashKey, data), redis.expire(hashKey, LIMIT_SHORTENED_SECOND)]);
   }
 
-  updateShortenHash(hash: string) {
+  expireShortenHash(hash: string) {
     const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
     redis.expire(hashKey, -1).then().catch();
   }
