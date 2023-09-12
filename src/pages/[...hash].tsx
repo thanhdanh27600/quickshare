@@ -17,20 +17,20 @@ import { QueryKey } from 'utils/requests';
 import PageNotFound from './404';
 
 interface Props {
-  history?: UrlShortenerHistory | null;
-  hash: string;
+  history: UrlShortenerHistory;
   error?: unknown;
   ip?: string;
   redirect?: string;
 }
 
-const ForwardURL = ({ history, hash, ip, error, redirect }: Props) => {
+const ForwardURL = ({ history, ip, error, redirect }: Props) => {
   const { t, locale } = useTrans();
   const forwardUrl = useMutation(QueryKey.FORWARD, getForwardUrl);
   const loading = forwardUrl.isLoading && !forwardUrl.isError;
-  const url = history?.url;
-  const theme = history?.theme;
-  const ogTitle = history?.ogTitle || t('ogTitle', { hash });
+  const hash = history.hash;
+  const url = history.url;
+  const theme = history.theme;
+  const ogTitle = history.ogTitle || t('ogTitle', { hash });
   const ogDescription = history?.ogDescription || t('ogDescription');
   const ogImgSrc = history?.ogImgSrc;
 
@@ -141,10 +141,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       userAgent: context.req.headers['user-agent'],
       ip,
     });
+    if (!forwardUrl.history) throw 'Cannot found history to forward';
     return {
       props: {
         history: forwardUrl.history,
-        hash: hash ? (hash[0] as string) : '',
         ip,
         ...(await serverSideTranslations(locale, ['common'])),
       },
