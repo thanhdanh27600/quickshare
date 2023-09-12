@@ -141,7 +141,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       userAgent: context.req.headers['user-agent'],
       ip,
     });
-    if (!forwardUrl.history) throw 'Cannot found history to forward';
+    if (!forwardUrl.history) throw new Error('Cannot found history to forward');
     return {
       props: {
         history: forwardUrl.history,

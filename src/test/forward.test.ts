@@ -83,7 +83,6 @@ describe('Test /api/forward...', () => {
       await handler(req2, res2);
       expect(res2._getStatusCode()).toBe(HttpStatusCode.OK);
       const history2: UrlShortenerHistory = JSON.parse(res2._getData()).history;
-      console.log('history2', history2);
       expect(history2.url).toEqual(history1.url);
     });
   });
