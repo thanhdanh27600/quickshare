@@ -1,4 +1,5 @@
 import { NextApiResponse } from 'next';
+import { isEmpty } from 'ramda';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import { shortenCacheService } from '../services/cacheServices';
@@ -25,11 +26,11 @@ export const handler = api<Forward>(
     const lookupIp = ipLookup(ip) || undefined;
     const data = { hash, ip, userAgent, fromClientSide, lookupIp };
     const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
-    const shortenedUrlCache = await redis.hget(hashKey, 'url');
-    if (shortenedUrlCache) {
+    const shortenedUrlCache = await redis.hgetall(hashKey);
+    if (!isEmpty(shortenedUrlCache)) {
       // cache hit
       postProcessForward(data); // bypass process
-      return res.status(HttpStatusCode.OK).json({ history: { url: shortenedUrlCache } });
+      return res.status(HttpStatusCode.OK).json({ history: shortenedUrlCache });
     }
     // cache missed
     await postProcessForward(data, res);
@@ -49,9 +50,6 @@ export const postProcessForward = async (payload: ForwardMeta, res?: NextApiResp
   if (!history) {
     return cacheMissed ? badRequest(res) : null;
   }
-
-  // write back to cache
-  shortenCacheService.postShortenHash(history);
 
   await prisma.urlForwardMeta.upsert({
     where: {
@@ -75,6 +73,8 @@ export const postProcessForward = async (payload: ForwardMeta, res?: NextApiResp
   });
 
   if (cacheMissed) {
+    // write back to cache
+    shortenCacheService.postShortenHash(history);
     return res.status(HttpStatusCode.OK).json({ history });
   }
 };
