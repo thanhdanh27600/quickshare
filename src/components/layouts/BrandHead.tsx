@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { BASE_URL, isProduction, isShortDomain } from 'types/constants';
-import { useTrans } from 'utils/i18next';
+import { defaultLocale, useTrans } from 'utils/i18next';
 
 export const BrandHead = () => {
   const { t, locale } = useTrans();
@@ -19,13 +19,13 @@ export const BrandHead = () => {
       <meta property="og:url" content="https://facebook.com/clickditop/" />
       <meta property="og:title" content={t('brandTitle')} />
       <meta property="og:description" content={t('brandDescription')} />
-      <meta property="og:image" content={`${BASE_URL}/assets/quickshare-banner-${locale}.jpg`} />
+      <meta property="og:image" content={`${BASE_URL}/assets/quickshare-banner-${locale || defaultLocale}.jpg`} />
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content="https://twitter.com/clickditop" />
       <meta property="twitter:title" content={t('brandTitle')} />
       <meta property="twitter:description" content={t('brandDescription')} />
-      <meta property="og:image" content={`${BASE_URL}/assets/quickshare-banner-${locale}.jpg`} />
+      <meta property="og:image" content={`${BASE_URL}/assets/quickshare-banner-${locale || defaultLocale}.jpg`} />
     </Head>
   );
 };

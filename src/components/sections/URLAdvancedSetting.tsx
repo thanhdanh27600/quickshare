@@ -2,6 +2,7 @@ import { Facebook, ThumbsUp, Twitter } from '@styled-icons/feather';
 import { Accordion } from 'components/atoms/Accordion';
 import { Tab, Tabs } from 'components/atoms/Tabs';
 import { AdvancedSettingUrlForm } from 'components/gadgets/AdvancedSettingUrlForm';
+import { ShortenUrlTile } from 'components/gadgets/ShortenUrlTile';
 import { Discord } from 'components/icons/Discord';
 import { useState } from 'react';
 import { useTrans } from 'utils/i18next';
@@ -37,7 +38,13 @@ const tabs: Tab[] = [
   },
 ];
 
-export const URLAdvancedSetting = ({ defaultOpen = true }: { defaultOpen?: boolean }) => {
+export const URLAdvancedSetting = ({
+  defaultOpen = true,
+  shortenUrl,
+}: {
+  defaultOpen?: boolean;
+  shortenUrl?: string;
+}) => {
   const { t, locale } = useTrans();
   const [selectedKey, setSelectedKey] = useState(tabs[0]?.key);
 
@@ -51,8 +58,10 @@ export const URLAdvancedSetting = ({ defaultOpen = true }: { defaultOpen?: boole
   );
 
   return (
-    <Accordion title={title} defaultOpen={defaultOpen}>
+    <Accordion title={title} defaultOpen={defaultOpen} className="my-4">
       <div>
+        {shortenUrl && <ShortenUrlTile shortenUrl={shortenUrl} />}
+        <div className="my-4" />
         <Tabs tabs={tabs} selectedKey={selectedKey} setSelectedKey={setSelectedKey} />
         <URLSharePreview selectedKey={selectedKey} />
         <AdvancedSettingUrlForm key={locale} />

@@ -3,7 +3,7 @@
 @tailwind utilities;
 @layer base {
   html {
-    font-family: 'Signika Negative', system-ui, sans-serif;
+    font-family: 'Chivo', system-ui, sans-serif;
   }
 }
 @layer utilities {

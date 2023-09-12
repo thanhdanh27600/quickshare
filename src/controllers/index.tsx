@@ -1,3 +1,4 @@
+export * as cache from './cache';
 export * as cld from './cld';
 export * as forward from './forward';
 export * as h from './h';

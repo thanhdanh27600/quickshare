@@ -3,7 +3,8 @@ import { useBearStore } from 'bear';
 import { FeatureTabKey } from 'bear/utilitySlice';
 import { Tabs } from 'components/atoms/Tabs';
 import { useRouter } from 'next/router';
-import { BASE_URL, isProduction } from 'types/constants';
+import { useEffect } from 'react';
+import { BASE_URL } from 'types/constants';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 
 const tabs = (t: any) => [
@@ -31,7 +32,27 @@ export const FeatureTabs = () => {
   const router = useRouter();
   const { t, locale } = useTrans();
   const { utilitySlice } = useBearStore();
-  const [selectedTab] = utilitySlice((state) => [state.featureTab, state.setFeatureTab]);
+  const [selectedTab, setFeatureTab] = utilitySlice((state) => [state.featureTab, state.setFeatureTab]);
+
+  const initTabs = () => {
+    switch (router.pathname) {
+      case '/note':
+        setFeatureTab(FeatureTabKey.SHARE_TEXT);
+        break;
+      default:
+      case '/':
+        setFeatureTab(FeatureTabKey.SHARE_LINK);
+        break;
+    }
+  };
+
+  useEffect(() => {
+    initTabs();
+  }, []);
+
+  useEffect(() => {
+    initTabs();
+  }, [router.pathname]);
 
   const handleSelectTab = (tab: string) => {
     if (router.pathname === '/note' && tab === FeatureTabKey.SHARE_LINK) {
@@ -41,8 +62,6 @@ export const FeatureTabs = () => {
       location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
     }
   };
-
-  if (isProduction) return null;
 
   return <Tabs selectedKey={selectedTab} setSelectedKey={handleSelectTab} tabs={tabs(t)} className="border-b-0 " />;
 };

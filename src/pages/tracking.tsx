@@ -1,16 +1,20 @@
 import { FeatureTabKey } from 'bear/utilitySlice';
+import { LayoutMain } from 'components/layouts/LayoutMain';
 import { RedirectShortDomain } from 'components/screens/RedirectShortDomain';
+import { URLStats } from 'components/sections/URLStatsInput';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { MainPage } from 'pages';
 import { LocaleProp } from 'types/locale';
 import { pgFullDomain } from 'utils/guards';
 import { defaultLocale } from 'utils/i18next';
 
-const NoteComponent = ({ feature }: { feature: FeatureTabKey }) => {
-  return <MainPage feature={feature} />;
+const TrackingComponent = () => {
+  return (
+    <LayoutMain featureTab={false}>
+      <URLStats defaultOpen />
+    </LayoutMain>
+  );
 };
-
-const Note = pgFullDomain(NoteComponent, { returnIfFalse: RedirectShortDomain });
+const Tracking = pgFullDomain(TrackingComponent, { returnIfFalse: RedirectShortDomain });
 
 export const getServerSideProps = async ({ locale }: LocaleProp) => ({
   props: {
@@ -19,4 +23,4 @@ export const getServerSideProps = async ({ locale }: LocaleProp) => ({
   },
 });
 
-export default Note;
+export default Tracking;

@@ -25,7 +25,6 @@ type URLShortenerForm = {
 const URLShortenerInput = () => {
   const router = useRouter();
   const [localError, setLocalError] = useState('');
-  const [copied, setCopied] = useState(false);
   const { shortenSlice } = useBearStore();
   const { t } = useTrans('common');
 
@@ -81,7 +80,6 @@ const URLShortenerInput = () => {
   });
 
   const onSubmit: SubmitHandler<URLShortenerForm> = (data) => {
-    setCopied(false);
     if (PLATFORM_AUTH) {
       requestShortenUrl.mutate({ url: encodeURIComponent(encrypt(data.url)) });
     } else {
@@ -108,7 +106,7 @@ const URLShortenerInput = () => {
     <div className="solid container mx-auto max-w-5xl rounded-lg border p-4 pt-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
       <h1 className="mb-4 flex gap-1 text-4xl">
         {t('urlShortener')}
-        <HelpTooltip />
+        <HelpTooltip text={t('helpShortUrlHead')} />
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         <InputWithButton
@@ -137,17 +135,18 @@ const URLShortenerInput = () => {
         />
       </form>
       <p className="mt-4 text-red-400">{error}</p>
-      {hasData && shortenUrl && <URLShortenerResult setCopied={setCopied} copied={copied} />}
+      {hasData && shortenUrl && <URLShortenerResult />}
       <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
     </div>
   );
 };
 
 export const UrlShortener = () => {
+  const { t } = useTrans('common');
   return (
-    <>
+    <div>
       <URLShortenerInput />
       <URLStats />
-    </>
+    </div>
   );
 };

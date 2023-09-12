@@ -29,7 +29,7 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
   const router = useRouter();
   const [needValidate, setNeedValidate] = useState<boolean>();
   const [parsedUA, setParsedUA] = useState();
-  const [qc, setQc] = useState<number | undefined>(undefined);
+  const [qc, setQc] = useState<number | undefined>(0);
   const [history, setHistory] = useState<UrlHistoryWithMeta | undefined>(undefined);
   const getStatsQuery = useCallback(async () => getStats({ hash }), [hash]);
   const { shortenSlice } = useBearStore();
@@ -149,7 +149,7 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
               {history?.url && (
                 <a className="block" href={clickableUrl} target="_blank" title={history.url}>
                   URL:{' '}
-                  <span className="text-cyan-500 underline decoration-1 hover:decoration-wavy">
+                  <span className="text-cyan-500  underline decoration-1 hover:decoration-wavy">
                     {truncateMiddle(history.url)}
                   </span>
                 </a>

@@ -40,6 +40,7 @@ export const decryptS = (token: string) => {
   }
 };
 
+/** use for server only */
 export const encryptS = (word: string) => {
   let encrypted = '';
   if (SERVER_AUTH) {
