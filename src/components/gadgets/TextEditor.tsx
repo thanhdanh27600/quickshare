@@ -26,14 +26,12 @@ const TextEditor = ({ defaultValue }: { defaultValue?: string }) => {
         'insertdatetime',
         'media',
         'table',
-        'help',
         'wordcount',
       ],
       toolbar:
         'bold italic backcolor link image alignleft aligncenter ' +
         'alignright alignjustify | bullist numlist outdent indent | ' +
-        'undo redo | blocks | ' +
-        'removeformat | help',
+        'undo redo | blocks | removeformat',
       content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
     });
   }, []);

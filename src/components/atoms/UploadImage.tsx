@@ -2,7 +2,6 @@ import { UploadCloud } from '@styled-icons/feather';
 import { API } from 'api/axios';
 import { CldUploadWidget } from 'next-cloudinary';
 import { MouseEventHandler, useState } from 'react';
-import { isProduction } from 'types/constants';
 import date from 'utils/date';
 
 export const UploadImage = ({
@@ -54,11 +53,6 @@ export const UploadImage = ({
           );
         }}
       </CldUploadWidget>
-      {!isProduction && (
-        <a className="mt-2 block" href={resource?.secure_url} target="_blank">
-          URL (debug): {resource?.secure_url.slice(-20) || '--'}
-        </a>
-      )}
     </div>
   );
 };

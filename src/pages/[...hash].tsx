@@ -27,10 +27,11 @@ const ForwardURL = ({ history, ip, error, redirect }: Props) => {
   const { t, locale } = useTrans();
   const forwardUrl = useMutation(QueryKey.FORWARD, getForwardUrl);
   const loading = forwardUrl.isLoading && !forwardUrl.isError;
-  const hash = history.hash;
-  const url = history.url;
-  const theme = history.theme;
-  const ogTitle = history.ogTitle || t('ogTitle', { hash });
+
+  const hash = history?.hash;
+  const url = history?.url;
+  const theme = history?.theme;
+  const ogTitle = history?.ogTitle || t('ogTitle', { hash });
   const ogDescription = history?.ogDescription || t('ogDescription');
   const ogImgSrc = history?.ogImgSrc;
 
@@ -84,7 +85,7 @@ const ForwardURL = ({ history, ip, error, redirect }: Props) => {
 
   const encodeTitle = encodeBase64(ogTitle);
 
-  if (!!error) return <PageNotFound />;
+  if (!history || !history?.hash || !!error) return <PageNotFound />;
 
   return (
     <>
@@ -141,7 +142,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       userAgent: context.req.headers['user-agent'],
       ip,
     });
+
     if (!forwardUrl.history) throw new Error('Cannot found history to forward');
+
     return {
       props: {
         history: forwardUrl.history,
@@ -151,7 +154,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   } catch (error: any) {
     console.error('ForwardURL error', error);
-    return { props: { error: error.message || 'somethingWrong' } };
+    return {
+      props: { error: error.message || 'somethingWrong', ...(await serverSideTranslations(defaultLocale, ['common'])) },
+    };
   }
 }
 

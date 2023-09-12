@@ -8,7 +8,7 @@ import { TrackingClick } from './TrackingClick';
 
 export const URLTracking = ({ hash }: { hash: string }) => {
   const { shortenSlice } = useBearStore();
-  const [shortenHistory] = shortenSlice((state) => [state.shortenHistory]);
+  const [shortenHistory, getShortenUrl] = shortenSlice((state) => [state.shortenHistory, state.getShortenUrl]);
 
   useEffect(() => {
     mixpanel.track(MIXPANEL_EVENT.TRACKING);
@@ -16,7 +16,12 @@ export const URLTracking = ({ hash }: { hash: string }) => {
 
   return (
     <LayoutMain featureTab={false}>
-      {shortenHistory && <URLAdvancedSetting defaultOpen={false} />}
+      {shortenHistory && (
+        <>
+          <URLAdvancedSetting defaultOpen={false} shortenUrl={getShortenUrl()} />
+          <hr className="my-4" />
+        </>
+      )}
       <TrackingClick hash={hash} />
     </LayoutMain>
   );

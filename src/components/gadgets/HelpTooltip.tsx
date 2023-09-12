@@ -4,7 +4,11 @@ import { Tooltip } from 'components/atoms/Tooltip';
 import { useEffect, useState } from 'react';
 import { useTrans } from 'utils/i18next';
 
-export const HelpTooltip = () => {
+interface Props {
+  text: string;
+}
+
+export const HelpTooltip = ({ text }: Props) => {
   const { t } = useTrans();
   const [show, setShow] = useState(false);
   const [keep, setKeep] = useState(false);
@@ -47,7 +51,7 @@ export const HelpTooltip = () => {
             }
           }}
           className="absolute bottom-1 w-[300px] border border-cyan-300 bg-gray-50 p-4 text-sm transition-all max-sm:right-0 max-sm:translate-x-[95px] sm:left-5">
-          <h2 className="whitespace-pre-line text-gray-700">{t('helpShortUrlHead')}</h2>
+          <h2 className="whitespace-pre-line text-gray-700">{text}</h2>
         </div>
       </Tooltip>
     </div>

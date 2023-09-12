@@ -56,7 +56,7 @@ export const LanguageSelect = () => {
         onClick={() => {
           setOpen((prev) => !prev);
         }}
-        className="z-10 inline-flex w-20 flex-shrink-0 items-center rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-center text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100 md:w-36"
+        className="z-10 inline-flex w-20 flex-shrink-0 items-center rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-center text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100 md:w-40"
         type="button">
         <div className="flex w-full items-center gap-2">
           <Icon className="h-4" />

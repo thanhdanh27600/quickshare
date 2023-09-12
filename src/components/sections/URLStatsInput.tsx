@@ -18,7 +18,7 @@ type URLStatsForm = {
   hash: string;
 };
 
-export const URLStats = () => {
+export const URLStats = ({ defaultOpen = false }: { defaultOpen?: boolean }) => {
   const { t, locale } = useTrans();
 
   const {
@@ -80,9 +80,9 @@ export const URLStats = () => {
   );
 
   return (
-    <Accordion title={title} className="mt-16">
+    <Accordion title={title} className="mt-16" defaultOpen={defaultOpen}>
       <div className="solid container mx-auto max-w-5xl rounded-lg border p-4 py-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
-        <h1 className="mb-4 text-4xl">{t('tracking')}</h1>
+        <h1 className="mb-4 text-4xl">{t('manageLink')}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
           <InputWithButton
             placeholder={`${BASE_URL_SHORT}/xxx`}
