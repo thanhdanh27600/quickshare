@@ -1,6 +1,6 @@
 import { Note, UrlShortenerHistory } from '@prisma/client';
 import { Lookup } from 'geoip-country';
-import { Response } from './api';
+import { Response } from 'utils/axios';
 
 export type Forward = Response & {
   history?: Partial<UrlShortenerHistory> | null;
