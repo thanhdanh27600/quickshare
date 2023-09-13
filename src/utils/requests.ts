@@ -22,6 +22,8 @@ export const QueryKey = {
   RECORD: 'RECORD',
   SHORTEN: 'SHORTEN',
   SHORTEN_UPDATE: 'SHORTEN_UPDATE',
+  NOTE: 'NOTE',
+  NOTE_UPDATE: 'NOTE_UPDATE',
   QR: 'QR',
   PARSE_UA: 'PARSE_UA',
 };

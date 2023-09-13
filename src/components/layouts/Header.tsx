@@ -2,10 +2,11 @@ import { BrandText } from 'components/atoms/BrandIcon';
 import { Sidebar } from 'components/atoms/Sidebar';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useTrans } from 'utils/i18next';
+import { BASE_URL } from 'types/constants';
+import { linkWithLanguage, useTrans } from 'utils/i18next';
 
 export const Header = () => {
-  const { t } = useTrans();
+  const { t, locale } = useTrans();
   const router = useRouter();
 
   return (
@@ -32,7 +33,12 @@ export const Header = () => {
           </Link>
         )}
         {router.pathname !== '/note' && (
-          <Link href="/note" className="text-grey-900 h-fit text-lg decoration-1 hover:text-cyan-500 hover:underline">
+          <Link
+            href="/note"
+            onClick={() => {
+              location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
+            }}
+            className="text-grey-900 h-fit text-lg decoration-1 hover:text-cyan-500 hover:underline">
             {t('noteEditor')}
           </Link>
         )}

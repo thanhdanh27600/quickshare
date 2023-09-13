@@ -9,6 +9,10 @@ export const enum MIXPANEL_STATUS {
 export const MIXPANEL_EVENT = {
   HOMEPAGED: 'Homepaged',
   SHORTEN: 'Shorten',
+  NOTE_PAGE: 'Note Paged',
+  NOTE_GET: 'Note Get',
+  NOTE_CREATE: 'Note Create',
+  NOTE_UPDATE: 'Note Update',
   SHORTEN_UPDATE: 'Update Shorten',
   INPUT_STATS: 'Input Stats',
   LINK_COPY: 'Link Copy',

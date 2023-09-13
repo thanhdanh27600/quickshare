@@ -8,14 +8,15 @@ const NoteInput = dynamic(() => import('../gadgets/NoteInput').then((c) => c.Not
 
 export const NoteSection = () => {
   const { t } = useTrans();
+
   return (
-    <div>
+    <>
       <Head>{isProduction && <title>{t('brandTitleNote')}</title>}</Head>
       <h1 className="mb-4 flex gap-1 text-4xl">
         {t('noteEditor')}
         <HelpTooltip text={t('helpNoteHead')} />
       </h1>
       <NoteInput />
-    </div>
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { Sidebar } from 'components/atoms/Sidebar';
+import { UploadBlob } from 'components/atoms/UploadBlob';
 import { isProduction } from 'types/constants';
 
 export const Playground = () => {
@@ -9,8 +9,8 @@ export const Playground = () => {
   return (
     <>
       <h1 className="my-8 text-xl font-bold">Playground</h1>
-      <Sidebar />
-      {/* <FileUpload /> */}
+      <UploadBlob />
+      {/* <Sidebar /> */}
       {/* <TextEditor /> */}
       {/* <button onClick={log}>Log editor content</button> */}
     </>
