@@ -1,7 +1,10 @@
 import { Menu } from '@styled-icons/feather';
 import clsx from 'clsx';
+import { LanguageSelect } from 'components/gadgets/LanguageSelect';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { TE } from 'types/constants';
 import { useTrans } from 'utils/i18next';
 
 interface Props {
@@ -10,19 +13,28 @@ interface Props {
 
 export const Sidebar = ({ className }: Props) => {
   const router = useRouter();
-  const { t } = useTrans();
+  const { t, locale } = useTrans();
+  const sidebarId = 'sideBar';
+
+  const TEInstance = TE();
+
+  useEffect(() => {
+    if (TEInstance) {
+      TEInstance.Offcanvas.getOrCreateInstance(document.getElementById(sidebarId))?.hide();
+    }
+  }, [locale]);
 
   return (
     <>
       <button
         className={clsx(
-          'rounded-lg border border-solid border-gray-200 p-4 transition-colors hover:bg-gray-50 hover:text-cyan-500',
+          'rounded-lg border border-solid border-gray-200 p-4 outline-cyan-500 transition-colors hover:bg-gray-50 hover:text-cyan-500',
           className,
         )}
         type="button"
         data-te-offcanvas-toggle=""
-        data-te-target="#offcanvasRight"
-        aria-controls="offcanvasRight"
+        data-te-target={`#${sidebarId}`}
+        aria-controls={sidebarId}
         data-te-ripple-init=""
         data-te-ripple-color="light">
         <Menu className="w-6" />
@@ -30,11 +42,11 @@ export const Sidebar = ({ className }: Props) => {
       <div
         className="invisible fixed bottom-0 right-0 top-0 z-[1045] flex w-72 max-w-full translate-x-full flex-col border-none bg-gray-50 bg-clip-padding text-neutral-700 shadow-sm outline-none transition duration-300 ease-in-out  [&[data-te-offcanvas-show]]:transform-none"
         tabIndex={-1}
-        id="offcanvasRight"
-        aria-labelledby="offcanvasRightLabel"
+        id={sidebarId}
+        aria-labelledby="sideBarLabel"
         data-te-offcanvas-init="">
         <div className="flex items-center justify-between p-4">
-          <h5 className="mb-0 font-semibold leading-normal" id="offcanvasRightLabel"></h5>
+          <div className="mb-0 font-semibold leading-normal" id="sideBarLabel"></div>
           <button
             type="button"
             className="box-content rounded-none border-none opacity-50 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
@@ -66,9 +78,12 @@ export const Sidebar = ({ className }: Props) => {
           )}
           {router.pathname !== '/note' && (
             <Link href="/note" className="text-grey-900 text-xl font-semibold hover:underline">
-              {t('urlShortener')}
+              {t('noteEditor')}
             </Link>
           )}
+          <div className="flex w-full flex-1 flex-col items-center justify-end">
+            <LanguageSelect />
+          </div>
         </div>
       </div>
     </>
