@@ -21,6 +21,7 @@ export const handler = api<Forward>(
       hash,
       userAgent,
       ip,
+      fromClientSide,
     });
 
     const lookupIp = ipLookup(ip) || undefined;

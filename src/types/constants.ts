@@ -2,7 +2,7 @@ export const localUrl = 'http://localhost:5000';
 export const brandUrl = 'https://quickshare.at';
 export const brandUrlShort = 'https://qsh.at';
 export const brandUrlShortDomain = 'qsh.at';
-export const alternateBrandUrl = ['https://vietnamese.cloud'] as const;
+export const alternateBrandUrl = ['https://vietnamese.cloud', 'https://clickdi.top'] as const;
 export const isProduction = process.env.NODE_ENV === 'production';
 export const isTest = process.env.NODE_ENV === 'test';
 export const cdnUrl = 'https://cdn.jsdelivr.net/gh/thanhdanh27600/quickshare@production/public';

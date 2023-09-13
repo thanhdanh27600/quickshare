@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
-import { PLATFORM_AUTH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { encrypt } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
@@ -80,11 +79,7 @@ const URLShortenerInput = () => {
   });
 
   const onSubmit: SubmitHandler<URLShortenerForm> = (data) => {
-    if (PLATFORM_AUTH) {
-      requestShortenUrl.mutate({ url: encodeURIComponent(encrypt(data.url)) });
-    } else {
-      console.error('Not found PLATFORM_AUTH');
-    }
+    requestShortenUrl.mutate({ url: encodeURIComponent(encrypt(data.url)) });
   };
 
   const mutateError = requestShortenUrl.error as AxiosError;

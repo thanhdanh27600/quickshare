@@ -101,6 +101,9 @@ export const validateForwardSchema = z.object({
   userAgent: z.string({
     required_error: 'Agent is required',
   }),
+  fromClientSide: z.boolean({
+    required_error: 'From Client Side is required',
+  }),
   hash: z.nullable(
     z
       .string({
@@ -109,6 +112,7 @@ export const validateForwardSchema = z.object({
       .refine((value) => (!value ? true : /^.{3}$/.test(value || '')), 'Wrong hash format'),
   ),
 });
+export type ForwardSchema = z.infer<typeof validateForwardSchema>;
 
 export const validateMediaSchema = z.object({
   body: z.object({
@@ -133,8 +137,9 @@ export const validateNoteSchema = z.object({
       .refine((value) => (!value ? true : /^.{3}$/.test(value || '')), 'Wrong hash format'),
   ),
 });
+export type NoteSchema = z.infer<typeof validateNoteSchema>;
 
-export const validateNoteUpdateSchema = z.object({
+export const validateUpdateNoteSchema = z.object({
   uuid: z.string({
     required_error: 'Uuid is required',
   }),
@@ -142,3 +147,4 @@ export const validateNoteUpdateSchema = z.object({
     required_error: 'Text is required',
   }),
 });
+export type CreateUpdateSchema = z.infer<typeof validateUpdateNoteSchema>;

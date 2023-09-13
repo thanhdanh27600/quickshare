@@ -25,6 +25,7 @@ export const handler = api<NoteRs>(
     let text = (req.body.text as string) || null;
     let hash = (req.body.hash as string) || null;
 
+    // retrive note if hash
     if (!!hash) return await getNote(req, res);
 
     await validateNoteSchema.parseAsync({ text, hash, ip });
@@ -98,6 +99,8 @@ const getNote: NextApiHandler<NoteRs> = async (req, res) => {
   });
   if (!hash) return badRequest(res);
   const lookupIp = ipLookup(ip) || undefined;
+
+  // get from cache
   const hashKey = getRedisKey(REDIS_KEY.MAP_NOTE_BY_HASH, hash);
   const noteCacheText = await redis.hget(hashKey, 'text');
   const noteCacheUuid = await redis.hget(hashKey, 'uuid');
