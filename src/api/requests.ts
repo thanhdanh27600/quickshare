@@ -2,9 +2,11 @@ import memoize from 'fast-memoize';
 import { stringify } from 'querystring';
 import { Forward } from 'types/forward';
 import { Locale } from 'types/locale';
+import { NoteRs } from 'types/note';
 import { QR } from 'types/qr';
 import { ShortenUrl } from 'types/shorten';
 import { Stats } from 'types/stats';
+import { ForwardSchema, NoteSchema } from 'utils/validateMiddleware';
 import { API, withAuth } from './axios';
 
 export const getOrCreateShortenUrlRequest = async ({ url, hash }: { url?: string; hash?: string }) => {
@@ -54,20 +56,8 @@ export const updateShortenUrlRequest = async ({
   return data as ShortenUrl;
 };
 
-export const getForwardUrl = async ({
-  hash,
-  locale,
-  userAgent,
-  ip,
-  fromClientSide,
-}: {
-  hash: string;
-  locale: string;
-  userAgent?: string;
-  ip?: string | null;
-  fromClientSide?: boolean;
-}) => {
-  const rs = await API.post(`/api/forward`, { hash, locale, userAgent, ip, fromClientSide });
+export const getForwardUrl = async ({ hash, userAgent, ip, fromClientSide }: ForwardSchema) => {
+  const rs = await API.post(`/api/forward`, { hash, userAgent, ip, fromClientSide });
   const data = rs.data;
   return data as Forward;
 };
@@ -119,3 +109,9 @@ export const parseUA = memoize(async (ua: string) => {
   const data = rs.data;
   return data;
 });
+
+export const getOrCreateNoteRequest = async (payload: NoteSchema) => {
+  const rs = await API.post(`/api/note`, payload);
+  const data = rs.data;
+  return data as NoteRs;
+};

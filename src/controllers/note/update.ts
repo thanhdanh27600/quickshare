@@ -2,13 +2,13 @@ import prisma from '../../db/prisma';
 import { ShortenUrl } from '../../types/shorten';
 import { api, successHandler } from '../../utils/axios';
 import HttpStatusCode from '../../utils/statusCode';
-import { validateNoteUpdateSchema } from '../../utils/validateMiddleware';
+import { validateUpdateNoteSchema } from '../../utils/validateMiddleware';
 
 export const handler = api<ShortenUrl>(
   async (req, res) => {
     let uuid = req.body.uuid as string;
     let text = req.body.text as string;
-    await validateNoteUpdateSchema.parseAsync({
+    await validateUpdateNoteSchema.parseAsync({
       uuid,
       text,
     });
