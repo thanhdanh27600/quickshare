@@ -20,6 +20,7 @@
   "shortenedURL": "URL rút gọn",
   "shortenSuccess": "Rút gọn link thành công!",
   "urlShortener": "Rút gọn link",
+  "noteEditor": "Tạo ghi chú",
   "viewMore": "Xem thêm",
   "errorInvalidForward": "Link rút gọt không hợp lệ (vd: {{name}})",
   "unknown": "Không xác định",

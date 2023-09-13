@@ -14,15 +14,7 @@ export interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTML
 }
 
 export const Button = (props: ButtonProps) => {
-  const {
-    text = 'Button',
-    variant = 'filled',
-    loading,
-    animation,
-    hoverTransform = true,
-    TextClassname,
-    ...otherProps
-  } = props;
+  const { text, variant = 'filled', loading, animation, hoverTransform = true, TextClassname, ...otherProps } = props;
   return (
     <button
       {...otherProps}
@@ -40,7 +32,7 @@ export const Button = (props: ButtonProps) => {
       )}
       disabled={props.loading || props.disabled}>
       <span className={clsx('flex min-w-max items-center justify-center', TextClassname)}>
-        <span className={clsx(loading && 'max-sm:hidden')}>{text}</span>
+        <span className={clsx(loading && 'max-sm:hidden')}>{text || props.children}</span>
         {props.loading && <Loading className={clsx(loading && 'sm:ml-2', '!h-5 !w-5')} />}
       </span>
     </button>

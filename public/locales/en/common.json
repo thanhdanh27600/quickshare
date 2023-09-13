@@ -20,6 +20,7 @@
   "shortenedURL": "Shortened URL",
   "shortenSuccess": "That was fast! URL has been successfully shortened.",
   "urlShortener": "URL Shortener",
+  "noteEditor": "Create Note",
   "viewMore": "View more",
   "errorInvalidForward": "Invalid forwarded link (ex: {{name}})",
   "unknown": "Unknown",
