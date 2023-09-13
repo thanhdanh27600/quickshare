@@ -1,11 +1,12 @@
 import { Menu } from '@styled-icons/feather';
 import clsx from 'clsx';
 import { LanguageSelect } from 'components/gadgets/LanguageSelect';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { TE } from 'types/constants';
-import { useTrans } from 'utils/i18next';
+import { BASE_URL, TE } from 'types/constants';
+import { linkWithLanguage, useTrans } from 'utils/i18next';
 
 interface Props {
   className?: string;
@@ -46,7 +47,11 @@ export const Sidebar = ({ className }: Props) => {
         aria-labelledby="sideBarLabel"
         data-te-offcanvas-init="">
         <div className="flex items-center justify-between p-4">
-          <div className="mb-0 font-semibold leading-normal" id="sideBarLabel"></div>
+          <div className="mb-0 font-semibold leading-normal" id="sideBarLabel">
+            <Link href="/">
+              <Image src={'/assets/quickshare.png'} alt="Quickshare's logo" width={38} height={38} />
+            </Link>
+          </div>
           <button
             type="button"
             className="box-content rounded-none border-none opacity-50 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
@@ -77,7 +82,12 @@ export const Sidebar = ({ className }: Props) => {
             </Link>
           )}
           {router.pathname !== '/note' && (
-            <Link href="/note" className="text-grey-900 text-xl font-semibold hover:underline">
+            <Link
+              href="/note"
+              onClick={() => {
+                location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
+              }}
+              className="text-grey-900 text-xl font-semibold hover:underline">
               {t('noteEditor')}
             </Link>
           )}

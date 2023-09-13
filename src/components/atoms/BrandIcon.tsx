@@ -93,7 +93,7 @@ export const BrandText = (props: any) => {
   );
 };
 
-export const BranhLogo = (props: any) => {
+export const BrandLogo = (props: any) => {
   return (
     <svg viewBox="149.266 166.775 3.603 4.0185" xmlns="http://www.w3.org/2000/svg" {...props}>
       <defs>
