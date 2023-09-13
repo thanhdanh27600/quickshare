@@ -4,16 +4,16 @@ Lightweight web application for create notes and shortening URLs, along with rea
 
 ## What's this
 
-- **Creat Note & Shorten URLs**: Create note super easy with shortened link to 3 unique hash xxx (qsh.at/xxx), link then saved by IP, no sign in required.
+- **Create Note & Shorten URLs**: Create note super easy with shortened link to 3 unique hash xxx (qsh.at/xxx), link then saved by IP, no sign in required.
 
 - **Tracking URLs**: Resource management (note & shortened link) goes publicly, unless set new password. 
 
-- **Detect Unique Clicks**: Tracks clicks on the shortened URLs in polling time
+- **Detect Unique Clicks**: Tracks clicks on the shortened URLs in polling time.
 
-- **Detect Human Clicks**: Distinguish genuine clicks from bots or automated scripts
+- **Detect Human Clicks**: Distinguish genuine clicks from bots or automated scripts.
 
 - **Free to Use**: Start to use [https://quickshare.at](https://quickshare.at)
-, always free
+, always free.
 
 ## How to Build
 
