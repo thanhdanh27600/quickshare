@@ -1,5 +1,5 @@
 import { UrlForwardMeta, UrlShortenerHistory, UrlShortenerRecord } from '@prisma/client';
-import { Response } from './api';
+import { Response } from 'utils/axios';
 
 export type UrlHistoryWithMeta = UrlShortenerHistory & { UrlForwardMeta?: UrlForwardMeta[] };
 

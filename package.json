@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "tsc": "tsc",
     "db:push": "prisma db push",
     "gen": "prisma generate",
     "migrate": "prisma migrate deploy"

@@ -19,7 +19,7 @@ import PageNotFound from './404';
 interface Props {
   history: UrlShortenerHistory;
   error?: unknown;
-  ip?: string;
+  ip: string;
   redirect?: string;
 }
 
@@ -44,7 +44,6 @@ const ForwardURL = ({ history, ip, error, redirect }: Props) => {
     } else {
       // start client-side forward
       forwardUrl.mutate({
-        locale,
         hash: hash,
         userAgent: navigator.userAgent,
         ip,
@@ -134,13 +133,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
     const locale = context.locale || defaultLocale;
     const { hash } = context.query;
-    const ip = requestIp.getClientIp(context.req);
+    const ip = requestIp.getClientIp(context.req) || '';
+    const userAgent = context.req.headers['user-agent'] || 'Unknown';
     // start server-side forward
     const forwardUrl = await getForwardUrl({
-      locale,
       hash: hash ? (hash[0] as string) : '',
-      userAgent: context.req.headers['user-agent'],
+      userAgent,
       ip,
+      fromClientSide: false,
     });
 
     if (!forwardUrl.history) throw new Error('Cannot found history to forward');

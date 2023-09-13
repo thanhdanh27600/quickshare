@@ -25,4 +25,5 @@ jobs:
           SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
       - run: npm i
       - run: npm run lint
+      - run: npm run tsc
       - run: npm run test

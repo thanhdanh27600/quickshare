@@ -1,4 +1,4 @@
 import { Note } from '@prisma/client';
-import { Response } from './api';
+import { Response } from 'utils/axios';
 
 export type NoteRs = Response & { note?: Partial<Note> };
