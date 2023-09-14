@@ -3,7 +3,6 @@ import mixpanel from 'mixpanel-browser';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
-import { copyToClipBoard } from 'utils/text';
 
 export const ShortenUrlTile = ({ shortenUrl }: { shortenUrl: string }) => {
   const [copied, setCopied] = useState(false);
@@ -14,7 +13,6 @@ export const ShortenUrlTile = ({ shortenUrl }: { shortenUrl: string }) => {
       shortenUrl,
     });
     setCopied(true);
-    copyToClipBoard(shortenUrl);
     toast.success('Copied');
   };
 
@@ -31,9 +29,10 @@ export const ShortenUrlTile = ({ shortenUrl }: { shortenUrl: string }) => {
         title="Copy"
         type="button"
         data-copy-state="copy"
+        data-clipboard-text={shortenUrl}
         onClick={onCopy}
         className={clsx(
-          'flex items-center border-l-2 pl-2 text-sm font-medium text-gray-600 transition-all hover:text-cyan-500 sm:text-lg',
+          'btn-copy flex items-center border-l-2 pl-2 text-sm font-medium text-gray-600 transition-all hover:text-cyan-500 sm:text-lg',
           copied && '!text-cyan-500',
         )}>
         <svg

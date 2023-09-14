@@ -1,4 +1,5 @@
-import { createNoteRequest } from 'api/requests';
+import { Note } from '@prisma/client';
+import { createNoteRequest, updateNoteRequest } from 'api/requests';
 import { AxiosError } from 'axios';
 import { useBearStore } from 'bear';
 import { Button } from 'components/atoms/Button';
@@ -8,12 +9,13 @@ import mixpanel from 'mixpanel-browser';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { tinymce } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
-import { validateNoteSchema } from 'utils/validateMiddleware';
+import { validateNoteSchema, validateUpdateNoteSchema } from 'utils/validateMiddleware';
 import { ZodError } from 'zod';
 import { NoteUrlTile } from './NoteUrlTile';
 
@@ -60,6 +62,35 @@ export const NoteInput = () => {
         router.push({ pathname: router.pathname, query: queryParams });
       } else {
         setLocalError(t('somethingWrong'));
+        mixpanel.track(MIXPANEL_EVENT.NOTE_CREATE, {
+          status: MIXPANEL_STATUS.INTERNAL_ERROR,
+          urlRaw: variables,
+        });
+      }
+    },
+  });
+
+  const requestUpdateNote = useMutation(QueryKey.SHORTEN_UPDATE, updateNoteRequest, {
+    onMutate: (variables) => {
+      setLocalError('');
+    },
+    onError: (error, variables, context) => {
+      mixpanel.track(MIXPANEL_EVENT.NOTE_UPDATE, {
+        status: MIXPANEL_STATUS.FAILED,
+        errorMessage: error,
+        data: variables,
+      });
+    },
+    onSuccess: (data, variables, context) => {
+      if (data.note) {
+        setNote(data.note);
+        mixpanel.track(MIXPANEL_EVENT.NOTE_UPDATE, {
+          status: MIXPANEL_STATUS.OK,
+          data,
+        });
+        toast.success(t('updated'));
+      } else {
+        setLocalError(t('somethingWrong'));
         mixpanel.track(MIXPANEL_EVENT.SHORTEN, {
           status: MIXPANEL_STATUS.INTERNAL_ERROR,
           urlRaw: variables,
@@ -68,13 +99,22 @@ export const NoteInput = () => {
     },
   });
 
-  const loading = requestNote.isLoading;
-  const mutateError = requestNote.error as AxiosError;
-  const error = localError || mutateError?.message;
+  const handleUpdateNote = async (note: Note) => {
+    const data = {
+      uid: note.uid,
+      text: tinymce.activeEditor.getContent() || null,
+    };
+    const validate = await validateUpdateNoteSchema.safeParse(data);
+    if (!validate.success) {
+      setLocalError(t((validate.error as ZodError<any>).issues[0].message as any));
+    } else {
+      const payload = validate.data;
+      requestUpdateNote.mutate(payload);
+    }
+    return;
+  };
 
-  const onSubmit = async () => {
-    if (note) return; //TODO: update note
-    setLocalError('');
+  const handleCreateNote = async () => {
     const data = {
       hash: null,
       uid: null,
@@ -89,6 +129,16 @@ export const NoteInput = () => {
       requestNote.mutate(payload);
     }
   };
+
+  const onSubmit = async () => {
+    setLocalError('');
+    if (note) return handleUpdateNote(note as Note);
+    return handleCreateNote();
+  };
+
+  const loading = requestNote.isLoading || requestUpdateNote.isLoading;
+  const mutateError = (requestNote.error as AxiosError) || (requestUpdateNote.error as AxiosError);
+  const error = localError || mutateError?.message;
 
   return (
     <div>

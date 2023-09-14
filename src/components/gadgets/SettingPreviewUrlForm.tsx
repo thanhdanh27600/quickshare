@@ -22,7 +22,7 @@ type ShortenSettingPayload = Partial<UrlShortenerHistory> & { locale?: Locale };
 
 const UploadImage = dynamic(() => import('../atoms/UploadImage').then((mod) => mod.UploadImage));
 
-export const AdvancedSettingUrlForm = () => {
+export const SettingPreviewUrlForm = () => {
   const { t, locale } = useTrans();
   const { shortenSlice } = useBearStore();
   const [shortenHistory, shortenHistoryMediaId, setShortenHistory, setShortenHistoryMediaId] = shortenSlice((state) => [

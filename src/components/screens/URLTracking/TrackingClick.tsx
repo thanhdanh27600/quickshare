@@ -20,7 +20,7 @@ import { getCountryName } from 'utils/country';
 import date, { DATE_FULL_FORMAT } from 'utils/date';
 import { useTrans } from 'utils/i18next';
 import { PAGE_SIZE, QueryKey, strictRefetch } from 'utils/requests';
-import { capitalize, copyToClipBoard, truncateMiddle } from 'utils/text';
+import { capitalize, truncateMiddle } from 'utils/text';
 import { SetPassword } from './SetPassword';
 import { ValidateToken } from './ValidateToken';
 
@@ -227,9 +227,12 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
                               )}
 
                               <p
-                                className="cursor-pointer text-gray-500 hover:text-cyan-500 hover:underline"
+                                data-clipboard-text={m.userAgent || t('unknown')}
+                                className="btn-copy cursor-pointer text-gray-500 hover:text-cyan-500 hover:underline"
                                 onClick={() => {
-                                  copyToClipBoard(m.userAgent || t('unknown'));
+                                  mixpanel.track(MIXPANEL_EVENT.USER_AGENT_COPY, {
+                                    data: m,
+                                  });
                                   toast.success('Copied');
                                 }}>
                                 {t('copyRawInfo')} <Copy className="mb-2 w-3" />

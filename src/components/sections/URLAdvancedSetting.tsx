@@ -1,7 +1,7 @@
 import { Facebook, ThumbsUp, Twitter } from '@styled-icons/feather';
 import { Accordion } from 'components/atoms/Accordion';
 import { Tab, Tabs } from 'components/atoms/Tabs';
-import { AdvancedSettingUrlForm } from 'components/gadgets/AdvancedSettingUrlForm';
+import { SettingPreviewUrlForm } from 'components/gadgets/SettingPreviewUrlForm';
 import { ShortenUrlTile } from 'components/gadgets/ShortenUrlTile';
 import { Discord } from 'components/icons/Discord';
 import { useState } from 'react';
@@ -64,7 +64,7 @@ export const URLAdvancedSetting = ({
         <div className="my-4" />
         <Tabs tabs={tabs} selectedKey={selectedKey} setSelectedKey={setSelectedKey} />
         <URLSharePreview selectedKey={selectedKey} />
-        <AdvancedSettingUrlForm key={locale} />
+        <SettingPreviewUrlForm key={locale} />
       </div>
     </Accordion>
   );

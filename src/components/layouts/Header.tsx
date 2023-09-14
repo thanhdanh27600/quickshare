@@ -21,14 +21,16 @@ export const Header = () => {
       </div>
       <div className="hidden items-center gap-4 sm:flex">
         {router.pathname !== '/' && (
-          <Link href="/" className="text-grey-900 text-md h-fit decoration-1 hover:text-cyan-500 hover:underline">
+          <Link
+            href="/"
+            className="text-grey-900 text-md h-fit font-semibold decoration-1 hover:text-cyan-500 hover:underline">
             {t('urlShortener')}
           </Link>
         )}
         {router.pathname !== '/tracking' && (
           <Link
             href="/tracking"
-            className="text-grey-900 text-md h-fit decoration-1 hover:text-cyan-500 hover:underline">
+            className="text-grey-900 text-md h-fit font-semibold decoration-1 hover:text-cyan-500 hover:underline">
             {t('manageLink')}
           </Link>
         )}
@@ -38,7 +40,7 @@ export const Header = () => {
             onClick={() => {
               location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
             }}
-            className="text-grey-900 text-md h-fit decoration-1 hover:text-cyan-500 hover:underline">
+            className="text-grey-900 text-md h-fit font-semibold decoration-1 hover:text-cyan-500 hover:underline">
             {t('noteEditor')}
           </Link>
         )}

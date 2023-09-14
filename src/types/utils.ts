@@ -16,6 +16,7 @@ export const MIXPANEL_EVENT = {
   SHORTEN_UPDATE: 'Update Shorten',
   INPUT_STATS: 'Input Stats',
   LINK_COPY: 'Link Copy',
+  USER_AGENT_COPY: 'User Agent Copy',
   FORWARD: 'Forward',
   DONATE: 'Donate',
   TRACKING: 'Tracking',
