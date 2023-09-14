@@ -1,11 +1,11 @@
 import { useBearStore } from 'bear';
 import clsx from 'clsx';
 import mixpanel from 'mixpanel-browser';
-import { useState } from 'react';
+import { isEmpty } from 'ramda';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
-import { copyToClipBoard } from 'utils/text';
 
 export const NoteUrlTile = () => {
   const { t } = useTrans();
@@ -13,27 +13,42 @@ export const NoteUrlTile = () => {
   const [note, getEditUrl] = noteSlice((state) => [state.note, state.getEditUrl]);
   const [shortenUrl, trackingUrl] = shortenSlice((state) => [state.getShortenUrl(), state.getTrackingUrl()]);
   const editUrl = getEditUrl();
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<any>({
+    short: false,
+    tracking: false,
+    edit: false,
+  });
 
-  const onCopy = (text: string) => () => {
+  const onCopy = (type: 'short' | 'tracking' | 'edit') => () => {
     mixpanel.track(MIXPANEL_EVENT.LINK_COPY, {
       status: MIXPANEL_STATUS.OK,
+      type,
       note,
     });
-    setCopied(true);
-    copyToClipBoard(text);
+    setCopied({ [type]: true });
     toast.success('Copied');
   };
+
+  useEffect(() => {
+    if (isEmpty(copied)) return;
+    let timeout = setTimeout(() => {
+      setCopied({} as any);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [copied]);
 
   if (!note) return null;
 
   return (
     <div>
-      <h2 className="text-lg">🚀 {t('noteSuccess')}</h2>
-      <div className="my-4 flex flex-wrap justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-6 sm:py-8 md:py-10">
+      <p>🚀 {t('noteSuccess')}</p>
+      <div className="my-4 flex flex-wrap justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-6">
         <a href={shortenUrl} target="_blank" className="flex-1">
           <p
-            className="boujee-text text-center text-2xl font-bold tracking-tight transition-all hover:text-cyan-500 hover:underline hover:decoration-wavy sm:text-3xl md:text-4xl"
+            className="boujee-text text-center text-xl font-bold tracking-tight transition-all hover:text-cyan-500 hover:underline md:text-2xl"
             title={shortenUrl}>
             {shortenUrl.replace(/https:\/\//i, '')}
           </p>
@@ -42,13 +57,14 @@ export const NoteUrlTile = () => {
           title="Copy"
           type="button"
           data-copy-state="copy"
-          onClick={onCopy(shortenUrl)}
+          data-clipboard-text={shortenUrl}
+          onClick={onCopy('short')}
           className={clsx(
-            'flex items-center border-l-2 pl-2 text-sm font-medium text-gray-600 transition-all hover:text-cyan-500 sm:text-lg',
-            copied && '!text-cyan-500',
+            'btn-copy flex items-center border-l-2 pl-2 text-sm font-medium text-gray-600 transition-all hover:text-cyan-500',
+            !!copied.short && '!text-cyan-500',
           )}>
           <svg
-            className="mr-2 h-6 w-6"
+            className="mr-2 h-4 w-4"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -59,16 +75,14 @@ export const NoteUrlTile = () => {
               strokeWidth="2"
               d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
           </svg>{' '}
-          <span className="">{copied ? 'Copied' : 'Copy'}</span>
+          <span className="max-sm:hidden">{!!copied.short ? 'Copied' : 'Copy'}</span>
         </button>
       </div>
 
       <div className="mb-4 flex flex-wrap justify-end gap-2">
-        <p>Tracking link: </p>
+        <p>{t('tracking')}: </p>
         <a href={trackingUrl} target="_blank">
-          <p
-            className="text-center font-bold tracking-tight transition-all hover:text-cyan-500 hover:underline hover:decoration-wavy"
-            title={trackingUrl}>
+          <p className="tracking-tight text-cyan-500 transition-all hover:underline" title={trackingUrl}>
             {trackingUrl.replace(/https:\/\//i, '')}
           </p>
         </a>
@@ -76,10 +90,11 @@ export const NoteUrlTile = () => {
           title="Copy"
           type="button"
           data-copy-state="copy"
-          onClick={onCopy(trackingUrl)}
+          data-clipboard-text={trackingUrl}
+          onClick={onCopy('tracking')}
           className={clsx(
-            'flex items-center border-l-2 pl-2 text-sm font-medium text-gray-600 transition-all hover:text-cyan-500',
-            copied && '!text-cyan-500',
+            'btn-copy flex items-center border-l-2 pl-2 text-sm font-medium text-gray-600 transition-all hover:text-cyan-500',
+            !!copied.tracking && '!text-cyan-500',
           )}>
           <svg
             className="mr-2 h-4 w-4"
@@ -93,16 +108,14 @@ export const NoteUrlTile = () => {
               strokeWidth="2"
               d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
           </svg>{' '}
-          <span className="">{copied ? 'Copied' : 'Copy'}</span>
+          <span className="max-sm:hidden">{!!copied.tracking ? 'Copied' : 'Copy'}</span>
         </button>
       </div>
 
       <div className="mb-4 flex flex-wrap justify-end gap-2">
-        <p>Edit link: </p>
+        <p>{t('edit')}: </p>
         <a href={editUrl} target="_blank">
-          <p
-            className="text-center font-bold tracking-tight transition-all hover:text-cyan-500 hover:underline hover:decoration-wavy"
-            title={editUrl}>
+          <p className="tracking-tight text-cyan-500 transition-all hover:underline" title={editUrl}>
             {editUrl.replace(/https:\/\//i, '')}
           </p>
         </a>
@@ -110,10 +123,11 @@ export const NoteUrlTile = () => {
           title="Copy"
           type="button"
           data-copy-state="copy"
-          onClick={onCopy(editUrl)}
+          data-clipboard-text={editUrl}
+          onClick={onCopy('edit')}
           className={clsx(
-            'flex items-center border-l-2 pl-2 text-sm font-medium text-gray-600 transition-all hover:text-cyan-500',
-            copied && '!text-cyan-500',
+            'btn-copy flex items-center border-l-2 pl-2 text-sm font-medium text-gray-600 transition-all hover:text-cyan-500',
+            !!copied.edit && '!text-cyan-500',
           )}>
           <svg
             className="mr-2 h-4 w-4"
@@ -127,7 +141,7 @@ export const NoteUrlTile = () => {
               strokeWidth="2"
               d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
           </svg>{' '}
-          <span className="">{copied ? 'Copied' : 'Copy'}</span>
+          <span className="max-sm:hidden">{!!copied.edit ? 'Copied' : 'Copy'}</span>
         </button>
       </div>
     </div>

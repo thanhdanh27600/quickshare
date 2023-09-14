@@ -70,5 +70,7 @@
   "publish": "Pubish",
   "shareLink": "Share link",
   "shareNote": "Share note",
-  "NOTE_REQUIRED": "Please input your note before publish!"
+  "NOTE_REQUIRED": "Please input your note before publish!",
+  "tracking": "Tracking",
+  "edit": "Edit"
 }

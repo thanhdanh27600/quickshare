@@ -29,7 +29,7 @@ export const Sidebar = ({ className }: Props) => {
     <>
       <button
         className={clsx(
-          'rounded-lg border border-solid border-gray-200 p-4 outline-cyan-500 transition-colors hover:bg-gray-50 hover:text-cyan-500',
+          'rounded-lg border border-solid border-gray-200 p-2 py-1 outline-cyan-500 transition-colors hover:bg-gray-50 hover:text-cyan-500',
           className,
         )}
         type="button"
@@ -38,7 +38,7 @@ export const Sidebar = ({ className }: Props) => {
         aria-controls={sidebarId}
         data-te-ripple-init=""
         data-te-ripple-color="light">
-        <Menu className="w-6" />
+        <Menu className="w-4" />
       </button>
       <div
         className="invisible fixed bottom-0 right-0 top-0 z-[1045] flex w-72 max-w-full translate-x-full flex-col border-none bg-gray-50 bg-clip-padding text-neutral-700 shadow-sm outline-none transition duration-300 ease-in-out  [&[data-te-offcanvas-show]]:transform-none"

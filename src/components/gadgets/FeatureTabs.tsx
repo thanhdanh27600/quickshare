@@ -1,28 +1,34 @@
-import { Clipboard, Link } from '@styled-icons/feather';
+import { Clipboard, Link as LinkIcon } from '@styled-icons/feather';
 import { useBearStore } from 'bear';
 import { FeatureTabKey } from 'bear/utilitySlice';
 import { Tabs } from 'components/atoms/Tabs';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { BASE_URL } from 'types/constants';
+import { Locale } from 'types/locale';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 
-const tabs = (t: any) => [
+const tabs = (t: any, locale: Locale) => [
   {
     content: (
-      <span className="flex items-center gap-2">
-        <Link className="w-5" />
-        {t('shareLink')}
-      </span>
+      <Link href={`${BASE_URL}/${locale}`}>
+        <span className="flex items-center gap-2">
+          <LinkIcon className="w-5" />
+          {t('shareLink')}
+        </span>
+      </Link>
     ),
     key: FeatureTabKey.SHARE_LINK,
   },
   {
     content: (
-      <span className="flex items-center gap-2">
-        <Clipboard className="w-5" />
-        {t('shareNote')}
-      </span>
+      <Link href={linkWithLanguage(`${BASE_URL}/note`, locale)}>
+        <span className="flex items-center gap-2">
+          <Clipboard className="w-5" />
+          {t('shareNote')}
+        </span>
+      </Link>
     ),
     key: FeatureTabKey.SHARE_TEXT,
   },
@@ -63,5 +69,7 @@ export const FeatureTabs = () => {
     }
   };
 
-  return <Tabs selectedKey={selectedTab} setSelectedKey={handleSelectTab} tabs={tabs(t)} className="border-b-0 " />;
+  return (
+    <Tabs selectedKey={selectedTab} setSelectedKey={handleSelectTab} tabs={tabs(t, locale)} className="border-b-0 " />
+  );
 };

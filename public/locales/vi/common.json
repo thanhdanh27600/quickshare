@@ -70,5 +70,7 @@
   "publish": "Xuất bản",
   "shareLink": "Chia sẻ link",
   "shareNote": "Chia sẻ ghi chú",
-  "NOTE_REQUIRED": "Hãy nhập nội dung của ghi chú trước khi xuất bản nhé!"
+  "NOTE_REQUIRED": "Hãy nhập nội dung của ghi chú trước khi xuất bản nhé!",
+  "tracking": "Theo dõi",
+  "edit": "Chỉnh sửa"
 }

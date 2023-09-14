@@ -33,7 +33,7 @@ export class NoteCache {
     const hashKey = getRedisKey(REDIS_KEY.MAP_NOTE_BY_HASH, hash);
     return await redis.hexists(hashKey, 'uid');
   }
-  async postNoteHash({ ip, hash, data }: { ip: string; hash: string; data: any[] }) {
+  async postNoteHash({ hash, data }: { hash: string; data: any[] }) {
     const hashKey = getRedisKey(REDIS_KEY.MAP_NOTE_BY_HASH, hash);
 
     await Promise.all([redis.hset(hashKey, data), redis.expire(hashKey, LIMIT_NOTE_SECOND)]);

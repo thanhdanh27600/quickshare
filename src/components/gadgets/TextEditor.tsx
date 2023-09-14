@@ -1,7 +1,30 @@
 import { useEffect, useId } from 'react';
 import { tinymce } from 'types/constants';
 
-const TextEditor = ({ defaultValue }: { defaultValue?: string }) => {
+const plugins = [
+  'advlist',
+  'autolink',
+  'lists',
+  'link',
+  'image',
+  'charmap',
+  'preview',
+  'anchor',
+  'searchreplace',
+  'visualblocks',
+  'code',
+  'fullscreen',
+  'insertdatetime',
+  'media',
+  'table',
+  'wordcount',
+];
+
+const toolbar =
+  'bold italic underline strikethrough forecolor backcolor link image align fontsize | bullist numlist outdent indent | ' +
+  'undo redo | blocks | removeformat';
+
+const TextEditor = ({ defaultValue, readonly }: { defaultValue?: string; readonly?: boolean }) => {
   const id = useId().replaceAll(':', '-');
   useEffect(() => {
     if (!tinymce) return;
@@ -11,36 +34,17 @@ const TextEditor = ({ defaultValue }: { defaultValue?: string }) => {
       paste_block_drop: true,
       paste_data_images: true,
       height: 500,
-      plugins: [
-        'advlist',
-        'autolink',
-        'lists',
-        'link',
-        'image',
-        'charmap',
-        'preview',
-        'anchor',
-        'searchreplace',
-        'visualblocks',
-        'code',
-        'fullscreen',
-        'insertdatetime',
-        'media',
-        'table',
-        'wordcount',
-      ],
-      toolbar:
-        'bold italic forecolor backcolor link image alignleft aligncenter ' +
-        'alignright alignjustify | bullist numlist outdent indent | ' +
-        'undo redo | blocks | removeformat',
-      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+      fontsize_formats: '8pt 9pt 10pt 11pt 12pt 14pt 18pt 24pt 30pt 36pt 48pt 60pt 72pt 96pt',
+      plugins,
+      toolbar: readonly ? '' : toolbar,
+      menubar: !readonly,
+      readonly,
+      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14pt }',
     });
   }, []);
 
-  if (tinymce?.editors?.length === 0) return null;
-
   return (
-    <div>
+    <div className={`${readonly ? 'tox-readonly' : ''}`}>
       <textarea
         className="h-[300px] w-full"
         id={id}

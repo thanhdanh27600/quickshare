@@ -9,7 +9,7 @@ import { stringify } from 'querystring';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
-import { BASE_URL_OG, brandUrlShortDomain, isProduction, Window } from 'types/constants';
+import { BASE_URL_OG, Window } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { encodeBase64 } from 'utils/crypto';
 import { defaultLocale, useTrans } from 'utils/i18next';
@@ -20,10 +20,9 @@ interface Props {
   history: UrlShortenerHistory;
   error?: unknown;
   ip: string;
-  redirect?: string;
 }
 
-const ForwardURL = ({ history, ip, error, redirect }: Props) => {
+const ForwardURL = ({ history, ip, error }: Props) => {
   const { t, locale } = useTrans();
   const forwardUrl = useMutation(QueryKey.FORWARD, getForwardUrl);
   const loading = forwardUrl.isLoading && !forwardUrl.isError;
@@ -39,17 +38,13 @@ const ForwardURL = ({ history, ip, error, redirect }: Props) => {
     if (!Window()) {
       return;
     }
-    if (redirect) {
-      location.replace(redirect);
-    } else {
-      // start client-side forward
-      forwardUrl.mutate({
-        hash: hash,
-        userAgent: navigator.userAgent,
-        ip,
-        fromClientSide: true,
-      });
-    }
+    // start client-side forward
+    forwardUrl.mutate({
+      hash: hash,
+      userAgent: navigator.userAgent,
+      ip,
+      fromClientSide: true,
+    });
   }, []);
 
   useEffect(() => {
@@ -67,11 +62,6 @@ const ForwardURL = ({ history, ip, error, redirect }: Props) => {
         status: MIXPANEL_STATUS.FAILED,
         error,
       });
-      if (forwardUrl.isSuccess) {
-        location.replace('/');
-      } else {
-        console.error('Cannot forward...!');
-      }
       return;
     }
     mixpanel.track(MIXPANEL_EVENT.FORWARD, {
@@ -126,11 +116,6 @@ const ForwardURL = ({ history, ip, error, redirect }: Props) => {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
-    if (isProduction && context.req.headers?.host !== brandUrlShortDomain) {
-      return {
-        props: { redirect: '/' },
-      };
-    }
     const locale = context.locale || defaultLocale;
     const { hash } = context.query;
     const ip = requestIp.getClientIp(context.req) || '';
@@ -160,5 +145,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 }
 
-// export default pgShortDomain(ForwardURL);
 export default ForwardURL;
