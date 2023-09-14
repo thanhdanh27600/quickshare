@@ -43,7 +43,7 @@ export const NoteUrlTile = () => {
   if (!note) return null;
 
   return (
-    <div>
+    <div className="mb-4">
       <p>🚀 {t('noteSuccess')}</p>
       <div className="my-4 flex flex-wrap justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-6">
         <a href={shortenUrl} target="_blank" className="flex-1">
@@ -79,10 +79,10 @@ export const NoteUrlTile = () => {
         </button>
       </div>
 
-      <div className="mb-4 flex flex-wrap justify-end gap-2">
-        <p>{t('tracking')}: </p>
+      <div className="text-sm">{t('tracking')}</div>
+      <div className="flex flex-wrap justify-start gap-2">
         <a href={trackingUrl} target="_blank">
-          <p className="tracking-tight text-cyan-500 transition-all hover:underline" title={trackingUrl}>
+          <p className="text-sm tracking-tight text-cyan-500 transition-all hover:underline" title={trackingUrl}>
             {trackingUrl.replace(/https:\/\//i, '')}
           </p>
         </a>
@@ -112,10 +112,10 @@ export const NoteUrlTile = () => {
         </button>
       </div>
 
-      <div className="mb-4 flex flex-wrap justify-end gap-2">
-        <p>{t('edit')}: </p>
+      <div className="mt-2 text-sm">{t('edit')}</div>
+      <div className="flex flex-wrap justify-start gap-2">
         <a href={editUrl} target="_blank">
-          <p className="tracking-tight text-cyan-500 transition-all hover:underline" title={editUrl}>
+          <p className="text-sm tracking-tight text-cyan-500 transition-all hover:underline" title={editUrl}>
             {editUrl.replace(/https:\/\//i, '')}
           </p>
         </a>

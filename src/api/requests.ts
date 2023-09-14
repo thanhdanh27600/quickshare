@@ -6,7 +6,7 @@ import { NoteRs } from 'types/note';
 import { QR } from 'types/qr';
 import { ShortenUrl } from 'types/shorten';
 import { Stats } from 'types/stats';
-import { ForwardSchema, NoteSchema } from 'utils/validateMiddleware';
+import { ForwardSchema, NoteSchema, UpdateNoteSchema } from 'utils/validateMiddleware';
 import { API, withAuth } from './axios';
 
 export const getOrCreateShortenUrlRequest = async ({ url, hash }: { url?: string; hash?: string }) => {
@@ -112,6 +112,12 @@ export const parseUA = memoize(async (ua: string) => {
 
 export const createNoteRequest = async (payload: NoteSchema) => {
   const rs = await API.post(`/api/note`, payload);
+  const data = rs.data;
+  return data as NoteRs;
+};
+
+export const updateNoteRequest = async (payload: UpdateNoteSchema) => {
+  const rs = await API.put(`/api/note/update`, payload);
   const data = rs.data;
   return data as NoteRs;
 };

@@ -153,4 +153,4 @@ export const validateUpdateNoteSchema = z.object({
     required_error: 'Text is required',
   }),
 });
-export type CreateUpdateSchema = z.infer<typeof validateUpdateNoteSchema>;
+export type UpdateNoteSchema = z.infer<typeof validateUpdateNoteSchema>;

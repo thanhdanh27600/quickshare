@@ -33,18 +33,6 @@ export const isValidUrl = (urlString: string) => {
   return !!urlRegex.test(urlString);
 };
 
-export const copyToClipBoard = (text: string) => {
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.style.position = 'fixed'; // Make it invisible
-  document.body.appendChild(textarea);
-  // Select and copy the text inside the textarea
-  textarea.select();
-  document.execCommand('copy');
-  // Clean up and remove the textarea
-  document.body.removeChild(textarea);
-};
-
 export const capitalize = (string?: string) => {
   if (!string) return string;
   return string[0].toUpperCase() + string.slice(1);

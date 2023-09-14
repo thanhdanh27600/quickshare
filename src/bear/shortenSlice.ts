@@ -1,6 +1,6 @@
 import { UrlShortenerHistory } from '@prisma/client';
 import { withDevTools } from 'bear/middleware';
-import { BASE_URL_SHORT } from 'types/constants';
+import { BASE_URL, BASE_URL_SHORT } from 'types/constants';
 import { StateCreator, create } from 'zustand';
 
 export interface ShortenSlice {
@@ -18,7 +18,7 @@ const slice: StateCreator<ShortenSlice> = (set, get) => ({
   shortenHistoryForm: undefined,
   shortenHistoryMediaId: undefined,
   getShortenUrl: () => (!!get().shortenHistory ? `${BASE_URL_SHORT}/${get().shortenHistory?.hash}` : ''),
-  getTrackingUrl: () => (!!get().shortenHistory ? `${BASE_URL_SHORT}/v/${get().shortenHistory?.hash}` : ''),
+  getTrackingUrl: () => (!!get().shortenHistory ? `${BASE_URL}/v/${get().shortenHistory?.hash}` : ''),
   getHash: () => (!!get().shortenHistory ? get().shortenHistory?.hash || '' : ''),
   setShortenHistory: (history) => set((state) => ({ shortenHistory: { ...state.shortenHistory, ...history } })),
   setShortenHistoryMediaId: (id: number) => set({ shortenHistoryMediaId: id }),
