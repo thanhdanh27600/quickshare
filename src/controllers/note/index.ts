@@ -6,23 +6,22 @@ import { redis } from '../../redis/client';
 import { noteCacheService, shortenCacheService } from '../../services/cacheServices';
 import { BASE_URL, HASH, LIMIT_FEATURE_HOUR, LIMIT_NOTE_REQUEST, REDIS_KEY, getRedisKey } from '../../types/constants';
 import { NoteRs } from '../../types/note';
-import { ipLookup } from '../../utils/agent';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import HttpStatusCode from '../../utils/statusCode';
 import { generateRandomString } from '../../utils/text';
-import { validateForwardSchema, validateNoteSchema } from '../../utils/validateMiddleware';
+import { validateNoteSchema } from '../../utils/validateMiddleware';
 
 export const handler = api<NoteRs>(
   async (req, res) => {
     const ip = requestIp.getClientIp(req)!;
     let text = (req.body.text as string) || null;
-    let hash = (req.body.hash as string) || null;
+    let hash = (req.query.hash as string) || null;
     let uid = (req.body.uid as string) || null;
 
-    // retrive note if uid
-    if (!!uid) return await getNoteForUpdate(req, res);
-    // retrive note if hash
-    if (!!hash) return await getNote(req, res);
+    // retrive note for update if uid
+    if (!!uid && req.method === 'POST') return await getNoteForUpdate(req, res);
+    // retrive note for view if hash
+    if (!!hash && req.method === 'GET') return await getNote(req, res);
 
     await validateNoteSchema.parseAsync({ text, hash, ip, uid });
 
@@ -73,7 +72,7 @@ export const handler = api<NoteRs>(
 
     // write hash to cache
     const dataHashNote = ['text', text, 'uid', uid, 'updatedAt', new Date().getTime()];
-    await noteCacheService.postNoteHash({ ip, hash: noteHash, data: dataHashNote });
+    await noteCacheService.postNoteHash({ hash: noteHash, data: dataHashNote });
 
     // create shorten url
     // generate hash
@@ -116,21 +115,12 @@ export const handler = api<NoteRs>(
 
     return successHandler(res, { note: { ...note, UrlShortenerHistory: history } });
   },
-  ['POST'],
+  ['POST', 'GET'],
 );
 
 const getNote: NextApiHandler<NoteRs> = async (req, res) => {
-  let hash = req.body.hash as string;
-  const userAgent = req.body.userAgent as string;
-  const ip = requestIp.getClientIp(req)!;
-  const fromClientSide = !!req.body.fromClientSide;
-  await validateForwardSchema.parseAsync({
-    hash,
-    userAgent,
-    ip,
-  });
+  let hash = req.query.hash as string;
   if (!hash) return badRequest(res);
-  const lookupIp = ipLookup(ip) || undefined;
 
   // get from cache
   const hashKey = getRedisKey(REDIS_KEY.MAP_NOTE_BY_HASH, hash);
@@ -146,7 +136,9 @@ const getNote: NextApiHandler<NoteRs> = async (req, res) => {
     },
   });
   if (!note) return badRequest(res);
-  return successHandler(res, { note });
+  const dataHashNote = ['text', note.text, 'uid', note.uid, 'updatedAt', new Date().getTime()];
+  noteCacheService.postNoteHash({ hash, data: dataHashNote });
+  return successHandler(res, { note: { text: note.text } });
 };
 
 const getNoteForUpdate: NextApiHandler<NoteRs> = async (req, res) => {
@@ -162,6 +154,7 @@ const getNoteForUpdate: NextApiHandler<NoteRs> = async (req, res) => {
   if (!note) {
     return badRequest(res, "No note was found on your request. Let's create one!");
   }
+  // write hash to cache
   return successHandler(res, { note });
 };
 

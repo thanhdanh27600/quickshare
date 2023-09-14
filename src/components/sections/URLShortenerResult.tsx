@@ -56,7 +56,7 @@ export const URLShortenerResult = () => {
 
   return (
     <div className="mt-4">
-      <h2 className="text-lg">🚀 {t('shortenSuccess')}</h2>
+      <p>🚀 {t('shortenSuccess')}</p>
       <ShortenUrlTile shortenUrl={shortenUrl} />
       <div className="mt-2 flex w-full justify-end">
         <a

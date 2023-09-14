@@ -1,4 +1,5 @@
 import prisma from '../../db/prisma';
+import { noteCacheService } from '../../services/cacheServices';
 import { ShortenUrl } from '../../types/shorten';
 import { api, successHandler } from '../../utils/axios';
 import HttpStatusCode from '../../utils/statusCode';
@@ -24,6 +25,8 @@ export const handler = api<ShortenUrl>(
         text,
       },
     });
+
+    noteCacheService.updateNoteHash(note.hash);
 
     return successHandler(res, rs);
   },

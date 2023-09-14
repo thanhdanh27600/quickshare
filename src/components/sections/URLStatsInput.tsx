@@ -121,6 +121,7 @@ export const URLStats = ({ defaultOpen = false }: { defaultOpen?: boolean }) => 
               className: 'bg-gray-500 bg-none hover:bg-gray-500/80',
               TextClassname: 'text-sm sm:text-xl',
               hoverTransform: false,
+              loading: fetchTracking.isLoading,
             }}
             className={clsx(hasHistory ? 'pl-16' : 'pl-4')}
             onFocus={() => {

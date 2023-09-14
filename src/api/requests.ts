@@ -110,8 +110,14 @@ export const parseUA = memoize(async (ua: string) => {
   return data;
 });
 
-export const getOrCreateNoteRequest = async (payload: NoteSchema) => {
+export const createNoteRequest = async (payload: NoteSchema) => {
   const rs = await API.post(`/api/note`, payload);
+  const data = rs.data;
+  return data as NoteRs;
+};
+
+export const getNoteRequest = async (hash: string) => {
+  const rs = await API.get(`/api/note?hash=${hash}`);
   const data = rs.data;
   return data as NoteRs;
 };

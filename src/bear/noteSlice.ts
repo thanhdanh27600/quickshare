@@ -1,6 +1,6 @@
 import { Note } from '@prisma/client';
 import { withDevTools } from 'bear/middleware';
-import { BASE_URL_SHORT } from 'types/constants';
+import { BASE_URL, BASE_URL_SHORT } from 'types/constants';
 import { StateCreator, create } from 'zustand';
 
 export interface NoteSlice {
@@ -14,7 +14,7 @@ const slice: StateCreator<NoteSlice> = (set, get) => ({
   note: undefined,
   setNote: (note) => set((state) => ({ note: { ...state.note, ...note } })),
   getShortenUrl: () => (!!get().note ? `${BASE_URL_SHORT}/${get().note?.hash}` : ''),
-  getEditUrl: () => (!!get().note ? `${BASE_URL_SHORT}/note?uid=${get().note?.uid}` : ''),
+  getEditUrl: () => (!!get().note ? `${BASE_URL}/note?uid=${get().note?.uid}` : ''),
 });
 
 const noteSlice = create(withDevTools(slice, { anonymousActionType: 'NoteSlice' }));

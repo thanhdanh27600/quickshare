@@ -99,7 +99,7 @@ const URLShortenerInput = () => {
 
   return (
     <div className="solid container mx-auto max-w-5xl rounded-lg border p-4 pt-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
-      <h1 className="mb-4 flex gap-1 text-4xl">
+      <h1 className="mb-4 flex gap-1 text-3xl">
         {t('urlShortener')}
         <HelpTooltip text={t('helpShortUrlHead')} />
       </h1>

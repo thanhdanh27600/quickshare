@@ -30,6 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (any((url) => url.includes(host), alternateBrandUrl)) {
       window.location.href = BASE_URL;
     }
+    const _ = new (window as any).ClipboardJS('.btn-copy');
   }, []);
 
   return (

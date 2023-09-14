@@ -1,11 +1,11 @@
-import { getOrCreateNoteRequest } from 'api/requests';
+import { createNoteRequest } from 'api/requests';
 import { AxiosError } from 'axios';
 import { useBearStore } from 'bear';
 import { Button } from 'components/atoms/Button';
-import TextEditor from 'components/gadgets/TextEditor';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLAdvancedSetting } from 'components/sections/URLAdvancedSetting';
 import mixpanel from 'mixpanel-browser';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
@@ -16,6 +16,8 @@ import { QueryKey } from 'utils/requests';
 import { validateNoteSchema } from 'utils/validateMiddleware';
 import { ZodError } from 'zod';
 import { NoteUrlTile } from './NoteUrlTile';
+
+const TextEditor = dynamic(() => import('../gadgets/TextEditor').then((c) => c.default), { ssr: false });
 
 export const NoteInput = () => {
   const { t } = useTrans();
@@ -35,7 +37,7 @@ export const NoteInput = () => {
     }
   }, []);
 
-  const requestNote = useMutation(QueryKey.SHORTEN, getOrCreateNoteRequest, {
+  const requestNote = useMutation(QueryKey.SHORTEN, createNoteRequest, {
     onMutate: (variables) => {
       setLocalError('');
     },
@@ -71,6 +73,7 @@ export const NoteInput = () => {
   const error = localError || mutateError?.message;
 
   const onSubmit = async () => {
+    if (note) return; //TODO: update note
     setLocalError('');
     const data = {
       hash: null,
