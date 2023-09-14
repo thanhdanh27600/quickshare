@@ -3,23 +3,37 @@ import { AxiosError } from 'axios';
 import { useBearStore } from 'bear';
 import { Button } from 'components/atoms/Button';
 import TextEditor from 'components/gadgets/TextEditor';
+import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
+import { URLAdvancedSetting } from 'components/sections/URLAdvancedSetting';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { tinymce } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
-import { copyToClipBoard } from 'utils/text';
+import { validateNoteSchema } from 'utils/validateMiddleware';
+import { ZodError } from 'zod';
+import { NoteUrlTile } from './NoteUrlTile';
 
 export const NoteInput = () => {
   const { t } = useTrans();
 
   const router = useRouter();
-  const { noteSlice } = useBearStore();
+  const { noteSlice, shortenSlice, utilitySlice } = useBearStore();
+  const ip = utilitySlice((state) => state.ip);
   const [note, setNote] = noteSlice((state) => [state.note, state.setNote]);
+  const [setShortenHistory] = shortenSlice((state) => [state.setShortenHistory]);
   const [localError, setLocalError] = useState('');
+
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const uid = query.get('uid') || '';
+    if (!!uid) {
+      requestNote.mutate({ hash: null, ip, text: '', uid });
+    }
+  }, []);
 
   const requestNote = useMutation(QueryKey.SHORTEN, getOrCreateNoteRequest, {
     onMutate: (variables) => {
@@ -33,14 +47,14 @@ export const NoteInput = () => {
       });
     },
     onSuccess: (data, variables, context) => {
-      console.log('data', data);
       if (data.note) {
         setNote(data.note);
+        if (data.note.UrlShortenerHistory) setShortenHistory(data.note.UrlShortenerHistory);
         mixpanel.track(MIXPANEL_EVENT.NOTE_CREATE, {
           status: MIXPANEL_STATUS.OK,
           data,
         });
-        const queryParams = { ...router.query, ...{ hash: data.note.hash } };
+        const queryParams = { ...router.query, ...{ uid: data.note.uid } };
         router.push({ pathname: router.pathname, query: queryParams });
       } else {
         setLocalError(t('somethingWrong'));
@@ -52,24 +66,41 @@ export const NoteInput = () => {
     },
   });
 
+  const loading = requestNote.isLoading;
   const mutateError = requestNote.error as AxiosError;
-  const error = mutateError?.message || localError;
+  const error = localError || mutateError?.message;
 
-  const onSubmit = () => {
-    console.log(tinymce.activeEditor.getContent());
-    copyToClipBoard(encodeURIComponent(tinymce.activeEditor.getContent()));
+  const onSubmit = async () => {
+    setLocalError('');
+    const data = {
+      hash: null,
+      uid: null,
+      text: tinymce.activeEditor.getContent() || null,
+      ip,
+    };
+    const validate = await validateNoteSchema.safeParse(data);
+    if (!validate.success) {
+      setLocalError(t((validate.error as ZodError<any>).issues[0].message as any));
+    } else {
+      const payload = validate.data;
+      requestNote.mutate(payload);
+    }
   };
 
   return (
     <div>
-      <TextEditor defaultValue={'<h2>haha</h2>'} />
+      <NoteUrlTile />
+      <TextEditor key={note?.id} defaultValue={note?.text} />
       {error && <p className="mt-4 text-red-400">{error}</p>}
       <Button
-        text={t('publish')}
+        text={!!note ? t('save') : t('publish')}
         onClick={onSubmit}
+        loading={loading}
         className="mx-auto mt-4 flex w-fit min-w-[5rem] justify-center"
         animation
       />
+      {note && <URLAdvancedSetting defaultOpen={false} />}
+      <FeedbackLink template={FeedbackTemplate.NOTE} />
     </div>
   );
 };

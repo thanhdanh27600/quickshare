@@ -90,7 +90,7 @@ export const TwitterPreview = ({
             encodeTitle={encodeTitle}
             hash={hash}
             ogImgSrc={ogImgSrc}
-            className="rounded-t-[5.75rem] sm:rounded-t-[4.25rem]"
+            className={ogImgSrc ? 'rounded-t-[1.5rem]' : 'rounded-t-[5.75rem] sm:rounded-t-[4.25rem]'}
             theme={theme}
           />
         </div>

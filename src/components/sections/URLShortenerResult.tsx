@@ -17,8 +17,7 @@ export const URLShortenerResult = () => {
   const { t, locale } = useTrans('common');
   const [copied, setCopied] = useState(false);
   const { shortenSlice } = useBearStore();
-  const [getShortenUrl, getHash] = shortenSlice((state) => [state.getShortenUrl, state.getHash]);
-  const shortenUrl = getShortenUrl();
+  const [shortenUrl, getHash] = shortenSlice((state) => [state.getShortenUrl(), state.getHash]);
 
   const onShare = () => {
     share(

@@ -1,17 +1,10 @@
 import base64url from 'base64url';
-import { NextApiHandler, NextApiResponse } from 'next';
+import { NextApiHandler } from 'next';
 import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
 import { redis } from '../../redis/client';
-import { noteCacheService } from '../../services/cacheServices';
-import {
-  LIMIT_FEATURE_HOUR,
-  LIMIT_NOTE_REQUEST,
-  NUM_CHARACTER_HASH,
-  REDIS_KEY,
-  getRedisKey,
-} from '../../types/constants';
-import { Forward, ForwardMeta } from '../../types/forward';
+import { noteCacheService, shortenCacheService } from '../../services/cacheServices';
+import { BASE_URL, HASH, LIMIT_FEATURE_HOUR, LIMIT_NOTE_REQUEST, REDIS_KEY, getRedisKey } from '../../types/constants';
 import { NoteRs } from '../../types/note';
 import { ipLookup } from '../../utils/agent';
 import { api, badRequest, successHandler } from '../../utils/axios';
@@ -24,11 +17,14 @@ export const handler = api<NoteRs>(
     const ip = requestIp.getClientIp(req)!;
     let text = (req.body.text as string) || null;
     let hash = (req.body.hash as string) || null;
+    let uid = (req.body.uid as string) || null;
 
+    // retrive note if uid
+    if (!!uid) return await getNoteForUpdate(req, res);
     // retrive note if hash
     if (!!hash) return await getNote(req, res);
 
-    await validateNoteSchema.parseAsync({ text, hash, ip });
+    await validateNoteSchema.parseAsync({ text, hash, ip, uid });
 
     if (!text) {
       return res.status(HttpStatusCode.BAD_REQUEST).send({
@@ -46,8 +42,11 @@ export const handler = api<NoteRs>(
     }
     noteCacheService.incLimitIp(ip);
 
+    let record = await prisma.urlShortenerRecord.findFirst({ where: { ip } });
+    if (!record) record = await prisma.urlShortenerRecord.create({ data: { ip } });
+
     // generate hash
-    let newHash = '';
+    let noteHash = '';
     let isExist = 1;
     let timesLimit = 0;
 
@@ -60,29 +59,62 @@ export const handler = api<NoteRs>(
         logger.error('timesLimit note reached', timesLimit);
         throw new Error('Bad request after digging our hash, please try again!');
       }
-      newHash = generateRandomString(NUM_CHARACTER_HASH);
-      isExist = await noteCacheService.existHash(newHash);
+      noteHash = generateRandomString(HASH.Length);
+      isExist = await noteCacheService.existHash(noteHash);
       // also double check db if not collapse in cache
       if (!isExist) {
-        isExist = !!(await prisma.note.findUnique({ where: { hash: newHash } })) ? 1 : 0;
+        isExist = !!(await prisma.note.findUnique({ where: { hash: noteHash } })) ? 1 : 0;
       }
     }
 
     const time = `${new Date().getTime()}`;
     // 12 chars : ex. time = 1694179884653 -> base64url('884653xxx') -> 12 chars
-    const uuid = `${base64url(time.slice(10 - NUM_CHARACTER_HASH) + newHash)}`;
+    const targetUid = `${base64url(time.slice(10 - HASH.Length) + noteHash)}`;
 
     // write hash to cache
-    const dataHashNote = ['text', text, 'uuid', uuid, 'updatedAt', new Date().getTime()];
-    await noteCacheService.postNoteHash({ ip, hash: newHash, data: dataHashNote });
+    const dataHashNote = ['text', text, 'uid', uid, 'updatedAt', new Date().getTime()];
+    await noteCacheService.postNoteHash({ ip, hash: noteHash, data: dataHashNote });
+
+    // create shorten url
+    // generate hash
+    let shortHash = '';
+    isExist = 1;
+    timesLimit = 0;
+    while (isExist) {
+      if (timesLimit > 0) {
+        logger.warn('timesLimit shorten occured', timesLimit);
+      }
+      if (timesLimit++ > 10 /** U better buy lucky ticket */) {
+        logger.error('timesLimit shorten reached', timesLimit);
+        throw new Error('Bad request after digging our hash, please try again!');
+      }
+      shortHash = generateRandomString(HASH.Length);
+      isExist = await shortenCacheService.existHash(shortHash);
+      // also double check db if not collapse in cache
+      if (!isExist) {
+        isExist = !!(await prisma.urlShortenerHistory.findUnique({ where: { hash: shortHash } })) ? 1 : 0;
+      }
+    }
+    const history = await prisma.urlShortenerHistory.create({
+      data: {
+        url: `${BASE_URL}/n/${noteHash}`,
+        hash: shortHash,
+        urlShortenerRecordId: record.id,
+      },
+    });
 
     // write to db
-    let record = await prisma.urlShortenerRecord.findFirst({ where: { ip } });
-    if (!record) record = await prisma.urlShortenerRecord.create({ data: { ip } });
     const note = await prisma.note.create({
-      data: { hash: newHash, text, uuid, urlShortenerRecordId: record.id },
+      data: {
+        hash: noteHash,
+        text,
+        uid: targetUid,
+        urlShortenerRecordId: record.id,
+        urlShortenerHistoryId: history.id,
+      },
     });
-    return successHandler(res, { note });
+
+    return successHandler(res, { note: { ...note, UrlShortenerHistory: history } });
   },
   ['POST'],
 );
@@ -103,58 +135,34 @@ const getNote: NextApiHandler<NoteRs> = async (req, res) => {
   // get from cache
   const hashKey = getRedisKey(REDIS_KEY.MAP_NOTE_BY_HASH, hash);
   const noteCacheText = await redis.hget(hashKey, 'text');
-  const noteCacheUuid = await redis.hget(hashKey, 'uuid');
-  const data = { hash, ip, userAgent, fromClientSide, lookupIp };
-  if (noteCacheText && noteCacheUuid) {
+  if (noteCacheText) {
     // cache hit
-    postProcessForward(data); // bypass process
-    return res.status(HttpStatusCode.OK).json({ note: { text: noteCacheText, uuid: noteCacheUuid } });
+    return successHandler(res, { note: { text: noteCacheText } });
   }
   // cache missed
-  await postProcessForward(data, res as any);
-};
-
-export const postProcessForward = async (payload: ForwardMeta, res?: NextApiResponse<Forward>) => {
-  const cacheMissed = !!res;
-  const { hash, ip, userAgent, fromClientSide, lookupIp } = payload;
-  let note = await prisma.note.findUnique({
+  const note = await prisma.note.findUnique({
     where: {
       hash,
     },
   });
+  if (!note) return badRequest(res);
+  return successHandler(res, { note });
+};
 
-  if (!note) {
-    return cacheMissed ? badRequest(res) : null;
-  }
-
-  await prisma.urlForwardMeta.upsert({
+const getNoteForUpdate: NextApiHandler<NoteRs> = async (req, res) => {
+  let uid = req.body.uid as string;
+  if (!uid) return badRequest(res);
+  const note = await prisma.note.findUnique({
     where: {
-      userAgent_ip_noteId: {
-        ip,
-        userAgent,
-        noteId: note.id,
-      },
+      uid,
     },
-    update: {
-      countryCode: lookupIp?.country,
-      fromClientSide,
-    },
-    create: {
-      ip,
-      userAgent,
-      noteId: note.id,
-      countryCode: lookupIp?.country,
-      fromClientSide,
-    },
+    include: { UrlShortenerHistory: true },
   });
 
-  if (cacheMissed) {
-    // write back to cache
-    const dataHashNote = ['text', note.text, 'uuid', note.uuid, 'updatedAt', new Date().getTime()];
-    await noteCacheService.postNoteHash({ ip, hash, data: dataHashNote });
-
-    return res.status(HttpStatusCode.OK).json({ note });
+  if (!note) {
+    return badRequest(res, "No note was found on your request. Let's create one!");
   }
+  return successHandler(res, { note });
 };
 
 export * as update from './update';

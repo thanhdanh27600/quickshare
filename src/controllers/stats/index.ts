@@ -3,11 +3,10 @@ import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
 import { LIMIT_RECENT_HISTORY, PLATFORM_AUTH } from '../../types/constants';
 import { Stats } from '../../types/stats';
-import { api, errorHandler } from '../../utils/axios';
+import { api, errorHandler, successHandler } from '../../utils/axios';
 import { decryptS, encryptS } from '../../utils/crypto';
 import { parseIntSafe } from '../../utils/number';
 import { withQueryCursor } from '../../utils/requests';
-import HttpStatusCode from '../../utils/statusCode';
 import { validateStatsSchema } from '../../utils/validateMiddleware';
 
 export const handler = api<Stats>(
@@ -36,7 +35,7 @@ export const handler = api<Stats>(
         },
       });
       history = record?.history;
-      return res.status(HttpStatusCode.OK).json({ record: record, history });
+      return successHandler(res, { record: record, history });
     }
     // get stats with hash
     history = await prisma.urlShortenerHistory.findUnique({
@@ -76,9 +75,7 @@ export const handler = api<Stats>(
     // hide sensitive data
     if (history?.email) history.email = '';
     if (history?.password) history.password = '';
-    return res
-      .status(HttpStatusCode.OK)
-      .json({ record: history?.UrlShortenerRecord, history: history ? [history] : null });
+    return successHandler(res, { record: history?.UrlShortenerRecord, history: history ? [history] : null });
   },
   ['GET'],
 );

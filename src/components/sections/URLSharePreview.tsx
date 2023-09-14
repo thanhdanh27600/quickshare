@@ -9,7 +9,7 @@ export const URLSharePreview = ({ selectedKey }: { selectedKey: string }) => {
 
   return (
     <div className="mx-auto mt-8 flex w-fit flex-col items-center justify-between gap-8 ">
-      <ThemeSelector />
+      {!shortenHistory.ogImgSrc && <ThemeSelector />}
       {selectedKey === 'Facebook' && <FacebookPreview {...shortenHistory} />}
       {selectedKey === 'Twitter' && <TwitterPreview {...shortenHistory} />}
       {selectedKey === 'Discord' && <DiscordPreview {...shortenHistory} />}

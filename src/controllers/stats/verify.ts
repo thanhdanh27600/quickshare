@@ -1,8 +1,7 @@
 import prisma from '../../db/prisma';
 import { Stats } from '../../types/stats';
-import { api, errorHandler } from '../../utils/axios';
+import { api, errorHandler, successHandler } from '../../utils/axios';
 import { decryptS, encryptS } from '../../utils/crypto';
-import HttpStatusCode from '../../utils/statusCode';
 import { validateStatsTokenSchema } from '../../utils/validateMiddleware';
 
 export const handler = api<Stats>(
@@ -20,7 +19,7 @@ export const handler = api<Stats>(
     if (history && history?.password) {
       const decryptPassword = decryptS(history?.password);
       if (decryptPassword === password) {
-        return res.status(HttpStatusCode.OK).json({ token: encryptS(history.id.toString()) } as any);
+        return successHandler(res, { token: encryptS(history.id.toString()) } as any);
       }
     }
     return errorHandler(res);

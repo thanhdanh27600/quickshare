@@ -1,10 +1,9 @@
 import { UploadBlob } from 'components/atoms/UploadBlob';
-import { isProduction } from 'types/constants';
 
 export const Playground = () => {
   const log = () => {};
 
-  if (isProduction) return null;
+  // if (isProduction) return null;
 
   return (
     <>

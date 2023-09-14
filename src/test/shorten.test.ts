@@ -1,7 +1,7 @@
 import { createMocks } from 'node-mocks-http';
 import * as controller from '../controllers';
 import { redis } from '../redis/client';
-import { NUM_CHARACTER_HASH, REDIS_KEY } from '../types/constants';
+import { HASH, REDIS_KEY } from '../types/constants';
 import HttpStatusCode from '../utils/statusCode';
 
 const ip = '0.0.0.0';
@@ -92,7 +92,7 @@ describe('Test /api/shorten...', () => {
       expect(res._getStatusCode()).toBe(HttpStatusCode.OK);
       const data = JSON.parse(res._getData());
       expect(data?.url).toBe('https://example.com');
-      expect(data?.hash.length).toBe(NUM_CHARACTER_HASH);
+      expect(data?.hash.length).toBe(HASH.Length);
     });
   });
 });

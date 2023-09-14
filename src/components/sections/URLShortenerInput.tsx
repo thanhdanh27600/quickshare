@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
+import { HASH } from 'types/constants';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { encrypt } from 'utils/crypto';
 import { useTrans } from 'utils/i18next';
@@ -27,8 +28,7 @@ const URLShortenerInput = () => {
   const { shortenSlice } = useBearStore();
   const { t } = useTrans('common');
 
-  const [getShortenUrl, setShortenHistory] = shortenSlice((state) => [state.getShortenUrl, state.setShortenHistory]);
-  const shortenUrl = getShortenUrl();
+  const [shortenUrl, setShortenHistory] = shortenSlice((state) => [state.getShortenUrl(), state.setShortenHistory]);
   const queryClient = useQueryClient();
   const {
     register,
@@ -41,7 +41,7 @@ const URLShortenerInput = () => {
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     const hash = query.get('hash') || '';
-    if (/^.{3}$/.test(hash)) {
+    if (HASH.Regex.test(hash)) {
       requestShortenUrl.mutate({ hash });
     }
   }, []);
@@ -141,6 +141,7 @@ export const UrlShortener = () => {
   return (
     <div>
       <URLShortenerInput />
+      <div className="my-16"></div>
       <URLStats />
     </div>
   );

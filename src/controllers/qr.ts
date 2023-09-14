@@ -1,7 +1,6 @@
 import { QR } from '../types/qr';
-import { api, errorHandler } from '../utils/axios';
+import { api, errorHandler, successHandler } from '../utils/axios';
 import { decrypt } from '../utils/crypto';
-import HttpStatusCode from '../utils/statusCode';
 import { validateQrSchema } from '../utils/validateMiddleware';
 
 export const handler = api<QR>(
@@ -18,7 +17,7 @@ export const handler = api<QR>(
     const QRCode = require('qrcode');
     let qr = '';
     qr = await QRCode.toDataURL(text, { width: 300, margin: 1 });
-    return res.status(HttpStatusCode.OK).json({ qr });
+    return successHandler(res, { qr });
   },
   ['GET'],
 );

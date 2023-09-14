@@ -6,16 +6,16 @@ import { validateUpdateNoteSchema } from '../../utils/validateMiddleware';
 
 export const handler = api<ShortenUrl>(
   async (req, res) => {
-    let uuid = req.body.uuid as string;
+    let uid = req.body.uid as string;
     let text = req.body.text as string;
     await validateUpdateNoteSchema.parseAsync({
-      uuid,
+      uid,
       text,
     });
 
-    const note = await prisma.note.findUnique({ where: { uuid } });
+    const note = await prisma.note.findUnique({ where: { uid } });
     if (!note) {
-      return res.status(HttpStatusCode.NOT_FOUND).json({ errorCode: 'NOT_FOUND', errorMessage: 'Uuid not found' });
+      return res.status(HttpStatusCode.NOT_FOUND).json({ errorCode: 'NOT_FOUND', errorMessage: 'Uid not found' });
     }
 
     const rs = await prisma.note.update({

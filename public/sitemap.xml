@@ -4,8 +4,6 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
 
 <url>
   <loc>https://quickshare.at</loc>
@@ -30,6 +28,13 @@
 </url>
 
 <url>
+  <loc>https://quickshare.at/contact</loc>
+  <lastmod>2023-09-12</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
   <loc>https://quickshare.at/en</loc>
   <lastmod>2023-09-10</lastmod>
   <changefreq>monthly</changefreq>
@@ -46,6 +51,13 @@
 
 <url>
   <loc>https://quickshare.at/en/note</loc>
+  <lastmod>2023-09-12</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://quickshare.at/en/contact</loc>
   <lastmod>2023-09-12</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
