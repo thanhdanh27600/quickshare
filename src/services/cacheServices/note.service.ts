@@ -31,7 +31,7 @@ export class NoteCache {
   }
   async existHash(hash: string) {
     const hashKey = getRedisKey(REDIS_KEY.MAP_NOTE_BY_HASH, hash);
-    return await redis.hexists(hashKey, 'uuid');
+    return await redis.hexists(hashKey, 'uid');
   }
   async postNoteHash({ ip, hash, data }: { ip: string; hash: string; data: any[] }) {
     const hashKey = getRedisKey(REDIS_KEY.MAP_NOTE_BY_HASH, hash);

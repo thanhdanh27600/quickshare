@@ -20,6 +20,7 @@ export enum FeedbackTemplate {
   URL_SHORT = 'URL_SHORT',
   URL_TRACKING = 'URL_TRACKING',
   FORGOT_PASSWORD = 'FORGOT_PASSWORD',
+  NOTE = 'NOTE',
 }
 
 const useFeedbackTemplate = (template: FeedbackTemplate) => {
@@ -34,6 +35,11 @@ const useFeedbackTemplate = (template: FeedbackTemplate) => {
     case FeedbackTemplate.URL_TRACKING:
       supportUrl = `mailto:thanhdanh27600@gmail.com?subject=${encodeURIComponent(
         t('feedbackShortSubject'),
+      )}&body=${encodeURIComponent(t('feedbackBody'))}`;
+      break;
+    case FeedbackTemplate.NOTE:
+      supportUrl = `mailto:thanhdanh27600@gmail.com?subject=${encodeURIComponent(
+        t('feedbackNoteSubject'),
       )}&body=${encodeURIComponent(t('feedbackBody'))}`;
       break;
     case FeedbackTemplate.FORGOT_PASSWORD:

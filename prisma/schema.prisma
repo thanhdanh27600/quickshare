@@ -39,6 +39,7 @@ model UrlShortenerHistory {
   UrlForwardMeta       UrlForwardMeta[]
   urlShortenerRecordId Int
   Media                Media?
+  Note                 Note[]
 }
 
 model UrlForwardMeta {
@@ -52,11 +53,8 @@ model UrlForwardMeta {
 
   UrlShortenerHistory   UrlShortenerHistory? @relation(fields: [urlShortenerHistoryId], references: [id], onDelete: Cascade)
   urlShortenerHistoryId Int?
-  Note                  Note?                @relation(fields: [noteId], references: [id], onDelete: Cascade)
-  noteId                Int?
 
   @@unique([userAgent, ip, urlShortenerHistoryId])
-  @@unique([userAgent, ip, noteId])
 }
 
 model Media {
@@ -74,12 +72,15 @@ model Note {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  hash                 String             @unique
-  uuid                 String             @unique
-  text                 String
-  email                String?
-  password             String?
+  hash     String  @unique
+  uid      String  @unique
+  text     String
+  email    String?
+  password String?
+
   UrlShortenerRecord   UrlShortenerRecord @relation(fields: [urlShortenerRecordId], references: [id], onDelete: Cascade)
   urlShortenerRecordId Int
-  UrlForwardMeta       UrlForwardMeta[]
+
+  UrlShortenerHistory   UrlShortenerHistory? @relation(fields: [urlShortenerHistoryId], references: [id], onDelete: Cascade)
+  urlShortenerHistoryId Int
 }

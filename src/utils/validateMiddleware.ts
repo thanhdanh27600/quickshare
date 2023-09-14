@@ -1,6 +1,6 @@
 import { keys } from 'ramda';
 import { z } from 'zod';
-import { isProduction } from '../types/constants';
+import { HASH, isProduction } from '../types/constants';
 import { Theme, Themes } from '../types/og';
 
 export const validateShortenSchema = z.object({
@@ -18,7 +18,7 @@ export const validateShortenSchema = z.object({
         .string({
           required_error: 'Hash is required',
         })
-        .refine((value) => (!value ? true : /^.{3}$/.test(value || '')), 'Wrong hash format'),
+        .refine((value) => (!value ? true : HASH.Regex.test(value || '')), 'Wrong hash format'),
     ),
   }),
 });
@@ -31,7 +31,7 @@ export const validateUpdateShortenSchema = z.object({
     .string({
       required_error: 'Hash is required',
     })
-    .refine((value) => (!value ? true : /^.{3}$/.test(value || '')), 'Wrong hash format'),
+    .refine((value) => (!value ? true : HASH.Regex.test(value || '')), 'Wrong hash format'),
   ogTitle: z.optional(
     z.string({
       required_error: 'Title is required',
@@ -109,7 +109,7 @@ export const validateForwardSchema = z.object({
       .string({
         required_error: 'Hash is required',
       })
-      .refine((value) => (!value ? true : /^.{3}$/.test(value || '')), 'Wrong hash format'),
+      .refine((value) => (!value ? true : HASH.Regex.test(value || '')), 'Wrong hash format'),
   ),
 });
 export type ForwardSchema = z.infer<typeof validateForwardSchema>;
@@ -127,21 +127,27 @@ export const validateNoteSchema = z.object({
     required_error: 'IP is required',
   }),
   text: z.string({
-    description: 'Text is required',
+    description: 'NOTE_REQUIRED',
+    invalid_type_error: 'NOTE_REQUIRED',
   }),
+  uid: z.nullable(
+    z.string({
+      invalid_type_error: 'Uid is required',
+    }),
+  ),
   hash: z.nullable(
     z
       .string({
-        required_error: 'Hash is required',
+        invalid_type_error: 'Hash is required',
       })
-      .refine((value) => (!value ? true : /^.{3}$/.test(value || '')), 'Wrong hash format'),
+      .refine((value) => (!value ? true : HASH.Regex.test(value || '')), 'Wrong hash format'),
   ),
 });
 export type NoteSchema = z.infer<typeof validateNoteSchema>;
 
 export const validateUpdateNoteSchema = z.object({
-  uuid: z.string({
-    required_error: 'Uuid is required',
+  uid: z.string({
+    required_error: 'Uid is required',
   }),
   text: z.string({
     required_error: 'Text is required',

@@ -6,8 +6,7 @@ import { shortenCacheService } from '../services/cacheServices';
 import { REDIS_KEY, getRedisKey } from '../types/constants';
 import { Forward, ForwardMeta } from '../types/forward';
 import { ipLookup } from '../utils/agent';
-import { api, badRequest } from '../utils/axios';
-import HttpStatusCode from '../utils/statusCode';
+import { api, badRequest, successHandler } from '../utils/axios';
 import { validateForwardSchema } from '../utils/validateMiddleware';
 
 export const handler = api<Forward>(
@@ -31,7 +30,7 @@ export const handler = api<Forward>(
     if (!isEmpty(shortenedUrlCache)) {
       // cache hit
       postProcessForward(data); // bypass process
-      return res.status(HttpStatusCode.OK).json({ history: shortenedUrlCache });
+      return successHandler(res, { history: shortenedUrlCache });
     }
     // cache missed
     await postProcessForward(data, res);
@@ -76,6 +75,6 @@ export const postProcessForward = async (payload: ForwardMeta, res?: NextApiResp
   if (cacheMissed) {
     // write back to cache
     shortenCacheService.postShortenHash(history);
-    return res.status(HttpStatusCode.OK).json({ history });
+    return successHandler(res, { history });
   }
 };

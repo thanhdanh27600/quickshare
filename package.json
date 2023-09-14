@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "nodemon --exec 'next dev -p 5000'",
     "test": "jest --logHeapUsage --forceExit",
+    "migrate:test": "dotenv -e .env.test -- prisma migrate deploy",
+    "migrate:prod": "dotenv -e .env.production -- prisma migrate deploy",
     "migrate:dev": "npx prisma migrate dev --name",
     "migrate:status": "npx prisma migrate status",
     "build": "next build",
@@ -77,6 +79,7 @@
     "@types/request-ip": "^0.0.37",
     "@types/ua-parser-js": "^0.7.36",
     "autoprefixer": "^10.4.13",
+    "dotenv-cli": "^7.3.0",
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.6",
     "nodemon": "^2.0.20",

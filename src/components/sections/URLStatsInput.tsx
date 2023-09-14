@@ -7,7 +7,7 @@ import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
-import { BASE_URL, BASE_URL_SHORT, LIMIT_RECENT_HISTORY } from 'types/constants';
+import { BASE_URL, BASE_URL_SHORT, HASH, LIMIT_RECENT_HISTORY } from 'types/constants';
 import { UrlHistoryWithMeta } from 'types/stats';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
@@ -70,7 +70,7 @@ export const URLStats = ({ defaultOpen = false }: { defaultOpen?: boolean }) => 
 
   const title = (
     <span className="relative">
-      {t('viewMore')}
+      {t('manageLink')}
       {hasHistory && (
         <span className="absolute -right-7 bottom-2 flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-sm">
           {recentHistories?.length}
@@ -81,9 +81,9 @@ export const URLStats = ({ defaultOpen = false }: { defaultOpen?: boolean }) => 
   );
 
   return (
-    <Accordion title={title} className="mt-16" defaultOpen={defaultOpen}>
+    <Accordion title={title} defaultOpen={defaultOpen}>
       <div className="solid container mx-auto max-w-5xl rounded-lg border p-4 py-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
-        <h1 className="mb-4 text-4xl">{t('manageLink')}</h1>
+        <h1 className="mb-4 text-4xl">{t('findLink')}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
           <InputWithButton
             placeholder={`${BASE_URL_SHORT}/xxx`}
@@ -108,7 +108,7 @@ export const URLStats = ({ defaultOpen = false }: { defaultOpen?: boolean }) => 
                 const v = values.startsWith(BASE_URL_SHORT.replace(`${location.protocol}//`, ''))
                   ? `${location.protocol}//` + values
                   : values;
-                return v.startsWith(BASE_URL_SHORT) && /^.{3}$/.test(v.replace(BASE_URL_SHORT + '/', ''))
+                return v.startsWith(BASE_URL_SHORT) && HASH.Regex.test(v.replace(BASE_URL_SHORT + '/', ''))
                   ? undefined
                   : t('errorInvalidForward', { name: `${BASE_URL_SHORT}/xxx` });
               },

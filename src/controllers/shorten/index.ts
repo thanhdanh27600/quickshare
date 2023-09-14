@@ -2,7 +2,7 @@ import { UrlShortenerRecord } from '@prisma/client';
 import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
 import { shortenCacheService } from '../../services/cacheServices/shorten.service';
-import { LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST, NUM_CHARACTER_HASH } from '../../types/constants';
+import { HASH, LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST } from '../../types/constants';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import { decrypt } from '../../utils/crypto';
@@ -59,7 +59,7 @@ export const handler = api<ShortenUrl>(
         logger.error('timesLimit shorten reached', timesLimit);
         throw new Error('Bad request after digging our hash, please try again!');
       }
-      newHash = generateRandomString(NUM_CHARACTER_HASH);
+      newHash = generateRandomString(HASH.Length);
       isExist = await shortenCacheService.existHash(newHash);
       // also double check db if not collapse in cache
       if (!isExist) {
