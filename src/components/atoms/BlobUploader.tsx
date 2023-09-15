@@ -3,10 +3,9 @@ import { CheckCircle, Download, File, Image as ImageIcon, PlusCircle, Trash } fr
 import { API } from 'api/axios';
 import axios from 'axios';
 import clsx from 'clsx';
-import { randomUUID } from 'crypto';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { BASE_URL, LIMIT_FILE_UPLOAD, isProduction } from 'types/constants';
+import { BASE_URL, LIMIT_FILE_UPLOAD } from 'types/constants';
 import { useTrans } from 'utils/i18next';
 import { UploadProvider, isImage } from 'utils/media';
 import { truncateMiddle } from 'utils/text';
@@ -22,7 +21,6 @@ export const BlobUploader = ({ name = '', selectedMedia }: Props) => {
   const [uploading, setUploading] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState('');
   const [error, setError] = useState('');
-  const uuid = isProduction ? randomUUID() : new Date().getTime().toString();
   const fileName = useMemo(() => selectedMedia?.name || selectedFile?.name || 'No name', [selectedFile, selectedMedia]);
   const fileType = useMemo(() => selectedMedia?.type || selectedFile?.type || null, [selectedFile, selectedMedia]);
   const hasSelected = (selectedMedia?.id || -1) > 0;
@@ -113,10 +111,8 @@ export const BlobUploader = ({ name = '', selectedMedia }: Props) => {
         url: uploadUrl,
         name: fileName,
         type: fileType,
-        externalId: uuid,
         provider: UploadProvider.AZURE,
       });
-      setValue(`${name}.uuid`, uuid);
       setValue(`${name}.name`, imageRs.data.name);
       setValue(`${name}.type`, imageRs.data.type);
       setValue(`${name}.id`, imageRs.data.id);
