@@ -20,7 +20,7 @@ import { QueryKey } from 'utils/requests';
 
 type ShortenSettingPayload = Partial<UrlShortenerHistory> & { locale?: Locale };
 
-const UploadImage = dynamic(() => import('../atoms/UploadImage').then((mod) => mod.UploadImage));
+const ImageUploader = dynamic(() => import('../atoms/ImageUploader').then((mod) => mod.ImageUploader));
 
 export const SettingPreviewUrlForm = () => {
   const { t, locale } = useTrans();
@@ -118,7 +118,7 @@ export const SettingPreviewUrlForm = () => {
         <div>
           <label>{t('uploadImage')}</label>
           <div className="mt-2">
-            <UploadImage onSuccess={onUpdateImgSrc} />
+            <ImageUploader onSuccess={onUpdateImgSrc} />
           </div>
           <div className="mt-4">
             <label>{t('title')}</label>
@@ -161,7 +161,9 @@ export const SettingPreviewUrlForm = () => {
             render={(error) => <p className="text-red-400">{error.message}</p>}
           />
         </div>
-        <Button type="submit" text={t('save')} className="mt-4" loading={updateShortenUrl.isLoading} />
+        <div className="flex justify-center">
+          <Button type="submit" text={t('save')} className="mt-4 " loading={updateShortenUrl.isLoading} />
+        </div>
       </div>
     </form>
   );

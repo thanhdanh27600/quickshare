@@ -132,7 +132,22 @@ export const validateNoteSchema = z.object({
   }),
   uid: z.nullable(
     z.string({
-      invalid_type_error: 'Uid is required',
+      invalid_type_error: 'Uid is string',
+    }),
+  ),
+  title: z.nullable(
+    z.string({
+      invalid_type_error: 'Title is string',
+    }),
+  ),
+  medias: z.array(
+    z.object({
+      id: z.number(),
+      url: z.string(),
+      name: z.string(),
+      type: z.nullable(z.string()),
+      externalId: z.any(),
+      provider: z.any(),
     }),
   ),
   hash: z.nullable(
@@ -152,5 +167,20 @@ export const validateUpdateNoteSchema = z.object({
   text: z.string({
     required_error: 'Text is required',
   }),
+  title: z.nullable(
+    z.string({
+      invalid_type_error: 'Title is string',
+    }),
+  ),
+  medias: z.array(
+    z.object({
+      id: z.number(),
+      url: z.string(),
+      name: z.string(),
+      type: z.nullable(z.string()),
+      externalId: z.any(),
+      provider: z.any(),
+    }),
+  ),
 });
 export type UpdateNoteSchema = z.infer<typeof validateUpdateNoteSchema>;

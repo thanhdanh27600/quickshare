@@ -1,3 +1,4 @@
+import { isProduction } from '../../../types/constants';
 import { api, badRequest, successHandler } from '../../../utils/axios';
 import { AZURE_PERMISSION, blobService } from '../../../utils/azure';
 
@@ -10,7 +11,7 @@ const handler = api(
     if (!fileName) return badRequest(res);
 
     const containerName = process.env.AZURE_STORAGE_CONTAINER_NAME!;
-    const blobName = `anonymous/${fileName}`;
+    const blobName = `${isProduction ? 'anonymous' : 'local'}/${fileName}`;
 
     const startDate = new Date();
     const expiryDate = new Date(startDate);

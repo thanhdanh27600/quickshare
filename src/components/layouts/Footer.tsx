@@ -11,8 +11,18 @@ export const Footer = () => {
   return (
     <footer className="gap-4 border-y border-gray-200 px-4 py-4 pt-4 sm:py-8">
       <Modal id="donate" title="Donate 🙏" ConfirmButtonProps={{ ['data-te-modal-dismiss']: true } as any}>
+        <div className="mt-2 flex justify-center">
+          <a
+            target="_blank"
+            href="https://paypal.me/dolph2k"
+            className="inline-flex items-center font-medium hover:text-cyan-600 hover:underline">
+            <Image alt="Qr-Momo" src={'/assets/paypal.png'} width={100} height={0} />
+            {`Paypal`}
+            <ArrowUpRight className="mb-2 w-4" />
+          </a>
+        </div>
+        <p className="my-4 text-center text-xl font-bold">{`or`}</p>
         <div className="flex justify-center">
-          <Image alt="Qr-Momo" src={'/assets/qr-momo.jpg'} width={180} height={0} />
           <Image alt="Qr-Bank" src={'/assets/qr-bank.jpg'} width={160} height={0} />
         </div>
       </Modal>

@@ -1,11 +1,14 @@
+import { useBearStore } from 'bear';
 import clsx from 'clsx';
 import mixpanel from 'mixpanel-browser';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 
-export const ShortenUrlTile = ({ shortenUrl }: { shortenUrl: string }) => {
+export const ShortenUrlTile = () => {
   const [copied, setCopied] = useState(false);
+  const { shortenSlice } = useBearStore();
+  const [shortenUrl] = shortenSlice((state) => [state.getShortenUrl()]);
 
   const onCopy = () => {
     mixpanel.track(MIXPANEL_EVENT.LINK_COPY, {

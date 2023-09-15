@@ -75,5 +75,9 @@
   "edit": "Edit",
   "contact": "Contact",
   "pp": "Privacy Policy",
-  "tos": "Terms of Service"
+  "tos": "Terms of Service",
+  "selectOrDropFiles": "Select or Drop attachment",
+  "attachments": "Attachments",
+  "attachmentsCreate": "Attachments (maximum 3 files, 5MB each)",
+  "addAttachment": "Add an attachment"
 }

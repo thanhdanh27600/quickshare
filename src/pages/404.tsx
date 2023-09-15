@@ -19,7 +19,7 @@ const PageNotFound = () => {
               <a href={'/'} className="mr-6">
                 <Button text="Home" />
               </a>
-              <button className="rounded-md bg-gradient-to-r from-red-400 to-red-500 px-6 py-3 font-semibold text-white hover:from-red-500 hover:to-red-500">
+              <button className="rounded-md bg-gradient-to-r from-red-400 to-red-500 px-6 py-3 font-medium text-white hover:from-red-500 hover:to-red-500">
                 Contact Us
               </button>
             </div>

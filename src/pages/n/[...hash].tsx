@@ -1,16 +1,18 @@
-import { Note } from '@prisma/client';
 import { getNoteRequest } from 'api/requests';
+import { BlobViewer } from 'components/atoms/BlobViewer';
 import { LayoutMain } from 'components/layouts/LayoutMain';
+import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import requestIp from 'request-ip';
+import { NoteWithMedia } from 'types/note';
 import { defaultLocale, useTrans } from 'utils/i18next';
 import PageNotFound from '../404';
 
 interface Props {
-  note: Note;
+  note: NoteWithMedia;
   error?: unknown;
   ip: string;
 }
@@ -38,7 +40,17 @@ const ViewNote = ({ note, ip, error }: Props) => {
         <meta property="twitter:description" content={t('ogDescription')} />
       </Head>
       <LayoutMain featureTab={false}>
+        <h1 className="mb-4 text-lg font-medium text-gray-700">{note.title}</h1>
         <TextEditor defaultValue={note.text} readonly />
+        <div className="mt-6">
+          {(note.Media || []).length > 0 && <h2 className="mb-2">{t('attachments')}</h2>}
+          {note.Media?.map((media, index) => (
+            <div className="relative mb-4" key={`blob-${index}`}>
+              <BlobViewer media={media} />
+            </div>
+          ))}
+        </div>
+        <FeedbackLink template={FeedbackTemplate.NOTE} />
       </LayoutMain>
     </>
   );

@@ -1,3 +1,9 @@
-export const isImage = (fileType: string) => {
+export const isImage = (fileType: string | null) => {
+  if (!fileType) return false;
   return fileType.startsWith('image/');
 };
+
+export const UploadProvider = {
+  CLD: 'CLD',
+  AZURE: 'AZURE',
+} as const;
