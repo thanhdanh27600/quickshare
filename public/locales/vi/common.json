@@ -75,5 +75,9 @@
   "edit": "Chỉnh sửa",
   "pp": "Điều khoản bảo mật",
   "tos": "Chính sách sử dụng",
-  "contact": "Liên hệ"
+  "contact": "Liên hệ",
+  "selectOrDropFiles": "Chọn hoặc Kéo thả file",
+  "attachments": "File đính kèm",
+  "attachmentsCreate": "File đính kèm (tối đa 3 file, mỗi file 5MB)",
+  "addAttachment": "Thêm file"
 }

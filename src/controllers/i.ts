@@ -8,15 +8,17 @@ export const handler = api(
       body: req.body,
     });
     const url = req.body.url;
-    const rs = await prisma.media.upsert({
-      where: {
+    const externalId = req.body.externalId;
+    const provider = req.body.provider;
+    const name = req.body.name;
+    const type = req.body.type;
+    const rs = await prisma.media.create({
+      data: {
         url,
-      },
-      update: {
-        url,
-      },
-      create: {
-        url,
+        name,
+        type,
+        externalId,
+        provider,
       },
     });
     return successHandler(res, rs);

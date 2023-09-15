@@ -4,9 +4,9 @@ import Head from 'next/head';
 import { isProduction } from 'types/constants';
 import { useTrans } from 'utils/i18next';
 
-const NoteInput = dynamic(() => import('../gadgets/NoteInput').then((c) => c.NoteInput), { ssr: false });
+const NoteInput = dynamic(() => import('../sections/NoteInput').then((c) => c.NoteInput), { ssr: false });
 
-export const NoteSection = () => {
+export const Note = () => {
   const { t } = useTrans();
 
   return (

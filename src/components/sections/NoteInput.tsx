@@ -1,4 +1,3 @@
-import { Note } from '@prisma/client';
 import { createNoteRequest, updateNoteRequest } from 'api/requests';
 import { AxiosError } from 'axios';
 import { useBearStore } from 'bear';
@@ -12,12 +11,15 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { tinymce } from 'types/constants';
+import { NoteWithMedia } from 'types/note';
 import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
 import { validateNoteSchema, validateUpdateNoteSchema } from 'utils/validateMiddleware';
 import { ZodError } from 'zod';
-import { NoteUrlTile } from './NoteUrlTile';
+import { NoteAttachments } from '../gadgets/NoteAttachments';
+import { NoteTitleInput } from '../gadgets/NoteTitleInput';
+import { NoteUrlTile } from '../gadgets/NoteUrlTile';
 
 const TextEditor = dynamic(() => import('../gadgets/TextEditor').then((c) => c.default), { ssr: false });
 
@@ -30,12 +32,13 @@ export const NoteInput = () => {
   const [note, setNote] = noteSlice((state) => [state.note, state.setNote]);
   const [setShortenHistory] = shortenSlice((state) => [state.setShortenHistory]);
   const [localError, setLocalError] = useState('');
+  const hasNote = note?.id;
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     const uid = query.get('uid') || '';
     if (!!uid) {
-      requestNote.mutate({ hash: null, ip, text: '', uid });
+      requestNote.mutate({ hash: null, ip, text: '', title: '', uid, medias: [] });
     }
   }, []);
 
@@ -99,10 +102,13 @@ export const NoteInput = () => {
     },
   });
 
-  const handleUpdateNote = async (note: Note) => {
+  const handleUpdateNote = async (note: NoteWithMedia) => {
+    const medias = note?.Media?.filter((m) => m.id > 0) || [];
     const data = {
       uid: note.uid,
+      title: note.title,
       text: tinymce.activeEditor.getContent() || null,
+      medias,
     };
     const validate = await validateUpdateNoteSchema.safeParse(data);
     if (!validate.success) {
@@ -115,11 +121,14 @@ export const NoteInput = () => {
   };
 
   const handleCreateNote = async () => {
+    const medias = note?.Media?.filter((m) => m.id > 0) || [];
     const data = {
       hash: null,
       uid: null,
+      title: note?.title || null,
       text: tinymce.activeEditor.getContent() || null,
       ip,
+      medias,
     };
     const validate = await validateNoteSchema.safeParse(data);
     if (!validate.success) {
@@ -132,7 +141,7 @@ export const NoteInput = () => {
 
   const onSubmit = async () => {
     setLocalError('');
-    if (note) return handleUpdateNote(note as Note);
+    if (hasNote) return handleUpdateNote(note as NoteWithMedia);
     return handleCreateNote();
   };
 
@@ -142,17 +151,19 @@ export const NoteInput = () => {
 
   return (
     <div>
-      <NoteUrlTile />
-      <TextEditor key={note?.id} defaultValue={note?.text} />
+      {hasNote && <NoteUrlTile />}
+      <NoteTitleInput />
+      <TextEditor key={hasNote} defaultValue={note?.text} />
+      <NoteAttachments />
       {error && <p className="mt-4 text-red-400">{error}</p>}
       <Button
-        text={!!note ? t('save') : t('publish')}
+        text={hasNote ? t('save') : t('publish')}
         onClick={onSubmit}
         loading={loading}
         className="mx-auto mt-4 flex w-fit min-w-[5rem] justify-center"
         animation
       />
-      {note && <URLAdvancedSetting defaultOpen={false} />}
+      {hasNote && <URLAdvancedSetting defaultOpen={false} />}
       <FeedbackLink template={FeedbackTemplate.NOTE} />
     </div>
   );

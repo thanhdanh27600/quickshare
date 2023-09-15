@@ -25,11 +25,12 @@ section.common {
 .tox-tinymce {
   .tox-promotion,
   .tox-statusbar__branding,
-  .tox-statusbar__help-text {
-    display: none;
+  .tox-statusbar__help-text,
+  .tox-statusbar__path {
+    display: none !important;
   }
-  .tox-statusbar__text-container {
-    justify-content: space-between !important;
+  .tox-toolbar__primary {
+    background: none !important;
   }
 }
 .tox-readonly {

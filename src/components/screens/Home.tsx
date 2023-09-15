@@ -1,7 +1,7 @@
 import { useBearStore } from 'bear';
 import { FeatureTabKey } from 'bear/utilitySlice';
-import { NoteSection } from 'components/sections/NoteSection';
-import { UrlShortener } from 'components/sections/URLShortenerInput';
+import { Note } from 'components/screens/Note';
+import { UrlShortener } from 'components/screens/URLShortener';
 import { useEffect } from 'react';
 
 export const Home = ({ feature, ip }: { feature: FeatureTabKey; ip: string }) => {
@@ -14,7 +14,7 @@ export const Home = ({ feature, ip }: { feature: FeatureTabKey; ip: string }) =>
   return (
     <div className="grid">
       {feature === FeatureTabKey.SHARE_LINK && <UrlShortener />}
-      {feature === FeatureTabKey.SHARE_TEXT && <NoteSection />}
+      {feature === FeatureTabKey.SHARE_TEXT && <Note />}
     </div>
   );
 };

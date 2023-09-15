@@ -38,13 +38,7 @@ const tabs: Tab[] = [
   },
 ];
 
-export const URLAdvancedSetting = ({
-  defaultOpen = true,
-  shortenUrl,
-}: {
-  defaultOpen?: boolean;
-  shortenUrl?: string;
-}) => {
+export const URLAdvancedSetting = ({ defaultOpen = true }: { defaultOpen?: boolean; shortenUrl?: string }) => {
   const { t, locale } = useTrans();
   const [selectedKey, setSelectedKey] = useState(tabs[0]?.key);
 
@@ -60,7 +54,7 @@ export const URLAdvancedSetting = ({
   return (
     <Accordion title={title} defaultOpen={defaultOpen} className="my-4">
       <div>
-        {shortenUrl && <ShortenUrlTile shortenUrl={shortenUrl} />}
+        <ShortenUrlTile />
         <div className="my-4" />
         <Tabs tabs={tabs} selectedKey={selectedKey} setSelectedKey={setSelectedKey} />
         <URLSharePreview selectedKey={selectedKey} />

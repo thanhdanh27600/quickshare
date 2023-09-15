@@ -3,7 +3,6 @@ import { stringify } from 'querystring';
 import { Forward } from 'types/forward';
 import { Locale } from 'types/locale';
 import { NoteRs } from 'types/note';
-import { QR } from 'types/qr';
 import { ShortenUrl } from 'types/shorten';
 import { Stats } from 'types/stats';
 import { ForwardSchema, NoteSchema, UpdateNoteSchema } from 'utils/validateMiddleware';
@@ -92,16 +91,6 @@ export const getStats = async ({
 export const getStatsToken = async (h: string, p: string) => {
   const rs = await API.post(`/api/stats/verify`, { h, p });
   return rs.data as { token: string };
-};
-
-export const getQr = async (text: string, token: string) => {
-  const rs = await API.get(`/api/qr?text=${text}`, {
-    headers: {
-      ...withAuth(token),
-    },
-  });
-  const data = rs.data;
-  return data as QR;
 };
 
 export const parseUA = memoize(async (ua: string) => {

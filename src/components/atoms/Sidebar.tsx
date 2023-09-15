@@ -45,7 +45,7 @@ export const Sidebar = ({ className }: Props) => {
         aria-labelledby="sideBarLabel"
         data-te-offcanvas-init="">
         <div className="flex items-center justify-between p-4">
-          <div className="mb-0 font-semibold leading-normal" id="sideBarLabel">
+          <div className="mb-0 font-medium leading-normal" id="sideBarLabel">
             <Link href="/">
               <Image src={'/assets/quickshare.png'} alt="Quickshare's logo" width={38} height={38} />
             </Link>
@@ -68,11 +68,11 @@ export const Sidebar = ({ className }: Props) => {
           </button>
         </div>
         <div className="offcanvas-body flex flex-grow flex-col items-center gap-8 overflow-y-auto p-4">
-          <Link href="/" className="text-grey-900 text-xl font-semibold hover:underline">
+          <Link href="/" className="text-grey-900 text-xl font-medium hover:underline">
             {t('urlShortener')}
           </Link>
 
-          <Link href="/tracking" className="text-grey-900 text-xl font-semibold hover:underline">
+          <Link href="/tracking" className="text-grey-900 text-xl font-medium hover:underline">
             {t('manageLink')}
             {/* <ExternalLink className="mb-4 ml-1 w-4" /> */}
           </Link>
@@ -82,7 +82,7 @@ export const Sidebar = ({ className }: Props) => {
             onClick={() => {
               location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
             }}
-            className="text-grey-900 text-xl font-semibold hover:underline">
+            className="text-grey-900 text-xl font-medium hover:underline">
             {t('noteEditor')}
           </Link>
 

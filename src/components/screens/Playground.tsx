@@ -1,4 +1,4 @@
-import { UploadBlob } from 'components/atoms/UploadBlob';
+import { BlobUploader } from 'components/atoms/BlobUploader';
 
 export const Playground = () => {
   const log = () => {};
@@ -8,7 +8,7 @@ export const Playground = () => {
   return (
     <>
       <h1 className="my-8 text-xl font-bold">Playground</h1>
-      <UploadBlob />
+      <BlobUploader />
       {/* <Sidebar /> */}
       {/* <TextEditor /> */}
       {/* <button onClick={log}>Log editor content</button> */}

@@ -22,6 +22,16 @@ type URLShortenerForm = {
   url: string;
 };
 
+export const UrlShortener = () => {
+  return (
+    <div>
+      <URLShortenerInput />
+      <div className="my-16"></div>
+      <URLStats />
+    </div>
+  );
+};
+
 const URLShortenerInput = () => {
   const router = useRouter();
   const [localError, setLocalError] = useState('');
@@ -132,17 +142,6 @@ const URLShortenerInput = () => {
       <p className="mt-4 text-red-400">{error}</p>
       {hasData && shortenUrl && <URLShortenerResult />}
       <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
-    </div>
-  );
-};
-
-export const UrlShortener = () => {
-  const { t } = useTrans('common');
-  return (
-    <div>
-      <URLShortenerInput />
-      <div className="my-16"></div>
-      <URLStats />
     </div>
   );
 };
