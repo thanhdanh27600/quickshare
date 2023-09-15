@@ -28,22 +28,22 @@ const useFeedbackTemplate = (template: FeedbackTemplate) => {
   let supportUrl = '';
   switch (template) {
     case FeedbackTemplate.URL_SHORT:
-      supportUrl = `mailto:thanhdanh27600@gmail.com?subject=${encodeURIComponent(
+      supportUrl = `mailto:dolph.pham@gmail.com?subject=${encodeURIComponent(
         t('feedbackURLSubject'),
       )}&body=${encodeURIComponent(t('feedbackBody'))}`;
       break;
     case FeedbackTemplate.URL_TRACKING:
-      supportUrl = `mailto:thanhdanh27600@gmail.com?subject=${encodeURIComponent(
+      supportUrl = `mailto:dolph.pham@gmail.com?subject=${encodeURIComponent(
         t('feedbackShortSubject'),
       )}&body=${encodeURIComponent(t('feedbackBody'))}`;
       break;
     case FeedbackTemplate.NOTE:
-      supportUrl = `mailto:thanhdanh27600@gmail.com?subject=${encodeURIComponent(
+      supportUrl = `mailto:dolph.pham@gmail.com?subject=${encodeURIComponent(
         t('feedbackNoteSubject'),
       )}&body=${encodeURIComponent(t('feedbackBody'))}`;
       break;
     case FeedbackTemplate.FORGOT_PASSWORD:
-      supportUrl = `mailto:thanhdanh27600@gmail.com?subject=${encodeURIComponent(
+      supportUrl = `mailto:dolph.pham@gmail.com?subject=${encodeURIComponent(
         t('feedbackForgotSubject'),
       )}&body=${encodeURIComponent(t('feedbackForgotBody'))}`;
       break;

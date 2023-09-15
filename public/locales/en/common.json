@@ -72,5 +72,8 @@
   "shareNote": "Share note",
   "NOTE_REQUIRED": "Please input your note before publish!",
   "tracking": "Tracking",
-  "edit": "Edit"
+  "edit": "Edit",
+  "contact": "Contact",
+  "pp": "Privacy Policy",
+  "tos": "Terms of Service"
 }

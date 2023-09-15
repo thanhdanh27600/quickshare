@@ -23,6 +23,8 @@ export const MIXPANEL_EVENT = {
   OPEN_SET_PASSWORD: 'Open Set Password',
   SET_PASSWORD: 'Set Password',
   INPUT_URL: 'Input URL',
+  TERMS: 'Terms of Service',
+  PRIVACY: 'Privacy Policy',
   CRASH: 'CRASH',
 } as const;
 

@@ -3,12 +3,12 @@ import { NextApiHandler } from 'next';
 import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
 import { redis } from '../../redis/client';
-import { noteCacheService, shortenCacheService } from '../../services/cacheServices';
+import { noteCacheService } from '../../services/cache';
+import { generateHash } from '../../services/hash';
 import { BASE_URL, HASH, LIMIT_FEATURE_HOUR, LIMIT_NOTE_REQUEST, REDIS_KEY, getRedisKey } from '../../types/constants';
 import { NoteRs } from '../../types/note';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import HttpStatusCode from '../../utils/statusCode';
-import { generateRandomString } from '../../utils/text';
 import { validateNoteSchema } from '../../utils/validateMiddleware';
 
 export const handler = api<NoteRs>(
@@ -45,55 +45,10 @@ export const handler = api<NoteRs>(
     if (!record) record = await prisma.urlShortenerRecord.create({ data: { ip } });
 
     // generate hash
-    let noteHash = '';
-    let isExist = 1;
-    let timesLimit = 0;
-
-    const logger = require('../../utils/loggerServer');
-    while (isExist) {
-      if (timesLimit > 0) {
-        logger.warn('timesLimit note occured', timesLimit);
-      }
-      if (timesLimit++ > 10 /** U better buy lucky ticket */) {
-        logger.error('timesLimit note reached', timesLimit);
-        throw new Error('Bad request after digging our hash, please try again!');
-      }
-      noteHash = generateRandomString(HASH.Length);
-      isExist = await noteCacheService.existHash(noteHash);
-      // also double check db if not collapse in cache
-      if (!isExist) {
-        isExist = !!(await prisma.note.findUnique({ where: { hash: noteHash } })) ? 1 : 0;
-      }
-    }
-
-    const time = `${new Date().getTime()}`;
-    // 12 chars : ex. time = 1694179884653 -> base64url('884653xxx') -> 12 chars
-    const targetUid = `${base64url(time.slice(10 - HASH.Length) + noteHash)}`;
-
-    // write hash to cache
-    const dataHashNote = ['text', text, 'uid', uid, 'updatedAt', new Date().getTime()];
-    await noteCacheService.postNoteHash({ hash: noteHash, data: dataHashNote });
+    const noteHash = await generateHash('note');
 
     // create shorten url
-    // generate hash
-    let shortHash = '';
-    isExist = 1;
-    timesLimit = 0;
-    while (isExist) {
-      if (timesLimit > 0) {
-        logger.warn('timesLimit shorten occured', timesLimit);
-      }
-      if (timesLimit++ > 10 /** U better buy lucky ticket */) {
-        logger.error('timesLimit shorten reached', timesLimit);
-        throw new Error('Bad request after digging our hash, please try again!');
-      }
-      shortHash = generateRandomString(HASH.Length);
-      isExist = await shortenCacheService.existHash(shortHash);
-      // also double check db if not collapse in cache
-      if (!isExist) {
-        isExist = !!(await prisma.urlShortenerHistory.findUnique({ where: { hash: shortHash } })) ? 1 : 0;
-      }
-    }
+    const shortHash = await generateHash('shorten');
     const history = await prisma.urlShortenerHistory.create({
       data: {
         url: `${BASE_URL}/n/${noteHash}`,
@@ -102,7 +57,15 @@ export const handler = api<NoteRs>(
       },
     });
 
-    // write to db
+    // generate note uid
+    const time = `${new Date().getTime()}`;
+    // 12 chars : ex. time = 1694179884653 -> base64url('884653xxx') -> 12 chars
+    const targetUid = `${base64url(time.slice(10 - HASH.Length) + noteHash)}`;
+    // write note to cache
+    const dataHashNote = ['text', text, 'uid', targetUid, 'updatedAt', new Date().getTime()];
+    await noteCacheService.postNoteHash({ hash: noteHash, data: dataHashNote });
+
+    // write to note db
     const note = await prisma.note.create({
       data: {
         hash: noteHash,
@@ -112,7 +75,6 @@ export const handler = api<NoteRs>(
         urlShortenerHistoryId: history.id,
       },
     });
-
     return successHandler(res, { note: { ...note, UrlShortenerHistory: history } });
   },
   ['POST', 'GET'],
