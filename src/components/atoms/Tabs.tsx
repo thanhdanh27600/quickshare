@@ -32,11 +32,11 @@ export const Tabs = (props: Props) => {
               <button
                 onClick={handleClick(tab)}
                 className={clsx(
-                  'group inline-flex items-center justify-center rounded-t-lg border-b-2 border-transparent p-4 py-2',
-                  !tab.disabled && !selected && 'hover:border-gray-300 hover:text-gray-600',
+                  'group inline-flex items-center justify-center rounded-t-lg border-b-2 border-transparent p-4 py-2 transition-all',
+                  !tab.disabled && !selected && 'hover:border-gray-300 hover:bg-gray-100/40 hover:text-gray-600',
                   !tab.disabled &&
                     selected &&
-                    '!border-cyan-500 text-cyan-500 hover:border-cyan-400 hover:text-cyan-400',
+                    '!border-cyan-500 bg-gray-100/60 text-cyan-500 hover:border-cyan-400 hover:text-cyan-400',
                   tab.disabled && 'cursor-not-allowed text-gray-400',
                 )}>
                 <div className={clsx()}>{tab.content}</div>

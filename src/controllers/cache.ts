@@ -20,6 +20,9 @@ export const handler = api(
       case 'hgetall':
         rs = await redis.hgetall(key);
         break;
+      case 'keys':
+        rs = { data: await redis.keys(key) };
+        break;
       case 'hget':
         rs = { data: await redis.hget(key, params) };
         break;

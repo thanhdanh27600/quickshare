@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { isEmpty } from 'ramda';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
-import { shortenCacheService } from '../services/cacheServices';
+import { shortenCacheService } from '../services/cache';
 import { REDIS_KEY, getRedisKey } from '../types/constants';
 import { Forward, ForwardMeta } from '../types/forward';
 import { ipLookup } from '../utils/agent';

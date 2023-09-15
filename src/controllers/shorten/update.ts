@@ -1,5 +1,5 @@
 import prisma from '../../db/prisma';
-import { shortenCacheService } from '../../services/cacheServices/shorten.service';
+import { shortenCacheService } from '../../services/cache/shorten.service';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, errorHandler, successHandler } from '../../utils/axios';
 import { cloudinaryInstance } from '../../utils/cloudinary';

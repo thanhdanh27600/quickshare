@@ -1,7 +1,7 @@
 import { UrlShortenerRecord } from '@prisma/client';
 import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
-import { shortenCacheService } from '../../services/cacheServices/shorten.service';
+import { shortenCacheService } from '../../services/cache/shorten.service';
 import { HASH, LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST } from '../../types/constants';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, successHandler } from '../../utils/axios';

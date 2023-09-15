@@ -1,5 +1,5 @@
 import prisma from '../../db/prisma';
-import { noteCacheService } from '../../services/cacheServices';
+import { noteCacheService } from '../../services/cache';
 import { NoteRs } from '../../types/note';
 import { api, successHandler } from '../../utils/axios';
 import HttpStatusCode from '../../utils/statusCode';

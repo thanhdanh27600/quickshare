@@ -25,7 +25,7 @@ Lightweight web application for create notes and shortening URLs, along with rea
 
 For any further questions or inquiries, you can reach out to the maintainers of this project:
 
-- Maintainer Name: Dolph
+- Maintainer Name: Dolph Pham
 - Maintainer Email: dolph.pham@gmail.com
 
 If you read this. Thank you & happy coding.
