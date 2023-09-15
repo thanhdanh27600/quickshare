@@ -1,5 +1,8 @@
 import { useBearStore } from 'bear';
+import { ShortenUrlTile } from 'components/gadgets/ShortenUrlTile';
+import { URLShare } from 'components/gadgets/URLShare';
 import { LayoutMain } from 'components/layouts/LayoutMain';
+import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLAdvancedSetting } from 'components/sections/URLAdvancedSetting';
 import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
@@ -16,13 +19,18 @@ export const URLTracking = ({ hash }: { hash: string }) => {
 
   return (
     <LayoutMain featureTab={false}>
-      {shortenHistory && (
-        <>
-          <URLAdvancedSetting defaultOpen={false} shortenUrl={shortenUrl} />
-          <hr className="my-4" />
-        </>
-      )}
       <TrackingClick hash={hash} />
+      {shortenHistory && (
+        <div className="mt-8">
+          <ShortenUrlTile />
+          <URLShare />
+          <URLAdvancedSetting defaultOpen={false} shortenUrl={shortenUrl} />
+        </div>
+      )}
+
+      <div className="m-4">
+        <FeedbackLink template={FeedbackTemplate.URL_TRACKING} />
+      </div>
     </LayoutMain>
   );
 };
