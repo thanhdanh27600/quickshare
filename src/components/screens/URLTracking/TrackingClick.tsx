@@ -5,7 +5,6 @@ import { useBearStore } from 'bear';
 import clsx from 'clsx';
 import { Button } from 'components/atoms/Button';
 import { Modal } from 'components/atoms/Modal';
-import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import isbot from 'isbot';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
@@ -286,10 +285,6 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
                 </tbody>
               </table>
             </div>
-          </div>
-
-          <div className="m-4">
-            <FeedbackLink template={FeedbackTemplate.URL_TRACKING} />
           </div>
         </>
       )}

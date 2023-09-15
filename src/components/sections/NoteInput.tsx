@@ -2,6 +2,7 @@ import { createNoteRequest, updateNoteRequest } from 'api/requests';
 import { AxiosError } from 'axios';
 import { useBearStore } from 'bear';
 import { Button } from 'components/atoms/Button';
+import { URLShare } from 'components/gadgets/URLShare';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLAdvancedSetting } from 'components/sections/URLAdvancedSetting';
 import mixpanel from 'mixpanel-browser';
@@ -151,7 +152,12 @@ export const NoteInput = () => {
 
   return (
     <div>
-      {hasNote && <NoteUrlTile />}
+      {hasNote && (
+        <div className="mb-4">
+          <NoteUrlTile />
+          <URLShare />
+        </div>
+      )}
       <NoteTitleInput />
       <TextEditor key={hasNote} defaultValue={note?.text} />
       <NoteAttachments />

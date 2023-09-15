@@ -115,10 +115,10 @@ export const URLStats = ({ defaultOpen = false }: { defaultOpen?: boolean }) => 
               deps: [],
             })}
             buttonProps={{
-              text: t('continue'),
+              text: t('go'),
               variant: 'filled',
               type: 'submit',
-              className: 'bg-gray-500 bg-none hover:bg-gray-500/80',
+              className: 'bg-gray-500 bg-none hover:bg-gray-500/80 disabled:bg-gray-300 disabled:text-gray-500',
               TextClassname: 'text-sm sm:text-xl',
               hoverTransform: false,
               loading: fetchTracking.isLoading,

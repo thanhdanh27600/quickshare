@@ -2,7 +2,6 @@ import { Facebook, ThumbsUp, Twitter } from '@styled-icons/feather';
 import { Accordion } from 'components/atoms/Accordion';
 import { Tab, Tabs } from 'components/atoms/Tabs';
 import { SettingPreviewUrlForm } from 'components/gadgets/SettingPreviewUrlForm';
-import { ShortenUrlTile } from 'components/gadgets/ShortenUrlTile';
 import { Discord } from 'components/icons/Discord';
 import { useState } from 'react';
 import { useTrans } from 'utils/i18next';
@@ -54,7 +53,6 @@ export const URLAdvancedSetting = ({ defaultOpen = true }: { defaultOpen?: boole
   return (
     <Accordion title={title} defaultOpen={defaultOpen} className="my-4">
       <div>
-        <ShortenUrlTile />
         <div className="my-4" />
         <Tabs tabs={tabs} selectedKey={selectedKey} setSelectedKey={setSelectedKey} />
         <URLSharePreview selectedKey={selectedKey} />
