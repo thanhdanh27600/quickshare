@@ -40,7 +40,7 @@ const ViewNote = ({ note, ip, error }: Props) => {
         <meta property="twitter:description" content={t('ogDescription')} />
       </Head>
       <LayoutMain featureTab={false}>
-        <h1 className="mb-4 text-lg font-medium text-gray-700">{note.title}</h1>
+        <h1 className="m-4 text-lg font-medium text-gray-700">{note.title}</h1>
         <TextEditor defaultValue={note.text} readonly />
         <div className="mt-6">
           {(note.Media || []).length > 0 && <h2 className="mb-2">{t('attachments')}</h2>}

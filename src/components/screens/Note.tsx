@@ -1,7 +1,5 @@
 import { HelpTooltip } from 'components/gadgets/HelpTooltip';
 import dynamic from 'next/dynamic';
-import Head from 'next/head';
-import { isProduction } from 'types/constants';
 import { useTrans } from 'utils/i18next';
 
 const NoteInput = dynamic(() => import('../sections/NoteInput').then((c) => c.NoteInput), { ssr: false });
@@ -11,7 +9,6 @@ export const Note = () => {
 
   return (
     <>
-      <Head>{isProduction && <title>{t('brandTitleNote')}</title>}</Head>
       <h1 className="mb-4 flex gap-1 text-3xl">
         {t('noteEditor')}
         <HelpTooltip text={t('helpNoteHead')} />
