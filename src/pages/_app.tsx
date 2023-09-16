@@ -32,6 +32,13 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       window.location.href = BASE_URL;
     }
     const _ = new (window as any).ClipboardJS('.btn-copy');
+    // Google Ads
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    function gtag(...a: any[]) {
+      (window as any).dataLayer.push(a);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-LE8KPBMBMD');
   }, []);
 
   return (

@@ -53,14 +53,7 @@ export default function Document() {
           strategy="beforeInteractive"
           src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></Script>
 
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-LE8KPBMBMD" />
-        <Script id="G-LE8KPBMBMD">
-          {`window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-LE8KPBMBMD');`}
-          `
-        </Script>
+        <Script strategy="beforeInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-LE8KPBMBMD" />
       </Head>
       <body>
         <Main />
