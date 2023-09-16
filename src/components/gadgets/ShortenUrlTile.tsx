@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import mixpanel from 'mixpanel-browser';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
+import { EVENTS_STATUS, MIXPANEL_EVENT } from 'types/utils';
 
 export const ShortenUrlTile = () => {
   const [copied, setCopied] = useState(false);
@@ -12,7 +12,7 @@ export const ShortenUrlTile = () => {
 
   const onCopy = () => {
     mixpanel.track(MIXPANEL_EVENT.LINK_COPY, {
-      status: MIXPANEL_STATUS.OK,
+      status: EVENTS_STATUS.OK,
       shortenUrl,
     });
     setCopied(true);

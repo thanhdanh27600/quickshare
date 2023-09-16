@@ -4,6 +4,7 @@ import { updateShortenUrlRequest } from 'api/requests';
 import { useBearStore } from 'bear';
 import { Button } from 'components/atoms/Button';
 import { Input, Textarea } from 'components/atoms/Input';
+import { logEvent } from 'firebase/analytics';
 import mixpanel from 'mixpanel-browser';
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect } from 'react';
@@ -12,8 +13,9 @@ import { toast } from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { LIMIT_OG_DESCRIPTION_LENGTH, LIMIT_OG_TITLE_LENGTH, brandUrlShortDomain } from 'types/constants';
 import { Locale } from 'types/locale';
-import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
+import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { debounce } from 'utils/data';
+import { analytics } from 'utils/firebase';
 import { useTrans } from 'utils/i18next';
 import { logger } from 'utils/logger';
 import { QueryKey } from 'utils/requests';
@@ -83,7 +85,9 @@ export const SettingPreviewUrlForm = () => {
     mutationFn: updateShortenUrlRequest,
     onError: (error: any) => {
       try {
-        mixpanel.track(MIXPANEL_EVENT.SHORTEN_UPDATE, { status: MIXPANEL_STATUS.FAILED, error: error.toString() });
+        const log = { status: EVENTS_STATUS.FAILED, error: error.toString() };
+        mixpanel.track(MIXPANEL_EVENT.SHORTEN_UPDATE, log);
+        logEvent(analytics, FIREBASE_ANALYTICS_EVENT.SHORTEN_UPDATE, log);
       } catch (error) {
         logger.error(error);
       }
@@ -91,7 +95,7 @@ export const SettingPreviewUrlForm = () => {
       toast.error(t('somethingWrong'));
     },
     onSuccess: async (data) => {
-      mixpanel.track(MIXPANEL_EVENT.SHORTEN_UPDATE, { status: MIXPANEL_STATUS.OK, data });
+      mixpanel.track(MIXPANEL_EVENT.SHORTEN_UPDATE, { status: EVENTS_STATUS.OK, data });
       toast.success(t('updated'));
     },
   });

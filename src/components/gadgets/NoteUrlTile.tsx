@@ -4,7 +4,7 @@ import mixpanel from 'mixpanel-browser';
 import { isEmpty } from 'ramda';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
+import { EVENTS_STATUS, MIXPANEL_EVENT } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
 export const NoteUrlTile = () => {
@@ -21,7 +21,7 @@ export const NoteUrlTile = () => {
 
   const onCopy = (type: 'short' | 'tracking' | 'edit') => () => {
     mixpanel.track(MIXPANEL_EVENT.LINK_COPY, {
-      status: MIXPANEL_STATUS.OK,
+      status: EVENTS_STATUS.OK,
       type,
       note,
     });

@@ -36,6 +36,7 @@
     "dayjs": "^1.11.9",
     "dotenv": "^16.3.1",
     "fast-memoize": "^2.5.2",
+    "firebase": "^10.4.0",
     "geoip-country": "^4.1.43",
     "handlebars": "^4.7.7",
     "i18next": "^23.4.6",
