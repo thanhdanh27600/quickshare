@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { BASE_URL, isProduction, isShortDomain } from 'types/constants';
 import { defaultLocale, useTrans } from 'utils/i18next';
 
-export const BrandHead = ({ feature }: { feature: FeatureTabKey }) => {
+export const BrandHead = ({ feature = FeatureTabKey.SHARE_LINK }: { feature: FeatureTabKey }) => {
   const { t, locale } = useTrans();
   if (isShortDomain) {
     return null;
