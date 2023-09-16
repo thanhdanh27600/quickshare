@@ -1,6 +1,6 @@
 {
   "ogTitle": "Share link <{{hash}}> with everyone. Find out now!",
-  "ogDescription": "Quickshare, share like a pro.",
+  "ogDescription": "Quickshare - share note with shortened urls, always free.",
   "giveFeedback": "Give feedback",
   "errorNoUrl": "Please enter the URL to continue",
   "errorInvalidUrl": "Invalid URL, please try again",
@@ -54,7 +54,7 @@
   "refresh": "Refresh",
   "noData": "No data found",
   "helpShortUrlHead": "- Shorten link to 3 unique hash xxx (qsh.at/xxx)\n- Link saved by IP, no sign in required\n- To manage link, check \"View more\"\n- Shortened link goes publicly, unless set new password",
-  "helpNoteHead": "- Create note and save to 3 unique hash xxx (qsh.at/xxx)\n- Note saved by IP, no sign in required\n- Note published has publicly access, unless set new password",
+  "helpNoteHead": "- Create note and save to 3 unique hash xxx (qsh.at/xxx)\n- Note saved by IP, no sign in required\n- Note published has publicly access, unless set new password\n- Save your edit link in another place for further update",
   "brandTitle": "Quickshare - Create Note with URLs Shortener, quick and all free.",
   "brandTitleNote": "Quickshare - Create new note",
   "brandDescription": "Share and Create Free Notes with URLs Shortener as Bitly, TinyUrl,shorten any URLs for free . Quickshare save your notes, texts, and track shortened links, click counts, locations.",

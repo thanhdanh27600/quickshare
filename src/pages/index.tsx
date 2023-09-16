@@ -11,7 +11,7 @@ import { defaultLocale } from 'utils/i18next';
 
 export const MainPage = ({ feature, ip }: { feature: FeatureTabKey; ip: string }) => {
   return (
-    <LayoutMain>
+    <LayoutMain feature={feature}>
       <Home feature={feature} ip={ip} />
     </LayoutMain>
   );

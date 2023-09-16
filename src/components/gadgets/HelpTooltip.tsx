@@ -50,7 +50,7 @@ export const HelpTooltip = ({ text }: Props) => {
               setKeep(false);
             }
           }}
-          className="absolute bottom-1 w-[300px] border border-cyan-300 bg-gray-50 p-4 text-sm transition-all max-sm:right-0 max-sm:translate-x-[95px] sm:left-5">
+          className="absolute left-4 top-8 w-[250px] -translate-x-[50%] border border-cyan-300 bg-gray-50 p-4 text-xs transition-all  sm:w-[300px] sm:-translate-y-[50%] sm:translate-x-[20px] sm:text-sm">
           <h2 className="whitespace-pre-line text-gray-700">{text}</h2>
         </div>
       </Tooltip>
