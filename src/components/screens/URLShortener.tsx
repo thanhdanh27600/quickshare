@@ -6,14 +6,16 @@ import { HelpTooltip } from 'components/gadgets/HelpTooltip';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLShortenerResult } from 'components/sections/URLShortenerResult';
 import { URLStats } from 'components/sections/URLStatsInput';
+import { logEvent } from 'firebase/analytics';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import { HASH } from 'types/constants';
-import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
+import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { encrypt } from 'utils/crypto';
+import { analytics } from 'utils/firebase';
 import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
 import { urlRegex } from 'utils/text';
@@ -61,11 +63,13 @@ const URLShortenerInput = () => {
       setLocalError('');
     },
     onError: (error, variables, context) => {
-      mixpanel.track(MIXPANEL_EVENT.SHORTEN, {
-        status: MIXPANEL_STATUS.FAILED,
+      const log = {
+        status: EVENTS_STATUS.FAILED,
         errorMessage: error,
         urlRaw: variables,
-      });
+      };
+      mixpanel.track(MIXPANEL_EVENT.SHORTEN, log);
+      logEvent(analytics, FIREBASE_ANALYTICS_EVENT.SHORTEN, log);
     },
     onSuccess: (data, variables, context) => {
       if (data.hash && data.url) {
@@ -73,17 +77,19 @@ const URLShortenerInput = () => {
         queryClient.invalidateQueries(QueryKey.RECORD);
         setValue('url', data.url);
         mixpanel.track(MIXPANEL_EVENT.SHORTEN, {
-          status: MIXPANEL_STATUS.OK,
+          status: EVENTS_STATUS.OK,
           data,
         });
         const queryParams = { ...router.query, ...{ hash: data.hash } };
         router.push({ pathname: router.pathname, query: queryParams });
       } else {
         setLocalError(t('somethingWrong'));
-        mixpanel.track(MIXPANEL_EVENT.SHORTEN, {
-          status: MIXPANEL_STATUS.INTERNAL_ERROR,
+        const log = {
+          status: EVENTS_STATUS.INTERNAL_ERROR,
           urlRaw: variables,
-        });
+        };
+        mixpanel.track(MIXPANEL_EVENT.SHORTEN, log);
+        logEvent(analytics, FIREBASE_ANALYTICS_EVENT.SHORTEN, log);
       }
     },
   });
@@ -99,11 +105,13 @@ const URLShortenerInput = () => {
 
   useEffect(() => {
     if (error && isSubmitting) {
-      mixpanel.track(MIXPANEL_EVENT.SHORTEN, {
-        status: MIXPANEL_STATUS.FAILED,
+      const log = {
+        status: EVENTS_STATUS.FAILED,
         errorMessage: error,
         url: getValues('url'),
-      });
+      };
+      mixpanel.track(MIXPANEL_EVENT.SHORTEN, log);
+      logEvent(analytics, FIREBASE_ANALYTICS_EVENT.SHORTEN, log);
     }
   }, [isSubmitting]);
 
@@ -134,7 +142,7 @@ const URLShortenerInput = () => {
             TextClassname: 'text-sm sm:text-xl',
           }}
           onFocus={() => {
-            mixpanel.track(MIXPANEL_EVENT.INPUT_URL, { status: MIXPANEL_STATUS.OK });
+            mixpanel.track(MIXPANEL_EVENT.INPUT_URL, { status: EVENTS_STATUS.OK });
           }}
           className="pl-5"
         />

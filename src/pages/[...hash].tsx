@@ -1,5 +1,6 @@
 import { UrlShortenerHistory } from '@prisma/client';
 import { getForwardUrl } from 'api/requests';
+import { logEvent } from 'firebase/analytics';
 import mixpanel from 'mixpanel-browser';
 import { GetServerSidePropsContext } from 'next';
 import { CldOgImage } from 'next-cloudinary';
@@ -10,8 +11,9 @@ import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
 import { BASE_URL_OG, Window } from 'types/constants';
-import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
+import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { encodeBase64 } from 'utils/crypto';
+import { analytics } from 'utils/firebase';
 import { defaultLocale, useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
 import PageNotFound from './404';
@@ -58,14 +60,16 @@ const ForwardURL = ({ history, ip, error }: Props) => {
       return;
     }
     if (!url) {
-      mixpanel.track(MIXPANEL_EVENT.FORWARD, {
-        status: MIXPANEL_STATUS.FAILED,
+      const log = {
+        status: EVENTS_STATUS.FAILED,
         error,
-      });
+      };
+      mixpanel.track(MIXPANEL_EVENT.FORWARD, log);
+      logEvent(analytics, FIREBASE_ANALYTICS_EVENT.FORWARD, log);
       return;
     }
     mixpanel.track(MIXPANEL_EVENT.FORWARD, {
-      status: MIXPANEL_STATUS.OK,
+      status: EVENTS_STATUS.OK,
       urlRaw: url,
       hash,
     });

@@ -9,7 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
 import { BASE_URL, BASE_URL_SHORT, HASH, LIMIT_RECENT_HISTORY } from 'types/constants';
 import { UrlHistoryWithMeta } from 'types/stats';
-import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
+import { EVENTS_STATUS, MIXPANEL_EVENT } from 'types/utils';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { QueryKey, strictRefetch } from 'utils/requests';
 import { truncateMiddle } from 'utils/text';
@@ -125,7 +125,7 @@ export const URLStats = ({ defaultOpen = false }: { defaultOpen?: boolean }) => 
             }}
             className={clsx(hasHistory ? 'pl-16' : 'pl-4')}
             onFocus={() => {
-              mixpanel.track(MIXPANEL_EVENT.INPUT_STATS, { status: MIXPANEL_STATUS.OK });
+              mixpanel.track(MIXPANEL_EVENT.INPUT_STATS, { status: EVENTS_STATUS.OK });
             }}
           />
         </form>

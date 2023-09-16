@@ -2,12 +2,14 @@ import { getStats } from 'api/requests';
 import { Button } from 'components/atoms/Button';
 import { Input } from 'components/atoms/Input';
 import { Modal } from 'components/atoms/Modal';
+import { logEvent } from 'firebase/analytics';
 import mixpanel from 'mixpanel-browser';
 import { useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
-import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
+import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
+import { analytics } from 'utils/firebase';
 import { useTrans } from 'utils/i18next';
 import { logger } from 'utils/logger';
 import { QueryKey } from 'utils/requests';
@@ -33,7 +35,12 @@ export const SetPassword = ({ hash }: { hash: string }) => {
     mutationFn: getStats,
     onError: (error: any) => {
       try {
-        mixpanel.track(MIXPANEL_EVENT.SET_PASSWORD, { status: MIXPANEL_STATUS.FAILED, error: error.toString() });
+        const log = {
+          status: EVENTS_STATUS.FAILED,
+          error: error.toString(),
+        };
+        mixpanel.track(MIXPANEL_EVENT.SET_PASSWORD, log);
+        logEvent(analytics, FIREBASE_ANALYTICS_EVENT.SET_PASSWORD, log);
       } catch (error) {
         logger.error(error);
       }
@@ -41,7 +48,7 @@ export const SetPassword = ({ hash }: { hash: string }) => {
       toast.error(t('somethingWrong'));
     },
     onSuccess: async (data) => {
-      mixpanel.track(MIXPANEL_EVENT.SET_PASSWORD, { status: MIXPANEL_STATUS.OK, data });
+      mixpanel.track(MIXPANEL_EVENT.SET_PASSWORD, { status: EVENTS_STATUS.OK, data });
       await queryClient.invalidateQueries(QueryKey.STATS);
       closeModalRef.current?.click();
       toast.success(t('updated'));
@@ -60,7 +67,7 @@ export const SetPassword = ({ hash }: { hash: string }) => {
         data-te-toggle="modal"
         data-te-target="#setPassword"
         onClick={() => {
-          mixpanel.track(MIXPANEL_EVENT.OPEN_SET_PASSWORD, { status: MIXPANEL_STATUS.OK });
+          mixpanel.track(MIXPANEL_EVENT.OPEN_SET_PASSWORD, { status: EVENTS_STATUS.OK });
         }}
       />
       <button

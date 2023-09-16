@@ -1,9 +1,16 @@
 import { LayoutMain } from 'components/layouts/LayoutMain';
+import mixpanel from 'mixpanel-browser';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useEffect } from 'react';
 import { LocaleProp } from 'types/locale';
+import { MIXPANEL_EVENT } from 'types/utils';
 import { defaultLocale } from 'utils/i18next';
 
 const Contact = () => {
+  useEffect(() => {
+    mixpanel.track(MIXPANEL_EVENT.CONTACT);
+  }, []);
+
   return (
     <LayoutMain featureTab={false}>
       <div className="mx-auto mt-16 max-w-7xl rounded-lg bg-gray-100 p-8 text-xl">

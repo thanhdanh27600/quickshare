@@ -1,6 +1,8 @@
+import { logEvent } from 'firebase/analytics';
 import mixpanel from 'mixpanel-browser';
 import React from 'react';
-import { MIXPANEL_EVENT } from 'types/utils';
+import { FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
+import { analytics } from 'utils/firebase';
 import { logger } from 'utils/logger';
 
 class ErrorBoundary extends React.Component {
@@ -19,6 +21,10 @@ class ErrorBoundary extends React.Component {
     // You can use your own error logging service here
     logger.error({ error, errorInfo });
     mixpanel.track(MIXPANEL_EVENT.CRASH, {
+      error,
+      errorInfo,
+    });
+    logEvent(analytics, FIREBASE_ANALYTICS_EVENT.CRASH, {
       error,
       errorInfo,
     });

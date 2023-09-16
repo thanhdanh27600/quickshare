@@ -5,6 +5,7 @@ import { Button } from 'components/atoms/Button';
 import { URLShare } from 'components/gadgets/URLShare';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLAdvancedSetting } from 'components/sections/URLAdvancedSetting';
+import { logEvent } from 'firebase/analytics';
 import mixpanel from 'mixpanel-browser';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -13,7 +14,8 @@ import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { tinymce } from 'types/constants';
 import { NoteWithMedia } from 'types/note';
-import { MIXPANEL_EVENT, MIXPANEL_STATUS } from 'types/utils';
+import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
+import { analytics } from 'utils/firebase';
 import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
 import { validateNoteSchema, validateUpdateNoteSchema } from 'utils/validateMiddleware';
@@ -48,28 +50,32 @@ export const NoteInput = () => {
       setLocalError('');
     },
     onError: (error, variables, context) => {
-      mixpanel.track(MIXPANEL_EVENT.NOTE_CREATE, {
-        status: MIXPANEL_STATUS.FAILED,
+      const log = {
+        status: EVENTS_STATUS.FAILED,
         errorMessage: error,
         data: variables,
-      });
+      };
+      mixpanel.track(MIXPANEL_EVENT.NOTE_CREATE, log);
+      logEvent(analytics, FIREBASE_ANALYTICS_EVENT.NOTE_CREATE, log);
     },
     onSuccess: (data, variables, context) => {
       if (data.note) {
         setNote(data.note);
         if (data.note.UrlShortenerHistory) setShortenHistory(data.note.UrlShortenerHistory);
         mixpanel.track(MIXPANEL_EVENT.NOTE_CREATE, {
-          status: MIXPANEL_STATUS.OK,
+          status: EVENTS_STATUS.OK,
           data,
         });
         const queryParams = { ...router.query, ...{ uid: data.note.uid } };
         router.push({ pathname: router.pathname, query: queryParams });
       } else {
         setLocalError(t('somethingWrong'));
-        mixpanel.track(MIXPANEL_EVENT.NOTE_CREATE, {
-          status: MIXPANEL_STATUS.INTERNAL_ERROR,
+        const log = {
+          status: EVENTS_STATUS.INTERNAL_ERROR,
           urlRaw: variables,
-        });
+        };
+        mixpanel.track(MIXPANEL_EVENT.NOTE_CREATE, log);
+        logEvent(analytics, FIREBASE_ANALYTICS_EVENT.NOTE_CREATE, log);
       }
     },
   });
@@ -79,26 +85,30 @@ export const NoteInput = () => {
       setLocalError('');
     },
     onError: (error, variables, context) => {
-      mixpanel.track(MIXPANEL_EVENT.NOTE_UPDATE, {
-        status: MIXPANEL_STATUS.FAILED,
+      const log = {
+        status: EVENTS_STATUS.FAILED,
         errorMessage: error,
         data: variables,
-      });
+      };
+      mixpanel.track(MIXPANEL_EVENT.NOTE_UPDATE, log);
+      logEvent(analytics, FIREBASE_ANALYTICS_EVENT.NOTE_UPDATE, log);
     },
     onSuccess: (data, variables, context) => {
       if (data.note) {
         setNote(data.note);
         mixpanel.track(MIXPANEL_EVENT.NOTE_UPDATE, {
-          status: MIXPANEL_STATUS.OK,
+          status: EVENTS_STATUS.OK,
           data,
         });
         toast.success(t('updated'));
       } else {
         setLocalError(t('somethingWrong'));
-        mixpanel.track(MIXPANEL_EVENT.SHORTEN, {
-          status: MIXPANEL_STATUS.INTERNAL_ERROR,
+        const log = {
+          status: EVENTS_STATUS.INTERNAL_ERROR,
           urlRaw: variables,
-        });
+        };
+        mixpanel.track(MIXPANEL_EVENT.SHORTEN, log);
+        logEvent(analytics, FIREBASE_ANALYTICS_EVENT.SHORTEN, log);
       }
     },
   });
