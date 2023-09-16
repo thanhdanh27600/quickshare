@@ -1,4 +1,5 @@
 import { ArrowUpRight } from '@styled-icons/feather';
+import clsx from 'clsx';
 import { Modal } from 'components/atoms/Modal';
 import { LanguageSelect } from 'components/gadgets/LanguageSelect';
 import mixpanel from 'mixpanel-browser';
@@ -6,10 +7,10 @@ import Image from 'next/image';
 import { MIXPANEL_EVENT } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
-export const Footer = () => {
+export const Footer = ({ className }: { className?: string }) => {
   const { t } = useTrans();
   return (
-    <footer className="gap-4 border-y border-gray-200 px-4 py-4 pt-4 sm:py-8">
+    <footer className={clsx('gap-4 border-y border-gray-200 px-4 py-4 pt-4 sm:py-8', className)}>
       <Modal id="donate" title="Donate 🙏" ConfirmButtonProps={{ ['data-te-modal-dismiss']: true } as any}>
         <div className="mt-2 flex justify-center">
           <a
