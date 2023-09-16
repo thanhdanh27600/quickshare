@@ -56,7 +56,7 @@
   "helpShortUrlHead": "- Rút gọn link thành 3 ký tự định danh xxx (qsh.at/xxx)\n- Link lưu theo IP, không cần đăng nhập\n- Để quản lý link, vào \"Xem thêm\"\n- Link sau khi rút gọn là công khai, trừ khi đặt mật khẩu",
   "helpNoteHead": "- Tạo ghi chú nhanh thành 3 ký tự định danh xxx (qsh.at/xxx)\n- Ghi chú lưu theo IP, không cần đăng nhập\n- Ghi chú sau khi xuất bản là công khai, trừ khi đặt mật khẩu\n- Lưu lại link edit note khi cần chỉnh sửa",
   "brandTitle": "Quickshare | Tạo ghi chú cùng rút gọn link",
-  "brandTitleNote": "Quickshare Tạo ghi chú mới",
+  "brandTitleNote": "Quickshare | Tạo ghi chú mới",
   "brandDescription": "Tạo ghi chú miễn phí cùng rút gọn URLs. Quickshare chia sẻ ghi chú, rút gọn link Bitly, rút gọn link bomso, rút gọn link miễn phí theo ý muốn. Theo dõi số lượng click, vị trí.",
   "advancedView": "Xem nâng cao",
   "loadMore": "Xem thêm",
