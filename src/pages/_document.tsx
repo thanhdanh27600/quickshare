@@ -52,6 +52,8 @@ export default function Document() {
         <Script
           strategy="beforeInteractive"
           src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></Script>
+
+        <Script strategy="beforeInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-LE8KPBMBMD" />
       </Head>
       <body>
         <Main />

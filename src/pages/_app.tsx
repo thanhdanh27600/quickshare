@@ -1,5 +1,6 @@
 import ErrorBoundary from 'components/gadgets/ErrorBoundary';
 import mixpanel from 'mixpanel-browser';
+import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
 import { any } from 'ramda';
@@ -13,7 +14,7 @@ import '../styles/globals.css';
 
 const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   if (!MIX_PANEL_TOKEN) {
     console.error('Mix panel Not found');
   } else {
@@ -31,12 +32,21 @@ function MyApp({ Component, pageProps }: AppProps) {
       window.location.href = BASE_URL;
     }
     const _ = new (window as any).ClipboardJS('.btn-copy');
+    // Google Ads
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    function gtag(...a: any[]) {
+      (window as any).dataLayer.push(a);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-LE8KPBMBMD');
   }, []);
 
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
         <Toaster
           toastOptions={{
             success: {
