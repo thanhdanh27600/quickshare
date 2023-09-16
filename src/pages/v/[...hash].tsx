@@ -17,7 +17,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   } catch (error: any) {
-    console.error('Stats error', error);
     return { props: { error: error.message || 'Something wrong happened' } };
   }
 }
