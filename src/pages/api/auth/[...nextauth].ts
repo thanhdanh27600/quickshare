@@ -1,13 +1,12 @@
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import NextAuth from 'next-auth';
+import NextAuth, { AuthOptions } from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
 import { SERVER_AUTH } from 'types/constants';
 import prisma from '../../../db/prisma';
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   secret: SERVER_AUTH,
-  // Configure one or more authentication providers
   providers: [
     // GithubProvider({
     //   clientId: process.env.GITHUB_ID!,
@@ -26,5 +25,11 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
+  theme: {
+    colorScheme: 'light', // "auto" | "dark" | "light"
+    brandColor: '#722df5', // Hex color code
+    logo: '/assets/quickshare.png', // Absolute URL to image
+    buttonText: '#fff', // Hex color code
+  },
 };
 export default NextAuth(authOptions);
