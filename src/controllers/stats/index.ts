@@ -1,10 +1,10 @@
 import { Prisma } from '@prisma/client';
 import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
-import { LIMIT_RECENT_HISTORY, PLATFORM_AUTH } from '../../types/constants';
-import { Stats } from '../../types/stats';
+import { LIMIT_RECENT_HISTORY } from '../../types/constants';
+import { Stats, UrlHistoryWithMeta } from '../../types/stats';
 import { api, errorHandler, successHandler } from '../../utils/axios';
-import { decryptS, encryptS } from '../../utils/crypto';
+import { decryptS } from '../../utils/crypto';
 import { parseIntSafe } from '../../utils/number';
 import { withQueryCursor } from '../../utils/requests';
 import { validateStatsSchema } from '../../utils/validateMiddleware';
@@ -16,8 +16,6 @@ export const handler = api<Stats>(
       query: { ...req.query, ip },
     });
     const hash = req.query.h as string;
-    const email = req.query.e as string;
-    const password = req.query.p as string;
     const queryCursor = req.query.qc ? parseIntSafe(req.query.qc as string) : undefined;
     let record;
     let history;
@@ -27,6 +25,7 @@ export const handler = api<Stats>(
         where: { ip },
         include: {
           history: {
+            select: { hash: true, url: true },
             orderBy: {
               createdAt: Prisma.SortOrder.desc,
             },
@@ -34,7 +33,7 @@ export const handler = api<Stats>(
           },
         },
       });
-      history = record?.history;
+      history = record?.history as UrlHistoryWithMeta[];
       return successHandler(res, { record: record, history });
     }
     // get stats with hash
@@ -59,19 +58,6 @@ export const handler = api<Stats>(
         return errorHandler(res);
       }
     }
-    if (password && history && !history?.password) {
-      // set password
-      if (PLATFORM_AUTH) {
-        const encryptPassword = encryptS(password);
-        await prisma.urlShortenerHistory.update({
-          where: { hash },
-          data: {
-            password: encryptPassword,
-            email,
-          },
-        });
-      }
-    }
     // hide sensitive data
     if (history?.email) history.email = '';
     if (history?.password) history.password = '';
@@ -79,5 +65,3 @@ export const handler = api<Stats>(
   },
   ['GET'],
 );
-
-export * as verify from './verify';

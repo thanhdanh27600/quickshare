@@ -4,6 +4,9 @@ import { BASE_URL, alternateBrandUrl, brandUrl, brandUrlShort } from '../types/c
 
 export const API = axios.create({
   baseURL: BASE_URL,
+  headers: {
+    ...withAuth(),
+  },
 });
 
 API.interceptors.response.use(
@@ -17,8 +20,9 @@ API.interceptors.response.use(
 );
 
 export function withAuth(token?: string) {
+  const tokenLocal = global.window ? global.window.localStorage.getItem('quickshare-token') : undefined;
   return {
-    'X-Platform-Auth': token ?? localStorage.getItem('quickshare-tk'),
+    'X-Platform-Auth': token || tokenLocal,
   };
 }
 

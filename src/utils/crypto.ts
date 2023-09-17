@@ -30,9 +30,10 @@ export const decryptS = (token: string) => {
     let decrypted = '';
     if (SERVER_AUTH) {
       const bytes = CryptoJS.AES.decrypt(token, SERVER_AUTH);
-      const tokens = bytes.toString(CryptoJS.enc.Utf8).split('###');
-      decrypted = tokens[0];
-      const createdAt = Number(tokens[1]);
+      const tokens = bytes.toString(CryptoJS.enc.Utf8);
+      const parsed = JSON.parse(tokens);
+      decrypted = parsed.text;
+      const createdAt = new Date(parsed.at);
     }
     return decrypted;
   } catch (error) {
@@ -42,10 +43,16 @@ export const decryptS = (token: string) => {
 };
 
 /** use for server only */
-export const encryptS = (word: string) => {
+export const encryptS = (text: string) => {
   let encrypted = '';
   if (SERVER_AUTH) {
-    encrypted = CryptoJS.AES.encrypt(word + '###' + new Date().getTime(), SERVER_AUTH).toString();
+    encrypted = CryptoJS.AES.encrypt(
+      JSON.stringify({
+        text,
+        at: new Date().getTime(),
+      }),
+      SERVER_AUTH,
+    ).toString();
   }
   return encrypted;
 };

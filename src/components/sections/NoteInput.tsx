@@ -3,6 +3,7 @@ import { AxiosError } from 'axios';
 import { useBearStore } from 'bear';
 import { Button } from 'components/atoms/Button';
 import { URLShare } from 'components/gadgets/URLShare';
+import { SetPassword } from 'components/screens/URLTracking/SetPassword';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLAdvancedSetting } from 'components/sections/URLAdvancedSetting';
 import { logEvent } from 'firebase/analytics';
@@ -12,7 +13,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
-import { tinymce } from 'types/constants';
+import { isProduction, tinymce } from 'types/constants';
 import { NoteWithMedia } from 'types/note';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { analytics } from 'utils/firebase';
@@ -30,18 +31,18 @@ export const NoteInput = () => {
   const { t } = useTrans();
 
   const router = useRouter();
-  const { noteSlice, shortenSlice, utilitySlice } = useBearStore();
-  const ip = utilitySlice((state) => state.ip);
+  const { noteSlice, shortenSlice } = useBearStore();
   const [note, setNote] = noteSlice((state) => [state.note, state.setNote]);
   const [setShortenHistory] = shortenSlice((state) => [state.setShortenHistory]);
   const [localError, setLocalError] = useState('');
   const hasNote = note?.id;
+  const hasPassword = note?.password !== null;
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     const uid = query.get('uid') || '';
     if (!!uid) {
-      requestNote.mutate({ hash: null, ip, text: '', title: '', uid, medias: [] });
+      requestNote.mutate({ hash: null, ip: '', text: '', title: '', uid, medias: [] });
     }
   }, []);
 
@@ -138,7 +139,7 @@ export const NoteInput = () => {
       uid: null,
       title: note?.title || null,
       text: tinymce.activeEditor.getContent() || null,
-      ip,
+      ip: '',
       medias,
     };
     const validate = await validateNoteSchema.safeParse(data);
@@ -165,6 +166,7 @@ export const NoteInput = () => {
       {hasNote && (
         <div className="mb-4">
           <NoteUrlTile />
+          {!isProduction && !hasPassword && <SetPassword hash={note?.UrlShortenerHistory?.hash || ''} />}
           <URLShare />
         </div>
       )}

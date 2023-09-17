@@ -1,4 +1,4 @@
-import { getStatsToken } from 'api/requests';
+import { verifyPasswordRequest } from 'api/requests';
 import { Input } from 'components/atoms/Input';
 import { Modal } from 'components/atoms/Modal';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
@@ -9,7 +9,7 @@ import { useTrans } from 'utils/i18next';
 
 type ValidatePasswordForm = { password: string };
 
-export const ValidateToken = ({ open, hash, refetch }: { hash: string; open?: boolean; refetch: () => void }) => {
+export const ValidatePassword = ({ open, hash }: { hash: string; open?: boolean }) => {
   const { t } = useTrans();
   const {
     register,
@@ -28,9 +28,9 @@ export const ValidateToken = ({ open, hash, refetch }: { hash: string; open?: bo
       return;
     }
     try {
-      const rs = await getStatsToken(hash, data.password);
+      const rs = await verifyPasswordRequest({ h: hash, p: data.password });
       if (rs.token) {
-        localStorage.setItem('quickshare-tk', rs.token);
+        localStorage.setItem('quickshare-token', rs.token);
         window.location.reload();
       }
     } catch (error) {

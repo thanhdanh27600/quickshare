@@ -3,6 +3,7 @@ import { tinymce } from 'types/constants';
 
 const plugins = [
   'advlist',
+  'autosave',
   'autolink',
   'lists',
   'link',
@@ -22,7 +23,7 @@ const plugins = [
 
 const toolbar =
   'bold italic underline strikethrough forecolor backcolor link image align fontsize | bullist numlist outdent indent | ' +
-  'undo redo | blocks | removeformat';
+  'undo redo | blocks restoredraft removeformat';
 
 const TextEditor = ({ defaultValue, readonly }: { defaultValue?: string; readonly?: boolean }) => {
   const id = useId().replaceAll(':', '-');
@@ -33,6 +34,7 @@ const TextEditor = ({ defaultValue, readonly }: { defaultValue?: string; readonl
       block_unsupported_drop: true,
       paste_block_drop: true,
       paste_data_images: true,
+      autosave_restore_when_empty: true,
       height: 500,
       fontsize_formats: '8pt 9pt 10pt 11pt 12pt 14pt 18pt 24pt 30pt 36pt 48pt 60pt 72pt 96pt',
       plugins,

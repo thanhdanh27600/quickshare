@@ -1,4 +1,4 @@
-import { getStats } from 'api/requests';
+import { setPasswordRequest } from 'api/requests';
 import { Button } from 'components/atoms/Button';
 import { Input } from 'components/atoms/Input';
 import { Modal } from 'components/atoms/Modal';
@@ -32,7 +32,7 @@ export const SetPassword = ({ hash }: { hash: string }) => {
   const closeModalRef = useRef<HTMLButtonElement>(null);
 
   const setPassword = useMutation(QueryKey.SET_PASSWORD, {
-    mutationFn: getStats,
+    mutationFn: setPasswordRequest,
     onError: (error: any) => {
       try {
         const log = {
