@@ -5,8 +5,14 @@ import { Locale } from 'types/locale';
 import { NoteRs } from 'types/note';
 import { ShortenUrl } from 'types/shorten';
 import { Stats } from 'types/stats';
-import { ForwardSchema, NoteSchema, UpdateNoteSchema } from 'utils/validateMiddleware';
-import { API, withAuth } from './axios';
+import {
+  ForwardSchema,
+  NoteSchema,
+  PasswordSchema,
+  UpdateNoteSchema,
+  VerifyPasswordSchema,
+} from 'utils/validateMiddleware';
+import { API } from './axios';
 
 export const getOrCreateShortenUrlRequest = async ({ url, hash }: { url?: string; hash?: string }) => {
   const rs = await API.get(hash ? `/api/shorten?hash=${hash}` : `/api/shorten?url=${url}`);
@@ -33,24 +39,16 @@ export const updateShortenUrlRequest = async ({
   mediaId?: number;
   locale: Locale;
 }) => {
-  const rs = await API.put(
-    `/api/shorten/update`,
-    {
-      locale,
-      hash,
-      ogTitle,
-      ogDescription,
-      ogImgSrc,
-      ogImgPublicId,
-      theme,
-      mediaId,
-    },
-    {
-      headers: {
-        ...withAuth(),
-      },
-    },
-  );
+  const rs = await API.put(`/api/shorten/update`, {
+    locale,
+    hash,
+    ogTitle,
+    ogDescription,
+    ogImgSrc,
+    ogImgPublicId,
+    theme,
+    mediaId,
+  });
   const data = rs.data;
   return data as ShortenUrl;
 };
@@ -64,32 +62,29 @@ export const getForwardUrl = async ({ hash, userAgent, ip, fromClientSide }: For
 export const getStats = async ({
   hash,
   email,
-  password,
   queryCursor,
 }: {
   hash: string;
   email?: string;
-  password?: string;
   token?: string;
   queryCursor?: number;
 }) => {
   const q = stringify({
     h: hash,
     ...(email ? { e: email } : null),
-    ...(password ? { p: password } : null),
     ...(queryCursor ? { qc: queryCursor } : null),
   });
-  const rs = await API.get(`/api/stats?${q}`, {
-    headers: {
-      ...withAuth(),
-    },
-  });
+  const rs = await API.get(`/api/stats?${q}`);
   const data = rs.data;
   return data as Stats;
 };
 
-export const getStatsToken = async (h: string, p: string) => {
-  const rs = await API.post(`/api/stats/verify`, { h, p });
+export const setPasswordRequest = async (payload: PasswordSchema) => {
+  const rs = await API.post(`/api/password`, payload);
+};
+
+export const verifyPasswordRequest = async (payload: VerifyPasswordSchema) => {
+  const rs = await API.post(`/api/password/verify`, payload);
   return rs.data as { token: string };
 };
 

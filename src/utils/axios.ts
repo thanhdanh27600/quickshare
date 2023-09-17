@@ -21,7 +21,7 @@ export function errorHandler<T extends Response>(res: NextApiResponse<T>, error?
       return res.status(HttpStatusCode.UNAUTHORIZED).json({ errorMessage: mesesage || 'UNAUTHORIZED' } as any);
     case HttpStatusCode.NOT_FOUND:
     default:
-      return res.status(HttpStatusCode.NOT_FOUND).json({ errorMessage: mesesage || 'Not found' } as any);
+      return res.status(HttpStatusCode.NOT_FOUND).json({ errorMessage: mesesage || 'Request not found' } as any);
   }
 }
 

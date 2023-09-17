@@ -58,6 +58,19 @@ export const validateUpdateShortenSchema = z.object({
   // }),
 });
 
+export const validatePasswordSchema = z.object({
+  hash: z.string({
+    required_error: 'Hash is required',
+  }),
+  email: z.string({
+    required_error: 'Password is required',
+  }),
+  password: z.string({
+    required_error: 'Password is required',
+  }),
+});
+export type PasswordSchema = z.infer<typeof validatePasswordSchema>;
+
 export const validateOgSchema = z.object({
   query: z.object({
     title: z.string({
@@ -65,6 +78,9 @@ export const validateOgSchema = z.object({
     }),
   }),
 });
+
+export const validateVerifyPasswordSchema = z.object({ h: z.string(), p: z.string() });
+export type VerifyPasswordSchema = z.infer<typeof validateVerifyPasswordSchema>;
 
 export const validateStatsSchema = z.object({
   query: z.object({
@@ -80,8 +96,6 @@ export const validateStatsSchema = z.object({
     }),
   }),
 });
-
-export const validateStatsTokenSchema = z.object({ h: z.string(), p: z.string() });
 
 export const validateQrSchema = z.object({
   query: z.object({

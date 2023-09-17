@@ -2,11 +2,11 @@ import prisma from '../../db/prisma';
 import { Stats } from '../../types/stats';
 import { api, errorHandler, successHandler } from '../../utils/axios';
 import { decryptS, encryptS } from '../../utils/crypto';
-import { validateStatsTokenSchema } from '../../utils/validateMiddleware';
+import { validateVerifyPasswordSchema } from '../../utils/validateMiddleware';
 
 export const handler = api<Stats>(
   async (req, res) => {
-    await validateStatsTokenSchema.parseAsync(req.body);
+    await validateVerifyPasswordSchema.parseAsync(req.body);
     const hash = req.body.h as string;
     const password = req.body.p as string;
     let history;

@@ -9,15 +9,11 @@ export enum FeatureTabKey {
 export interface UtilitySlice {
   featureTab: FeatureTabKey;
   setFeatureTab: (tab: string) => void;
-  ip: string;
-  setIp: (ip: string) => void;
 }
 
 const slice: StateCreator<UtilitySlice> = (set, get) => ({
   featureTab: FeatureTabKey.SHARE_LINK,
   setFeatureTab: (tab) => set({ featureTab: tab as FeatureTabKey }),
-  ip: '',
-  setIp: (ip) => set({ ip }),
 });
 
 const utilitySlice = create(withDevTools(slice, { anonymousActionType: 'UtilitySlice' }));

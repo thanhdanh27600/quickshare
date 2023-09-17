@@ -5,10 +5,12 @@ import { shortenCacheService } from '../../services/cache/shorten.service';
 import { HASH, LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST } from '../../types/constants';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, successHandler } from '../../utils/axios';
-import { decrypt } from '../../utils/crypto';
+import { decrypt, decryptS } from '../../utils/crypto';
 import HttpStatusCode from '../../utils/statusCode';
 import { generateRandomString } from '../../utils/text';
 import { validateShortenSchema } from '../../utils/validateMiddleware';
+
+const messageNotFound = "No URL was found on your request. Let's shorten one!";
 
 export const handler = api<ShortenUrl>(
   async (req, res) => {
@@ -30,8 +32,13 @@ export const handler = api<ShortenUrl>(
     // if hash then retrieve from cache & db
     if (hash) {
       const history = await prisma.urlShortenerHistory.findUnique({ where: { hash } });
-      if (!history || !!history.password) {
-        return badRequest(res, "No URL was found on your request. Let's shorten one!");
+      if (!history) return badRequest(res, messageNotFound);
+      if (!!history.password) {
+        const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
+        console.log('decryptS(token', decryptS(token));
+        if (!token || decryptS(token) !== history.id.toString()) {
+          return badRequest(res, messageNotFound);
+        }
       }
       return successHandler(res, history);
     }

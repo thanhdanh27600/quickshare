@@ -21,7 +21,7 @@ import { useTrans } from 'utils/i18next';
 import { PAGE_SIZE, QueryKey, strictRefetch } from 'utils/requests';
 import { capitalize, truncateMiddle } from 'utils/text';
 import { SetPassword } from './SetPassword';
-import { ValidateToken } from './ValidateToken';
+import { ValidatePassword } from './ValidatePassword';
 
 export const TrackingClick = ({ hash }: { hash: string }) => {
   const { t, locale } = useTrans();
@@ -32,10 +32,14 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
   const [history, setHistory] = useState<UrlHistoryWithMeta | undefined>(undefined);
   const getStatsQuery = useCallback(async () => getStats({ hash }), [hash]);
   const { shortenSlice } = useBearStore();
-  const [shortenHistory, setShortenHistory] = shortenSlice((state) => [state.shortenHistory, state.setShortenHistory]);
+  const [shortenHistory, setShortenHistory, clearShortenHistory] = shortenSlice((state) => [
+    state.shortenHistory,
+    state.setShortenHistory,
+    state.clearShortenHistory,
+  ]);
 
   /* now data has only 1 history */
-  const { data, isLoading, isSuccess, refetch } = useQuery({
+  const { data, isLoading, isSuccess } = useQuery({
     queryKey: QueryKey.STATS,
     queryFn: getStatsQuery,
     refetchInterval: !!qc || needValidate ? false : 2000,
@@ -52,6 +56,7 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
         if (!needValidate) {
           setNeedValidate(true);
         }
+        clearShortenHistory();
       }
     },
   });
@@ -113,7 +118,7 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
 
   return (
     <div>
-      <ValidateToken open={needValidate} hash={hash} refetch={refetch} />
+      <ValidatePassword open={needValidate} hash={hash} />
       <Modal
         id="parsedUA"
         title={'User Agent'}

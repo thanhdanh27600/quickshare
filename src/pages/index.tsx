@@ -9,10 +9,10 @@ import { LocaleProp } from 'types/locale';
 import { pgFullDomain } from 'utils/guards';
 import { defaultLocale } from 'utils/i18next';
 
-export const MainPage = ({ feature, ip }: { feature: FeatureTabKey; ip: string }) => {
+export const MainPage = ({ feature }: { feature: FeatureTabKey }) => {
   return (
     <LayoutMain feature={feature}>
-      <Home feature={feature} ip={ip} />
+      <Home feature={feature} />
     </LayoutMain>
   );
 };

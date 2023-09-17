@@ -20,17 +20,18 @@ export const URLTracking = ({ hash }: { hash: string }) => {
   return (
     <LayoutMain featureTab={false}>
       <TrackingClick hash={hash} />
-      {shortenHistory && (
-        <div className="mt-8">
-          <ShortenUrlTile />
-          <URLShare />
-          <URLAdvancedSetting defaultOpen={false} shortenUrl={shortenUrl} />
-        </div>
+      {shortenHistory?.id && (
+        <>
+          <div className="mt-8">
+            <ShortenUrlTile />
+            <URLShare />
+            <URLAdvancedSetting defaultOpen={false} shortenUrl={shortenUrl} />
+          </div>
+          <div className="m-4">
+            <FeedbackLink template={FeedbackTemplate.URL_TRACKING} />
+          </div>
+        </>
       )}
-
-      <div className="m-4">
-        <FeedbackLink template={FeedbackTemplate.URL_TRACKING} />
-      </div>
     </LayoutMain>
   );
 };
