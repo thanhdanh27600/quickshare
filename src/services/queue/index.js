@@ -50,12 +50,11 @@ async function queueProcessor() {
       if (response.receivedMessageItems.length === 1) {
         const receivedMessageItem = response.receivedMessageItems[0];
         await processMessage(receivedMessageItem);
-        // const deleteMessageResponse = await queueClient.deleteMessage(
-        //   receivedMessageItem.messageId,
-        //   receivedMessageItem.popReceipt,
-        // );
-        // console.log(`Delete message successfully, service assigned request Id: ${deleteMessageResponse.requestId}`);
-        console.log(`Process message successfully`);
+        const deleteMessageResponse = await queueClient.deleteMessage(
+          receivedMessageItem.messageId,
+          receivedMessageItem.popReceipt,
+        );
+        console.log(`Delete message successfully, service assigned request Id: ${deleteMessageResponse.requestId}`);
       }
     }
   } catch (error) {
