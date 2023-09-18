@@ -16,18 +16,18 @@ export const handler = api<ShortenUrl>(
   async (req, res) => {
     const ip = requestIp.getClientIp(req) || '';
     let url = (req.query.url as string) || null;
+    url = decrypt(decodeURI(url || ''));
     let hash = (req.query.hash as string) || null;
 
-    await validateShortenSchema.parseAsync({
-      query: { url, hash, ip },
-    });
-    url = decrypt(decodeURI(url || ''));
     if (!url && !hash) {
       return res.status(HttpStatusCode.BAD_REQUEST).send({
         errorMessage: 'Wrong shorten format, please try again',
         errorCode: 'INVALID_URL',
       });
     }
+    await validateShortenSchema.parseAsync({
+      query: { url: url || null, hash, ip },
+    });
 
     // if hash then retrieve from cache & db
     if (hash) {
