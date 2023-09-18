@@ -1,7 +1,9 @@
 const { QueueServiceClient } = require('@azure/storage-queue');
 const { postProcessForward } = require('./postProcessForward');
 
-const connStr = process.env.AZURE_QUEUE_CONNECTION_STRING || '';
+const connStr =
+  process.env.AZURE_QUEUE_CONNECTION_STRING ||
+  'DefaultEndpointsProtocol=https;AccountName=example;AccountKey=<account-key>';
 const queueName = 'quickshare';
 const queueServiceClient = QueueServiceClient.fromConnectionString(connStr);
 
