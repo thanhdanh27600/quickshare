@@ -8,7 +8,7 @@ export const handler = api(
     if (!token || decryptS(token) !== SERVER_AUTH) {
       return errorHandler(res);
     }
-
+    // TODO
     res.send('OK');
   },
   ['POST'],

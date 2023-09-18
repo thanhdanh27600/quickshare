@@ -19,7 +19,9 @@ async function sendMessageToQueue(message) {
     console.log(
       `Sent message successfully, service assigned message Id: ${sendMessageResponse.messageId}, service assigned request Id: ${sendMessageResponse.requestId}`,
     );
-  } catch (error) {}
+  } catch (error) {
+    console.error('Error while sendMessageToQueue', error);
+  }
 }
 
 async function processMessage(message) {
@@ -33,23 +35,29 @@ async function processMessage(message) {
       default:
         break;
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error('Error while processMessage', error);
+  }
 }
 
 async function queueProcessor() {
-  console.log('Starting queue processor');
-  const queueClient = queueServiceClient.getQueueClient(queueName);
-  while (true) {
-    const response = await queueClient.receiveMessages();
-    if (response.receivedMessageItems.length === 1) {
-      const receivedMessageItem = response.receivedMessageItems[0];
-      await processMessage(receivedMessageItem);
-      const deleteMessageResponse = await queueClient.deleteMessage(
-        receivedMessageItem.messageId,
-        receivedMessageItem.popReceipt,
-      );
-      console.log(`Delete message successfully, service assigned request Id: ${deleteMessageResponse.requestId}`);
+  try {
+    console.log('Starting queue processor');
+    const queueClient = queueServiceClient.getQueueClient(queueName);
+    while (true) {
+      const response = await queueClient.receiveMessages();
+      if (response.receivedMessageItems.length === 1) {
+        const receivedMessageItem = response.receivedMessageItems[0];
+        await processMessage(receivedMessageItem);
+        const deleteMessageResponse = await queueClient.deleteMessage(
+          receivedMessageItem.messageId,
+          receivedMessageItem.popReceipt,
+        );
+        console.log(`Delete message successfully, service assigned request Id: ${deleteMessageResponse.requestId}`);
+      }
     }
+  } catch (error) {
+    console.error('Error while queueProcessor', error);
   }
 }
 
