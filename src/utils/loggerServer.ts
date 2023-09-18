@@ -1,5 +1,5 @@
 import pino from 'pino';
-import { isTest } from '../types/constants';
+import { isProduction, isTest } from '../types/constants';
 
 module.exports = isTest
   ? {
@@ -22,8 +22,8 @@ module.exports = isTest
         },
         timestamp: pino.stdTimeFunctions.isoTime,
       },
-      // pino.transport({
-      //   target: 'pino/file',
-      //   options: { destination: isProduction ? `pino.log` : `./logs/pino.log` },
-      // }),
+      pino.transport({
+        target: 'pino/file',
+        options: { destination: isProduction ? `pino.log` : `./logs/pino.log` },
+      }),
     );

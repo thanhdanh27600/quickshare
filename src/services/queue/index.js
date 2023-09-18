@@ -4,7 +4,7 @@ const { postProcessForward } = require('./postProcessForward');
 const connStr =
   process.env.AZURE_QUEUE_CONNECTION_STRING ||
   'DefaultEndpointsProtocol=https;AccountName=myaccount;AccountKey=accountKey;EndpointSuffix=core.windows.net';
-const queueName = 'quickshare';
+const queueName = process.env.AZURE_STORAGE_QUEUE_NAME || 'myqueue';
 const queueServiceClient = QueueServiceClient.fromConnectionString(connStr);
 
 /**
@@ -50,11 +50,12 @@ async function queueProcessor() {
       if (response.receivedMessageItems.length === 1) {
         const receivedMessageItem = response.receivedMessageItems[0];
         await processMessage(receivedMessageItem);
-        const deleteMessageResponse = await queueClient.deleteMessage(
-          receivedMessageItem.messageId,
-          receivedMessageItem.popReceipt,
-        );
-        console.log(`Delete message successfully, service assigned request Id: ${deleteMessageResponse.requestId}`);
+        // const deleteMessageResponse = await queueClient.deleteMessage(
+        //   receivedMessageItem.messageId,
+        //   receivedMessageItem.popReceipt,
+        // );
+        // console.log(`Delete message successfully, service assigned request Id: ${deleteMessageResponse.requestId}`);
+        console.log(`Process message successfully`);
       }
     }
   } catch (error) {

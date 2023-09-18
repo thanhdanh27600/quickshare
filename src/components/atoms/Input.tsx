@@ -53,7 +53,7 @@ export const InputWithButton = forwardRef((props: InputWithButtonProps, ref: For
   return (
     <div className={clsx('relative w-full', Prefix && 'flex')}>
       {Prefix}
-      <Input {...inputProps} ref={ref} className={clsx(inputProps.className, 'pr-[6.7rem] sm:pr-[8.6rem]')} />
+      <Input {...inputProps} ref={ref} className={clsx(inputProps.className, 'pr-[6.7rem] sm:pr-[10rem]')} />
       <Button
         {...buttonProps}
         className={clsx(
