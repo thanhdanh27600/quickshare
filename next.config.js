@@ -2,6 +2,7 @@
 
 const { i18n } = require('./next-i18next.config');
 const { cronJob } = require('./src/services/crons');
+const { queueProcessor } = require('./src/services/queue');
 const { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_SERVER } = require('next/constants');
 
 const nextConfig = {
@@ -14,6 +15,7 @@ module.exports = async (phase, { defaultConfig }) => {
   console.log('Quickshare is starting...');
   if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_SERVER) {
     cronJob();
+    queueProcessor();
   }
   return nextConfig;
 };
