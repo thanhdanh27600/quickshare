@@ -46,7 +46,7 @@ async function queueProcessor() {
     console.log('Starting queue processor');
     const queueClient = queueServiceClient.getQueueClient(queueName);
     while (true) {
-      const response = await queueClient.receiveMessages({ numberOfMessages: 10 });
+      const response = await queueClient.receiveMessages({ numberOfMessages: 2 });
       for (let i = 0; i < response.receivedMessageItems.length; i++) {
         const receivedMessageItem = response.receivedMessageItems[i];
         await processMessage(receivedMessageItem);
@@ -57,7 +57,7 @@ async function queueProcessor() {
         console.log(`Delete message successfully, service assigned request Id: ${deleteMessageResponse.requestId}`);
       }
       // Wait for a while before checking for new messages
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
     }
   } catch (error) {
     console.error('Error while queueProcessor', error);
