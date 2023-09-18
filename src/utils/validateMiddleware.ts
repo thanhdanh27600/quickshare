@@ -2,17 +2,38 @@ import { keys } from 'ramda';
 import { z } from 'zod';
 import { HASH, isProduction } from '../types/constants';
 import { Theme, Themes } from '../types/og';
+import { urlRegex } from './text';
+
+const invalidUrlPatterns: RegExp[] = [/quickshare\.at/, /qsh\.at/, /localhost/];
+
+const isUrlToShortenValid = (url: string) => {
+  let isValid = true;
+  if (!url) return false;
+  invalidUrlPatterns.map((pattern) => {
+    if (url.match(pattern)) isValid = false;
+  });
+  return isValid;
+};
+
+export const validateUrl = (text: string) => {
+  const message = 'errorInvalidUrl';
+  if (!urlRegex.test(text)) return message;
+  if (!isUrlToShortenValid(text)) return message;
+  return '';
+};
 
 export const validateShortenSchema = z.object({
   query: z.object({
     ip: z.string({
       required_error: 'IP is required',
     }),
-    url: z
-      .string({
-        description: 'Url is required',
-      })
-      .nullable(),
+    url: z.nullable(
+      z
+        .string({
+          description: 'Url is required',
+        })
+        .refine(isUrlToShortenValid, 'Invalid Url'),
+    ),
     hash: z.nullable(
       z
         .string({

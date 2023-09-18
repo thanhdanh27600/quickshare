@@ -18,7 +18,7 @@ import { encrypt } from 'utils/crypto';
 import { analytics } from 'utils/firebase';
 import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
-import { urlRegex } from 'utils/text';
+import { validateUrl } from 'utils/validateMiddleware';
 
 type URLShortenerForm = {
   url: string;
@@ -62,7 +62,7 @@ const URLShortenerInput = () => {
     onMutate: (variables) => {
       setLocalError('');
     },
-    onError: (error, variables, context) => {
+    onError: (error: any, variables, context) => {
       const log = {
         status: EVENTS_STATUS.FAILED,
         errorMessage: error,
@@ -99,7 +99,7 @@ const URLShortenerInput = () => {
   };
 
   const mutateError = requestShortenUrl.error as AxiosError;
-  const error = errors.url?.message /** form */ || mutateError?.message || localError;
+  const error = errors.url?.message /** form */ || localError || mutateError?.message;
   const loading = requestShortenUrl.isLoading;
   const hasData = !loading && !requestShortenUrl.isError;
 
@@ -126,9 +126,9 @@ const URLShortenerInput = () => {
           placeholder="https://example.com"
           {...register('url', {
             required: { message: t('errorNoUrl'), value: true },
-            pattern: {
-              message: t('errorInvalidUrl'),
-              value: urlRegex,
+            validate: (text) => {
+              const error = validateUrl(text);
+              return error ? t(error) : undefined;
             },
           })}
           disabled={loading}
