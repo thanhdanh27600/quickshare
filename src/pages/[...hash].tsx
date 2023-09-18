@@ -86,13 +86,13 @@ const ForwardURL = ({ history, ip, error }: Props) => {
       <Head>
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://facebook.com/clickditop/ " />
+        <meta property="og:url" content="https://www.facebook.com/quickshare.at/" />
         <meta property="og:title" content={ogTitle} />
         <meta property="og:description" content={ogDescription} />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
-        {/* <meta property="twitter:url" content="https://twitter.com/clickditop" /> */}
+        {/* <meta property="twitter:url" content="https://twitter.com/quickshare.at" /> */}
         <meta property="twitter:title" content={ogTitle} />
         <meta property="twitter:description" content={ogDescription} />
         {!ogImgSrc && (
