@@ -1,5 +1,4 @@
 import { Note, UrlShortenerHistory } from '@prisma/client';
-import { Lookup } from 'geoip-country';
 import { Response } from 'utils/axios';
 
 export type Forward = Response & {
@@ -7,4 +6,11 @@ export type Forward = Response & {
   note?: Partial<Note> | null;
 };
 
-export type ForwardMeta = { hash: string; ip: string; userAgent: string; fromClientSide: boolean; lookupIp?: Lookup };
+export type ForwardMeta = {
+  hash: string;
+  ip: string;
+  userAgent: string;
+  fromClientSide: boolean;
+  countryCode: string;
+  updatedAt: Date;
+};

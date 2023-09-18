@@ -15,5 +15,5 @@ if (isProduction) {
 prisma.$on('beforeExit', async () => {
   console.log('\x1b[33m prisma exiting...\n');
 });
-
+export type Prisma = typeof prisma;
 export default prisma;

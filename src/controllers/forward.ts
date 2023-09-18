@@ -4,7 +4,7 @@ import { redis } from '../redis/client';
 import { shortenCacheService } from '../services/cache';
 import { sendMessageToQueue } from '../services/queue';
 import { REDIS_KEY, getRedisKey } from '../types/constants';
-import { Forward } from '../types/forward';
+import { Forward, ForwardMeta } from '../types/forward';
 import { ipLookup } from '../utils/agent';
 import { api, badRequest, successHandler } from '../utils/axios';
 import { validateForwardSchema } from '../utils/validateMiddleware';
@@ -24,7 +24,14 @@ export const handler = api<Forward>(
     });
 
     const lookupIp = ipLookup(ip) || undefined;
-    const data = { hash, ip, userAgent, fromClientSide, lookupIp };
+    const data: ForwardMeta = {
+      hash,
+      ip,
+      userAgent,
+      fromClientSide,
+      countryCode: lookupIp?.country || '',
+      updatedAt: new Date(),
+    };
     const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
     const shortenedUrlCache = await redis.hgetall(hashKey);
     if (!isEmpty(shortenedUrlCache)) {

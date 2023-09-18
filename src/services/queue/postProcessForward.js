@@ -3,11 +3,11 @@ const { PrismaClient } = require('@prisma/client');
 /**
  *  @param {import('../../types/forward').ForwardMeta} payload
  */
-
 const postProcessForward = async (payload) => {
-  prisma = new PrismaClient();
+  /** @type {import('../../db/prisma').Prisma} */
+  const prisma = new PrismaClient();
 
-  const { hash, ip, userAgent, fromClientSide, lookupIp } = payload;
+  const { hash, ip, userAgent, fromClientSide, countryCode, updatedAt } = payload;
   let history = await prisma.urlShortenerHistory.findUnique({
     where: {
       hash,
@@ -27,14 +27,16 @@ const postProcessForward = async (payload) => {
       },
     },
     update: {
-      countryCode: lookupIp?.country,
+      updatedAt,
+      countryCode,
       fromClientSide,
     },
     create: {
       ip,
+      updatedAt,
       userAgent,
       urlShortenerHistoryId: history.id,
-      countryCode: lookupIp?.country,
+      countryCode,
       fromClientSide,
     },
   });

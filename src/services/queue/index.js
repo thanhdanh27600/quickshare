@@ -4,7 +4,7 @@ const { postProcessForward } = require('./postProcessForward');
 const connStr =
   process.env.AZURE_QUEUE_CONNECTION_STRING ||
   'DefaultEndpointsProtocol=https;AccountName=myaccount;AccountKey=accountKey;EndpointSuffix=core.windows.net';
-const queueName = 'quickshare';
+const queueName = process.env.AZURE_STORAGE_QUEUE_NAME || 'myqueue';
 const queueServiceClient = QueueServiceClient.fromConnectionString(connStr);
 
 /**
