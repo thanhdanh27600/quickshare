@@ -16,6 +16,13 @@
     "incremental": true,
     "baseUrl": "./src"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/services/crons/index.js", "src/services/queue/index.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/services/crons/index.js",
+    "src/services/queue/index.js",
+    "src/db/prisma.js"
+  ],
   "exclude": ["node_modules"]
 }
