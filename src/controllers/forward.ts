@@ -2,7 +2,7 @@ import { isEmpty } from 'ramda';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import { shortenCacheService } from '../services/cache';
-import { sendMessageToQueue } from '../services/queue';
+import { sendMessageToQueue } from '../services/queue/sendMessage';
 import { REDIS_KEY, getRedisKey } from '../types/constants';
 import { Forward, ForwardMeta } from '../types/forward';
 import { ipLookup } from '../utils/agent';
@@ -36,7 +36,7 @@ export const handler = api<Forward>(
     const shortenedUrlCache = await redis.hgetall(hashKey);
     if (!isEmpty(shortenedUrlCache)) {
       // cache hit
-      sendMessageToQueue(JSON.stringify({ type: 'forward', payload: data }));
+      sendMessageToQueue([{ subject: 'forward', body: data }]);
       return successHandler(res, { history: shortenedUrlCache });
     }
     // cache missed write back to cache
@@ -48,7 +48,7 @@ export const handler = api<Forward>(
     if (!history) {
       return badRequest(res);
     }
-    sendMessageToQueue(JSON.stringify({ type: 'forward', payload: data }));
+    sendMessageToQueue([{ subject: 'forward', body: data }]);
     shortenCacheService.postShortenHash(history);
     return successHandler(res, { history });
   },
