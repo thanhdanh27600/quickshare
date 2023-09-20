@@ -2,6 +2,7 @@ import { ArrowUpRight } from '@styled-icons/feather';
 import clsx from 'clsx';
 import { Modal } from 'components/atoms/Modal';
 import { LanguageSelect } from 'components/gadgets/LanguageSelect';
+import { FeedbackTemplate, useFeedbackTemplate } from 'components/sections/FeedbackLink';
 import mixpanel from 'mixpanel-browser';
 import Image from 'next/image';
 import { MIXPANEL_EVENT } from 'types/utils';
@@ -9,6 +10,8 @@ import { useTrans } from 'utils/i18next';
 
 export const Footer = ({ className }: { className?: string }) => {
   const { t } = useTrans();
+  const reportLink = useFeedbackTemplate(FeedbackTemplate.REPORT_LINK);
+
   return (
     <footer className={clsx('gap-4 border-y border-gray-200 px-4 py-4 pt-4 sm:py-8', className)}>
       <Modal id="donate" title="Donate 🙏" ConfirmButtonProps={{ ['data-te-modal-dismiss']: true } as any}>
@@ -54,6 +57,16 @@ export const Footer = ({ className }: { className?: string }) => {
                 href="/privacy-policy"
                 className="inline-flex items-center font-medium hover:text-cyan-600 hover:underline">
                 {t('pp')}
+                <ArrowUpRight className="mb-2 w-4" />
+              </a>
+            </li>
+
+            <li>
+              <a
+                target="_blank"
+                href={reportLink}
+                className="inline-flex items-center font-medium hover:text-cyan-600 hover:underline">
+                {t('reportLink')}
                 <ArrowUpRight className="mb-2 w-4" />
               </a>
             </li>

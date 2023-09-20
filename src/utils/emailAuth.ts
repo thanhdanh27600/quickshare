@@ -36,7 +36,7 @@ export async function sendVerificationRequest(params: {
   const result = await transport.sendMail({
     to: identifier,
     from: provider.from,
-    subject: ` ${t('signInTo')} ${host}`,
+    subject: `${t('signInTo')} ${host}`,
     text: text({ url, host, t }),
     html: html({ url, host, theme, t }),
   });
@@ -110,5 +110,5 @@ function html(params: { url: string; host: string; theme: Theme; t: any }): stri
 
 /** Email Text body (fallback for email clients that don't render HTML, e.g. feature phones) */
 function text(params: { url: string; host: string; t: any }): string {
-  return `Sign in to ${params.host}\n${params.url}\n\n`;
+  return `${params.t('signInTo')} ${params.host}\n${params.url}\n\n`;
 }

@@ -4,6 +4,7 @@ import { useBearStore } from 'bear';
 import { InputWithButton } from 'components/atoms/Input';
 import { CustomLinkForm } from 'components/gadgets/CustomLinkForm';
 import { HelpTooltip } from 'components/gadgets/HelpTooltip';
+import { SignInToCustomLink } from 'components/gadgets/SignInToCustomLink';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLShortenerResult } from 'components/sections/URLShortenerResult';
 import { URLStats } from 'components/sections/URLStatsInput';
@@ -13,7 +14,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
-import { HASH } from 'types/constants';
+import { HASH, isProduction } from 'types/constants';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { encrypt } from 'utils/crypto';
 import { analytics } from 'utils/firebase';
@@ -150,7 +151,7 @@ const URLShortenerInput = () => {
       </form>
       <CustomLinkForm />
       <p className="mt-4 text-red-400">{error}</p>
-      {/* <SignInToCustomLink /> */}
+      {!isProduction && <SignInToCustomLink />}
       {hasData && shortenUrl && <URLShortenerResult />}
       <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
     </div>

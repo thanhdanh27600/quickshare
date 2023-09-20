@@ -36,9 +36,9 @@ export default function SignIn({ csrfToken }: InferGetServerSidePropsType<typeof
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   let locale = defaultLocale;
   try {
-    const cookies = context.req.cookies;
-    if (!!cookies['next-auth.callback-url']) {
-      const callbackUrl = new URL(context.req.cookies['next-auth.callback-url'] as string);
+    const query = context.query;
+    if (!!query.callbackUrl) {
+      const callbackUrl = new URL(query.callbackUrl as string);
       locale = callbackUrl?.pathname?.split('/')[1] as Locale;
       if (!locales[locale]) locale = defaultLocale;
     }
