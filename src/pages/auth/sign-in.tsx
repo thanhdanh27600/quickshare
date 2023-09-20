@@ -37,8 +37,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   let locale = defaultLocale;
   try {
     const query = context.query;
-    if (!!query['callbackUrl']) {
-      const callbackUrl = new URL(query['callbackUrl'] as string);
+    if (!!query.callbackUrl) {
+      const callbackUrl = new URL(query.callbackUrl as string);
       locale = callbackUrl?.pathname?.split('/')[1] as Locale;
       if (!locales[locale]) locale = defaultLocale;
     }
