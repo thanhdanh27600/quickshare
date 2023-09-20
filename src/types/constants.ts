@@ -6,6 +6,7 @@ export const alternateBrandUrl = ['https://vietnamese.cloud', 'https://clickdi.t
 export const isProduction = process.env.NODE_ENV === 'production';
 export const isTest = process.env.NODE_ENV === 'test';
 export const cdnUrl = 'https://cdn.jsdelivr.net/gh/thanhdanh27600/quickshare@production/public';
+export const GOOGLE_ADS_CLIENT_ID = 'ca-pub-5833291778924123';
 export const cdn = (file: string) => `${isProduction ? cdnUrl : ''}${file}`;
 export const isShortDomain = process.env.NEXT_PUBLIC_SHORT_DOMAIN === 'true';
 export const allowedDomains = isProduction ? [brandUrl, brandUrlShort] : [localUrl, brandUrl, brandUrlShort];
