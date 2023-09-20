@@ -6,7 +6,10 @@ const connectionString =
 // name of the queue
 const queueName = process.env.AZURE_BUS_QUEUE_NAME || '';
 
+const isTest = process.env.NODE_ENV === 'test';
+
 module.exports = {
   connectionString,
   queueName,
+  isTest,
 };

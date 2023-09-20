@@ -16,16 +16,20 @@ export const LIMIT_FEATURE_SECOND = LIMIT_FEATURE_HOUR * 3600;
 export const LIMIT_TOKEN_MILLISECOND = isProduction ? 3600e3 : 60e3;
 export const LIMIT_SHORTENED_HOUR = 24;
 export const LIMIT_SHORTENED_SECOND = LIMIT_SHORTENED_HOUR * 3600;
+export const LIMIT_SHORTEN_REQUEST = 5;
 export const LIMIT_NOTE_HOUR = 168; // 7 days
 export const LIMIT_NOTE_SECOND = LIMIT_NOTE_HOUR * 3600;
-export const LIMIT_SHORTEN_REQUEST = 5;
 export const LIMIT_NOTE_REQUEST = 5;
+export const LIMIT_FORWARD_HOUR = 0.5; // 30mins
+export const LIMIT_FORWARD_SECOND = LIMIT_NOTE_HOUR * 3600;
+export const LIMIT_FORWARD_REQUEST = isProduction ? 100 : 10;
 export const LIMIT_RECENT_HISTORY = 5;
 export const LIMIT_OG_TITLE_LENGTH = 100;
 export const LIMIT_NOTE_TITLE_LENGTH = 200;
 export const LIMIT_OG_DESCRIPTION_LENGTH = 200;
 export const OG_IMAGE_DIMENSION = '1200 x 630';
 export const LIMIT_FILE_UPLOAD = 5 * 1024 * 1024; // 10MB
+export const RESERVED_HASH = ['xxx'];
 
 export const HASH = {
   Regex: /^.{3}$/,
@@ -45,6 +49,7 @@ export const BASE_URL_SHORT = baseUrl(true);
 export const BASE_URL_OG = isProduction ? 'https://og.quickshare.at' : 'http://localhost:7071';
 export const REDIS_KEY = {
   LIMIT_SHORTEN: 'limitShort',
+  LIMIT_FORWARD: 'limitForward',
   LIMIT_NOTE: 'limitNote',
   MAP_SHORTEN_BY_HASH: 'hShort',
   MAP_NOTE_BY_HASH: 'hNote',

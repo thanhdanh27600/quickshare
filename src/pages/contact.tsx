@@ -22,7 +22,8 @@ const Contact = () => {
           content={`For any further questions or inquiries, you can reach out to the maintainers of this project:\nMaintainer Name: Dolph Pham\nMaintainer Email: dolph.pham@gmail.com`}
         />
       </Head>
-      <div className="mx-auto mt-16 max-w-7xl rounded-lg bg-gray-100 p-8 text-xl">
+      <h1 className="mt-8 text-4xl font-bold">{'Contact'}</h1>
+      <div className="mx-auto mt-8 max-w-7xl rounded-lg bg-gray-100 p-8 text-xl">
         <p>For any further questions or inquiries, you can reach out to the maintainers of this project:</p>
         <ul className="mt-4 max-w-md list-inside list-disc space-y-1 text-gray-900">
           <li>Maintainer Name: Dolph Pham</li>

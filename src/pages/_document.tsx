@@ -54,6 +54,11 @@ export default function Document() {
           src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></Script>
 
         <Script strategy="beforeInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-LE8KPBMBMD" />
+        <Script
+          strategy="beforeInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5833291778924123"
+          crossOrigin="anonymous"
+        />
       </Head>
       <body>
         <Main />

@@ -1,5 +1,5 @@
 import { noteCacheService, shortenCacheService } from '../../services/cache';
-import { HASH } from '../../types/constants';
+import { HASH, RESERVED_HASH } from '../../types/constants';
 import { generateRandomString } from '../../utils/text';
 import prisma from './../../db/prisma';
 
@@ -31,9 +31,14 @@ export const generateHash = async (generateFor: 'shorten' | 'note') => {
       logger.error(`timesLimit ${generateFor} reached`, timesLimit);
       throw new Error('Bad request after digging our hash, please try again!');
     }
+
     hash = generateRandomString(HASH.Length);
+
+    // check reserved hash
+    if (RESERVED_HASH.includes(hash)) continue;
+    // check from cache
     isExist = await existCache({ generateFor, hash });
-    //  double check db if not collapse in cache
+    //  check from db
     if (!isExist) {
       isExist = !!(await existDb({ generateFor, hash })) ? 1 : 0;
     }

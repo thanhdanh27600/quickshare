@@ -53,7 +53,7 @@
   "autoUpdate": "Tự động cập nhật",
   "refresh": "Cập nhật lại",
   "noData": "Chưa có dữ liệu",
-  "helpShortUrlHead": "- Rút gọn link thành 3 ký tự định danh xxx (qsh.at/xxx)\n- Link lưu theo IP, không cần đăng nhập\n- Để quản lý link, vào \"Xem thêm\"\n- Link sau khi rút gọn là công khai, trừ khi đặt mật khẩu",
+  "helpShortUrlHead": "- Rút gọn link thành 3 ký tự định danh xxx (qsh.at/xxx)\n- Link lưu theo IP, không cần đăng nhập\n- Để theo dõi link, vào \"Quản lý link\"\n- Link sau khi rút gọn là công khai, trừ khi đặt mật khẩu",
   "helpNoteHead": "- Tạo ghi chú nhanh thành 3 ký tự định danh xxx (qsh.at/xxx)\n- Ghi chú lưu theo IP, không cần đăng nhập\n- Ghi chú sau khi xuất bản là công khai, trừ khi đặt mật khẩu\n- Lưu lại link edit note khi cần chỉnh sửa",
   "brandTitle": "Quickshare | Tạo ghi chú cùng rút gọn link",
   "brandTitleNote": "Quickshare | Tạo ghi chú mới",
@@ -79,5 +79,15 @@
   "selectOrDropFiles": "Chọn hoặc Kéo thả file",
   "attachments": "File đính kèm",
   "attachmentsCreate": "File đính kèm (tối đa 3 file, mỗi file 5MB)",
-  "addAttachment": "Thêm file"
+  "addAttachment": "Thêm file",
+  "customLink": "Rút gọn thành",
+  "signInTo": "Link đăng nhập vào",
+  "signInNow": "Đăng nhập liền.",
+  "signInNowDetail": "Link đăng nhập sẽ được gửi qua email của bạn.",
+  "signInToCustomLink": "Để tạo link theo ý muốn",
+  "checkSignInEmail": "Kiểm tra email đi",
+  "checkSignInEmailDetail": "Quickshare đã bắn link đăng nhập rồi đó. 🌚",
+  "emailSignInWarning": "Nếu bạn không phải là người gửi yêu cầu, thì kệ nó đi :)",
+  "signOut": "Đăng xuất",
+  "home": "Trang chủ"
 }

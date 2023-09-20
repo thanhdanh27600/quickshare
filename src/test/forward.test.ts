@@ -2,12 +2,13 @@ import { UrlShortenerHistory } from '@prisma/client';
 import { createMocks } from 'node-mocks-http';
 import * as controller from '../controllers';
 import { redis } from '../redis/client';
-import { REDIS_KEY } from '../types/constants';
+import { LIMIT_FORWARD_REQUEST, REDIS_KEY } from '../types/constants';
 import HttpStatusCode from '../utils/statusCode';
 
 const ip = '0.0.0.1';
 const userAgent = 'localhost';
 const key = `${REDIS_KEY.LIMIT_SHORTEN}:${ip}`;
+const keyForward = `${REDIS_KEY.LIMIT_FORWARD}:${ip}`;
 const exampleUrl = 'U2FsdGVkX1+hDFakyw7MPSqI3JDQ6rXZF0vjpJ1ZOLIf5qp+9ByNbpiiJYIE+4ZYSAw1M2fIIfzcn5YaoYVCkA==';
 
 describe('Test /api/forward...', () => {
@@ -35,6 +36,7 @@ describe('Test /api/forward...', () => {
     });
 
     it('Should throw error with wrong hash format', async () => {
+      await redis.expire(keyForward, 0);
       const { req: req1, res: res1 } = createMocks({
         method: 'POST',
         body: { userAgent, hash: 'xx' },
@@ -69,6 +71,7 @@ describe('Test /api/forward...', () => {
 
     it('Should forward shortened URL ', async () => {
       await redis.expire(key, 0);
+      await redis.expire(keyForward, 0);
       const { req: req1, res: res1 } = createMocks({
         method: 'GET',
         query: { url: exampleUrl },
@@ -84,6 +87,33 @@ describe('Test /api/forward...', () => {
       expect(res2._getStatusCode()).toBe(HttpStatusCode.OK);
       const history2: UrlShortenerHistory = JSON.parse(res2._getData()).history;
       expect(history2.url).toEqual(history1.url);
+    });
+
+    it('Should throw error when reached limit request', async () => {
+      await redis.expire(key, 0);
+      const { req: req1, res: res1 } = createMocks({
+        method: 'GET',
+        query: { url: exampleUrl },
+        headers: { 'x-forwarded-for': ip },
+      });
+      await controller.shorten.handler(req1, res1);
+      const history1: UrlShortenerHistory = JSON.parse(res1._getData());
+
+      const requests = [];
+      for (let i = 0; i < LIMIT_FORWARD_REQUEST; i++) {
+        let { req, res } = createMocks({
+          method: 'POST',
+          body: { hash: history1.hash, userAgent, ip },
+        });
+        requests.push(handler(req, res));
+      }
+      await Promise.all(requests);
+      const { req, res } = createMocks({
+        method: 'POST',
+        body: { hash: history1.hash, userAgent, ip },
+      });
+      await handler(req, res);
+      expect(res._getStatusCode()).toBe(HttpStatusCode.TOO_MANY_REQUESTS);
     });
   });
 });

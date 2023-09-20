@@ -28,6 +28,8 @@ const EVENTS = {
   CONTACT: 'Contact',
   TERMS: 'Terms of Service',
   PRIVACY: 'Privacy Policy',
+  SIGN_IN: 'Sign in',
+  SIGN_OUT: 'Sign out',
   CRASH: 'CRASH',
 } as const;
 
