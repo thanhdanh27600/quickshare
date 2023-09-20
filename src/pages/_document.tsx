@@ -1,6 +1,6 @@
 import { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
-import { cdn, isShortDomain } from 'types/constants';
+import { GOOGLE_ADS_CLIENT_ID, cdn, isShortDomain } from 'types/constants';
 
 export default function Document() {
   return (
@@ -55,8 +55,9 @@ export default function Document() {
 
         <Script strategy="beforeInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-LE8KPBMBMD" />
         <Script
-          strategy="beforeInteractive"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5833291778924123"
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${GOOGLE_ADS_CLIENT_ID}`}
+          strategy="lazyOnload"
           crossOrigin="anonymous"
         />
       </Head>
