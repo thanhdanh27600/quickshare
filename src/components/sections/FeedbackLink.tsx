@@ -21,9 +21,10 @@ export enum FeedbackTemplate {
   URL_TRACKING = 'URL_TRACKING',
   FORGOT_PASSWORD = 'FORGOT_PASSWORD',
   NOTE = 'NOTE',
+  REPORT_LINK = 'REPORT_LINK',
 }
 
-const useFeedbackTemplate = (template: FeedbackTemplate) => {
+export const useFeedbackTemplate = (template: FeedbackTemplate) => {
   const { t } = useTrans('common');
   const email = 'quickshare.at@gmail.com';
   let supportUrl = '';
@@ -47,6 +48,11 @@ const useFeedbackTemplate = (template: FeedbackTemplate) => {
       supportUrl = `mailto:${email}?subject=${encodeURIComponent(t('feedbackForgotSubject'))}&body=${encodeURIComponent(
         t('feedbackForgotBody'),
       )}`;
+      break;
+    case FeedbackTemplate.REPORT_LINK:
+      supportUrl = `mailto:${email}?subject=${encodeURIComponent(
+        t('feedbackReportLinkSubject'),
+      )}&body=${encodeURIComponent(t('feedbackReportLinkBody'))}`;
       break;
     default:
       break;

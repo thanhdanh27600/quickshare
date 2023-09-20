@@ -39,9 +39,11 @@ export default function VerifyRequest(/* {}: InferGetServerSidePropsType<typeof 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   let locale = defaultLocale;
   try {
-    const cookies = context.req.cookies;
-    if (!!cookies['next-auth.callback-url']) {
-      const callbackUrl = new URL(context.req.cookies['next-auth.callback-url'] as string);
+    const headers = context.req.headers;
+    const referer = headers.referer ? new URL(headers.referer) : undefined;
+    let callbackUrl = referer?.searchParams.get('callbackUrl') as string | URL;
+    if (callbackUrl) {
+      callbackUrl = new URL(callbackUrl as string);
       locale = callbackUrl?.pathname?.split('/')[1] as Locale;
       if (!locales[locale]) locale = defaultLocale;
     }
