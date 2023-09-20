@@ -1,5 +1,6 @@
 import { i18n } from 'next-i18next';
 import { createTransport, Transporter } from 'nodemailer';
+import { Locale, locales } from '../types/locale';
 import { defaultLocale } from './i18next';
 
 interface Theme {
@@ -19,7 +20,15 @@ export async function sendVerificationRequest(params: {
   const { identifier, url, provider, theme } = params;
   const { host, searchParams } = new URL(url);
   const callbackUrl = searchParams.get('callbackUrl');
-  const locale = (callbackUrl && new URL(callbackUrl).pathname.split('/')[1]) || defaultLocale;
+
+  let locale = defaultLocale;
+  try {
+    locale = callbackUrl ? (new URL(callbackUrl).pathname.split('/')[1] as Locale) : defaultLocale;
+    if (!locales[locale]) locale = defaultLocale;
+  } catch (error) {
+    console.error(error);
+  }
+
   const t = (await i18n?.init({ lng: locale, ns: ['common'] })) || function (...any: any[]) {};
 
   // NOTE: You are not required to use `nodemailer`, use whatever you want.
@@ -27,7 +36,7 @@ export async function sendVerificationRequest(params: {
   const result = await transport.sendMail({
     to: identifier,
     from: provider.from,
-    subject: `Sign in to ${host}, ${locale}`,
+    subject: ` ${t('signInTo')} ${host}`,
     text: text({ url, host, t }),
     html: html({ url, host, theme, t }),
   });
@@ -79,9 +88,9 @@ function html(params: { url: string; host: string; theme: Theme; t: any }): stri
                 target="_blank"
                 style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${
                   color.buttonText
-                }; text-decoration: none; border-radius: 5px; padding: 10px 20px; border: 1px solid ${
+                }; text-decoration: none; border-radius: 5px; padding: 10px 20px; border: 1px solid; border-color: ${
     color.buttonBorder
-  }; display: inline-block; font-weight: bold;">${t('go')}</a></td>
+  }; display: inline-block; font-weight: bold;">${t('continue')}</a></td>
           </tr>
         </table>
       </td>

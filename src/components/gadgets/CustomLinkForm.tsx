@@ -14,7 +14,7 @@ export const CustomLinkForm = () => {
         <span>{t('customLink')}</span> {brandUrlShortDomain}/
       </p>
       <form className="w-full max-w-[8rem] sm:max-w-[12rem]">
-        <div className="flex items-center border-b border-cyan-500 py-2">
+        <div className="flex items-center border-b border-cyan-500">
           <input
             className="w-full appearance-none border-none bg-transparent px-1 leading-tight text-gray-700 focus:outline-none"
             type="text"
