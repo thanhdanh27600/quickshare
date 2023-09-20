@@ -1,7 +1,7 @@
 import { createMocks } from 'node-mocks-http';
 import * as controller from '../controllers';
 import { redis } from '../redis/client';
-import { HASH, REDIS_KEY } from '../types/constants';
+import { HASH, LIMIT_SHORTEN_REQUEST, REDIS_KEY } from '../types/constants';
 import HttpStatusCode from '../utils/statusCode';
 
 const ip = '0.0.0.0';
@@ -60,7 +60,7 @@ describe('Test /api/shorten...', () => {
       await redis.expire(key, 0);
       const requests = [];
 
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < LIMIT_SHORTEN_REQUEST; i++) {
         let { req, res } = createMocks({
           method: 'GET',
           query: {

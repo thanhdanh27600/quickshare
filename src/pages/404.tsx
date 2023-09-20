@@ -2,6 +2,7 @@ import { Button } from 'components/atoms/Button';
 import { BrandHead } from 'components/layouts/BrandHead';
 import { Footer } from 'components/layouts/Footer';
 import { Header } from 'components/layouts/Header';
+import Link from 'next/link';
 
 const PageNotFound = () => {
   return (
@@ -17,12 +18,12 @@ const PageNotFound = () => {
               <p className="px-12 pb-8 font-medium sm:text-2xl">
                 The page you are looking for does not exist. It might have been moved or deleted.
               </p>
-              <a href={'/'} className="mr-6">
+              <Link href={'/'} className="mr-6">
                 <Button text="Home" />
-              </a>
-              <a href={'/contact'} className="mr-6">
+              </Link>
+              <Link href={'/contact'} className="mr-6">
                 <Button text="Contact" className="from-red-500 to-red-400" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -2,11 +2,13 @@ import { isEmpty } from 'ramda';
 import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import { shortenCacheService } from '../services/cache';
+import { forwardCacheService } from '../services/cache/forward.service';
 import { sendMessageToQueue } from '../services/queue/sendMessage';
-import { REDIS_KEY, getRedisKey } from '../types/constants';
+import { LIMIT_FEATURE_HOUR, LIMIT_FORWARD_REQUEST, REDIS_KEY, getRedisKey } from '../types/constants';
 import { Forward, ForwardMeta } from '../types/forward';
 import { ipLookup } from '../utils/agent';
 import { api, badRequest, successHandler } from '../utils/axios';
+import HttpStatusCode from '../utils/statusCode';
 import { validateForwardSchema } from '../utils/validateMiddleware';
 
 export const handler = api<Forward>(
@@ -22,6 +24,17 @@ export const handler = api<Forward>(
       ip,
       fromClientSide,
     });
+
+    const reachedFeatureLimit = await forwardCacheService.limitFeature(ip);
+    if (reachedFeatureLimit) {
+      return res.status(HttpStatusCode.TOO_MANY_REQUESTS).send({
+        errorMessage: `Exceeded ${LIMIT_FORWARD_REQUEST} forwards, please comeback after ${
+          LIMIT_FEATURE_HOUR * 60
+        } minutes.`,
+        errorCode: 'UNAUTHORIZED',
+      });
+    }
+    forwardCacheService.incLimitIp(ip);
 
     const lookupIp = ipLookup(ip) || undefined;
     const data: ForwardMeta = {

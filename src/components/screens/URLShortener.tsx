@@ -2,6 +2,7 @@ import { getOrCreateShortenUrlRequest } from 'api/requests';
 import { AxiosError } from 'axios';
 import { useBearStore } from 'bear';
 import { InputWithButton } from 'components/atoms/Input';
+import { CustomLinkForm } from 'components/gadgets/CustomLinkForm';
 import { HelpTooltip } from 'components/gadgets/HelpTooltip';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLShortenerResult } from 'components/sections/URLShortenerResult';
@@ -147,7 +148,9 @@ const URLShortenerInput = () => {
           className="pl-5"
         />
       </form>
+      <CustomLinkForm />
       <p className="mt-4 text-red-400">{error}</p>
+      {/* <SignInToCustomLink /> */}
       {hasData && shortenUrl && <URLShortenerResult />}
       <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
     </div>

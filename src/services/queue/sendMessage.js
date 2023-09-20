@@ -1,5 +1,5 @@
 const { ServiceBusClient } = require('@azure/service-bus');
-const { connectionString, queueName } = require('./common');
+const { connectionString, queueName, isTest } = require('./common');
 
 /**
  * An array of objects representing message types.
@@ -19,6 +19,7 @@ const { connectionString, queueName } = require('./common');
  * @returns {Promise<void>} A Promise that resolves when the processing is complete.
  */
 async function sendMessageToQueue(messages) {
+  if (isTest) return;
   try {
     // create a Service Bus client using the connection string to the Service Bus namespace
     const sbClient = new ServiceBusClient(connectionString);

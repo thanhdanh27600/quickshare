@@ -9,12 +9,15 @@ import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BASE_URL, MIX_PANEL_TOKEN, Window, alternateBrandUrl, isProduction } from 'types/constants';
 import { trackLanded } from 'types/utils';
+import { useTrans } from 'utils/i18next';
 import '../styles/common.scss';
 import '../styles/globals.css';
 
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  const { locale } = useTrans();
+
   if (!MIX_PANEL_TOKEN) {
     console.error('Mix panel Not found');
   } else {

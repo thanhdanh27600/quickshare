@@ -3,6 +3,7 @@ import NextAuth, { AuthOptions } from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
 import { SERVER_AUTH } from 'types/constants';
 import prisma from '../../../db/prisma';
+import { sendVerificationRequest } from '../../../utils/emailAuth';
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -22,9 +23,12 @@ export const authOptions: AuthOptions = {
         },
       },
       from: process.env.EMAIL_FROM,
+      maxAge: 15 * 60, // 15 minutes,
+      sendVerificationRequest,
     }),
     // ...add more providers here
   ],
+  pages: { verifyRequest: '/auth/verify-request', signIn: '/auth/sign-in' },
   theme: {
     colorScheme: 'light', // "auto" | "dark" | "light"
     brandColor: '#722df5', // Hex color code

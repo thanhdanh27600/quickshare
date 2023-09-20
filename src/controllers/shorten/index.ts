@@ -2,12 +2,12 @@ import { UrlShortenerRecord } from '@prisma/client';
 import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
 import { shortenCacheService } from '../../services/cache/shorten.service';
-import { HASH, LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST } from '../../types/constants';
+import { generateHash } from '../../services/hash';
+import { LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST } from '../../types/constants';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import { decrypt, decryptS } from '../../utils/crypto';
 import HttpStatusCode from '../../utils/statusCode';
-import { generateRandomString } from '../../utils/text';
 import { validateShortenSchema } from '../../utils/validateMiddleware';
 
 const messageNotFound = "No URL was found on your request. Let's shorten one!";
@@ -52,27 +52,8 @@ export const handler = api<ShortenUrl>(
     }
     shortenCacheService.incLimitIp(ip);
 
-    // generate hash
-    let newHash = '';
-    let isExist = 1;
-    let timesLimit = 0;
-
-    const logger = require('../../utils/loggerServer');
-    while (isExist) {
-      if (timesLimit > 0) {
-        logger.warn('timesLimit shorten occured', timesLimit);
-      }
-      if (timesLimit++ > 10 /** U better buy lucky ticket */) {
-        logger.error('timesLimit shorten reached', timesLimit);
-        throw new Error('Bad request after digging our hash, please try again!');
-      }
-      newHash = generateRandomString(HASH.Length);
-      isExist = await shortenCacheService.existHash(newHash);
-      // also double check db if not collapse in cache
-      if (!isExist) {
-        isExist = !!(await prisma.urlShortenerHistory.findUnique({ where: { hash: newHash } })) ? 1 : 0;
-      }
-    }
+    // create shorten url
+    const shortHash = await generateHash('shorten');
 
     // write to db
     let record: UrlShortenerRecord | null = null;
@@ -90,7 +71,7 @@ export const handler = api<ShortenUrl>(
     const history = await prisma.urlShortenerHistory.create({
       data: {
         url,
-        hash: newHash,
+        hash: shortHash,
         urlShortenerRecordId: Number(record.id),
       },
     });
