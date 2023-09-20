@@ -115,7 +115,7 @@ export const URLStats = ({ defaultOpen = false }: { defaultOpen?: boolean }) => 
               deps: [],
             })}
             buttonProps={{
-              text: t('go'),
+              text: t('continue'),
               variant: 'filled',
               type: 'submit',
               className: 'bg-gray-500 bg-none hover:bg-gray-500/80 disabled:bg-gray-300 disabled:text-gray-500',

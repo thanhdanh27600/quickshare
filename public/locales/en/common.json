@@ -11,7 +11,7 @@
   "generate": "Short it",
   "manageLink": "Manage Link",
   "findLink": "Find link",
-  "go": "Go next",
+  "continue": "Continue",
   "forgotPassword": "Forgot password",
   "feedbackURLSubject": "[QUICKSHARE.AT] Feedback / Bug URL Shortener",
   "feedbackShortSubject": "[QUICKSHARE.AT] Feedback / Bug report URL Tracking",

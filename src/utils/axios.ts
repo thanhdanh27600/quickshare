@@ -28,7 +28,7 @@ export function errorHandler<T extends Response>(res: NextApiResponse<T>, error?
 export const catchErrorHandler = (res: NextApiResponse, error?: any) => {
   if (!isProduction && !isTest) console.error('[Error]', error);
   if (error instanceof z.ZodError) {
-    require('./loggerServer').warn(error);
+    // require('./loggerServer').warn(error);
     if (isProduction) return badRequest(res);
     return res.status(HttpStatusCode.BAD_REQUEST).json(error.issues);
   }
@@ -41,7 +41,7 @@ export const catchErrorHandler = (res: NextApiResponse, error?: any) => {
 export const api =
   <T extends Response = any>(f: NextApiHandler<T>, allowMethods?: HttpMethod[]) =>
   async (req: NextApiRequest, res: NextApiResponse<T | Response>) => {
-    require('./loggerServer').info(req);
+    // require('./loggerServer').info(req);
     if (allowMethods && !allowMethods.includes(req.method as HttpMethod)) {
       return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
     }
