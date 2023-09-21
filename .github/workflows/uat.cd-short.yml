@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CD-Uat-Short
+name: CD-UAT-SHORT
 
 # Controls when the action will run.
 on:

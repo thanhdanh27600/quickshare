@@ -1,9 +1,14 @@
+export const isLocal = process.env.NEXT_PUBLIC_BUILD_ENV === 'local';
+export const isUAT = process.env.NEXT_PUBLIC_BUILD_ENV === 'uat';
+export const isProduction = process.env.NEXT_PUBLIC_BUILD_ENV === 'production';
 export const localUrl = 'http://localhost:5000';
 export const brandUrl = 'https://quickshare.at';
 export const brandUrlShort = 'https://qsh.at';
+export const brandUrlUat = 'https://uat.quickshare.at';
+export const brandUrlShortUat = 'https://uat.qsh.at';
+
 export const brandUrlShortDomain = 'qsh.at';
 export const alternateBrandUrl = ['https://vietnamese.cloud', 'https://clickdi.top'] as const;
-export const isProduction = process.env.NODE_ENV === 'production';
 export const isTest = process.env.NODE_ENV === 'test';
 export const cdnUrl = 'https://cdn.jsdelivr.net/gh/thanhdanh27600/quickshare@production/public';
 export const GOOGLE_ADS_CLIENT_ID = 'ca-pub-5833291778924123';
@@ -40,6 +45,9 @@ export const HASH = {
 export const baseUrl = (useShortDomain: boolean = false) => {
   if (isProduction) {
     return useShortDomain ? brandUrlShort : brandUrl;
+  }
+  if (isUAT) {
+    return useShortDomain ? brandUrlShortUat : brandUrlUat;
   }
   return typeof location === 'object'
     ? `${location.protocol}//` + location.hostname + (location.port ? ':' + location.port : '')
