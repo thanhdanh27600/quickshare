@@ -65,6 +65,7 @@
         "number": true,
         "string": true
       }
-    ]
+    ],
+    "@next/next/no-img-element": 0
   }
 }

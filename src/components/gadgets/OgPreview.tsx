@@ -8,20 +8,30 @@ import { useTrans } from 'utils/i18next';
 
 const OgImage = ({
   ogImgSrc,
+  useCldImg,
   hash,
-  encodeTitle,
+  ogTitle,
   theme,
   className,
-}: Partial<UrlShortenerHistory & { encodeTitle: string; theme: string; className?: string }>) => {
-  return ogImgSrc ? (
-    <CldImage
-      height={221}
-      width={315}
-      alt={'quickshare-banner'}
-      className={clsx('h-full w-full object-contain', className)}
-      src={ogImgSrc}
-    />
-  ) : (
+}: Partial<UrlShortenerHistory & { useCldImg: boolean; theme: string; className?: string }>) => {
+  const { t } = useTrans();
+  const encodeTitle = encodeBase64(ogTitle!);
+
+  if (useCldImg && ogImgSrc) {
+    return (
+      <CldImage
+        height={221}
+        width={315}
+        alt={'quickshare-banner'}
+        className={clsx('h-full w-full object-contain', className)}
+        src={ogImgSrc}
+      />
+    );
+  }
+  if (!useCldImg && ogImgSrc) {
+    return <img alt={ogTitle || ''} src={ogImgSrc} width={1200} height={627} className="object-cover" />;
+  }
+  return (
     <iframe
       className={clsx('relative origin-top-left scale-[0.2485] sm:scale-[0.349]', className)}
       width={1200}
@@ -42,17 +52,17 @@ export const FacebookPreview = ({
   ogDomain,
   ogDescription,
   ogImgSrc,
+  ogImgPublicId,
   theme,
 }: Partial<UrlShortenerHistory>) => {
   const { t } = useTrans();
   const title = ogTitle || t('ogTitle', { hash: hash || 'XXX' });
-  const encodeTitle = encodeBase64(title);
 
   return (
     <div className="w-fit">
       <div className="ml-auto w-[300px] bg-gray-100/75 sm:w-[420px]">
         <div className="h-[157.5px] w-full border border-solid border-gray-200 bg-cover bg-no-repeat sm:h-[220.5px]">
-          <OgImage encodeTitle={encodeTitle} hash={hash} ogImgSrc={ogImgSrc} theme={theme} />
+          <OgImage useCldImg={!!ogImgPublicId} ogTitle={title} hash={hash} ogImgSrc={ogImgSrc} theme={theme} />
         </div>
         <div className="border border-t-0 border-solid border-gray-200 px-2.5 py-2">
           <span className="border-separate text-ellipsis whitespace-nowrap break-words font-facebook text-sm uppercase text-[#606770]">
@@ -76,18 +86,19 @@ export const TwitterPreview = ({
   ogDomain,
   ogDescription,
   ogImgSrc,
+  ogImgPublicId,
   theme,
 }: Partial<UrlShortenerHistory>) => {
   const { t } = useTrans();
   const title = ogTitle || t('ogTitle', { hash: hash || 'XXX' });
-  const encodeTitle = encodeBase64(title);
 
   return (
     <div className="w-fit">
       <div className="ml-auto w-[300px] rounded-[1.5rem] bg-gray-100/75 sm:w-[420px]">
         <div className="h-[157.5px] w-full rounded-[1.5rem] rounded-b-none border border-solid border-gray-200 bg-cover bg-no-repeat sm:h-[221px]">
           <OgImage
-            encodeTitle={encodeTitle}
+            useCldImg={!!ogImgPublicId}
+            ogTitle={title}
             hash={hash}
             ogImgSrc={ogImgSrc}
             className={ogImgSrc ? 'rounded-t-[1.5rem]' : 'rounded-t-[5.75rem] sm:rounded-t-[4.25rem]'}
@@ -113,14 +124,13 @@ export const TwitterPreview = ({
 export const DiscordPreview = ({
   hash,
   ogTitle,
-  ogDomain,
+  ogImgPublicId,
   ogDescription,
   ogImgSrc,
   theme,
 }: Partial<UrlShortenerHistory>) => {
   const { t } = useTrans();
   const title = ogTitle || t('ogTitle', { hash: hash || 'XXX' });
-  const encodeTitle = encodeBase64(title);
 
   return (
     <div className="w-fit">
@@ -134,7 +144,7 @@ export const DiscordPreview = ({
               {ogDescription ?? t('ogDescription')}
             </div>
             <div className="mt-4 h-[150px] origin-top-left scale-[0.85] bg-no-repeat sm:h-[205px] sm:w-[421.91] sm:scale-[0.9]">
-              <OgImage encodeTitle={encodeTitle} hash={hash} ogImgSrc={ogImgSrc} theme={theme} />
+              <OgImage useCldImg={!!ogImgPublicId} ogTitle={title} hash={hash} ogImgSrc={ogImgSrc} theme={theme} />
             </div>
           </div>
         </div>

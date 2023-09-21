@@ -151,8 +151,8 @@ const URLShortenerInput = () => {
       </form>
       <CustomLinkForm />
       <p className="mt-4 text-red-400">{error}</p>
-      {!isProduction && <SignInToCustomLink />}
       {hasData && shortenUrl && <URLShortenerResult />}
+      {!isProduction && <SignInToCustomLink />}
       <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
     </div>
   );

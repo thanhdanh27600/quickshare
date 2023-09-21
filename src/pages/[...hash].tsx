@@ -25,7 +25,7 @@ interface Props {
 }
 
 const ForwardURL = ({ history, ip, error }: Props) => {
-  const { t, locale } = useTrans();
+  const { t } = useTrans();
   const forwardUrl = useMutation(QueryKey.FORWARD, getForwardUrl);
   const loading = forwardUrl.isLoading && !forwardUrl.isError;
 
@@ -35,6 +35,7 @@ const ForwardURL = ({ history, ip, error }: Props) => {
   const ogTitle = history?.ogTitle || t('ogTitle', { hash });
   const ogDescription = history?.ogDescription || t('ogDescription');
   const ogImgSrc = history?.ogImgSrc;
+  const useCldImg = ogImgSrc && history?.ogImgPublicId;
 
   useEffect(() => {
     if (!Window()) {
@@ -86,7 +87,7 @@ const ForwardURL = ({ history, ip, error }: Props) => {
       <Head>
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.facebook.com/quickshare.at/" />
+        <meta property="og:url" content={url} />
         <meta property="og:title" content={ogTitle} />
         <meta property="og:description" content={ogDescription} />
 
@@ -113,7 +114,10 @@ const ForwardURL = ({ history, ip, error }: Props) => {
           </>
         )}
       </Head>
-      {ogImgSrc && <CldOgImage alt={t('ogDescription')} src={ogImgSrc} />}
+      {useCldImg && <CldOgImage alt={t('ogDescription')} src={ogImgSrc} />}
+      {!useCldImg && ogImgSrc && (
+        <img alt={ogTitle} src={ogImgSrc} width={1200} height={627} className="object-cover" />
+      )}
     </>
   );
 };

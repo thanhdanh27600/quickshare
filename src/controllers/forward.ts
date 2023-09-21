@@ -1,9 +1,9 @@
 import { isEmpty } from 'ramda';
-import prisma from '../db/prisma';
 import { redis } from '../redis/client';
 import { shortenCacheService } from '../services/cache';
 import { forwardCacheService } from '../services/cache/forward.service';
 import { sendMessageToQueue } from '../services/queue/sendMessage';
+import { shortenService } from '../services/shorten';
 import { LIMIT_FEATURE_HOUR, LIMIT_FORWARD_REQUEST, REDIS_KEY, getRedisKey } from '../types/constants';
 import { Forward, ForwardMeta } from '../types/forward';
 import { ipLookup } from '../utils/agent';
@@ -53,11 +53,7 @@ export const handler = api<Forward>(
       return successHandler(res, { history: shortenedUrlCache });
     }
     // cache missed write back to cache
-    const history = await prisma.urlShortenerHistory.findUnique({
-      where: {
-        hash,
-      },
-    });
+    const history = await shortenService.getShortenHistory(hash);
     if (!history) {
       return badRequest(res);
     }

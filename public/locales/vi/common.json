@@ -16,7 +16,7 @@
   "forgotPassword": "Quên mật khẩu",
   "feedbackURLSubject": "[QUICKSHARE.AT] Hỗ trợ / Báo lỗi Rút Gọn Link",
   "feedbackReportLinkSubject": "[QUICKSHARE.AT] Báo Cáo Link Vi Phạm",
-  "feedbackReportLinkBody": "Tôi đề nghị gỡ bõ link sau vì có dấu hiệu vi phạm:...\n\nLý do vi phạm:...",
+  "feedbackReportLinkBody": "Tôi đề nghị gỡ bỏ link sau vì có dấu hiệu vi phạm:...\n\nLý do vi phạm:...",
   "feedbackShortSubject": "[QUICKSHARE.AT] Feedback / Bug Theo Dõi Link",
   "feedbackNoteSubject": "[QUICKSHARE.AT] Feedback / Bug Ghi chú",
   "feedbackForgotSubject": "[QUICKSHARE.AT] Quên mật khẩu",
@@ -90,7 +90,7 @@
   "signInToCustomLink": "Để tạo link theo ý muốn",
   "checkSignInEmail": "Kiểm tra email đi",
   "checkSignInEmailDetail": "Quickshare đã bắn link đăng nhập rồi đó. 🌚",
-  "emailSignInWarning": "Nếu bạn không phải là người gửi yêu cầu, thì kệ nó đi :)",
+  "emailSignInWarning": "Nếu bạn không phải là người gửi yêu cầu, thì bỏ qua nhé.",
   "signOut": "Đăng xuất",
   "home": "Trang chủ"
 }
