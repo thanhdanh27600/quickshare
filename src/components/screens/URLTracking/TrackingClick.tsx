@@ -42,7 +42,6 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: QueryKey.STATS,
     queryFn: getStatsQuery,
-    refetchInterval: !!qc || needValidate ? false : 2000,
     retry: false,
     ...strictRefetch,
     onSuccess(data) {
@@ -162,19 +161,15 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
             {!hasPassword && <SetPassword hash={hash} />}
           </div>
 
-          <div className={clsx('mt-2 flex items-end justify-between text-sm text-gray-500', !!qc && 'pr-6')}>
+          <div className={clsx('mt-2 flex items-end justify-between pr-5 text-sm text-gray-500')}>
             <p className="text-lg capitalize text-cyan-500">
               {`${t('totalClick')}: `}{' '}
               <span className="text-3xl font-bold">{(history as any)?._count?.UrlForwardMeta}</span>
             </p>
-            <button
-              disabled={!qc}
-              className={clsx(qc && 'transition-all hover:text-cyan-500')}
-              onClick={() => Window()?.location.reload()}>
-              <span className={clsx('text-sm', !!qc ? 'text-red-500 ' : 'animate-ping text-green-500')}>•</span>{' '}
-              {!qc && <span className="">{t('autoUpdate')}</span>}
-              {!!qc && <span className={clsx(qc && 'hover:underline')}>{t('refresh')}</span>}
-              {!!qc && <RefreshCw className="absolute ml-1 mt-1 w-3" />}
+            <button className={'transition-all hover:text-cyan-500'} onClick={() => Window()?.location.reload()}>
+              <span className={'text-sm text-cyan-500'}>•</span>{' '}
+              <span className={'hover:underline'}>{t('lastUpdate') + ' ' + date().locale(locale).format('LT')}</span>
+              <RefreshCw className="absolute ml-1 mt-1 w-3" />
             </button>
           </div>
           <div className="relative mt-2 shadow-md">

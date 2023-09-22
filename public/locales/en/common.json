@@ -56,6 +56,8 @@
   "inputManyTimes": "Too many input. Please refresh page and try again.",
   "autoUpdate": "Auto update",
   "refresh": "Refresh",
+  "lastUpdate": "Last update",
+  "resetFiles": "Reset files",
   "noData": "No data found",
   "helpShortUrlHead": "- Shorten link to 3 unique hash xxx (qsh.at/xxx)\n- Link saved by IP, no sign in required\n- To tracking click, check \"Manage link\"\n- Shortened link goes publicly, unless set new password",
   "helpNoteHead": "- Create note and save to 3 unique hash xxx (qsh.at/xxx)\n- Note saved by IP, no sign in required\n- Note published has publicly access, unless set new password\n- Save your edit link in another place for further update",

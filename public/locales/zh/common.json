@@ -56,6 +56,8 @@
   "inputManyTimes": "输入次数过多。请刷新页面并重试。",
   "autoUpdate": "自动更新",
   "refresh": "刷新",
+  "lastUpdate": "最后更新",
+  "resetFiles": "重置文件",
   "noData": "未找到数据",
   "helpShortUrlHead": "- 将链接缩短为3个唯一哈希码xxx（qsh.at/xxx）\n- 通过IP保存链接，无需注册\n- 要跟踪点击，请查看“管理链接”\n- 缩短的链接是公开的，除非设置新密码",
   "helpNoteHead": "- 创建备注并保存到3个唯一哈希码xxx（qsh.at/xxx）\n- 通过IP保存备注，无需注册\n- 公开发布的备注具有公开访问权限，除非设置新密码\n- 请将编辑链接保存在其他位置以供进一步更新",

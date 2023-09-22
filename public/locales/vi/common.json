@@ -56,6 +56,8 @@
   "inputManyTimes": "Nhập quá nhiều lần. Refresh trang và thử lại.",
   "autoUpdate": "Tự động cập nhật",
   "refresh": "Cập nhật lại",
+  "lastUpdate": "Cập nhật lần cuối",
+  "resetFiles": "Xóa hết files",
   "noData": "Chưa có dữ liệu",
   "helpShortUrlHead": "- Rút gọn link thành 3 ký tự định danh xxx (qsh.at/xxx)\n- Link lưu theo IP, không cần đăng nhập\n- Để theo dõi link, vào \"Quản lý link\"\n- Link sau khi rút gọn là công khai, trừ khi đặt mật khẩu",
   "helpNoteHead": "- Tạo ghi chú nhanh thành 3 ký tự định danh xxx (qsh.at/xxx)\n- Ghi chú lưu theo IP, không cần đăng nhập\n- Ghi chú sau khi xuất bản là công khai, trừ khi đặt mật khẩu\n- Lưu lại link edit note khi cần chỉnh sửa",
