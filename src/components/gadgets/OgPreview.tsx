@@ -29,7 +29,15 @@ const OgImage = ({
     );
   }
   if (!useCldImg && ogImgSrc) {
-    return <img alt={ogTitle || ''} src={ogImgSrc} width={1200} height={627} className="object-cover" />;
+    return (
+      <img
+        alt={ogTitle || ''}
+        src={ogImgSrc}
+        width={1200}
+        height={627}
+        className="max-h-full max-w-full object-cover"
+      />
+    );
   }
   return (
     <iframe

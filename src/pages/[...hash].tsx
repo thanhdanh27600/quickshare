@@ -10,7 +10,7 @@ import { stringify } from 'querystring';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
-import { BASE_URL_OG, Window } from 'types/constants';
+import { BASE_URL_OG, Window, isProduction } from 'types/constants';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { encodeBase64 } from 'utils/crypto';
 import { analytics } from 'utils/firebase';
@@ -42,12 +42,17 @@ const ForwardURL = ({ history, ip, error }: Props) => {
       return;
     }
     // start client-side forward
-    forwardUrl.mutate({
-      hash: hash,
-      userAgent: navigator.userAgent,
-      ip,
-      fromClientSide: true,
-    });
+    setTimeout(
+      () => {
+        forwardUrl.mutate({
+          hash: hash,
+          userAgent: navigator.userAgent,
+          ip,
+          fromClientSide: true,
+        });
+      },
+      isProduction ? 0 : 2000,
+    );
   }, []);
 
   useEffect(() => {
@@ -93,7 +98,7 @@ const ForwardURL = ({ history, ip, error }: Props) => {
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
-        {/* <meta property="twitter:url" content="https://twitter.com/quickshare.at" /> */}
+        <meta property="twitter:url" content={url} />
         <meta property="twitter:title" content={ogTitle} />
         <meta property="twitter:description" content={ogDescription} />
         {!ogImgSrc && (
@@ -115,9 +120,7 @@ const ForwardURL = ({ history, ip, error }: Props) => {
         )}
       </Head>
       {useCldImg && <CldOgImage alt={t('ogDescription')} src={ogImgSrc} />}
-      {!useCldImg && ogImgSrc && (
-        <img alt={ogTitle} src={ogImgSrc} width={1200} height={627} className="object-cover" />
-      )}
+      {!useCldImg && ogImgSrc && <meta property="og:image" content={ogImgSrc} />}
     </>
   );
 };
