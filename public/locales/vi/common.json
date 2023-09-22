@@ -93,5 +93,6 @@
   "checkSignInEmailDetail": "Quickshare đã bắn link đăng nhập rồi đó. 🌚",
   "emailSignInWarning": "Nếu bạn không phải là người gửi yêu cầu, thì bỏ qua nhé.",
   "signOut": "Đăng xuất",
-  "home": "Trang chủ"
+  "home": "Trang chủ",
+  "notePlaceholder": "Nhập ghi chú của bạn ở đây..."
 }

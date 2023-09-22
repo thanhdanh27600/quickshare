@@ -3,8 +3,8 @@ import clsx from 'clsx';
 import { LanguageSelect } from 'components/gadgets/LanguageSelect';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect } from 'react';
-import { BASE_URL, TE } from 'types/constants';
+import { useCallback, useEffect } from 'react';
+import { BASE_URL, TE, Window } from 'types/constants';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 
 interface Props {
@@ -17,11 +17,22 @@ export const Sidebar = ({ className }: Props) => {
 
   const TEInstance = TE();
 
-  useEffect(() => {
+  const hideSidebar = useCallback(() => {
     if (TEInstance) {
       TEInstance.Offcanvas.getOrCreateInstance(document.getElementById(sidebarId))?.hide();
     }
+  }, [TEInstance]);
+
+  useEffect(() => {
+    hideSidebar();
   }, [locale]);
+
+  useEffect(() => {
+    const resize = Window().addEventListener('resize', hideSidebar);
+    return () => {
+      Window().removeEventListener('resize', resize);
+    };
+  }, []);
 
   return (
     <>

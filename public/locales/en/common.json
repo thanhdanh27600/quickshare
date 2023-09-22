@@ -93,5 +93,6 @@
   "checkSignInEmailDetail": "A sign in link has been sent to your email address.",
   "emailSignInWarning": "If you did not request this email, you can safely ignore it.",
   "signOut": "Sign out",
-  "home": "Homepage"
+  "home": "Homepage",
+  "notePlaceholder": "Write your note here..."
 }

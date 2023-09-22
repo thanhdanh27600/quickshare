@@ -19,7 +19,7 @@ export const Button = (props: ButtonProps) => {
     <button
       {...otherProps}
       className={clsx(
-        'rounded-lg bg-gradient-to-l px-6 py-3 text-center font-medium transition-all focus:ring-2 disabled:cursor-not-allowed disabled:bg-cyan-300 disabled:text-gray-300',
+        'rounded-lg bg-gradient-to-l px-4 py-3 text-center font-medium transition-all focus:ring-2 disabled:cursor-not-allowed disabled:bg-cyan-300 disabled:text-gray-300',
         {
           'py-2.5 text-white focus:outline-none focus:ring-cyan-400': variant === 'filled',
           'hover:gradient-bg from-purple-600 to-cyan-600/80 ': animation,

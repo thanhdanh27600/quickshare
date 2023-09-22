@@ -78,7 +78,7 @@ export const Footer = ({ className }: { className?: string }) => {
               mixpanel.track(MIXPANEL_EVENT.DONATE);
             }}
             className="mt-2 cursor-pointer text-gray-400 decoration-1 hover:text-cyan-600 hover:underline hover:decoration-wavy">
-            Looks good? Get me a Pho Bo 🍲
+            {'Looks good? Get me a Pho Bo 🍲'}
           </div>
         </div>
         <LanguageSelect />
