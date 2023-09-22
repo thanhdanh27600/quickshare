@@ -1,6 +1,6 @@
 {
   "ogTitle": "Chia sẻ link <{{hash}}> với mọi người. Khám phá ngay!",
-  "ogDescription": "Quickshare chia sẻ note cùng rút gọn URLs miễn phí.",
+  "ogDescription": "Quickshare rút gọn link và ghi chú miễn phí.",
   "giveFeedback": "Báo cáo lỗi",
   "errorNoUrl": "Vui lòng nhập URL để tiếp tục",
   "errorInvalidUrl": "URL không hợp lệ, hãy thử lại",
@@ -9,6 +9,7 @@
   "errorInvalidInput": "Thông tin không hợp lệ, hãy thử lại",
   "somethingWrong": "Có gì đó sai sai :(, để tụi tui xem lại",
   "generate": "Rút link",
+  "generateMore": "Tạo link mới",
   "manageLink": "Quản lý link",
   "findLink": "Tìm kiếm link",
   "continue": "Tiếp tục",
@@ -16,7 +17,7 @@
   "forgotPassword": "Quên mật khẩu",
   "feedbackURLSubject": "[QUICKSHARE.AT] Hỗ trợ / Báo lỗi Rút Gọn Link",
   "feedbackReportLinkSubject": "[QUICKSHARE.AT] Báo Cáo Link Vi Phạm",
-  "feedbackReportLinkBody": "Tôi đề nghị gỡ bõ link sau vì có dấu hiệu vi phạm:...\n\nLý do vi phạm:...",
+  "feedbackReportLinkBody": "Tôi đề nghị gỡ bỏ link sau vì có dấu hiệu vi phạm:...\n\nLý do vi phạm:...",
   "feedbackShortSubject": "[QUICKSHARE.AT] Feedback / Bug Theo Dõi Link",
   "feedbackNoteSubject": "[QUICKSHARE.AT] Feedback / Bug Ghi chú",
   "feedbackForgotSubject": "[QUICKSHARE.AT] Quên mật khẩu",
@@ -90,7 +91,7 @@
   "signInToCustomLink": "Để tạo link theo ý muốn",
   "checkSignInEmail": "Kiểm tra email đi",
   "checkSignInEmailDetail": "Quickshare đã bắn link đăng nhập rồi đó. 🌚",
-  "emailSignInWarning": "Nếu bạn không phải là người gửi yêu cầu, thì kệ nó đi :)",
+  "emailSignInWarning": "Nếu bạn không phải là người gửi yêu cầu, thì bỏ qua nhé.",
   "signOut": "Đăng xuất",
   "home": "Trang chủ"
 }

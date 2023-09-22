@@ -3,10 +3,12 @@ import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
 import { shortenCacheService } from '../../services/cache/shorten.service';
 import { generateHash } from '../../services/hash';
+import { shortenService } from '../../services/shorten';
 import { LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST } from '../../types/constants';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import { decrypt, decryptS } from '../../utils/crypto';
+import { extractOgMetaTags } from '../../utils/dom';
 import HttpStatusCode from '../../utils/statusCode';
 import { validateShortenSchema } from '../../utils/validateMiddleware';
 
@@ -31,7 +33,7 @@ export const handler = api<ShortenUrl>(
 
     // if hash then retrieve from cache & db
     if (hash) {
-      const history = await prisma.urlShortenerHistory.findUnique({ where: { hash } });
+      const history = await shortenService.getShortenHistory(hash);
       if (!history) return badRequest(res, messageNotFound);
       if (!!history.password) {
         const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
@@ -55,6 +57,14 @@ export const handler = api<ShortenUrl>(
     // create shorten url
     const shortHash = await generateHash('shorten');
 
+    // extract og metas
+    let htmlString = '';
+    try {
+      htmlString = await (await fetch(url)).text();
+    } catch (error) {}
+
+    const socialMetaTags = extractOgMetaTags(htmlString);
+
     // write to db
     let record: UrlShortenerRecord | null = null;
     record = await prisma.urlShortenerRecord.findFirst({ where: { ip } });
@@ -71,6 +81,9 @@ export const handler = api<ShortenUrl>(
     const history = await prisma.urlShortenerHistory.create({
       data: {
         url,
+        ogTitle: socialMetaTags.title,
+        ogDescription: socialMetaTags.description,
+        ogImgSrc: socialMetaTags.image,
         hash: shortHash,
         urlShortenerRecordId: Number(record.id),
       },

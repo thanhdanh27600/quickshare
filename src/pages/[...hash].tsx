@@ -10,7 +10,7 @@ import { stringify } from 'querystring';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
-import { BASE_URL_OG, Window } from 'types/constants';
+import { BASE_URL_OG, Window, isProduction } from 'types/constants';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { encodeBase64 } from 'utils/crypto';
 import { analytics } from 'utils/firebase';
@@ -25,7 +25,7 @@ interface Props {
 }
 
 const ForwardURL = ({ history, ip, error }: Props) => {
-  const { t, locale } = useTrans();
+  const { t } = useTrans();
   const forwardUrl = useMutation(QueryKey.FORWARD, getForwardUrl);
   const loading = forwardUrl.isLoading && !forwardUrl.isError;
 
@@ -35,18 +35,24 @@ const ForwardURL = ({ history, ip, error }: Props) => {
   const ogTitle = history?.ogTitle || t('ogTitle', { hash });
   const ogDescription = history?.ogDescription || t('ogDescription');
   const ogImgSrc = history?.ogImgSrc;
+  const useCldImg = ogImgSrc && history?.ogImgPublicId;
 
   useEffect(() => {
     if (!Window()) {
       return;
     }
     // start client-side forward
-    forwardUrl.mutate({
-      hash: hash,
-      userAgent: navigator.userAgent,
-      ip,
-      fromClientSide: true,
-    });
+    setTimeout(
+      () => {
+        forwardUrl.mutate({
+          hash: hash,
+          userAgent: navigator.userAgent,
+          ip,
+          fromClientSide: true,
+        });
+      },
+      isProduction ? 0 : 2000,
+    );
   }, []);
 
   useEffect(() => {
@@ -86,13 +92,13 @@ const ForwardURL = ({ history, ip, error }: Props) => {
       <Head>
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.facebook.com/quickshare.at/" />
+        <meta property="og:url" content={url} />
         <meta property="og:title" content={ogTitle} />
         <meta property="og:description" content={ogDescription} />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
-        {/* <meta property="twitter:url" content="https://twitter.com/quickshare.at" /> */}
+        <meta property="twitter:url" content={url} />
         <meta property="twitter:title" content={ogTitle} />
         <meta property="twitter:description" content={ogDescription} />
         {!ogImgSrc && (
@@ -113,7 +119,8 @@ const ForwardURL = ({ history, ip, error }: Props) => {
           </>
         )}
       </Head>
-      {ogImgSrc && <CldOgImage alt={t('ogDescription')} src={ogImgSrc} />}
+      {useCldImg && <CldOgImage alt={t('ogDescription')} src={ogImgSrc} />}
+      {!useCldImg && ogImgSrc && <meta property="og:image" content={ogImgSrc} />}
     </>
   );
 };

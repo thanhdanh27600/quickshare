@@ -15,7 +15,7 @@ export const SignInToCustomLink = () => {
   };
 
   return (
-    <div className="text-xs text-gray-500">
+    <div className="mt-2 text-xs text-gray-500">
       <span>{t('signInToCustomLink')}.</span>{' '}
       <a
         onClick={handleSignIn}

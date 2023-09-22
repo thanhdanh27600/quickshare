@@ -22,8 +22,10 @@ module.exports = isTest
         },
         timestamp: pino.stdTimeFunctions.isoTime,
       },
-      pino.transport({
-        target: 'pino/file',
-        options: { destination: isProduction ? `pino.log` : `./logs/pino.log` },
-      }),
+      isProduction
+        ? pino.transport({
+            target: 'pino/file',
+            options: { destination: `pino.log` },
+          })
+        : undefined,
     );

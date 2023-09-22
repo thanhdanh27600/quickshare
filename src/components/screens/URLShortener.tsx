@@ -133,13 +133,14 @@ const URLShortenerInput = () => {
               return error ? t(error) : undefined;
             },
           })}
-          disabled={loading}
+          disabled={!!shortenUrl || loading}
           buttonProps={{
             animation: true,
             hoverTransform: false,
             text: t('generate'),
             variant: 'filled',
             type: 'submit',
+            disabled: !!shortenUrl,
             loading,
             TextClassname: 'text-sm sm:text-xl',
           }}
@@ -150,8 +151,8 @@ const URLShortenerInput = () => {
         />
       </form>
       <CustomLinkForm />
-      <p className="mt-4 text-red-400">{error}</p>
       {!isProduction && <SignInToCustomLink />}
+      <p className="mt-4 text-red-400">{error}</p>
       {hasData && shortenUrl && <URLShortenerResult />}
       <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
     </div>

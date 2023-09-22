@@ -1,4 +1,4 @@
-import prisma from '../../db/prisma';
+import { shortenService } from '../../services/shorten';
 import { Stats } from '../../types/stats';
 import { api, errorHandler, successHandler } from '../../utils/axios';
 import { decryptS, encryptS } from '../../utils/crypto';
@@ -9,13 +9,8 @@ export const handler = api<Stats>(
     await validateVerifyPasswordSchema.parseAsync(req.body);
     const hash = req.body.h as string;
     const password = req.body.p as string;
-    let history;
     // get stats with hash
-    history = await prisma.urlShortenerHistory.findUnique({
-      where: {
-        hash,
-      },
-    });
+    const history = await shortenService.getShortenHistory(hash);
     if (history && history?.password) {
       const decryptPassword = decryptS(history?.password);
       if (decryptPassword === password) {
