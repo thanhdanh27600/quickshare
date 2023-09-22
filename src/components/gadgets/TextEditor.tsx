@@ -1,5 +1,6 @@
 import { useEffect, useId } from 'react';
 import { tinymce } from 'types/constants';
+import { useTrans } from 'utils/i18next';
 
 const plugins = [
   'advlist',
@@ -26,6 +27,7 @@ const toolbar =
   'undo redo | blocks restoredraft removeformat';
 
 const TextEditor = ({ defaultValue, readonly }: { defaultValue?: string; readonly?: boolean }) => {
+  const { t, locale } = useTrans();
   const id = useId().replaceAll(':', '-');
   useEffect(() => {
     if (!tinymce) return;
@@ -41,6 +43,7 @@ const TextEditor = ({ defaultValue, readonly }: { defaultValue?: string; readonl
       toolbar: readonly ? '' : toolbar,
       menubar: !readonly,
       readonly,
+      language: locale,
       content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14pt }',
     });
   }, []);
@@ -51,7 +54,7 @@ const TextEditor = ({ defaultValue, readonly }: { defaultValue?: string; readonl
         className="h-[300px] w-full"
         id={id}
         defaultValue={defaultValue}
-        placeholder="Write your note here..."></textarea>
+        placeholder={t('notePlaceholder')}></textarea>
     </div>
   );
 };

@@ -27,7 +27,7 @@ export const URLShortenerResult = () => {
     <div className="mt-4">
       <p>🚀 {t('shortenSuccess')}</p>
       <ShortenUrlTile />
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-4">
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap gap-1">
           <span className="text-gray-500">{t('trackingLive')}</span>
           <a

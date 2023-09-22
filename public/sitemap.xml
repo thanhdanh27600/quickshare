@@ -47,8 +47,6 @@
   <priority>0.5</priority>
 </url>
 
-
-
 <url>
   <loc>https://quickshare.at/en</loc>
   <lastmod>2023-09-10</lastmod>
@@ -91,6 +89,63 @@
   <changefreq>yearly</changefreq>
   <priority>0.5</priority>
 </url>
+
+<url>
+  <loc>https://quickshare.at/zh</loc>
+  <lastmod>2023-09-22</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+
+<url>
+  <loc>https://quickshare.at/zh/note</loc>
+  <lastmod>2023-09-22</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+
+<url>
+  <loc>https://quickshare.at/fr</loc>
+  <lastmod>2023-09-22</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+
+<url>
+  <loc>https://quickshare.at/fr/note</loc>
+  <lastmod>2023-09-22</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+
+<url>
+  <loc>https://quickshare.at/ja</loc>
+  <lastmod>2023-09-22</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+
+<url>
+  <loc>https://quickshare.at/ja/note</loc>
+  <lastmod>2023-09-22</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+
+<url>
+  <loc>https://quickshare.at/hi</loc>
+  <lastmod>2023-09-22</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+
+<url>
+  <loc>https://quickshare.at/hi/note</loc>
+  <lastmod>2023-09-22</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+
 
 
 </urlset>

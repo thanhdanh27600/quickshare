@@ -1,20 +1,28 @@
 import clsx from 'clsx';
+import { ChinaIcon } from 'components/icons/ChinaIcon';
 import { DropdownIndicate } from 'components/icons/DropdownIndicate';
+import { FranceIcon } from 'components/icons/FranceIcon';
+import { IndiaIcon } from 'components/icons/IndiaIcon';
+import { JapanIcon } from 'components/icons/JapanIcon';
 import { UsaIcon } from 'components/icons/UsaIcon';
 import { VietnamIcon } from 'components/icons/VietnamIcon';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { languages, Locale, locales } from 'types/locale';
+import { languages, Locale } from 'types/locale';
 import { useTrans } from 'utils/i18next';
 
 const LangugageIcon: Record<Locale, (props: any) => JSX.Element> = {
   vi: VietnamIcon,
   en: UsaIcon,
+  fr: FranceIcon,
+  zh: ChinaIcon,
+  ja: JapanIcon,
+  hi: IndiaIcon,
 };
 
 const LanguageOptions = ({ changeLanguage, setOpen }: { changeLanguage: (l: string) => void; setOpen: any }) => (
   <>
-    {Object.keys(locales).map((lan) => {
+    {Object.keys(LangugageIcon).map((lan) => {
       const Icon = LangugageIcon[lan as Locale];
       return (
         <li className="ml-0 list-none" key={lan}>
@@ -67,7 +75,7 @@ export const LanguageSelect = () => {
       <div
         className={clsx(
           'absolute inset-x-auto z-10 m-0 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow-xl',
-          open && '!block -translate-x-24 translate-y-[-96px] md:-translate-x-8',
+          open && '!block translate-x-[-50%] translate-y-[-110%] md:translate-x-[-10%]',
         )}>
         <ul className="text-sm text-gray-900" aria-labelledby="states-button">
           <LanguageOptions changeLanguage={changeLanguage} setOpen={setOpen} />
