@@ -133,14 +133,14 @@ const URLShortenerInput = () => {
               return error ? t(error) : undefined;
             },
           })}
-          disabled={hasData || loading}
+          disabled={!!shortenUrl || loading}
           buttonProps={{
             animation: true,
             hoverTransform: false,
             text: t('generate'),
             variant: 'filled',
             type: 'submit',
-            disabled: hasData,
+            disabled: !!shortenUrl,
             loading,
             TextClassname: 'text-sm sm:text-xl',
           }}
