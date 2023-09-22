@@ -1,6 +1,6 @@
 {
   "ogTitle": "Share link <{{hash}}> with everyone. Find out now!",
-  "ogDescription": "Quickshare - share note with shortened urls, always free.",
+  "ogDescription": "Quickshare - share shortened urls and note, always free.",
   "giveFeedback": "Give feedback",
   "errorNoUrl": "Please enter the URL to continue",
   "errorInvalidUrl": "Invalid URL, please try again",

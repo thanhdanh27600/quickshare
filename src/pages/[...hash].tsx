@@ -51,7 +51,7 @@ const ForwardURL = ({ history, ip, error }: Props) => {
           fromClientSide: true,
         });
       },
-      isProduction ? 0 : 3000,
+      isProduction ? 0 : 2000,
     );
   }, []);
 
@@ -98,7 +98,7 @@ const ForwardURL = ({ history, ip, error }: Props) => {
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
-        {/* <meta property="twitter:url" content="https://twitter.com/quickshare.at" /> */}
+        <meta property="twitter:url" content={url} />
         <meta property="twitter:title" content={ogTitle} />
         <meta property="twitter:description" content={ogDescription} />
         {!ogImgSrc && (
