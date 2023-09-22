@@ -27,13 +27,21 @@ export const URLShortenerResult = () => {
     <div className="mt-4">
       <p>🚀 {t('shortenSuccess')}</p>
       <ShortenUrlTile />
-      <div className="mt-2 flex w-full flex-wrap gap-1">
-        <span className="text-gray-500">{t('trackingLive')}</span>
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap gap-1">
+          <span className="text-gray-500">{t('trackingLive')}</span>
+          <a
+            href={linkWithLanguage(shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`), locale)}
+            target="_blank"
+            className="cursor-pointer text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
+            {shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`).replace('https://', '')}
+          </a>
+        </div>
         <a
-          href={linkWithLanguage(shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`), locale)}
-          target="_blank"
+          href={linkWithLanguage(BASE_URL, locale)}
+          target="_self"
           className="cursor-pointer text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
-          {shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`).replace('https://', '')}
+          {t('generateMore')}
         </a>
       </div>
       <URLShare />

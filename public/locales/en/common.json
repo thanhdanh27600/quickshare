@@ -9,6 +9,7 @@
   "errorInvalidInput": "Invalid input, please try again",
   "somethingWrong": "Something wrong happened :(. We're looking into it",
   "generate": "Short it",
+  "generateMore": "Shorten another URL",
   "manageLink": "Manage Link",
   "findLink": "Find link",
   "continue": "Continue",
