@@ -71,6 +71,7 @@ export const NoteAttachments = () => {
             className="mt-2 flex w-fit cursor-pointer items-center gap-1 text-sm text-gray-500 transition-colors hover:text-gray-700"
             onClick={onAdd}>
             <Plus className="w-4 cursor-pointer" />
+            {t('addAttachment')}
           </div>
         )}
       </div>
