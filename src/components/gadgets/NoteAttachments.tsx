@@ -63,7 +63,7 @@ export const NoteAttachments = () => {
             className="mt-2 flex w-fit cursor-pointer items-center gap-1 text-sm text-gray-500 transition-colors hover:text-gray-700"
             onClick={onDelete}>
             <Trash2 onClick={onDelete} className="w-4 cursor-pointer" />
-            Reset files
+            {t('resetFiles')}
           </div>
         )}
         {fields.length < MAX_ATTACHMENTS && (

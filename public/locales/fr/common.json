@@ -56,6 +56,8 @@
   "inputManyTimes": "Trop d'entrées. Veuillez rafraîchir la page et réessayer.",
   "autoUpdate": "Mise à jour automatique",
   "refresh": "Actualiser",
+  "lastUpdate": "Dernière mise à jour",
+  "resetFiles": "Réinitialiser les fichiers",
   "noData": "Aucune donnée trouvée",
   "helpShortUrlHead": "- Raccourcir le lien en 3 hash uniques xxx (qsh.at/xxx)\n- Le lien est enregistré par IP, aucune inscription n'est requise\n- Pour suivre les clics, consultez \"Gérer le lien\"\n- Le lien raccourci est public, sauf si vous définissez un nouveau mot de passe",
   "helpNoteHead": "- Créer une note et l'enregistrer sous 3 hash uniques xxx (qsh.at/xxx)\n- La note est enregistrée par IP, aucune inscription n'est requise\n- La note publiée est accessible au public, sauf si vous définissez un nouveau mot de passe\n- Sauvegardez votre lien d'édition ailleurs pour les mises à jour ultérieures",

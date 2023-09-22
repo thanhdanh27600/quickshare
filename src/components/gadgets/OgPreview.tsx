@@ -35,7 +35,7 @@ const OgImage = ({
         src={ogImgSrc}
         width={1200}
         height={627}
-        className="max-h-full max-w-full object-cover"
+        className={clsx('max-h-full max-w-full object-cover', className)}
       />
     );
   }
