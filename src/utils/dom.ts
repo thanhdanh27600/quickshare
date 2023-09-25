@@ -1,5 +1,4 @@
 import { load } from 'cheerio';
-import urlJoin from 'url-join';
 
 export function extractBaseUrl(url: string): string {
   try {
@@ -26,8 +25,8 @@ export function extractOgMetaTags(htmlString: string, baseUrl?: string): Record<
     ogMetaTags[propertyName] = content;
 
     // Check if the content is a relative URL and make it absolute
-    if (baseUrl && propertyName === 'image' && !content.startsWith('http')) {
-      ogMetaTags[propertyName] = urlJoin(baseUrl, content);
+    if (baseUrl && propertyName === 'image' && content.startsWith('/')) {
+      ogMetaTags[propertyName] = baseUrl + content;
     } else {
       ogMetaTags[propertyName] = content;
     }
