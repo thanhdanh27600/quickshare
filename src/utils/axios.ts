@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
-import { isProduction, isTest } from '../types/constants';
+import { isLocal, isProduction, isTest } from '../types/constants';
 import HttpStatusCode from './statusCode';
 
 export type Response =
@@ -41,7 +41,7 @@ export const catchErrorHandler = (res: NextApiResponse, error?: any) => {
 export const api =
   <T extends Response = any>(f: NextApiHandler<T>, allowMethods?: HttpMethod[]) =>
   async (req: NextApiRequest, res: NextApiResponse<T | Response>) => {
-    if (!isProduction) require('./loggerServer').info(req);
+    if (isLocal) require('./loggerServer').info(req);
     if (allowMethods && !allowMethods.includes(req.method as HttpMethod)) {
       return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
     }
