@@ -2,6 +2,7 @@ export const isLocal = process.env.NEXT_PUBLIC_BUILD_ENV === 'local';
 export const isUAT = process.env.NEXT_PUBLIC_BUILD_ENV === 'uat';
 export const isProduction = process.env.NEXT_PUBLIC_BUILD_ENV === 'production';
 export const localUrl = 'http://localhost:5000';
+export const localUrlShort = 'http://localhost:5001';
 export const brandUrl = 'https://quickshare.at';
 export const brandUrlShort = 'https://qsh.at';
 export const brandUrlUat = 'https://uat.quickshare.at';
@@ -26,7 +27,7 @@ export const LIMIT_SHORTEN_REQUEST = 5;
 export const LIMIT_NOTE_HOUR = 168; // 7 days
 export const LIMIT_NOTE_SECOND = LIMIT_NOTE_HOUR * 3600;
 export const LIMIT_NOTE_REQUEST = 5;
-export const LIMIT_FORWARD_HOUR = 0.5; // 30mins
+export const LIMIT_FORWARD_HOUR = isProduction ? 0.5 : 0.005; // 30mins
 export const LIMIT_FORWARD_SECOND = LIMIT_NOTE_HOUR * 3600;
 export const LIMIT_FORWARD_REQUEST = isProduction ? 100 : 10;
 export const LIMIT_RECENT_HISTORY = 5;
@@ -49,8 +50,10 @@ export const baseUrl = (useShortDomain: boolean = false) => {
   if (isUAT) {
     return useShortDomain ? brandUrlShortUat : brandUrlUat;
   }
-  return typeof location === 'object'
+  return typeof location === 'object' && !location.hostname.includes('localhost')
     ? `${location.protocol}//` + location.hostname + (location.port ? ':' + location.port : '')
+    : useShortDomain
+    ? localUrlShort
     : localUrl;
 };
 export const BASE_URL = baseUrl();

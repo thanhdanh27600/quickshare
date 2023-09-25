@@ -2,13 +2,14 @@ import { keys } from 'ramda';
 import { z } from 'zod';
 import { HASH, isProduction } from '../types/constants';
 import { Theme, Themes } from '../types/og';
-import { urlRegex } from './text';
+import { isValidUrl } from './text';
 
 const invalidUrlPatterns: RegExp[] = [/quickshare\.at/, /qsh\.at/, /localhost/];
 
 const isUrlToShortenValid = (url: string) => {
   let isValid = true;
   if (!url) return false;
+  if (url.includes(' ')) return false;
   invalidUrlPatterns.map((pattern) => {
     if (url.match(pattern)) isValid = false;
   });
@@ -17,7 +18,7 @@ const isUrlToShortenValid = (url: string) => {
 
 export const validateUrl = (text: string) => {
   const message = 'errorInvalidUrl';
-  if (!urlRegex.test(text)) return message;
+  if (!isValidUrl(text)) return message;
   if (!isUrlToShortenValid(text)) return message;
   return '';
 };

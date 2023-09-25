@@ -125,7 +125,7 @@ const URLShortenerInput = () => {
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         <InputWithButton
-          placeholder="https://example.com"
+          placeholder={shortenUrl || 'https://example.com'}
           {...register('url', {
             required: { message: t('errorNoUrl'), value: true },
             validate: (text) => {

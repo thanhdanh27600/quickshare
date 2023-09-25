@@ -34,7 +34,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     if (any((url) => url.includes(host), alternateBrandUrl)) {
       window.location.href = BASE_URL;
     }
-    const _ = new (window as any).ClipboardJS('.btn-copy');
+    try {
+      const _ = new (window as any).ClipboardJS('.btn-copy');
+    } catch (error) {}
     // Google Ads
     (window as any).dataLayer = (window as any).dataLayer || [];
     function gtag(...a: any[]) {

@@ -1,4 +1,5 @@
 import { UrlShortenerRecord } from '@prisma/client';
+import axios from 'axios';
 import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
 import { shortenCacheService } from '../../services/cache/shorten.service';
@@ -8,7 +9,7 @@ import { LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST } from '../../types/constants
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import { decrypt, decryptS } from '../../utils/crypto';
-import { extractOgMetaTags } from '../../utils/dom';
+import { extractBaseUrl, extractOgMetaTags } from '../../utils/dom';
 import HttpStatusCode from '../../utils/statusCode';
 import { validateShortenSchema } from '../../utils/validateMiddleware';
 
@@ -60,10 +61,11 @@ export const handler = api<ShortenUrl>(
     // extract og metas
     let htmlString = '';
     try {
-      htmlString = await (await fetch(url)).text();
+      htmlString = (await axios.get(url)).data;
     } catch (error) {}
 
-    const socialMetaTags = extractOgMetaTags(htmlString);
+    const baseUrl = extractBaseUrl(url);
+    const socialMetaTags = extractOgMetaTags(htmlString, baseUrl);
 
     // write to db
     let record: UrlShortenerRecord | null = null;

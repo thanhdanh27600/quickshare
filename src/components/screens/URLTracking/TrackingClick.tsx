@@ -8,7 +8,7 @@ import { Modal } from 'components/atoms/Modal';
 import isbot from 'isbot';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
 import { BASE_URL_SHORT, Window } from 'types/constants';
@@ -37,6 +37,7 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
     state.setShortenHistory,
     state.clearShortenHistory,
   ]);
+  const { current: lastUpdate } = useRef(date().locale(locale).format('LT'));
 
   /* now data has only 1 history */
   const { data, isLoading, isSuccess } = useQuery({
@@ -168,7 +169,7 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
             </p>
             <button className={'transition-all hover:text-cyan-500'} onClick={() => Window()?.location.reload()}>
               <span className={'text-sm text-cyan-500'}>•</span>{' '}
-              <span className={'hover:underline'}>{t('lastUpdate') + ' ' + date().locale(locale).format('LT')}</span>
+              <span className={'hover:underline'}>{t('lastUpdate') + ' ' + lastUpdate}</span>
               <RefreshCw className="absolute ml-1 mt-1 w-3" />
             </button>
           </div>
