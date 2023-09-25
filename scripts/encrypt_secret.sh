@@ -1,6 +1,6 @@
 echo "Encrypt Test"
-gpg --symmetric --cipher-algo AES256 .env.test
+gpg -o .env.test.gpg --symmetric --cipher-algo AES256 .env.test.local
 echo "Encrypt UAT"
-gpg --symmetric --cipher-algo AES256 .env.uat
+gpg -o .env.uat.gpg --symmetric --cipher-algo AES256 .env.uat.local
 echo "Encrypt Production"
-gpg --symmetric --cipher-algo AES256 .env.production
+gpg -o .env.production.gpg --symmetric --cipher-algo AES256 .env.production.local

@@ -1,4 +1,5 @@
 import { UrlShortenerRecord } from '@prisma/client';
+import axios from 'axios';
 import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
 import { shortenCacheService } from '../../services/cache/shorten.service';
@@ -60,7 +61,7 @@ export const handler = api<ShortenUrl>(
     // extract og metas
     let htmlString = '';
     try {
-      htmlString = await (await fetch(url)).text();
+      htmlString = (await axios.get(url)).data;
     } catch (error) {}
 
     const socialMetaTags = extractOgMetaTags(htmlString);

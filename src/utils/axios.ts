@@ -41,7 +41,7 @@ export const catchErrorHandler = (res: NextApiResponse, error?: any) => {
 export const api =
   <T extends Response = any>(f: NextApiHandler<T>, allowMethods?: HttpMethod[]) =>
   async (req: NextApiRequest, res: NextApiResponse<T | Response>) => {
-    // require('./loggerServer').info(req);
+    if (!isProduction) require('./loggerServer').info(req);
     if (allowMethods && !allowMethods.includes(req.method as HttpMethod)) {
       return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
     }
