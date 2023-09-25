@@ -72,6 +72,7 @@
     "styled-components": "^6.0.7",
     "ts-jest": "^29.1.0",
     "ua-parser-js": "^1.0.34",
+    "url-join": "^5.0.0",
     "zod": "^3.20.6",
     "zustand": "^4.4.1"
   },

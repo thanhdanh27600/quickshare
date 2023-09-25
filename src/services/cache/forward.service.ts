@@ -1,5 +1,5 @@
 import { redis } from '../../redis/client';
-import { LIMIT_FEATURE_SECOND, LIMIT_FORWARD_REQUEST, REDIS_KEY, getRedisKey } from '../../types/constants';
+import { LIMIT_FORWARD_HOUR, LIMIT_FORWARD_REQUEST, REDIS_KEY, getRedisKey } from '../../types/constants';
 
 export class ForwardCache {
   async limitFeature(ip: string) {
@@ -14,7 +14,7 @@ export class ForwardCache {
     const ttl = await redis.ttl(keyLimit);
     if (ttl < 0) {
       await redis.set(keyLimit, 0);
-      await redis.expire(keyLimit, LIMIT_FEATURE_SECOND);
+      await redis.expire(keyLimit, LIMIT_FORWARD_HOUR);
     }
     const curLimit = (await redis.get(keyLimit)) || '';
     return curLimit;

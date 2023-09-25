@@ -4,7 +4,7 @@ import { shortenCacheService } from '../services/cache';
 import { forwardCacheService } from '../services/cache/forward.service';
 import { sendMessageToQueue } from '../services/queue/sendMessage';
 import { shortenService } from '../services/shorten';
-import { LIMIT_FEATURE_HOUR, LIMIT_FORWARD_REQUEST, REDIS_KEY, getRedisKey } from '../types/constants';
+import { LIMIT_FORWARD_HOUR, LIMIT_FORWARD_REQUEST, REDIS_KEY, getRedisKey } from '../types/constants';
 import { Forward, ForwardMeta } from '../types/forward';
 import { ipLookup } from '../utils/agent';
 import { api, badRequest, successHandler } from '../utils/axios';
@@ -29,7 +29,7 @@ export const handler = api<Forward>(
     if (reachedFeatureLimit) {
       return res.status(HttpStatusCode.TOO_MANY_REQUESTS).send({
         errorMessage: `Exceeded ${LIMIT_FORWARD_REQUEST} forwards, please comeback after ${
-          LIMIT_FEATURE_HOUR * 60
+          LIMIT_FORWARD_HOUR * 60
         } minutes.`,
         errorCode: 'UNAUTHORIZED',
       });
