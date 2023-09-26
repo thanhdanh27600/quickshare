@@ -42,6 +42,8 @@ export const generateHash = async (generateFor: 'shorten' | 'note') => {
     if (!isExist) {
       isExist = !!(await existDb({ generateFor, hash })) ? 1 : 0;
     }
+    // inc counter
+    timesLimit++;
   }
   return hash;
 };

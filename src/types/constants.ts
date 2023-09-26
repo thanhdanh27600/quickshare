@@ -21,7 +21,7 @@ export const Window = () => ('object' === typeof window && window ? (window as a
 export const LIMIT_FEATURE_HOUR = 1;
 export const LIMIT_FEATURE_SECOND = LIMIT_FEATURE_HOUR * 3600;
 export const LIMIT_TOKEN_MILLISECOND = isProduction ? 3600e3 : 60e3;
-export const LIMIT_SHORTENED_HOUR = 24;
+export const LIMIT_SHORTENED_HOUR = 72; // 3 days
 export const LIMIT_SHORTENED_SECOND = LIMIT_SHORTENED_HOUR * 3600;
 export const LIMIT_SHORTEN_REQUEST = 5;
 export const LIMIT_NOTE_HOUR = 168; // 7 days
@@ -35,7 +35,7 @@ export const LIMIT_OG_TITLE_LENGTH = 200;
 export const LIMIT_NOTE_TITLE_LENGTH = 200;
 export const LIMIT_OG_DESCRIPTION_LENGTH = 500;
 export const OG_IMAGE_DIMENSION = '1200 x 630';
-export const LIMIT_FILE_UPLOAD = 5 * 1024 * 1024; // 10MB
+export const LIMIT_FILE_UPLOAD = 5 * 1024 * 1024; // 5MB
 export const RESERVED_HASH = ['xxx'];
 
 export const HASH = {
