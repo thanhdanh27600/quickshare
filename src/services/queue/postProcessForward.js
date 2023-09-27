@@ -17,14 +17,11 @@ const postProcessForward = async (payload) => {
 
   if (isEmpty(history)) {
     // cache miss
-    console.log('cache miss');
     history = await prisma.urlShortenerHistory.findUnique({
       where: {
         hash,
       },
     });
-  } else {
-    console.log('cache hit');
   }
 
   if (!history) {
@@ -32,7 +29,6 @@ const postProcessForward = async (payload) => {
   }
 
   const historyId = Number(history.id);
-  console.log('historyId', historyId, userAgent);
 
   await prisma.urlForwardMeta.upsert({
     where: {

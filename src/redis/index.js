@@ -8,6 +8,7 @@ const redisConfig = {
 
 function createRedisInstance(config = redisConfig) {
   try {
+    /** @type {import('ioredis').RedisOptions} */
     const options = {
       host: config.host,
       lazyConnect: true,
