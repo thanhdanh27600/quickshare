@@ -14,7 +14,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
-import { HASH, isProduction } from 'types/constants';
+import { HASH, LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST, isProduction } from 'types/constants';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { encrypt } from 'utils/crypto';
 import { analytics } from 'utils/firebase';
@@ -100,8 +100,16 @@ const URLShortenerInput = () => {
     requestShortenUrl.mutate({ url: encodeURIComponent(encrypt(data.url)) });
   };
 
-  const mutateError = requestShortenUrl.error as AxiosError;
-  const error = errors.url?.message /** form */ || localError || mutateError?.message;
+  const mutateError = (requestShortenUrl.error as AxiosError)?.message;
+  const requestErrorMessage =
+    mutateError === 'EXCEEDED_SHORT'
+      ? t('reachedFeatureLimit', {
+          n: LIMIT_SHORTEN_REQUEST,
+          feature: t('shortenedURL'),
+          time: `${LIMIT_FEATURE_HOUR} ${t('hour')}`,
+        })
+      : mutateError;
+  const error = errors.url?.message /** form */ || localError || requestErrorMessage;
   const loading = requestShortenUrl.isLoading;
   const hasData = !loading && !requestShortenUrl.isError;
 

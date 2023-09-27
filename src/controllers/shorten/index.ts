@@ -5,7 +5,6 @@ import prisma from '../../db/prisma';
 import { shortenCacheService } from '../../services/cache/shorten.service';
 import { generateHash } from '../../services/hash';
 import { shortenService } from '../../services/shorten';
-import { LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST } from '../../types/constants';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import { decrypt, decryptS } from '../../utils/crypto';
@@ -49,7 +48,7 @@ export const handler = api<ShortenUrl>(
     const reachedFeatureLimit = await shortenCacheService.limitFeature(ip);
     if (reachedFeatureLimit) {
       return res.status(HttpStatusCode.TOO_MANY_REQUESTS).send({
-        errorMessage: `Exceeded ${LIMIT_SHORTEN_REQUEST} shorten links, please comeback after ${LIMIT_FEATURE_HOUR} hours.`,
+        errorMessage: 'EXCEEDED_SHORT',
         errorCode: 'UNAUTHORIZED',
       });
     }

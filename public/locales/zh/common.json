@@ -28,6 +28,7 @@
   "noteSuccess": "太快了！备注已成功创建。",
   "urlShortener": "URL缩短器",
   "noteEditor": "创建备注",
+  "note": "注释",
   "errorInvalidForward": "无效的转发链接（例如：{{name}}）",
   "unknown": "未知",
   "country": "国家",
@@ -96,5 +97,8 @@
   "emailSignInWarning": "如果您没有请求此电子邮件，可以安全地忽略它。",
   "signOut": "退出",
   "home": "主页",
-  "notePlaceholder": "在此处写下您的备注..."
+  "notePlaceholder": "在此处写下您的备注...",
+  "minute": "分钟",
+  "hour": "小时",
+  "reachedFeatureLimit": "已超出{{n}} {{feature}}，请在{{time}}后回来。"
 }

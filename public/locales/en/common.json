@@ -28,6 +28,7 @@
   "noteSuccess": "That was fast! Note has been successfully created.",
   "urlShortener": "URL Shortener",
   "noteEditor": "Create Note",
+  "note": "note",
   "errorInvalidForward": "Invalid forwarded link (ex: {{name}})",
   "unknown": "Unknown",
   "country": "Country",
@@ -96,5 +97,8 @@
   "emailSignInWarning": "If you did not request this email, you can safely ignore it.",
   "signOut": "Sign out",
   "home": "Homepage",
-  "notePlaceholder": "Write your note here..."
+  "notePlaceholder": "Write your note here...",
+  "minute": "minute",
+  "hour": "hour",
+  "reachedFeatureLimit": "Exceeded {{n}} {{feature}}, please comeback after {{time}}."
 }

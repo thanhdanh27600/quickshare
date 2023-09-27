@@ -36,12 +36,15 @@ export const generateHash = async (generateFor: 'shorten' | 'note') => {
 
     // check reserved hash
     if (RESERVED_HASH.includes(hash)) continue;
+
     // check from cache
-    isExist = await existCache({ generateFor, hash });
+    // isExist = await existCache({ generateFor, hash });
+
     //  check from db
-    if (!isExist) {
-      isExist = !!(await existDb({ generateFor, hash })) ? 1 : 0;
-    }
+    // if (!isExist) {
+    isExist = !!(await existDb({ generateFor, hash })) ? 1 : 0;
+    // }
+
     // inc counter
     timesLimit++;
   }

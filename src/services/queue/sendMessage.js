@@ -1,5 +1,5 @@
 const { ServiceBusClient } = require('@azure/service-bus');
-const { connectionString, queueName, isTest } = require('./common');
+const { connectionString, queueName, isTest, logger } = require('./utils');
 
 /**
  * An array of objects representing message types.
@@ -54,12 +54,13 @@ async function sendMessageToQueue(messages) {
     }
 
     // Send the last created batch of messages to the queue
-    console.log(`Sending a batch of messages to the queue: ${queueName}`);
+    // console.log(`Sending a batch of messages to the queue: ${queueName}`);
     await sender.sendMessages(batch);
 
     // Close the sender
     await sender.close();
   } catch (e) {
+    logger.error(e);
     await sbClient.close();
     throw e;
   }

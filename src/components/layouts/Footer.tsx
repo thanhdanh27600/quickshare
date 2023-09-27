@@ -9,8 +9,10 @@ import { MIXPANEL_EVENT } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
 export const Footer = ({ className }: { className?: string }) => {
-  const { t } = useTrans();
+  const { t, locale } = useTrans();
   const reportLink = useFeedbackTemplate(FeedbackTemplate.REPORT_LINK);
+
+  if (!locale) return null;
 
   return (
     <footer className={clsx('gap-4 border-y border-gray-200 px-4 py-4 pt-4 sm:py-8', className)}>

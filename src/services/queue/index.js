@@ -51,7 +51,7 @@
 
 const { postProcessForward } = require('./postProcessForward');
 const { ServiceBusClient } = require('@azure/service-bus');
-const { connectionString, queueName } = require('./common');
+const { connectionString, queueName, logger } = require('./utils');
 
 /**
  * An array of objects representing message types.
@@ -70,7 +70,7 @@ const { connectionString, queueName } = require('./common');
  */
 async function myMessageHandler(message) {
   try {
-    console.log(`Processing message ${message.subject} with content: ${JSON.stringify(message.body)}`);
+    // console.log(`Processing message ${message.subject} with content: ${JSON.stringify(message.body)}`);
     switch (message.subject) {
       case 'forward':
         await postProcessForward(message.body);
@@ -79,7 +79,7 @@ async function myMessageHandler(message) {
         break;
     }
   } catch (error) {
-    console.error('Error while processMessage', error);
+    logger.error(error);
     throw error;
   }
 }
