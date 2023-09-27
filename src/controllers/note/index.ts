@@ -3,7 +3,7 @@ import base64url from 'base64url';
 import { NextApiHandler } from 'next';
 import requestIp from 'request-ip';
 import prisma from '../../db/prisma';
-import { redis } from '../../redis/client';
+import { redis } from '../../redis';
 import { noteCacheService } from '../../services/cache';
 import { generateHash } from '../../services/hash';
 import { BASE_URL, HASH, REDIS_KEY, getRedisKey } from '../../types/constants';

@@ -1,6 +1,6 @@
 import { createMocks } from 'node-mocks-http';
 import * as controller from '../controllers';
-import { redis } from '../redis/client';
+import { redis } from '../redis';
 import { HASH, LIMIT_SHORTEN_REQUEST, REDIS_KEY } from '../types/constants';
 import HttpStatusCode from '../utils/statusCode';
 

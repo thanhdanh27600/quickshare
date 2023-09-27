@@ -1,4 +1,4 @@
-import { redis } from '../redis/client';
+import { redis } from '../redis';
 import { SERVER_AUTH } from '../types/constants';
 import { api, badRequest, successHandler } from '../utils/axios';
 import { decryptS } from '../utils/crypto';
