@@ -35,6 +35,9 @@ export const handler = api(
       case 'flushdb':
         rs = { data: await redis.flushdb() };
         break;
+      case 'del':
+        rs = { data: await redis.del(params) };
+        break;
       case 'flushall':
         rs = { data: await redis.flushall() };
         break;

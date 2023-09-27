@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
-import { isProduction, tinymce } from 'types/constants';
+import { LIMIT_FEATURE_HOUR, LIMIT_NOTE_REQUEST, isProduction, tinymce } from 'types/constants';
 import { NoteWithMedia } from 'types/note';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { analytics } from 'utils/firebase';
@@ -158,8 +158,16 @@ export const NoteInput = () => {
   };
 
   const loading = requestNote.isLoading || requestUpdateNote.isLoading;
-  const mutateError = (requestNote.error as AxiosError) || (requestUpdateNote.error as AxiosError);
-  const error = localError || mutateError?.message;
+  const mutateError = ((requestNote.error || requestUpdateNote.error) as AxiosError)?.message;
+  const requestErrorMessage =
+    mutateError === 'EXCEEDED_NOTE'
+      ? t('reachedFeatureLimit', {
+          n: LIMIT_NOTE_REQUEST,
+          feature: t('note'),
+          time: `${LIMIT_FEATURE_HOUR} ${t('hour')}`,
+        })
+      : mutateError;
+  const error = localError || requestErrorMessage;
 
   return (
     <div>

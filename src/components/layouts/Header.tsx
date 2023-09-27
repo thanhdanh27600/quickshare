@@ -28,37 +28,41 @@ export const Header = () => {
             <BrandText width={148} />
           </div>
         </Link>
-        <div className="sm:hidden">
-          <Sidebar />
-        </div>
-        <div className="hidden items-center gap-4 sm:flex">
-          {router.pathname !== '/' && (
-            <Link
-              href="/"
-              className="text-grey-900 text-md h-fit font-medium decoration-1 hover:text-cyan-500 hover:underline">
-              {t('urlShortener')}
-            </Link>
-          )}
-          {router.pathname !== '/tracking' && (
-            <Link
-              href="/tracking"
-              className="text-grey-900 text-md h-fit font-medium decoration-1 hover:text-cyan-500 hover:underline">
-              {t('manageLink')}
-            </Link>
-          )}
-          {router.pathname !== '/note' && (
-            <Link
-              href="/note"
-              onClick={() => {
-                location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
-              }}
-              className="text-grey-900 text-md h-fit font-medium decoration-1 hover:text-cyan-500 hover:underline">
-              {t('noteEditor')}
-            </Link>
-          )}
-        </div>
+        {locale && (
+          <>
+            <div className="sm:hidden">
+              <Sidebar />
+            </div>
+            <div className="hidden items-center gap-4 sm:flex">
+              {router.pathname !== '/' && (
+                <Link
+                  href="/"
+                  className="text-grey-900 text-md h-fit font-medium decoration-1 hover:text-cyan-500 hover:underline">
+                  {t('urlShortener')}
+                </Link>
+              )}
+              {router.pathname !== '/tracking' && (
+                <Link
+                  href="/tracking"
+                  className="text-grey-900 text-md h-fit font-medium decoration-1 hover:text-cyan-500 hover:underline">
+                  {t('manageLink')}
+                </Link>
+              )}
+              {router.pathname !== '/note' && (
+                <Link
+                  href="/note"
+                  onClick={() => {
+                    location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
+                  }}
+                  className="text-grey-900 text-md h-fit font-medium decoration-1 hover:text-cyan-500 hover:underline">
+                  {t('noteEditor')}
+                </Link>
+              )}
+            </div>
+          </>
+        )}
       </div>
-      {session?.user?.email && (
+      {locale && session?.user?.email && (
         <div className="flex items-center justify-end gap-1 text-xs text-gray-500">
           <User className="w-4" />
           <span className="max-sm:hidden">{truncateMiddle(session.user.email, 30, 15)}</span>

@@ -6,7 +6,7 @@ import prisma from '../../db/prisma';
 import { redis } from '../../redis/client';
 import { noteCacheService } from '../../services/cache';
 import { generateHash } from '../../services/hash';
-import { BASE_URL, HASH, LIMIT_FEATURE_HOUR, LIMIT_NOTE_REQUEST, REDIS_KEY, getRedisKey } from '../../types/constants';
+import { BASE_URL, HASH, REDIS_KEY, getRedisKey } from '../../types/constants';
 import { NoteRs } from '../../types/note';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import HttpStatusCode from '../../utils/statusCode';
@@ -38,7 +38,7 @@ export const handler = api<NoteRs>(
     const reachedFeatureLimit = await noteCacheService.limitFeature(ip);
     if (reachedFeatureLimit) {
       return res.status(HttpStatusCode.TOO_MANY_REQUESTS).send({
-        errorMessage: `Exceeded ${LIMIT_NOTE_REQUEST} notes, please comeback after ${LIMIT_FEATURE_HOUR} hours.`,
+        errorMessage: 'EXCEEDED_NOTE',
         errorCode: 'UNAUTHORIZED',
       });
     }

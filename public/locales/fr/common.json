@@ -28,6 +28,7 @@
   "noteSuccess": "C'était rapide ! La note a été créée avec succès.",
   "urlShortener": "Raccourcisseur d'URL",
   "noteEditor": "Créer une note",
+  "note": "note",
   "errorInvalidForward": "Lien transféré invalide (ex : {{name}})",
   "unknown": "Inconnu",
   "country": "Pays",
@@ -96,5 +97,8 @@
   "emailSignInWarning": "Si vous n'avez pas demandé cet e-mail, vous pouvez l'ignorer en toute sécurité.",
   "signOut": "Déconnexion",
   "home": "Page d'accueil",
-  "notePlaceholder": "Écrivez votre note ici..."
+  "notePlaceholder": "Écrivez votre note ici...",
+  "minute": "minute",
+  "hour": "heure",
+  "reachedFeatureLimit": "Dépassement de {{n}} {{feature}}, veuillez revenir après {{time}}."
 }

@@ -28,6 +28,7 @@
   "noteSuccess": "早かったです！ノートが正常に作成されました。",
   "urlShortener": "URL短縮サービス",
   "noteEditor": "ノートを作成",
+  "note": "メモ",
   "errorInvalidForward": "無効な転送リンク（例：{{name}}）",
   "unknown": "不明",
   "country": "国",
@@ -96,5 +97,8 @@
   "emailSignInWarning": "このメールをリクエストしていない場合、安全に無視できます。",
   "signOut": "サインアウト",
   "home": "ホームページ",
-  "notePlaceholder": "ここにノートを書いてください..."
+  "notePlaceholder": "ここにノートを書いてください...",
+  "minute": "分",
+  "hour": "時間",
+  "reachedFeatureLimit": "{{n}} {{feature}} を超えました、{{time}} 後に戻ってきてください。"
 }
