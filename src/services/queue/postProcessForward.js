@@ -1,4 +1,6 @@
+const { isEmpty } = require('ramda');
 const prisma = require('../../db/prisma');
+const { redis } = require('../../redis');
 
 /**
  *  @param {import('../../types/forward').ForwardMeta} payload
@@ -10,22 +12,30 @@ const postProcessForward = async (payload) => {
 
   if (!hash) return;
 
-  let history = await prisma.urlShortenerHistory.findUnique({
-    where: {
-      hash,
-    },
-  });
+  const hashKey = `hShort:${hash}`;
+  let history = await redis.hgetall(hashKey);
+
+  if (isEmpty(history)) {
+    // cache miss
+    history = await prisma.urlShortenerHistory.findUnique({
+      where: {
+        hash,
+      },
+    });
+  }
 
   if (!history) {
     return;
   }
+
+  const historyId = Number(history.id);
 
   await prisma.urlForwardMeta.upsert({
     where: {
       userAgent_ip_urlShortenerHistoryId: {
         ip,
         userAgent,
-        urlShortenerHistoryId: history.id,
+        urlShortenerHistoryId: historyId,
       },
     },
     update: {
@@ -37,7 +47,7 @@ const postProcessForward = async (payload) => {
       ip,
       updatedAt,
       userAgent,
-      urlShortenerHistoryId: history.id,
+      urlShortenerHistoryId: historyId,
       countryCode,
       fromClientSide,
     },

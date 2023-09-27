@@ -1,3 +1,4 @@
+export const isDebug = process.env.NEXT_PUBLIC_DEBUG === 'true';
 export const isLocal = process.env.NEXT_PUBLIC_BUILD_ENV === 'local';
 export const isUAT = process.env.NEXT_PUBLIC_BUILD_ENV === 'uat';
 export const isProduction = process.env.NEXT_PUBLIC_BUILD_ENV === 'production';

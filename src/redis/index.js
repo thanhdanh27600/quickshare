@@ -1,4 +1,4 @@
-import { Redis, RedisOptions } from 'ioredis';
+const { Redis } = require('ioredis');
 
 const redisConfig = {
   host: process.env.REDIS_HOST,
@@ -6,13 +6,14 @@ const redisConfig = {
   port: '6379',
 };
 
-export function createRedisInstance(config = redisConfig) {
+function createRedisInstance(config = redisConfig) {
   try {
-    const options: RedisOptions = {
+    /** @type {import('ioredis').RedisOptions} */
+    const options = {
       host: config.host,
       lazyConnect: true,
       showFriendlyErrorStack: true,
-      retryStrategy: (times: number) => {
+      retryStrategy: (times) => {
         if (times > 3) {
           throw new Error(`[Redis] Could not connect after ${times} attempts`);
         }
@@ -31,7 +32,7 @@ export function createRedisInstance(config = redisConfig) {
 
     const redis = new Redis(options);
 
-    redis.on('error', (error: unknown) => {
+    redis.on('error', (error) => {
       console.warn('[Redis] error', error);
     });
 
@@ -45,4 +46,6 @@ export function createRedisInstance(config = redisConfig) {
   }
 }
 
-export const redis = createRedisInstance();
+const redis = createRedisInstance();
+
+module.exports = { redis };

@@ -1,5 +1,5 @@
 import { isEmpty } from 'ramda';
-import { redis } from '../redis/client';
+import { redis } from '../redis';
 import { shortenCacheService } from '../services/cache';
 import { forwardCacheService } from '../services/cache/forward.service';
 import { sendMessageToQueue } from '../services/queue/sendMessage';

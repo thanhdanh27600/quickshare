@@ -1,10 +1,10 @@
 import Handlebars from 'handlebars';
 import puppeteer from 'puppeteer';
-import { defaultLocale } from '../utils/i18next';
-import { redis } from '../redis/client';
+import { redis } from '../redis';
 import { REDIS_KEY, getRedisKey, isProduction } from '../types/constants';
 import { api, badRequest } from '../utils/axios';
 import { decrypt } from '../utils/crypto';
+import { defaultLocale } from '../utils/i18next';
 import { validateOgSchema } from '../utils/validateMiddleware';
 
 const templateHTMLOg = `

@@ -1,5 +1,5 @@
 import { UrlShortenerHistory } from '@prisma/client';
-import { redis } from '../../redis/client';
+import { redis } from '../../redis';
 import {
   LIMIT_FEATURE_SECOND,
   LIMIT_SHORTENED_SECOND,

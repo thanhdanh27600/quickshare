@@ -1,4 +1,4 @@
-import { redis } from '../../redis/client';
+import { redis } from '../../redis';
 import { LIMIT_FORWARD_REQUEST, LIMIT_FORWARD_SECOND, REDIS_KEY, getRedisKey } from '../../types/constants';
 
 export class ForwardCache {
