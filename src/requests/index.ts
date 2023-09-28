@@ -12,7 +12,7 @@ import {
   UpdateNoteSchema,
   VerifyPasswordSchema,
 } from 'utils/validateMiddleware';
-import { API } from './axios';
+import { API } from './api';
 
 export const getOrCreateShortenUrlRequest = async ({ url, hash }: { url?: string; hash?: string }) => {
   const rs = await API.get(hash ? `/api/shorten?hash=${hash}` : `/api/shorten?url=${url}`);

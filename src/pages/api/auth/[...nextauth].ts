@@ -2,7 +2,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth, { AuthOptions } from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
 import { SERVER_AUTH } from 'types/constants';
-import prisma from '../../../db/prisma';
+import prisma from '../../../services/db/prisma';
 import { sendVerificationRequest } from '../../../utils/emailAuth';
 
 export const authOptions: AuthOptions = {

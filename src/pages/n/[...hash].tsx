@@ -1,4 +1,3 @@
-import { getNoteRequest } from 'api/requests';
 import { BlobViewer } from 'components/atoms/BlobViewer';
 import { LayoutMain } from 'components/layouts/LayoutMain';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
@@ -7,6 +6,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import requestIp from 'request-ip';
+import { getNoteRequest } from 'requests';
 import { NoteWithMedia } from 'types/note';
 import { defaultLocale, useTrans } from 'utils/i18next';
 import PageNotFound from '../404';
@@ -17,7 +17,9 @@ interface Props {
   ip: string;
 }
 
-const TextEditor = dynamic(() => import('../../components/gadgets/TextEditor').then((c) => c.default), { ssr: false });
+const TextEditor = dynamic(() => import('../../components/gadgets/shared/TextEditor').then((c) => c.default), {
+  ssr: false,
+});
 
 const ViewNote = ({ note, ip, error }: Props) => {
   const { t, locale } = useTrans();

@@ -1,7 +1,7 @@
 import { ArrowUpRight } from '@styled-icons/feather';
 import clsx from 'clsx';
 import { Modal } from 'components/atoms/Modal';
-import { LanguageSelect } from 'components/gadgets/LanguageSelect';
+import { LanguageSelect } from 'components/gadgets/shared/LanguageSelect';
 import { FeedbackTemplate, useFeedbackTemplate } from 'components/sections/FeedbackLink';
 import mixpanel from 'mixpanel-browser';
 import Image from 'next/image';

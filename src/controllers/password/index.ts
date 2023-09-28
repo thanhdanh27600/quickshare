@@ -1,5 +1,5 @@
 import { Note, UrlShortenerHistory } from '@prisma/client';
-import prisma from '../../db/prisma';
+import prisma from '../../services/db/prisma';
 import { shortenService } from '../../services/shorten';
 import { api, badRequest } from '../../utils/axios';
 import { encryptS } from '../../utils/crypto';

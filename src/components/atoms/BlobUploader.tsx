@@ -1,10 +1,10 @@
 import { Media } from '@prisma/client';
 import { CheckCircle, Download, File, Image as ImageIcon, PlusCircle, Trash } from '@styled-icons/feather';
-import { API } from 'api/axios';
 import axios from 'axios';
 import clsx from 'clsx';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { API } from 'requests/api';
 import { BASE_URL, LIMIT_FILE_UPLOAD } from 'types/constants';
 import { useTrans } from 'utils/i18next';
 import { UploadProvider, isImage } from 'utils/media';

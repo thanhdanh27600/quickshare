@@ -1,9 +1,9 @@
-import { useBearStore } from 'bear';
 import clsx from 'clsx';
 import mixpanel from 'mixpanel-browser';
 import { isEmpty } from 'ramda';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useBearStore } from 'store';
 import { EVENTS_STATUS, MIXPANEL_EVENT } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 

@@ -1,8 +1,8 @@
 import { UrlShortenerRecord } from '@prisma/client';
 import axios from 'axios';
 import requestIp from 'request-ip';
-import prisma from '../../db/prisma';
 import { shortenCacheService } from '../../services/cache/shorten.service';
+import prisma from '../../services/db/prisma';
 import { generateHash } from '../../services/hash';
 import { shortenService } from '../../services/shorten';
 import { ShortenUrl } from '../../types/shorten';

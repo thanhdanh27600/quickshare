@@ -1,6 +1,6 @@
 import { Media } from '@prisma/client';
-import prisma from '../../db/prisma';
 import { noteCacheService } from '../../services/cache';
+import prisma from '../../services/db/prisma';
 import { NoteRs } from '../../types/note';
 import { api, successHandler } from '../../utils/axios';
 import HttpStatusCode from '../../utils/statusCode';

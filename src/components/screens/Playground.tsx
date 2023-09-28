@@ -1,5 +1,5 @@
-import { CustomLinkForm } from 'components/gadgets/CustomLinkForm';
-import { SignInToCustomLink } from 'components/gadgets/SignInToCustomLink';
+import { CustomLinkForm } from 'components/gadgets/URLShortener/CustomLinkForm';
+import { SignInToCustomLink } from 'components/gadgets/URLShortener/SignInToCustomLink';
 
 export const Playground = () => {
   // if (isProduction) return null;

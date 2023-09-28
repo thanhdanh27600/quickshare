@@ -1,8 +1,8 @@
-import { useBearStore } from 'bear';
 import clsx from 'clsx';
 import mixpanel from 'mixpanel-browser';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useBearStore } from 'store';
 import { EVENTS_STATUS, MIXPANEL_EVENT } from 'types/utils';
 
 export const ShortenUrlTile = () => {

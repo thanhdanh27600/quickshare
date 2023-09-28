@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import requestIp from 'request-ip';
-import prisma from '../../db/prisma';
+import prisma from '../../services/db/prisma';
 import { LIMIT_RECENT_HISTORY } from '../../types/constants';
 import { Stats, UrlHistoryWithMeta } from '../../types/stats';
 import { api, errorHandler, successHandler } from '../../utils/axios';

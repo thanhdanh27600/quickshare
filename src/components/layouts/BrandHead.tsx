@@ -1,5 +1,5 @@
-import { FeatureTabKey } from 'bear/utilitySlice';
 import Head from 'next/head';
+import { FeatureTabKey } from 'store/utilitySlice';
 import { BASE_URL, isProduction, isShortDomain } from 'types/constants';
 import { defaultLocale, useTrans } from 'utils/i18next';
 

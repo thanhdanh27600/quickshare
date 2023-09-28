@@ -1,4 +1,3 @@
-import { getStats } from 'api/requests';
 import clsx from 'clsx';
 import { Accordion } from 'components/atoms/Accordion';
 import { Dropdown } from 'components/atoms/Dropdown';
@@ -7,6 +6,7 @@ import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
+import { getStats } from 'requests';
 import { BASE_URL, BASE_URL_SHORT, HASH, LIMIT_RECENT_HISTORY } from 'types/constants';
 import { UrlHistoryWithMeta } from 'types/stats';
 import { EVENTS_STATUS, MIXPANEL_EVENT } from 'types/utils';

@@ -1,7 +1,7 @@
 import { Facebook, ThumbsUp, Twitter } from '@styled-icons/feather';
 import { Accordion } from 'components/atoms/Accordion';
 import { Tab, Tabs } from 'components/atoms/Tabs';
-import { SettingPreviewUrlForm } from 'components/gadgets/SettingPreviewUrlForm';
+import { SettingPreviewUrlForm } from 'components/gadgets/URLPreview/SettingPreviewUrlForm';
 import { Discord } from 'components/icons/Discord';
 import { useState } from 'react';
 import { useTrans } from 'utils/i18next';

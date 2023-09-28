@@ -1,9 +1,9 @@
 import { Facebook, Share2, Twitter } from '@styled-icons/feather';
 import axios from 'axios';
-import { useBearStore } from 'bear';
 import { Button } from 'components/atoms/Button';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useBearStore } from 'store';
 import { BASE_URL_SHORT } from 'types/constants';
 import { useTrans } from 'utils/i18next';
 import { share } from 'utils/text';

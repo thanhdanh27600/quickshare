@@ -1,11 +1,8 @@
-import { useBearStore } from 'bear';
-import { FeatureTabKey } from 'bear/utilitySlice';
 import { Note } from 'components/screens/Note';
 import { UrlShortener } from 'components/screens/URLShortener';
+import { FeatureTabKey } from 'store/utilitySlice';
 
 export const Home = ({ feature }: { feature: FeatureTabKey }) => {
-  const { utilitySlice } = useBearStore();
-
   return (
     <div className="grid">
       {feature === FeatureTabKey.SHARE_LINK && <UrlShortener />}

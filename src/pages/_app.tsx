@@ -1,4 +1,4 @@
-import ErrorBoundary from 'components/gadgets/ErrorBoundary';
+import ErrorBoundary from 'components/gadgets/shared/ErrorBoundary';
 import mixpanel from 'mixpanel-browser';
 import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';

@@ -1,5 +1,5 @@
 import { UrlShortenerHistory } from '@prisma/client';
-import { withDevTools } from 'bear/middleware';
+import { withDevTools } from 'store/middleware';
 import { BASE_URL, BASE_URL_SHORT } from 'types/constants';
 import { StateCreator, create } from 'zustand';
 

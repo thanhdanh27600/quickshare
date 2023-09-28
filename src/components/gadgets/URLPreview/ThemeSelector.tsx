@@ -1,6 +1,6 @@
-import { useBearStore } from 'bear';
 import { Dropdown } from 'components/atoms/Dropdown';
 import { keys } from 'ramda';
+import { useBearStore } from 'store';
 import { Theme, Themes, backgroundTemplate } from 'types/og';
 
 export const ThemeSelector = () => {

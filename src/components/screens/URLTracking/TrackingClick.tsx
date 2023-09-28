@@ -1,7 +1,5 @@
 import { Calendar, Copy, Globe, MapPin, RefreshCw, Search, UserCheck, UserX } from '@styled-icons/feather';
 import { JsonViewer } from '@textea/json-viewer';
-import { getStats, parseUA } from 'api/requests';
-import { useBearStore } from 'bear';
 import clsx from 'clsx';
 import { Button } from 'components/atoms/Button';
 import { Modal } from 'components/atoms/Modal';
@@ -11,6 +9,8 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
+import { getStats, parseUA } from 'requests';
+import { useBearStore } from 'store';
 import { BASE_URL_SHORT, Window } from 'types/constants';
 import { UrlHistoryWithMeta } from 'types/stats';
 import { MIXPANEL_EVENT } from 'types/utils';

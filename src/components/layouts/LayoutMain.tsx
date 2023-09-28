@@ -1,7 +1,7 @@
-import { FeatureTabKey } from 'bear/utilitySlice';
 import clsx from 'clsx';
-import { FeatureTabs } from 'components/gadgets/FeatureTabs';
+import { FeatureTabKey } from 'store/utilitySlice';
 import { BrandHead } from './BrandHead';
+import { FeatureTabs } from './FeatureTabs';
 import { Footer } from './Footer';
 import { Header } from './Header';
 

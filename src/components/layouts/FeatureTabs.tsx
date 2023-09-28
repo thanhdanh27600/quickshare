@@ -1,10 +1,10 @@
 import { Clipboard, Link as LinkIcon } from '@styled-icons/feather';
-import { useBearStore } from 'bear';
-import { FeatureTabKey } from 'bear/utilitySlice';
 import { Tabs } from 'components/atoms/Tabs';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useBearStore } from 'store';
+import { FeatureTabKey } from 'store/utilitySlice';
 import { BASE_URL } from 'types/constants';
 import { Locale } from 'types/locale';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
