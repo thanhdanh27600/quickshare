@@ -43,10 +43,11 @@ export const share = (shareData: ShareData, t: any) => {
     navigator
       .share(shareData)
       .then(() => {
-        console.log('Shared successfully');
+        // console.log('Shared successfully');
       })
       .catch((error) => {
-        console.error('Error sharing:', error);
+        toast.error(t('errorSharing'));
+        console.log('Error sharing:', error);
       });
   } else {
     toast.error(t('errorSharing'));

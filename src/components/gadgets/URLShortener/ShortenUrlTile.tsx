@@ -23,7 +23,7 @@ export const ShortenUrlTile = () => {
     <div className="mt-2 flex flex-wrap justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-6 sm:py-8 md:py-10">
       <a href={shortenUrl} target="_blank" className="flex-1">
         <p
-          className="boujee-text text-center text-2xl font-bold tracking-tight transition-all hover:text-cyan-500 hover:underline hover:decoration-wavy sm:text-3xl md:text-4xl"
+          className="boujee-text break-all text-center text-2xl font-bold tracking-tight transition-all hover:text-cyan-500 hover:underline hover:decoration-wavy sm:text-3xl md:text-4xl"
           title={shortenUrl}>
           {shortenUrl.replace(/https:\/\//i, '')}
         </p>

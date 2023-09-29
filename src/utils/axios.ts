@@ -26,7 +26,7 @@ export function errorHandler<T extends Response>(res: NextApiResponse<T>, error?
 }
 
 export const catchErrorHandler = (res: NextApiResponse, error?: any) => {
-  if (!isProduction && !isTest) console.error('[Error]', error);
+  if (!isProduction && !isTest) console.error('catchErrorHandler [Error]', error);
   if (error instanceof z.ZodError) {
     // require('./loggerServer').warn(error);
     if (isProduction) return badRequest(res);

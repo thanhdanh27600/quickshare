@@ -100,5 +100,7 @@
   "notePlaceholder": "Write your note here...",
   "minute": "minute",
   "hour": "hour",
-  "reachedFeatureLimit": "Exceeded {{n}} {{feature}}, please comeback after {{time}}."
+  "reachedFeatureLimit": "Exceeded {{n}} {{feature}}, please comeback after {{time}}.",
+  "customHashError": "Shortened link only contains alphanumeric characters or \"-\", \"_\".",
+  "EXIST_HASH": "This shortened link already exists. Please try a different one."
 }

@@ -100,5 +100,7 @@
   "notePlaceholder": "在此处写下您的备注...",
   "minute": "分钟",
   "hour": "小时",
-  "reachedFeatureLimit": "已超出{{n}} {{feature}}，请在{{time}}后回来。"
+  "reachedFeatureLimit": "已超出{{n}} {{feature}}，请在{{time}}后回来。",
+  "customHashError": "缩短链接只能包含字母数字或 \"-\"、\"_\"。",
+  "EXIST_HASH": "该缩短链接已存在。请尝试使用其他链接。"
 }

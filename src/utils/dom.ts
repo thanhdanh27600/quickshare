@@ -18,14 +18,15 @@ export function extractOgMetaTags(htmlString: string, baseUrl?: string): Record<
   // Find all meta tags with property starting with "og:"
   $('meta[property^="og:"]').each((_, element) => {
     const property = $(element).attr('property') || '';
-    const content = $(element).attr('content') || '';
+    let content = $(element).attr('content') || '';
 
     // Remove "og:" prefix from property name
     const propertyName = property.replace('og:', '');
     ogMetaTags[propertyName] = content;
 
     // Check if the content is a relative URL and make it absolute
-    if (baseUrl && propertyName === 'image' && content.startsWith('/')) {
+    if (baseUrl && propertyName === 'image' && !content.startsWith('http')) {
+      if (!content.startsWith('/')) content = '/' + content;
       ogMetaTags[propertyName] = baseUrl + content;
     } else {
       ogMetaTags[propertyName] = content;

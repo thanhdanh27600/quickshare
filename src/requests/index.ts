@@ -14,8 +14,17 @@ import {
 } from 'utils/validateMiddleware';
 import { API } from './api';
 
-export const getOrCreateShortenUrlRequest = async ({ url, hash }: { url?: string; hash?: string }) => {
-  const rs = await API.get(hash ? `/api/shorten?hash=${hash}` : `/api/shorten?url=${url}`);
+export const getOrCreateShortenUrlRequest = async ({
+  url,
+  hash,
+  customHash,
+}: {
+  url?: string;
+  hash?: string;
+  customHash?: string;
+}) => {
+  const query = hash ? stringify({ hash }) : stringify({ url, customHash });
+  const rs = await API.get(`/api/shorten?${query}`);
   const data = rs.data;
   return data as ShortenUrl;
 };
