@@ -102,5 +102,6 @@
   "hour": "heure",
   "reachedFeatureLimit": "Dépassement de {{n}} {{feature}}, veuillez revenir après {{time}}.",
   "customHashError": "Le lien raccourci ne doit contenir que des caractères alphanumériques, \"-\" ou \"_\".",
-  "EXIST_HASH": "Ce lien raccourci existe déjà. Veuillez en essayer un différent."
+  "EXIST_HASH": "Ce lien raccourci existe déjà. Veuillez en essayer un différent.",
+  "filterBot": "Filtrer les bots"
 }

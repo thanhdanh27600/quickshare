@@ -70,16 +70,19 @@ export const getForwardUrl = async ({ hash, userAgent, ip, fromClientSide }: For
 
 export const getStats = async ({
   hash,
+  noBot,
   email,
   queryCursor,
 }: {
   hash: string;
-  email?: string;
+  email?: string; // todo
   token?: string;
+  noBot?: boolean;
   queryCursor?: number;
 }) => {
   const q = stringify({
     h: hash,
+    noBot,
     ...(email ? { e: email } : null),
     ...(queryCursor ? { qc: queryCursor } : null),
   });

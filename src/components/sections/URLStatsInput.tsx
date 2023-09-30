@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
 import { getStats } from 'requests';
-import { BASE_URL, BASE_URL_SHORT, HASH, LIMIT_RECENT_HISTORY } from 'types/constants';
+import { BASE_URL, BASE_URL_SHORT, HASH_CUSTOM, LIMIT_RECENT_HISTORY } from 'types/constants';
 import { UrlHistoryWithMeta } from 'types/stats';
 import { EVENTS_STATUS, MIXPANEL_EVENT } from 'types/utils';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
@@ -43,10 +43,10 @@ export const URLStats = ({ defaultOpen = false }: { defaultOpen?: boolean }) => 
     refetchInterval: -1,
     ...strictRefetch,
     onSuccess(data) {
-      setValue('hash', data?.history?.at(0) ? `${BASE_URL_SHORT}/${data?.history[0].hash}` : '');
+      setValue('hash', data?.record?.history?.at(0) ? `${BASE_URL_SHORT}/${data?.record?.history[0].hash}` : '');
     },
   });
-  const recentHistories = fetchRecord.data?.history;
+  const recentHistories = fetchRecord.data?.record?.history;
   const hasHistory = (recentHistories?.length || 0) > 0;
 
   const error = errors.hash?.message; /** form error */
@@ -108,7 +108,7 @@ export const URLStats = ({ defaultOpen = false }: { defaultOpen?: boolean }) => 
                 const v = values.startsWith(BASE_URL_SHORT.replace(`${location.protocol}//`, ''))
                   ? `${location.protocol}//` + values
                   : values;
-                return v.startsWith(BASE_URL_SHORT) && HASH.Regex.test(v.replace(BASE_URL_SHORT + '/', ''))
+                return v.startsWith(BASE_URL_SHORT) && HASH_CUSTOM.Regex.test(v.replace(BASE_URL_SHORT + '/', ''))
                   ? undefined
                   : t('errorInvalidForward', { name: `${BASE_URL_SHORT}/xxx` });
               },
