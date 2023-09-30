@@ -26,7 +26,7 @@ export function withAuth(token?: string) {
   };
 }
 
-const allowedOrigins = [brandUrl, localUrlShort, brandUrlShort, ...[alternateBrandUrl]];
+const allowedOrigins = [brandUrl, localUrlShort, brandUrlShort, ...alternateBrandUrl];
 
 export const allowCors = (handler: any) => async (req: NextApiRequest, res: NextApiResponse) => {
   const origin = req.headers?.origin;
