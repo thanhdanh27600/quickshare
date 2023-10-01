@@ -1,3 +1,4 @@
+import { UrlShortenerHistory } from '@prisma/client';
 import clsx from 'clsx';
 import { Accordion } from 'components/atoms/Accordion';
 import { Dropdown } from 'components/atoms/Dropdown';
@@ -92,10 +93,12 @@ export const URLStats = ({ defaultOpen = false }: { defaultOpen?: boolean }) => 
                 <Dropdown
                   buttonClassName="rounded-l-lg"
                   ContainerProps={{ className: 'absolute h-55 w-fit text-sm' }}
-                  options={(fetchRecord.data?.history || []).map((h: UrlHistoryWithMeta, idx) => ({
-                    label: `${idx + 1}. ${truncateMiddle(h.url)} (${h.hash})`,
-                    value: `${BASE_URL_SHORT}/${h.hash}`,
-                  }))}
+                  options={((fetchRecord.data?.record?.history as UrlShortenerHistory[]) || []).map(
+                    (h: UrlHistoryWithMeta, idx) => ({
+                      label: `${idx + 1}. ${truncateMiddle(h.url)} (${h.hash})`,
+                      value: `${BASE_URL_SHORT}/${h.hash}`,
+                    }),
+                  )}
                   handleSelect={(value) => {
                     setValue('hash', value);
                   }}
