@@ -137,7 +137,6 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
         ConfirmButtonProps={{ ['data-te-modal-dismiss']: true } as any}>
         <div className="contents w-full p-2">{parsedUA && !getMoreUA.isLoading && <JsonViewer value={parsedUA} />}</div>
       </Modal>
-
       {!needValidate && (
         <>
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -185,30 +184,6 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
                 <RefreshCw className="absolute ml-1 mt-1 w-3" />
               </button>
             </div>
-            <button>
-              <Popover
-                id="tracking-filter"
-                closed={noBot}
-                Classname={{ Content: 'translate-y-[-30%] translate-x-[-110%]' }}
-                Button={<Sliders className="w-4 text-gray-700" />}
-                Content={
-                  <div>
-                    <ul className="flex flex-col items-start gap-2">
-                      <li
-                        className="flex w-full items-center gap-2 p-4 hover:rounded-lg hover:bg-gray-200"
-                        onClick={handleClickBot}>
-                        {!noBot ? (
-                          <UserX className={clsx('h-4 w-4 stroke-2 text-red-500')} />
-                        ) : (
-                          <UserCheck className={clsx('h-4 w-4 stroke-2')} />
-                        )}
-                        {t('filterBot')}
-                      </li>
-                    </ul>
-                  </div>
-                }
-              />
-            </button>
           </div>
           <div className="relative mt-2 shadow-md">
             <div className="h-[300px] overflow-auto border border-gray-200 sm:rounded-lg lg:h-[400px] 2xl:h-[600px]">
@@ -227,8 +202,37 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
                     <th className="px-6 py-3">
                       <span className="">{t('date')}</span>
                     </th>
-                    <th className="px-6 py-3 text-right">
-                      <span className="float-right block w-32">{t('clickedByHuman')}</span>
+                    <th className="px-6 py-3">
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="float-right block w-max">{t('clickedByHuman')}</span>
+                        <button>
+                          <Popover
+                            id="tracking-filter"
+                            closed={noBot}
+                            Classname={{
+                              Content: 'translate-y-[-20%] translate-x-[-110%]',
+                              Button: 'text-gray-500 hover:text-gray-900 transition-colors',
+                            }}
+                            Button={<Sliders className="w-4" />}
+                            Content={
+                              <div className="w-max">
+                                <ul className="flex flex-col items-start gap-2">
+                                  <li
+                                    className="flex w-full items-center gap-2 p-4 hover:rounded-lg hover:bg-gray-200"
+                                    onClick={handleClickBot}>
+                                    {!noBot ? (
+                                      <UserX className={clsx('h-4 w-4 stroke-2 text-red-500')} />
+                                    ) : (
+                                      <UserCheck className={clsx('h-4 w-4 stroke-2 text-green-500')} />
+                                    )}
+                                    <span className="ml-2 max-sm:hidden">{t('filterBot')}</span>
+                                  </li>
+                                </ul>
+                              </div>
+                            }
+                          />
+                        </button>
+                      </div>
                     </th>
                   </tr>
                 </thead>

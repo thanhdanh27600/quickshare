@@ -17,12 +17,12 @@ export const Popover = (props: Props) => {
   }, [closed]);
 
   return (
-    <div className={clsx('flex', Classname?.Button)} id={props.id}>
+    <div className={'relative flex'} id={props.id}>
       <div
         onClick={() => {
           setOpen((prev) => !prev);
         }}
-        className="z-10 inline-flex flex-shrink-0 cursor-pointer items-center rounded-lg border border-gray-300 bg-gray-50 p-2 text-center text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-100">
+        className={clsx('z-10 inline-flex flex-shrink-0 cursor-pointer items-center', props.Classname?.Button)}>
         {Button}
       </div>
       <div
