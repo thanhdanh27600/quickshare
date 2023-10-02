@@ -1,4 +1,4 @@
-import { withDevTools } from 'bear/middleware';
+import { withDevTools } from 'store/middleware';
 import { StateCreator, create } from 'zustand';
 
 export interface ExampleSlice {

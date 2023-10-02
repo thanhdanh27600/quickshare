@@ -100,5 +100,8 @@
   "notePlaceholder": "Nhập ghi chú của bạn ở đây...",
   "minute": "phút",
   "hour": "giờ",
-  "reachedFeatureLimit": "Vượt quá {{n}} {{feature}}, hãy quay lại sau {{time}}."
+  "reachedFeatureLimit": "Vượt quá {{n}} {{feature}}, hãy quay lại sau {{time}}.",
+  "customHashError": "Link rút gọn chỉ gồm chữ, số hoặc \"-\", \"_\".",
+  "EXIST_HASH": "Link rút gọn này đã tồn tại, hãy thử lại nhé!",
+  "filterBot": "Lọc Bot"
 }

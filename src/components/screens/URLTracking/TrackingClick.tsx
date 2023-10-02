@@ -1,16 +1,17 @@
-import { Calendar, Copy, Globe, MapPin, RefreshCw, Search, UserCheck, UserX } from '@styled-icons/feather';
-import { JsonViewer } from '@textea/json-viewer';
-import { getStats, parseUA } from 'api/requests';
-import { useBearStore } from 'bear';
+import { Calendar, Copy, Globe, MapPin, RefreshCw, Search, Sliders, UserCheck, UserX } from '@styled-icons/feather';
 import clsx from 'clsx';
 import { Button } from 'components/atoms/Button';
 import { Modal } from 'components/atoms/Modal';
+import { Popover } from 'components/atoms/Popover';
 import isbot from 'isbot';
 import mixpanel from 'mixpanel-browser';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
+import { getStats, parseUA } from 'requests';
+import { useBearStore } from 'store';
 import { BASE_URL_SHORT, Window } from 'types/constants';
 import { UrlHistoryWithMeta } from 'types/stats';
 import { MIXPANEL_EVENT } from 'types/utils';
@@ -23,14 +24,17 @@ import { capitalize, truncateMiddle } from 'utils/text';
 import { SetPassword } from './SetPassword';
 import { ValidatePassword } from './ValidatePassword';
 
+const JsonViewer = dynamic(() => import('@textea/json-viewer').then((c) => c.JsonViewer));
+
 export const TrackingClick = ({ hash }: { hash: string }) => {
   const { t, locale } = useTrans();
   const router = useRouter();
   const [needValidate, setNeedValidate] = useState<boolean>();
   const [parsedUA, setParsedUA] = useState();
   const [qc, setQc] = useState<number | undefined>(0);
+  const [noBot, setNoBot] = useState(false);
   const [history, setHistory] = useState<UrlHistoryWithMeta | undefined>(undefined);
-  const getStatsQuery = useCallback(async () => getStats({ hash }), [hash]);
+  const getStatsQuery = useCallback(async () => getStats({ hash, noBot }), [hash, noBot]);
   const { shortenSlice } = useBearStore();
   const [shortenHistory, setShortenHistory, clearShortenHistory] = shortenSlice((state) => [
     state.shortenHistory,
@@ -40,7 +44,7 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
   const { current: lastUpdate } = useRef(date().locale(locale).format('LT'));
 
   /* now data has only 1 history */
-  const { data, isLoading, isSuccess } = useQuery({
+  const { data, isLoading, refetch, isSuccess } = useQuery({
     queryKey: QueryKey.STATS,
     queryFn: getStatsQuery,
     retry: false,
@@ -91,9 +95,16 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
     setQc((_) => {
       const _qc = history?.UrlForwardMeta?.at(-1)?.id;
       if (!statsMore.isLoading) {
-        statsMore.mutate({ hash, queryCursor: _qc });
+        statsMore.mutate({ hash, noBot, queryCursor: _qc });
       }
       return _qc;
+    });
+  };
+
+  const handleClickBot = () => {
+    setNoBot((state) => !state);
+    setTimeout(() => {
+      refetch();
     });
   };
 
@@ -126,7 +137,6 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
         ConfirmButtonProps={{ ['data-te-modal-dismiss']: true } as any}>
         <div className="contents w-full p-2">{parsedUA && !getMoreUA.isLoading && <JsonViewer value={parsedUA} />}</div>
       </Modal>
-
       {!needValidate && (
         <>
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -134,7 +144,6 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
               {data?.record && <p> {`${t('author')}: ${data?.record.ip}`}</p>}
               {data?.record && (
                 <p>
-                  {' '}
                   {`${t('shortCreatedAt')}: ${date(data?.record.createdAt).locale(locale).format(DATE_FULL_FORMAT)}`}
                 </p>
               )}
@@ -161,17 +170,20 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
             </div>
             {!hasPassword && <SetPassword hash={hash} />}
           </div>
-
-          <div className={clsx('mt-2 flex items-end justify-between pr-5 text-sm text-gray-500')}>
-            <p className="text-lg capitalize text-cyan-500">
-              {`${t('totalClick')}: `}{' '}
-              <span className="text-3xl font-bold">{(history as any)?._count?.UrlForwardMeta}</span>
-            </p>
-            <button className={'transition-all hover:text-cyan-500'} onClick={() => Window()?.location.reload()}>
-              <span className={'text-sm text-cyan-500'}>•</span>{' '}
-              <span className={'hover:underline'}>{t('lastUpdate') + ' ' + lastUpdate}</span>
-              <RefreshCw className="absolute ml-1 mt-1 w-3" />
-            </button>
+          <div className={clsx('flex items-end justify-between text-sm text-gray-500 sm:mt-2')}>
+            <div>
+              <p className="text-lg capitalize text-cyan-500">
+                {`${t('totalClick')}: `}{' '}
+                <span className="text-3xl font-bold">{(history as any)?._count?.UrlForwardMeta}</span>
+              </p>
+              <button
+                className={'mt-2 transition-all hover:text-cyan-500 sm:mt-4'}
+                onClick={() => Window()?.location.reload()}>
+                <span className={'text-sm text-cyan-500'}>•</span>{' '}
+                <span className={'hover:underline'}>{t('lastUpdate') + ' ' + lastUpdate}</span>
+                <RefreshCw className="absolute ml-1 mt-1 w-3" />
+              </button>
+            </div>
           </div>
           <div className="relative mt-2 shadow-md">
             <div className="h-[300px] overflow-auto border border-gray-200 sm:rounded-lg lg:h-[400px] 2xl:h-[600px]">
@@ -190,8 +202,37 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
                     <th className="px-6 py-3">
                       <span className="">{t('date')}</span>
                     </th>
-                    <th className="px-6 py-3 text-right">
-                      <span className="float-right block w-32">{t('clickedByHuman')}</span>
+                    <th className="px-6 py-3">
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="float-right block w-max">{t('clickedByHuman')}</span>
+                        <button>
+                          <Popover
+                            id="tracking-filter"
+                            closed={noBot}
+                            Classname={{
+                              Content: 'translate-y-[-20%] translate-x-[-110%]',
+                              Button: 'text-gray-500 hover:text-gray-900 transition-colors',
+                            }}
+                            Button={<Sliders className="w-4" />}
+                            Content={
+                              <div className="w-max">
+                                <ul className="flex flex-col items-start gap-2">
+                                  <li
+                                    className="flex w-full items-center gap-2 p-4 hover:rounded-lg hover:bg-gray-200"
+                                    onClick={handleClickBot}>
+                                    {!noBot ? (
+                                      <UserX className={clsx('h-4 w-4 stroke-2 text-red-500')} />
+                                    ) : (
+                                      <UserCheck className={clsx('h-4 w-4 stroke-2 text-green-500')} />
+                                    )}
+                                    <span className="ml-2 max-sm:hidden">{t('filterBot')}</span>
+                                  </li>
+                                </ul>
+                              </div>
+                            }
+                          />
+                        </button>
+                      </div>
                     </th>
                   </tr>
                 </thead>

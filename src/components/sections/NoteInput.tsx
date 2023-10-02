@@ -1,6 +1,4 @@
-import { createNoteRequest, updateNoteRequest } from 'api/requests';
 import { AxiosError } from 'axios';
-import { useBearStore } from 'bear';
 import { Button } from 'components/atoms/Button';
 import { URLShare } from 'components/gadgets/URLShare';
 import { SetPassword } from 'components/screens/URLTracking/SetPassword';
@@ -13,6 +11,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
+import { createNoteRequest, updateNoteRequest } from 'requests';
+import { useBearStore } from 'store';
 import { LIMIT_FEATURE_HOUR, LIMIT_NOTE_REQUEST, isProduction, tinymce } from 'types/constants';
 import { NoteWithMedia } from 'types/note';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
@@ -21,11 +21,11 @@ import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
 import { validateNoteSchema, validateUpdateNoteSchema } from 'utils/validateMiddleware';
 import { ZodError } from 'zod';
-import { NoteAttachments } from '../gadgets/NoteAttachments';
-import { NoteTitleInput } from '../gadgets/NoteTitleInput';
-import { NoteUrlTile } from '../gadgets/NoteUrlTile';
+import { NoteAttachments } from '../gadgets/Note/NoteAttachments';
+import { NoteTitleInput } from '../gadgets/Note/NoteTitleInput';
+import { NoteUrlTile } from '../gadgets/Note/NoteUrlTile';
 
-const TextEditor = dynamic(() => import('../gadgets/TextEditor').then((c) => c.default), { ssr: false });
+const TextEditor = dynamic(() => import('../gadgets/shared/TextEditor').then((c) => c.default), { ssr: false });
 
 export const NoteInput = () => {
   const { t } = useTrans();

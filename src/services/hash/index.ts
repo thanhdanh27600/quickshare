@@ -1,7 +1,7 @@
 import { noteCacheService, shortenCacheService } from '../../services/cache';
 import { HASH, RESERVED_HASH } from '../../types/constants';
 import { generateRandomString } from '../../utils/text';
-import prisma from './../../db/prisma';
+import prisma from '../db/prisma';
 
 const existCache = async ({ generateFor, hash }: { hash: string; generateFor: string }) =>
   generateFor === 'note'

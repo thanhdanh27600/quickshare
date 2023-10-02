@@ -1,10 +1,10 @@
-import { verifyPasswordRequest } from 'api/requests';
 import { Input } from 'components/atoms/Input';
 import { Modal } from 'components/atoms/Modal';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { verifyPasswordRequest } from 'requests';
 import { useTrans } from 'utils/i18next';
 
 type ValidatePasswordForm = { password: string };

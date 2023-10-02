@@ -13,7 +13,7 @@ export const Input = forwardRef((props: InputProps, ref: ForwardedRef<HTMLInputE
       {...otherProps}
       ref={ref}
       className={clsx(
-        'block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:shadow-[0_0_8px_0_#06b6d4] focus:outline-none focus:ring-cyan-500 disabled:text-gray-400 ',
+        'block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:shadow-[0_0_8px_0_#06b6d4] focus:outline-none focus:ring-cyan-500 disabled:cursor-not-allowed disabled:text-gray-400',
         {
           'h-16 sm:text-xl': btnSize === 'lg',
           'h-8': btnSize === 'md',

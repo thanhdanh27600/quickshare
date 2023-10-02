@@ -1,6 +1,6 @@
 import { Menu } from '@styled-icons/feather';
 import clsx from 'clsx';
-import { LanguageSelect } from 'components/gadgets/LanguageSelect';
+import { LanguageSelect } from 'components/gadgets/shared/LanguageSelect';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect } from 'react';

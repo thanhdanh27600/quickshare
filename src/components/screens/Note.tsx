@@ -1,4 +1,4 @@
-import { HelpTooltip } from 'components/gadgets/HelpTooltip';
+import { HelpTooltip } from 'components/gadgets/shared/HelpTooltip';
 import dynamic from 'next/dynamic';
 import { useTrans } from 'utils/i18next';
 

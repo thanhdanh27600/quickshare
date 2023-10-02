@@ -1,4 +1,4 @@
-import prisma from '../db/prisma';
+import prisma from '../services/db/prisma';
 import { api, successHandler } from '../utils/axios';
 import { validateMediaSchema } from '../utils/validateMiddleware';
 

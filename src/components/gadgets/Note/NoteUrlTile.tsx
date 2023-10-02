@@ -1,9 +1,9 @@
-import { useBearStore } from 'bear';
 import clsx from 'clsx';
 import mixpanel from 'mixpanel-browser';
 import { isEmpty } from 'ramda';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useBearStore } from 'store';
 import { EVENTS_STATUS, MIXPANEL_EVENT } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
@@ -48,7 +48,7 @@ export const NoteUrlTile = () => {
       <div className="my-4 flex flex-wrap justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-6">
         <a href={shortenUrl} target="_blank" className="flex-1">
           <p
-            className="boujee-text text-center text-xl font-bold tracking-tight transition-all hover:text-cyan-500 hover:underline md:text-2xl"
+            className="boujee-text break-all text-center text-xl font-bold tracking-tight transition-all hover:text-cyan-500 hover:underline md:text-2xl"
             title={shortenUrl}>
             {shortenUrl.replace(/https:\/\//i, '')}
           </p>

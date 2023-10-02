@@ -1,7 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { UrlShortenerHistory } from '@prisma/client';
-import { updateShortenUrlRequest } from 'api/requests';
-import { useBearStore } from 'bear';
 import { Button } from 'components/atoms/Button';
 import { Input, Textarea } from 'components/atoms/Input';
 import { logEvent } from 'firebase/analytics';
@@ -11,6 +9,8 @@ import { useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { useMutation } from 'react-query';
+import { updateShortenUrlRequest } from 'requests';
+import { useBearStore } from 'store';
 import { LIMIT_OG_DESCRIPTION_LENGTH, LIMIT_OG_TITLE_LENGTH, brandUrlShortDomain } from 'types/constants';
 import { Locale } from 'types/locale';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
@@ -22,7 +22,7 @@ import { QueryKey } from 'utils/requests';
 
 type ShortenSettingPayload = Partial<UrlShortenerHistory> & { locale?: Locale };
 
-const ImageUploader = dynamic(() => import('../atoms/ImageUploader').then((mod) => mod.ImageUploader));
+const ImageUploader = dynamic(() => import('../../atoms/ImageUploader').then((mod) => mod.ImageUploader));
 
 export const SettingPreviewUrlForm = () => {
   const { t, locale } = useTrans();

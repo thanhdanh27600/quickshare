@@ -1,8 +1,8 @@
 import { UrlShortenerRecord } from '@prisma/client';
 import axios from 'axios';
 import requestIp from 'request-ip';
-import prisma from '../../db/prisma';
 import { shortenCacheService } from '../../services/cache/shorten.service';
+import prisma from '../../services/db/prisma';
 import { generateHash } from '../../services/hash';
 import { shortenService } from '../../services/shorten';
 import { ShortenUrl } from '../../types/shorten';
@@ -18,7 +18,8 @@ export const handler = api<ShortenUrl>(
   async (req, res) => {
     const ip = requestIp.getClientIp(req) || '';
     let url = (req.query.url as string) || null;
-    url = decrypt(decodeURI(url || ''));
+    url = decrypt(decodeURIComponent(url || ''));
+    let customHash = (req.query.customHash as string) || null;
     let hash = (req.query.hash as string) || null;
 
     if (!url && !hash) {
@@ -28,7 +29,7 @@ export const handler = api<ShortenUrl>(
       });
     }
     await validateShortenSchema.parseAsync({
-      query: { url: url || null, hash, ip },
+      query: { url: url || null, hash, ip, customHash },
     });
 
     // if hash then retrieve from cache & db
@@ -37,7 +38,6 @@ export const handler = api<ShortenUrl>(
       if (!history) return badRequest(res, messageNotFound);
       if (!!history.password) {
         const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
-        console.log('decryptS(token', decryptS(token));
         if (!token || decryptS(token) !== history.id.toString()) {
           return badRequest(res, messageNotFound);
         }
@@ -54,13 +54,14 @@ export const handler = api<ShortenUrl>(
     }
     shortenCacheService.incLimitIp(ip);
 
-    // create shorten url
-    const shortHash = await generateHash('shorten');
+    // use custom hash or create
+    let shortHash = customHash;
+    if (!shortHash) shortHash = await generateHash('shorten');
 
     // extract og metas
     let htmlString = '';
     try {
-      htmlString = (await axios.get(url)).data;
+      htmlString = (await axios.get(url, { timeout: 3000 })).data;
     } catch (error) {}
 
     const baseUrl = extractBaseUrl(url);
@@ -74,24 +75,29 @@ export const handler = api<ShortenUrl>(
         data: { ip },
       });
     }
-    record = record ?? (await prisma.urlShortenerRecord.findFirst({ where: { ip } }));
-    if (!record)
-      record = await prisma.urlShortenerRecord.create({
-        data: { ip },
+    try {
+      const history = await prisma.urlShortenerHistory.create({
+        data: {
+          url,
+          ogTitle: socialMetaTags.title,
+          ogDescription: socialMetaTags.description,
+          ogImgSrc: socialMetaTags.image,
+          hash: shortHash,
+          urlShortenerRecordId: record.id,
+        },
       });
-    const history = await prisma.urlShortenerHistory.create({
-      data: {
-        url,
-        ogTitle: socialMetaTags.title,
-        ogDescription: socialMetaTags.description,
-        ogImgSrc: socialMetaTags.image,
-        hash: shortHash,
-        urlShortenerRecordId: Number(record.id),
-      },
-    });
-    // write hash to cache
-    await shortenCacheService.postShortenHash(history);
-    return successHandler(res, history);
+      // write to cache
+      shortenCacheService.postShortenHash(history);
+      return successHandler(res, history);
+    } catch (error: any) {
+      if (error.code === 'P2002') {
+        return res.status(HttpStatusCode.BAD_REQUEST).send({
+          errorMessage: 'EXIST_HASH',
+          errorCode: 'INVALID_URL',
+        });
+      }
+      throw error;
+    }
   },
   ['GET'],
 );

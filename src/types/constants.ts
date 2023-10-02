@@ -43,6 +43,10 @@ export const HASH = {
   Regex: /^.{3}$/,
   Length: 3,
 };
+export const HASH_CUSTOM = {
+  Regex: /^[a-zA-Z0-9_-]{3,}$/,
+  MaxLength: 30,
+} as const;
 
 export const baseUrl = (useShortDomain: boolean = false) => {
   if (isProduction) {

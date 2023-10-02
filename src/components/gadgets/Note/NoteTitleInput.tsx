@@ -1,5 +1,5 @@
-import noteSlice from 'bear/noteSlice';
 import { Input } from 'components/atoms/Input';
+import noteSlice from 'store/noteSlice';
 import { LIMIT_NOTE_TITLE_LENGTH } from 'types/constants';
 import { useTrans } from 'utils/i18next';
 

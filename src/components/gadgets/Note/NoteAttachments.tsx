@@ -1,9 +1,9 @@
 import { Media } from '@prisma/client';
 import { Plus, Trash2 } from '@styled-icons/feather';
-import { useBearStore } from 'bear';
 import { BlobUploader } from 'components/atoms/BlobUploader';
 import { useEffect } from 'react';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
+import { useBearStore } from 'store';
 import { useTrans } from 'utils/i18next';
 
 const MAX_ATTACHMENTS = 3;

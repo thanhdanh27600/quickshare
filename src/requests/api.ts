@@ -26,15 +26,15 @@ export function withAuth(token?: string) {
   };
 }
 
-const allowedOrigins = [brandUrl, localUrlShort, brandUrlShort, ...[alternateBrandUrl]];
+const allowedOrigins = [brandUrl, localUrlShort, brandUrlShort, ...alternateBrandUrl];
 
 export const allowCors = (handler: any) => async (req: NextApiRequest, res: NextApiResponse) => {
   const origin = req.headers?.origin;
   if (!!origin && allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
+    // res.setHeader('Access-Control-Allow-Origin', '*');
   }
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  // res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader(
     'Access-Control-Allow-Headers',

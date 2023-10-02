@@ -1,11 +1,11 @@
-import { FeatureTabKey } from 'bear/utilitySlice';
-import { RedirectShortDomain } from 'components/screens/RedirectShortDomain';
+import { RedirectShortDomain } from 'components/gadgets/shared/RedirectShortDomain';
 import { logEvent } from 'firebase/analytics';
 import mixpanel from 'mixpanel-browser';
 import { GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { MainPage } from 'pages';
 import { useEffect } from 'react';
+import { FeatureTabKey } from 'store/utilitySlice';
 import { LocaleProp } from 'types/locale';
 import { FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { analytics } from 'utils/firebase';

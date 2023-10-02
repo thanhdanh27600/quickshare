@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-import prisma from '../db/prisma';
+import prisma from '../services/db/prisma';
 import { api } from '../utils/axios';
 import date from '../utils/date';
 

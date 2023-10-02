@@ -17,6 +17,24 @@ export const handler = api(
     if (decryptToken !== SERVER_AUTH) return badRequest(res);
 
     switch (f) {
+      case 'ping':
+        rs = { data: await redis.ping() };
+        break;
+      case 'get':
+        rs = { data: await redis.get(key) };
+        break;
+      case 'set':
+        rs = { data: await redis.set(key, params) };
+        break;
+      case 'expire':
+        rs = { data: await redis.expire(key, params) };
+        break;
+      case 'incrby':
+        rs = { data: await redis.incrby(key, params) };
+        break;
+      case 'exists':
+        rs = { data: await redis.exists(key) };
+        break;
       case 'hgetall':
         rs = await redis.hgetall(key);
         break;

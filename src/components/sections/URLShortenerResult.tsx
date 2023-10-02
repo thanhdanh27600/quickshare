@@ -1,6 +1,6 @@
-import { useBearStore } from 'bear';
-import { ShortenUrlTile } from 'components/gadgets/ShortenUrlTile';
+import { ShortenUrlTile } from 'components/gadgets/URLShortener/ShortenUrlTile';
 import { useEffect, useState } from 'react';
+import { useBearStore } from 'store';
 import { BASE_URL, BASE_URL_SHORT } from 'types/constants';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 import { URLShare } from '../gadgets/URLShare';

@@ -1,6 +1,6 @@
 import { keys } from 'ramda';
 import { z } from 'zod';
-import { HASH, isProduction } from '../types/constants';
+import { HASH_CUSTOM, isProduction } from '../types/constants';
 import { Theme, Themes } from '../types/og';
 import { isValidUrl } from './text';
 
@@ -38,9 +38,18 @@ export const validateShortenSchema = z.object({
     hash: z.nullable(
       z
         .string({
-          required_error: 'Hash is required',
+          invalid_type_error: 'Hash must be string',
         })
-        .refine((value) => (!value ? true : HASH.Regex.test(value || '')), 'Wrong hash format'),
+        .max(HASH_CUSTOM.MaxLength, 'Hash is too long')
+        .refine((value) => (!value ? true : HASH_CUSTOM.Regex.test(value || '')), 'Wrong hash format'),
+    ),
+    customHash: z.nullable(
+      z
+        .string({
+          invalid_type_error: 'Hash must be string',
+        })
+        .max(HASH_CUSTOM.MaxLength, 'Hash is too long')
+        .refine((value) => (!value ? true : HASH_CUSTOM.Regex.test(value || '')), 'Wrong hash format'),
     ),
   }),
 });
@@ -53,7 +62,7 @@ export const validateUpdateShortenSchema = z.object({
     .string({
       required_error: 'Hash is required',
     })
-    .refine((value) => (!value ? true : HASH.Regex.test(value || '')), 'Wrong hash format'),
+    .refine((value) => (!value ? true : HASH_CUSTOM.Regex.test(value || '')), 'Wrong hash format'),
   ogTitle: z.optional(
     z.string({
       required_error: 'Title is required',
@@ -145,7 +154,8 @@ export const validateForwardSchema = z.object({
       .string({
         required_error: 'Hash is required',
       })
-      .refine((value) => (!value ? true : HASH.Regex.test(value || '')), 'Wrong hash format'),
+      .max(HASH_CUSTOM.MaxLength, 'Hash is too long')
+      .refine((value) => (!value ? true : HASH_CUSTOM.Regex.test(value || '')), 'Wrong hash format'),
   ),
 });
 export type ForwardSchema = z.infer<typeof validateForwardSchema>;
@@ -191,7 +201,7 @@ export const validateNoteSchema = z.object({
       .string({
         invalid_type_error: 'Hash is required',
       })
-      .refine((value) => (!value ? true : HASH.Regex.test(value || '')), 'Wrong hash format'),
+      .refine((value) => (!value ? true : HASH_CUSTOM.Regex.test(value || '')), 'Wrong hash format'),
   ),
 });
 export type NoteSchema = z.infer<typeof validateNoteSchema>;

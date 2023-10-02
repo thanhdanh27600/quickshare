@@ -1,6 +1,6 @@
-import { useBearStore } from 'bear';
-import { DiscordPreview, FacebookPreview, TwitterPreview } from 'components/gadgets/OgPreview';
-import { ThemeSelector } from 'components/gadgets/ThemeSelector';
+import { DiscordPreview, FacebookPreview, TwitterPreview } from 'components/gadgets/URLPreview/OgPreview';
+import { ThemeSelector } from 'components/gadgets/URLPreview/ThemeSelector';
+import { useBearStore } from 'store';
 
 export const URLSharePreview = ({ selectedKey }: { selectedKey: string }) => {
   const { shortenSlice } = useBearStore();

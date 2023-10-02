@@ -1,5 +1,4 @@
 import { UrlShortenerHistory } from '@prisma/client';
-import { getForwardUrl } from 'api/requests';
 import { logEvent } from 'firebase/analytics';
 import mixpanel from 'mixpanel-browser';
 import { GetServerSidePropsContext } from 'next';
@@ -10,6 +9,7 @@ import { stringify } from 'querystring';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
+import { getForwardUrl } from 'requests';
 import { BASE_URL_OG, Window, isProduction } from 'types/constants';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { encodeBase64 } from 'utils/crypto';

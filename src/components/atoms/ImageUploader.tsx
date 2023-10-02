@@ -1,7 +1,7 @@
 import { UploadCloud } from '@styled-icons/feather';
-import { API } from 'api/axios';
 import { CldUploadWidget } from 'next-cloudinary';
 import { MouseEventHandler, useState } from 'react';
+import { API } from 'requests/api';
 import date from 'utils/date';
 import { UploadProvider } from 'utils/media';
 

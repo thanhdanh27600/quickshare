@@ -1,6 +1,7 @@
 import { LayoutMain } from 'components/layouts/LayoutMain';
 import mixpanel from 'mixpanel-browser';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Head from 'next/head';
 import { useEffect } from 'react';
 import { LocaleProp } from 'types/locale';
 import { MIXPANEL_EVENT } from 'types/utils';
@@ -12,12 +13,18 @@ const PrivacyPolicy = () => {
   }, []);
   return (
     <LayoutMain featureTab={false}>
+      <Head>
+        <title>Quickshare&apos;s Privacy Policy</title>
+        <meta name="title" content={"Quickshare's Privacy Policy"} />
+      </Head>
       <section className="common">
         <h1>Privacy Policy</h1>
-        <p className="my-2">Last updated: September 15, 2023</p>
+        <p className="my-2">Last updated: September 29, 2023</p>
         <p>
-          This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your
-          information when You use the Service and tells You about Your privacy rights and how the law protects You.
+          Our privacy policy elucidates the details regarding the collection and utilization of personal information.
+          The purpose behind gathering this data is to enhance and optimize your interaction with our services. Should
+          you opt not to consent to our privacy policy, we kindly request that you refrain from accessing or utilizing
+          the Site.
         </p>
         <p>
           We use Your Personal data to provide and improve the Service. By using the Service, You agree to the
@@ -412,8 +419,8 @@ const PrivacyPolicy = () => {
         <ul>
           <li>
             By email:{' '}
-            <a href="mailto:dolph.pham@gmail.com" className="text-cyan-500">
-              dolph.pham@gmail.com
+            <a href="mailto:quickshare.at@gmail.com" className="text-cyan-500">
+              quickshare.at@gmail.com
             </a>
           </li>
         </ul>

@@ -1,4 +1,4 @@
-import { withDevTools } from 'bear/middleware';
+import { withDevTools } from 'store/middleware';
 import { BASE_URL, BASE_URL_SHORT } from 'types/constants';
 import { NoteWithMedia } from 'types/note';
 import { StateCreator, create } from 'zustand';

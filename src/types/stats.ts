@@ -4,6 +4,6 @@ import { Response } from 'utils/axios';
 export type UrlHistoryWithMeta = UrlShortenerHistory & { UrlForwardMeta?: UrlForwardMeta[] };
 
 export type Stats = Response & {
-  record?: UrlShortenerRecord | null;
+  record?: (UrlShortenerRecord & { history?: { url: string; hash: string }[] }) | null;
   history?: UrlHistoryWithMeta[] | null;
 };

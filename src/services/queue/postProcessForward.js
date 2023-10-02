@@ -1,13 +1,11 @@
 const { isEmpty } = require('ramda');
-const prisma = require('../../db/prisma');
+const prisma = require('../db/prisma');
 const { redis } = require('../../redis');
 
 /**
  *  @param {import('../../types/forward').ForwardMeta} payload
  */
 const postProcessForward = async (payload) => {
-  /** @type {import('../../db/prisma').Prisma} */
-
   const { hash, ip, userAgent, fromClientSide, countryCode, updatedAt } = payload;
 
   if (!hash) return;

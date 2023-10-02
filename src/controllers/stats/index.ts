@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client';
 import requestIp from 'request-ip';
-import prisma from '../../db/prisma';
+import prisma from '../../services/db/prisma';
 import { LIMIT_RECENT_HISTORY } from '../../types/constants';
-import { Stats, UrlHistoryWithMeta } from '../../types/stats';
+import { Stats } from '../../types/stats';
 import { api, errorHandler, successHandler } from '../../utils/axios';
 import { decryptS } from '../../utils/crypto';
 import { parseIntSafe } from '../../utils/number';
@@ -17,6 +17,7 @@ export const handler = api<Stats>(
     });
     const hash = req.query.h as string;
     const queryCursor = req.query.qc ? parseIntSafe(req.query.qc as string) : undefined;
+    const notShowBot = (req.query.noBot as string) === 'true';
     let record;
     let history;
     if (!hash) {
@@ -33,8 +34,7 @@ export const handler = api<Stats>(
           },
         },
       });
-      history = record?.history as UrlHistoryWithMeta[];
-      return successHandler(res, { record: record, history });
+      return successHandler(res, { record: record });
     }
     // get stats with hash
     history = await prisma.urlShortenerHistory.findUnique({
@@ -43,6 +43,7 @@ export const handler = api<Stats>(
       },
       include: {
         UrlForwardMeta: {
+          ...(notShowBot ? { where: { fromClientSide: true } } : null),
           orderBy: {
             updatedAt: Prisma.SortOrder.desc,
           },

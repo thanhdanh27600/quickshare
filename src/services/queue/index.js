@@ -97,7 +97,7 @@ async function main() {
 
   // function to handle any errors
   const myErrorHandler = async (error) => {
-    console.log(error);
+    console.log('Error Queue Handler', error);
   };
 
   // subscribe and specify the message and error handlers

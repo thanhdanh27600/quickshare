@@ -1,4 +1,3 @@
-import { setPasswordRequest } from 'api/requests';
 import { Button } from 'components/atoms/Button';
 import { Input } from 'components/atoms/Input';
 import { Modal } from 'components/atoms/Modal';
@@ -8,6 +7,7 @@ import { useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
+import { setPasswordRequest } from 'requests';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { analytics } from 'utils/firebase';
 import { useTrans } from 'utils/i18next';

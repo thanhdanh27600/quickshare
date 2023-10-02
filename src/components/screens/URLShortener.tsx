@@ -1,20 +1,20 @@
-import { getOrCreateShortenUrlRequest } from 'api/requests';
 import { AxiosError } from 'axios';
-import { useBearStore } from 'bear';
 import { InputWithButton } from 'components/atoms/Input';
-import { CustomLinkForm } from 'components/gadgets/CustomLinkForm';
-import { HelpTooltip } from 'components/gadgets/HelpTooltip';
-import { SignInToCustomLink } from 'components/gadgets/SignInToCustomLink';
+import { CustomLinkForm } from 'components/gadgets/URLShortener/CustomLinkForm';
+import { SignInToCustomLink } from 'components/gadgets/URLShortener/SignInToCustomLink';
+import { HelpTooltip } from 'components/gadgets/shared/HelpTooltip';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { URLShortenerResult } from 'components/sections/URLShortenerResult';
 import { URLStats } from 'components/sections/URLStatsInput';
 import { logEvent } from 'firebase/analytics';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useEffect, useMemo, useState } from 'react';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
-import { HASH, LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST, isProduction } from 'types/constants';
+import { getOrCreateShortenUrlRequest } from 'requests';
+import { useBearStore } from 'store';
+import { LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST, isProduction } from 'types/constants';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { encrypt } from 'utils/crypto';
 import { analytics } from 'utils/firebase';
@@ -24,6 +24,7 @@ import { validateUrl } from 'utils/validateMiddleware';
 
 type URLShortenerForm = {
   url: string;
+  hash?: string;
 };
 
 export const UrlShortener = () => {
@@ -44,20 +45,22 @@ const URLShortenerInput = () => {
 
   const [shortenUrl, setShortenHistory] = shortenSlice((state) => [state.getShortenUrl(), state.setShortenHistory]);
   const queryClient = useQueryClient();
+
+  const methods = useForm<URLShortenerForm>();
+
   const {
     register,
+    setError,
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
     getValues,
-  } = useForm<URLShortenerForm>();
+  } = methods;
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     const hash = query.get('hash') || '';
-    if (HASH.Regex.test(hash)) {
-      requestShortenUrl.mutate({ hash });
-    }
+    if (!!hash) requestShortenUrl.mutate({ hash });
   }, []);
 
   const requestShortenUrl = useMutation(QueryKey.SHORTEN, getOrCreateShortenUrlRequest, {
@@ -97,19 +100,32 @@ const URLShortenerInput = () => {
   });
 
   const onSubmit: SubmitHandler<URLShortenerForm> = (data) => {
-    requestShortenUrl.mutate({ url: encodeURIComponent(encrypt(data.url)) });
+    requestShortenUrl.mutate({ url: encodeURIComponent(encrypt(data.url)), customHash: data.hash });
   };
 
   const mutateError = (requestShortenUrl.error as AxiosError)?.message;
-  const requestErrorMessage =
-    mutateError === 'EXCEEDED_SHORT'
-      ? t('reachedFeatureLimit', {
+  const requestErrorMessage = useMemo(() => {
+    let errorMessage;
+    switch (mutateError) {
+      case 'EXCEEDED_SHORT':
+        errorMessage = t('reachedFeatureLimit', {
           n: LIMIT_SHORTEN_REQUEST,
           feature: t('shortenedURL'),
           time: `${LIMIT_FEATURE_HOUR} ${t('hour')}`,
-        })
-      : mutateError;
-  const error = errors.url?.message /** form */ || localError || requestErrorMessage;
+        });
+        break;
+      case 'EXIST_HASH':
+        errorMessage = t('EXIST_HASH');
+        break;
+      default:
+        errorMessage = mutateError;
+        break;
+    }
+    return errorMessage;
+  }, [mutateError]);
+
+  const formError = errors.url?.message || errors.hash?.message;
+  const error = formError || localError || requestErrorMessage;
   const loading = requestShortenUrl.isLoading;
   const hasData = !loading && !requestShortenUrl.isError;
 
@@ -126,43 +142,45 @@ const URLShortenerInput = () => {
   }, [isSubmitting]);
 
   return (
-    <div className="solid container mx-auto max-w-5xl rounded-lg border p-4 pt-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
-      <h1 className="mb-4 flex gap-1 text-3xl">
-        {t('urlShortener')}
-        <HelpTooltip text={t('helpShortUrlHead')} />
-      </h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-        <InputWithButton
-          placeholder={shortenUrl || 'https://example.com'}
-          {...register('url', {
-            required: { message: t('errorNoUrl'), value: true },
-            validate: (text) => {
-              const error = validateUrl(text);
-              return error ? t(error) : undefined;
-            },
-          })}
-          disabled={!!shortenUrl || loading}
-          buttonProps={{
-            animation: true,
-            hoverTransform: false,
-            text: t('generate'),
-            variant: 'filled',
-            type: 'submit',
-            disabled: !!shortenUrl,
-            loading,
-            TextClassname: 'text-sm sm:text-xl',
-          }}
-          onFocus={() => {
-            mixpanel.track(MIXPANEL_EVENT.INPUT_URL, { status: EVENTS_STATUS.OK });
-          }}
-          className="pl-5"
-        />
-      </form>
-      <CustomLinkForm />
-      {!isProduction && <SignInToCustomLink />}
-      <p className="mt-4 text-red-400">{error}</p>
-      {hasData && shortenUrl && <URLShortenerResult />}
-      <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
-    </div>
+    <FormProvider {...methods}>
+      <div className="solid container mx-auto max-w-5xl rounded-lg border p-4 pt-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
+        <h1 className="mb-4 flex gap-1 text-3xl">
+          {t('urlShortener')}
+          <HelpTooltip text={t('helpShortUrlHead')} />
+        </h1>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+          <InputWithButton
+            placeholder={shortenUrl || 'https://example.com'}
+            {...register('url', {
+              required: { message: t('errorNoUrl'), value: true },
+              validate: (text) => {
+                const error = validateUrl(text);
+                return error ? t(error) : undefined;
+              },
+            })}
+            disabled={!!shortenUrl || loading}
+            buttonProps={{
+              animation: true,
+              hoverTransform: false,
+              text: t('generate'),
+              variant: 'filled',
+              type: 'submit',
+              disabled: !!shortenUrl,
+              loading,
+              TextClassname: 'text-sm sm:text-xl',
+            }}
+            onFocus={() => {
+              mixpanel.track(MIXPANEL_EVENT.INPUT_URL, { status: EVENTS_STATUS.OK });
+            }}
+            className="pl-5"
+          />
+        </form>
+        <CustomLinkForm />
+        {!isProduction && <SignInToCustomLink />}
+        <p className="mt-4 text-red-400">{error}</p>
+        {hasData && shortenUrl && <URLShortenerResult />}
+        <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
+      </div>
+    </FormProvider>
   );
 };
