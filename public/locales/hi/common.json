@@ -85,7 +85,7 @@
   "tos": "सेवा की शर्तें",
   "selectOrDropFiles": "फ़ाइल का चयन करें या ड्रॉप करें",
   "attachments": "संलग्नक",
-  "attachmentsCreate": "संलग्नक (अधिकतम 3 फ़ाइलें, प्रत्येक 5MB)",
+  "attachmentsCreate": "संलग्नक (अधिकतम 3 फ़ाइलें, प्रत्येक 10MB)",
   "addAttachment": "संलग्नक जोड़ें",
   "customLink": "कस्टम लिंक",
   "signInTo": "जारी रखने के लिए साइन इन करें",

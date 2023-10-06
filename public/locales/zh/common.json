@@ -85,7 +85,7 @@
   "tos": "服务条款",
   "selectOrDropFiles": "选择或拖放附件",
   "attachments": "附件",
-  "attachmentsCreate": "附件（最多3个文件，每个文件5MB）",
+  "attachmentsCreate": "附件（最多3个文件，每个文件10MB）",
   "addAttachment": "添加附件",
   "customLink": "自定义链接",
   "signInTo": "继续登录到",

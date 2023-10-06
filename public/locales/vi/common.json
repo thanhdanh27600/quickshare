@@ -85,7 +85,7 @@
   "contact": "Liên hệ",
   "selectOrDropFiles": "Chọn hoặc Kéo thả file",
   "attachments": "File đính kèm",
-  "attachmentsCreate": "File đính kèm (tối đa 3 file, mỗi file 5MB)",
+  "attachmentsCreate": "File đính kèm (tối đa 3 file, mỗi file 10MB)",
   "addAttachment": "Thêm file",
   "customLink": "Rút gọn thành",
   "signInTo": "Link đăng nhập vào",

@@ -85,7 +85,7 @@
   "tos": "利用規約",
   "selectOrDropFiles": "添付ファイルの選択またはドロップ",
   "attachments": "添付ファイル",
-  "attachmentsCreate": "添付ファイル（最大3つのファイル、各5MB）",
+  "attachmentsCreate": "添付ファイル（最大3つのファイル、各10MB）",
   "addAttachment": "添付ファイルを追加",
   "customLink": "カスタムリンク",
   "signInTo": "続行するにはサインイン",

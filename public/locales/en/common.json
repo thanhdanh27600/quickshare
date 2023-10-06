@@ -85,7 +85,7 @@
   "tos": "Terms of Service",
   "selectOrDropFiles": "Select or Drop attachment",
   "attachments": "Attachments",
-  "attachmentsCreate": "Attachments (maximum 3 files, 5MB each)",
+  "attachmentsCreate": "Attachments (maximum 3 files, 10MB each)",
   "addAttachment": "Add an attachment",
   "customLink": "Custom link",
   "signInTo": "Continue sign in to",
