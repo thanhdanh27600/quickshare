@@ -28,6 +28,14 @@ section.common {
   }
 }
 
+section.landing {
+  a {
+    color: rgb(6 182 212 / 1);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+}
+
 .tox-tinymce {
   .tox-promotion,
   .tox-statusbar__branding,
