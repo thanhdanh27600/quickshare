@@ -85,7 +85,7 @@
   "tos": "Terms of Service",
   "selectOrDropFiles": "Select or Drop attachment",
   "attachments": "Attachments",
-  "attachmentsCreate": "Attachments (maximum 3 files, 5MB each)",
+  "attachmentsCreate": "Attachments (maximum 3 files, 10MB each)",
   "addAttachment": "Add an attachment",
   "customLink": "Custom link",
   "signInTo": "Continue sign in to",
@@ -102,5 +102,17 @@
   "hour": "hour",
   "reachedFeatureLimit": "Exceeded {{n}} {{feature}}, please comeback after {{time}}.",
   "customHashError": "Shortened link only contains alphanumeric characters or \"-\", \"_\".",
-  "EXIST_HASH": "This shortened link already exists. Please try a different one."
+  "EXIST_HASH": "This shortened link already exists. Please try a different one.",
+  "landing": {
+    "card1": "Your data is permanently stored",
+    "card1-content": "Shortened links are stored indefinitely on Quickshare servers and backed up multiple times per day. Our system maintains 99% uptime and handles heavy traffic loads seamlessly so you can share high-volume links reliably.",
+    "card2": "Your data is secure",
+    "card2-content": "Your original links are anonymized through Quickshare. Shortened links will not appear in search engine results. You can also password protect your shortened links in the link tracking section for extra security.",
+    "card3": "Link tracking is transparent",
+    "card3-content": "All accesses to shortened links, including bots and users, are recorded. Tracking details include the full User Agent string, IP address, and device information.",
+    "p1": "Quickshare is a link shortening service that can shorten long URLs from popular social media platforms and websites. To use it, simply paste the original long URL into the Quickshare website and click the \"Short it\" button. Quickshare will generate a much shorter URL that redirects to the original link. You can then copy this shortened URL and share it on social media, messaging apps, emails, or anywhere else. After creating a shortened link, you can use Quickshare to track how many clicks the link receives, who gave the clicks and allowing you to analyze the performance of your content. With its easy-to-use interface and click tracking feature, Quickshare is a convenient way to optimize the long links you want to share online.",
+    "p2": "The shortened links created by Quickshare have a variety of uses across digital platforms. You can utilize them in publications, documents, ads, blogs, forums, instant messages, and any other place that requires a compact link. One helpful feature is the click counter, which lets you track traffic and statistics by monitoring the number of hits your shortened URLs receive. This makes it easy to gather data for your business, campaigns, or other projects by seeing how many people are accessing your content through Quickshare links. Whether you need concise links for promotional materials, email newsletters, social media posts, or text messages, the click stats provide insight into their performance.",
+    "p1-head": "Free yet powerful URL shortener!",
+    "p2-head": "Shortening, tracking and sharing"
+  }
 }

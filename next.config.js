@@ -18,10 +18,10 @@ module.exports = async (phase, { defaultConfig }) => {
   let shouldRunQueue = phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_SERVER;
   if (isTest) shouldRunQueue = false;
   if (process.env.NEXT_PUBLIC_SHORT_DOMAIN === 'true') shouldRunQueue = false;
-
   if (shouldRunQueue) {
     queueReceiver();
   }
+
   // cronJob();
   return nextConfig;
 };
