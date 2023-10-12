@@ -27,7 +27,8 @@ export const truncateMiddle = (text: string, length = 30, r = 5) => {
 };
 
 export const urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i;
-export const emailRegex = /(.+)@(.+){2,}\.(.+){2,}/i;
+export const emailRegex =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/i;
 
 export const isValidUrl = (urlString: string) => {
   return !!urlRegex.test(urlString);

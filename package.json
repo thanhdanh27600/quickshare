@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon --exec 'next dev -p 5000'",
+    "dev": "next dev -p 5000",
     "test": "jest --logHeapUsage --forceExit",
     "migrate:dev": "npx prisma migrate dev --name",
     "migrate:test": "dotenv -e .env.test -- prisma migrate deploy",
@@ -90,7 +90,6 @@
     "dotenv-cli": "^7.3.0",
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.6",
-    "nodemon": "^2.0.20",
     "postcss": "^8.4.21",
     "prettier": "^2.8.3",
     "prettier-plugin-tailwindcss": "^0.2.2",

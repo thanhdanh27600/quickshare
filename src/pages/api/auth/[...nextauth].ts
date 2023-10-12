@@ -28,7 +28,7 @@ export const authOptions: AuthOptions = {
     }),
     // ...add more providers here
   ],
-  pages: { verifyRequest: '/auth/verify-request', signIn: '/auth/sign-in' },
+  pages: { verifyRequest: '/auth/verify-request', signIn: '/auth/sign-in', error: '/auth/error' },
   theme: {
     colorScheme: 'light', // "auto" | "dark" | "light"
     brandColor: '#722df5', // Hex color code

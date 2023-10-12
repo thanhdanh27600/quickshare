@@ -42,7 +42,7 @@ export const CustomLinkForm = () => {
             })}
             disabled={!!shortenHistory}
             className={
-              'w-full appearance-none overflow-ellipsis border-none bg-transparent px-[3px] font-medium leading-tight text-gray-700 focus:outline-none disabled:cursor-not-allowed disabled:text-gray-400'
+              'w-full appearance-none overflow-ellipsis border-none bg-transparent px-[3px] leading-tight text-gray-700 focus:outline-none disabled:cursor-not-allowed disabled:text-gray-400'
             }
             type="text"
             placeholder="xxx"
