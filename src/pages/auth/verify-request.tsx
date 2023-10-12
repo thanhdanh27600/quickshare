@@ -14,17 +14,16 @@ export default function VerifyRequest(/* {}: InferGetServerSidePropsType<typeof 
   const router = useRouter();
   const { data: session } = useSession();
 
-  if (!!session) {
-    router.replace('/');
-    return null;
-  }
-
   useEffect(() => {
     if (getLanguage(location.href) !== locale) {
       router.replace(linkWithLanguage(location.href, locale));
     }
   }, []);
 
+  if (!!session) {
+    router.replace('/');
+    return null;
+  }
   return (
     <LayoutMain featureTab={false}>
       <div className="m-auto w-full max-w-lg rounded-lg border border-gray-200 bg-gray-50 p-16 shadow">
