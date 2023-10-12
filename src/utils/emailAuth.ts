@@ -92,6 +92,11 @@ function html(params: { url: string; host: string; theme: Theme; t: any }): stri
     color.buttonBorder
   }; display: inline-block; font-weight: bold;">${t('continue')}</a></td>
           </tr>
+          <tr>
+          <td style="padding-top:8px">
+          <a style="color:#9370db; word-break: break-all;cursor: pointer;" href="${url}">${t('signInLink')}</a>
+          </td>
+          </tr>
         </table>
       </td>
     </tr>

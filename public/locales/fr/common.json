@@ -115,5 +115,6 @@
     "card2-content": "Vos liens originaux sont anonymisés via Quickshare. Les liens raccourcis n'apparaîtront pas dans les résultats des moteurs de recherche. Vous pouvez également protéger vos liens raccourcis par mot de passe dans la section de suivi des liens pour plus de sécurité.",
     "card3": "Le suivi des liens est transparent",
     "card3-content": "Tous les accès aux liens raccourcis, y compris les bots et les utilisateurs, sont enregistrés. Les détails de suivi incluent la chaîne complète de l'agent utilisateur, l'adresse IP et les informations sur l'appareil."
-  }
+  },
+  "signInLink": "Ou cliquez ici pour continuer."
 }

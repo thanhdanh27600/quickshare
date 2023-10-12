@@ -30,3 +30,13 @@ export function linkWithLanguage(href: string, locale: Locale) {
   }
   return href.replaceAll(BASE_URL, `${BASE_URL}/${locale}`);
 }
+
+export function getLanguage(href: string) {
+  if (href.trim().length === 0) return defaultLocale;
+  if (!href.includes(BASE_URL)) return defaultLocale;
+  const tokens = href.replaceAll(BASE_URL, '').split('/');
+  if (!tokens[1] || tokens[1].length !== 2) return defaultLocale;
+  const localeToken = tokens[1] as Locale;
+  const locale = locales[localeToken] ?? defaultLocale;
+  return locale;
+}

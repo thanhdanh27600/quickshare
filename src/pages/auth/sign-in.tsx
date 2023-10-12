@@ -1,16 +1,44 @@
+import { ErrorMessage } from '@hookform/error-message';
 import { Button } from 'components/atoms/Button';
 import { Input } from 'components/atoms/Input';
 import { LayoutMain } from 'components/layouts/LayoutMain';
 import type { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import { getCsrfToken } from 'next-auth/react';
+import { getCsrfToken, useSession } from 'next-auth/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useState } from 'react';
-import { Locale, locales } from 'types/locale';
+import { useRouter } from 'next/router';
+import { useRef, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { LocaleProp } from 'types/locale';
 import { defaultLocale, useTrans } from 'utils/i18next';
+import { emailRegex } from 'utils/text';
+
+type SigninForm = {
+  email: string;
+};
 
 export default function SignIn({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t, locale } = useTrans();
+  const router = useRouter();
+  const submitBtn = useRef<HTMLButtonElement>(null);
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SigninForm>();
+
+  if (status === 'loading') return null;
+
+  if (!!session) {
+    router.replace('/');
+    return null;
+  }
+
+  const onSubmit: SubmitHandler<SigninForm> = (values) => {
+    submitBtn.current?.click();
+  };
 
   return (
     <LayoutMain featureTab={false}>
@@ -21,33 +49,35 @@ export default function SignIn({ csrfToken }: InferGetServerSidePropsType<typeof
           <input name="locale" type="hidden" defaultValue={locale} />
           <label className="text-lg sm:text-xl">
             Email
-            <Input className="mt-2" type="email" id="email" name="email" />
+            <Input
+              className="mt-2"
+              id="email"
+              {...register('email', {
+                validate: (value) => {
+                  if (!value || !value.trim().length || !emailRegex.test(value)) return t('errorInvalidEmail');
+                },
+              })}
+            />
           </label>
-          <p className="mt-4 text-gray-500">{t('signInNowDetail')}</p>
-          <Button className="mt-1 w-full" type="submit" loading={loading}>
+          <ErrorMessage
+            errors={errors}
+            name="email"
+            render={(error) => <p className="text-red-400">{error.message}</p>}
+          />
+          <p className="mt-2 text-gray-500">{t('signInNowDetail')}</p>
+          <Button className="mt-4 w-full" type="button" loading={loading} onClick={handleSubmit(onSubmit)}>
             {t('continue')}
           </Button>
+          <button type="submit" className="hidden" ref={submitBtn} />
         </form>
       </div>
     </LayoutMain>
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  let locale = defaultLocale;
-  try {
-    const query = context.query;
-    if (!!query.callbackUrl) {
-      const callbackUrl = new URL(query.callbackUrl as string);
-      locale = callbackUrl?.pathname?.split('/')[1] as Locale;
-      if (!locales[locale]) locale = defaultLocale;
-    }
-  } catch (error) {
-    console.error(error);
-  }
-
+export async function getServerSideProps(context: GetServerSidePropsContext & LocaleProp) {
   const csrfToken = await getCsrfToken(context);
   return {
-    props: { csrfToken, ...(await serverSideTranslations(locale, ['common'])) },
+    props: { csrfToken, ...(await serverSideTranslations(context.locale ?? defaultLocale, ['common'])) },
   };
 }

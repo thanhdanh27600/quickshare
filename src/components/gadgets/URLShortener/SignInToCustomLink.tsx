@@ -1,16 +1,23 @@
 import mixpanel from 'mixpanel-browser';
 import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { BASE_URL } from 'types/constants';
 import { MIXPANEL_EVENT } from 'types/utils';
-import { useTrans } from 'utils/i18next';
+import { linkWithLanguage, useTrans } from 'utils/i18next';
 
 export const SignInToCustomLink = () => {
-  const { t } = useTrans();
-  const { data: session } = useSession();
+  const router = useRouter();
+  const { t, locale } = useTrans();
+  const { data: session, status } = useSession();
 
-  if (!!session) return null;
+  if (status === 'loading' || !!session) return null;
 
-  const handleSignIn = () => {
-    signIn();
+  const handleSignIn = async () => {
+    await signIn('email', { callbackUrl: location.href, redirect: false });
+    router.push({
+      pathname: linkWithLanguage(`${BASE_URL}/auth/sign-in`, locale),
+      query: { callbackUrl: location.href },
+    });
     mixpanel.track(MIXPANEL_EVENT.SIGN_IN);
   };
 
