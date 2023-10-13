@@ -1,4 +1,5 @@
 import { Note, UrlShortenerHistory } from '@prisma/client';
+import { shortenCacheService } from '../../services/cache';
 import prisma from '../../services/db/prisma';
 import { shortenService } from '../../services/shorten';
 import { api, badRequest } from '../../utils/axios';
@@ -10,8 +11,9 @@ export const handler = api(
     const hash = req.body.hash as string;
     const email = req.body.email as string;
     const password = req.body.password as string;
+    const usePasswordForward = req.body.usePasswordForward as boolean;
 
-    await validatePasswordSchema.parseAsync({ hash, email, password });
+    await validatePasswordSchema.parseAsync({ hash, email, password, usePasswordForward });
     let history = (await shortenService.getShortenHistory(hash, { include: { Note: true } })) as UrlShortenerHistory & {
       Note: Note;
     };
@@ -25,6 +27,7 @@ export const handler = api(
         data: {
           password: encryptPassword,
           email,
+          usePasswordForward,
         },
       }),
       ...(history.Note?.id
@@ -39,6 +42,8 @@ export const handler = api(
           ]
         : []),
     ]);
+    // purge cache
+    shortenCacheService.expireShortenHash(hash);
     res.send('OK');
   },
   ['POST'],

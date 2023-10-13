@@ -99,6 +99,9 @@ export const validatePasswordSchema = z.object({
   password: z.string({
     required_error: 'Password is required',
   }),
+  usePasswordForward: z.boolean({
+    required_error: 'usePasswordForward is required',
+  }),
 });
 export type PasswordSchema = z.infer<typeof validatePasswordSchema>;
 

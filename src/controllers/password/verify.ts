@@ -1,7 +1,7 @@
 import { shortenService } from '../../services/shorten';
 import { Stats } from '../../types/stats';
-import { api, errorHandler, successHandler } from '../../utils/axios';
-import { decryptS, encryptS } from '../../utils/crypto';
+import { api, badRequest, errorHandler, successHandler } from '../../utils/axios';
+import { encryptS } from '../../utils/crypto';
 import { validateVerifyPasswordSchema } from '../../utils/validateMiddleware';
 
 export const handler = api<Stats>(
@@ -11,13 +11,10 @@ export const handler = api<Stats>(
     const password = req.body.p as string;
     // get stats with hash
     const history = await shortenService.getShortenHistory(hash);
-    if (history && history?.password) {
-      const decryptPassword = decryptS(history?.password);
-      if (decryptPassword === password) {
-        return successHandler(res, { token: encryptS(history.id.toString()) } as any);
-      }
-    }
-    return errorHandler(res);
+    if (!history) return badRequest(res);
+    const validPassword = await shortenService.verifyPassword(history, password);
+    if (!validPassword) return errorHandler(res);
+    return successHandler(res, { token: encryptS(history.id.toString()) } as any);
   },
   ['POST'],
 );

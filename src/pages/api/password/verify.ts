@@ -1,3 +1,4 @@
 import { password } from 'controllers';
+import { allowCors } from '../../../requests/api';
 
-export default password.verify.handler;
+export default allowCors(password.verify.handler);

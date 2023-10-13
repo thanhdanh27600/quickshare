@@ -116,5 +116,6 @@
     "card3": "Le suivi des liens est transparent",
     "card3-content": "Tous les accès aux liens raccourcis, y compris les bots et les utilisateurs, sont enregistrés. Les détails de suivi incluent la chaîne complète de l'agent utilisateur, l'adresse IP et les informations sur l'appareil."
   },
-  "signInLink": "Ou cliquez ici pour continuer."
+  "signInLink": "Ou cliquez ici pour continuer.",
+  "usePasswordToShortenedLink": "Utilisez également ce mot de passe pour l'URL raccourcie"
 }

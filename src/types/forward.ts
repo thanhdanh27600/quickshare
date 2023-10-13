@@ -4,6 +4,7 @@ import { Response } from 'utils/axios';
 export type Forward = Response & {
   history?: Partial<UrlShortenerHistory> | null;
   note?: Partial<Note> | null;
+  token?: string;
 };
 
 export type ForwardMeta = {

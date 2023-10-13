@@ -1,4 +1,5 @@
 import { Button } from 'components/atoms/Button';
+import { Checkbox } from 'components/atoms/Checkbox';
 import { Input } from 'components/atoms/Input';
 import { Modal } from 'components/atoms/Modal';
 import { logEvent } from 'firebase/analytics';
@@ -18,6 +19,7 @@ import { emailRegex } from 'utils/text';
 type PasswordForm = {
   password: string;
   email: string;
+  usePasswordForward: boolean;
 };
 
 export const SetPassword = ({ hash }: { hash: string }) => {
@@ -27,7 +29,10 @@ export const SetPassword = ({ hash }: { hash: string }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PasswordForm>();
+    watch,
+  } = useForm<PasswordForm>({ defaultValues: { usePasswordForward: true } });
+
+  console.log(watch('usePasswordForward'));
 
   const closeModalRef = useRef<HTMLButtonElement>(null);
 
@@ -56,7 +61,12 @@ export const SetPassword = ({ hash }: { hash: string }) => {
   });
 
   const onSubmit: SubmitHandler<PasswordForm> = (data) => {
-    setPassword.mutate({ hash, email: data.email, password: data.password });
+    setPassword.mutate({
+      hash,
+      email: data.email,
+      password: data.password,
+      usePasswordForward: data.usePasswordForward,
+    });
   };
 
   return (
@@ -110,6 +120,9 @@ export const SetPassword = ({ hash }: { hash: string }) => {
             })}
           />
           <p className="mt-2 text-red-400">{errors.email?.message}</p>
+        </div>
+        <div className="py-2">
+          <Checkbox label={t('usePasswordToShortenedLink')} {...register('usePasswordForward')} />
         </div>
       </Modal>
     </div>

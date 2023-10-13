@@ -1,4 +1,5 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, UrlShortenerHistory } from '@prisma/client';
+import { decryptS } from '../../utils/crypto';
 import prisma from '../db/prisma';
 
 export class ShortenService {
@@ -10,6 +11,21 @@ export class ShortenService {
       },
       ...args,
     });
+  }
+  async verifyPassword(history: UrlShortenerHistory | null, password: string) {
+    if (!history) return false;
+    if (!history.password) return true;
+    if (!history.usePasswordForward) return true;
+    const decryptPassword = decryptS(history.password);
+    return decryptPassword === password;
+  }
+  async verifyToken(history: UrlShortenerHistory | null, token: string) {
+    if (!history) return false;
+    if (!history.password) return true;
+    if (!token || decryptS(token) !== history.id.toString()) {
+      return false;
+    }
+    return true;
   }
 }
 
