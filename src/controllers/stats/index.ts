@@ -1,10 +1,10 @@
 import { Prisma } from '@prisma/client';
 import requestIp from 'request-ip';
 import prisma from '../../services/db/prisma';
-import { shortenService } from '../../services/shorten';
 import { LIMIT_RECENT_HISTORY } from '../../types/constants';
 import { Stats } from '../../types/stats';
 import { api, errorHandler, successHandler } from '../../utils/axios';
+import { decryptS } from '../../utils/crypto';
 import { parseIntSafe } from '../../utils/number';
 import { withQueryCursor } from '../../utils/requests';
 import { validateStatsSchema } from '../../utils/validateMiddleware';
@@ -54,7 +54,11 @@ export const handler = api<Stats>(
       },
     });
     if (history && history?.password) {
-      const valid = await shortenService.verifyToken(history, req.headers['X-Platform-Auth'.toLowerCase()] as string);
+      let valid = false;
+      const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
+      if (decryptS(token) === history.id.toString()) {
+        valid = true;
+      }
       if (!valid) {
         return errorHandler(res);
       }
