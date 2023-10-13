@@ -54,7 +54,7 @@ export const handler = api<Stats>(
       },
     });
     if (history && history?.password) {
-      const valid = shortenService.verifyToken(history, req.headers['X-Platform-Auth'.toLowerCase()] as string);
+      const valid = await shortenService.verifyToken(history, req.headers['X-Platform-Auth'.toLowerCase()] as string);
       if (!valid) {
         return errorHandler(res);
       }
