@@ -22,6 +22,7 @@ export class ShortenService {
   async verifyToken(history: UrlShortenerHistory | null, token: string) {
     if (!history) return false;
     if (!history.password) return true;
+    if (!history.usePasswordForward) return true;
     if (!token || decryptS(token) !== history.id.toString()) {
       return false;
     }
