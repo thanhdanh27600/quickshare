@@ -15,15 +15,15 @@ export class ShortenService {
   async verifyPassword(history: UrlShortenerHistory | null, password: string) {
     if (!history) return false;
     if (!history.password) return true;
-    if (!history.usePasswordForward) return true;
     const decryptPassword = decryptS(history.password);
     return decryptPassword === password;
   }
-  async verifyToken(history: UrlShortenerHistory | null, token: string) {
+  verifyToken(history: UrlShortenerHistory | null, token: string) {
     if (!history) return false;
     if (!history.password) return true;
     if (!history.usePasswordForward) return true;
-    if (!token || decryptS(token) !== history.id.toString()) {
+    if (!token) return false;
+    if (decryptS(token) !== history.id.toString()) {
       return false;
     }
     return true;

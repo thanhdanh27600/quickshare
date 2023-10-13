@@ -52,7 +52,7 @@ export const handler = api<Forward>(
     const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
     const shortenedUrlCache = (await redis.hgetall(hashKey)) as any;
     if (!isEmpty(shortenedUrlCache)) {
-      valid = await shortenService.verifyToken(shortenedUrlCache, token);
+      valid = shortenService.verifyToken(shortenedUrlCache, token);
       if (!valid) return res.send({ errorCode: HttpStatusCode.UNAUTHORIZED, errorMessage: 'UNAUTHORIZED' });
       // cache hit
       sendMessageToQueue([{ subject: 'forward', body: data }]);
@@ -64,7 +64,7 @@ export const handler = api<Forward>(
     if (!history) {
       return badRequest(res);
     }
-    valid = await shortenService.verifyToken(history, token);
+    valid = shortenService.verifyToken(history, token);
     if (!valid) return res.send({ errorCode: HttpStatusCode.UNAUTHORIZED, errorMessage: 'UNAUTHORIZED' });
     sendMessageToQueue([{ subject: 'forward', body: data }]);
     shortenCacheService.postShortenHash(history);
