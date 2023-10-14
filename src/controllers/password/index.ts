@@ -1,5 +1,5 @@
 import { Note, UrlShortenerHistory } from '@prisma/client';
-import { shortenCacheService } from '../../services/cache';
+import { noteCacheService, shortenCacheService } from '../../services/cache';
 import prisma from '../../services/db/prisma';
 import { shortenService } from '../../services/shorten';
 import { api, badRequest } from '../../utils/axios';
@@ -44,6 +44,7 @@ export const handler = api(
     ]);
     // purge cache
     shortenCacheService.expireShortenHash(hash);
+    if (history.Note?.id) noteCacheService.expireNoteHash(history.Note?.hash);
     res.send('OK');
   },
   ['POST'],

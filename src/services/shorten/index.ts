@@ -12,7 +12,7 @@ export class ShortenService {
       ...args,
     });
   }
-  async verifyPassword(history: UrlShortenerHistory | null, password: string) {
+  verifyPassword(history: UrlShortenerHistory | null, password: string) {
     if (!history) return false;
     if (!history.password) return true;
     const decryptPassword = decryptS(history.password);

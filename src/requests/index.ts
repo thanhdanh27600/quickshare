@@ -118,8 +118,13 @@ export const updateNoteRequest = async (payload: UpdateNoteSchema) => {
   return data as NoteRs;
 };
 
-export const getNoteRequest = async (hash: string) => {
-  const rs = await API.get(`/api/note?hash=${hash}`);
+export const getNoteRequest = async (hash: string, token?: string) => {
+  const rs = await API.get(
+    `/api/note?${stringify({
+      hash,
+      token,
+    })}`,
+  );
   const data = rs.data;
   return data as NoteRs;
 };

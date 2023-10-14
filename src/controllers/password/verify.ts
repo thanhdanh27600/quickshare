@@ -12,7 +12,7 @@ export const handler = api<Stats>(
     // get stats with hash
     const history = await shortenService.getShortenHistory(hash);
     if (!history) return badRequest(res);
-    const validPassword = await shortenService.verifyPassword(history, password);
+    const validPassword = shortenService.verifyPassword(history, password);
     if (!validPassword) return errorHandler(res);
     return successHandler(res, { token: encryptS(history.id.toString()) } as any);
   },

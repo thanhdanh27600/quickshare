@@ -18,6 +18,8 @@ export const handler = api<Forward>(
     const userAgent = req.body.userAgent as string;
     const ip = req.body.ip as string;
     const fromClientSide = !!req.body.fromClientSide;
+    let valid = false;
+    const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
 
     await validateForwardSchema.parseAsync({
       hash,
@@ -45,9 +47,6 @@ export const handler = api<Forward>(
       updatedAt: new Date(),
     };
 
-    let valid = false;
-    const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
-
     // Check from Cache
     const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
     const shortenedUrlCache = (await redis.hgetall(hashKey)) as any;
@@ -66,6 +65,10 @@ export const handler = api<Forward>(
     }
     valid = shortenService.verifyToken(history, token);
     if (!valid) return res.send({ errorCode: HttpStatusCode.UNAUTHORIZED, errorMessage: 'UNAUTHORIZED' });
+
+    if (history?.email) history.email = '';
+    if (history?.password) history.password = '';
+
     sendMessageToQueue([{ subject: 'forward', body: data }]);
     shortenCacheService.postShortenHash(history);
     return successHandler(res, { history, token: encryptS(history.id.toString()) });

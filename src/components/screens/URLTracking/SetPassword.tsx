@@ -22,17 +22,14 @@ type PasswordForm = {
   usePasswordForward: boolean;
 };
 
-export const SetPassword = ({ hash }: { hash: string }) => {
+export const SetPassword = ({ hash, onSetPasswordSuccess }: { hash: string; onSetPasswordSuccess?: () => void }) => {
   const { t } = useTrans();
   const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm<PasswordForm>({ defaultValues: { usePasswordForward: true } });
-
-  console.log(watch('usePasswordForward'));
 
   const closeModalRef = useRef<HTMLButtonElement>(null);
 
@@ -55,6 +52,7 @@ export const SetPassword = ({ hash }: { hash: string }) => {
     onSuccess: async (data) => {
       mixpanel.track(MIXPANEL_EVENT.SET_PASSWORD, { status: EVENTS_STATUS.OK, data });
       await queryClient.invalidateQueries(QueryKey.STATS);
+      if (onSetPasswordSuccess) onSetPasswordSuccess();
       closeModalRef.current?.click();
       toast.success(t('updated'));
     },

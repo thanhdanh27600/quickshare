@@ -61,10 +61,10 @@ const ViewNote = ({ note, ip, error }: Props) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const locale = context.locale || defaultLocale;
-    const { hash } = context.query;
+    const { hash, token } = context.query;
     const ip = requestIp.getClientIp(context.req) || '';
     // start server-side get note
-    const noteRs = await getNoteRequest(hash ? (hash[0] as string) : '');
+    const noteRs = await getNoteRequest(hash ? (hash[0] as string) : '', token as string);
 
     if (!noteRs.note) throw new Error('Cannot found note');
 
