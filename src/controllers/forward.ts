@@ -1,4 +1,4 @@
-import { isEmpty } from 'ramda';
+import { clone, isEmpty } from 'ramda';
 import { redis } from '../redis';
 import { shortenCacheService } from '../services/cache';
 import { forwardCacheService } from '../services/cache/forward.service';
@@ -67,7 +67,7 @@ export const handler = api<Forward>(
     if (!valid) return res.send({ errorCode: HttpStatusCode.UNAUTHORIZED, errorMessage: 'UNAUTHORIZED' });
 
     sendMessageToQueue([{ subject: 'forward', body: data }]);
-    shortenCacheService.postShortenHash(history);
+    shortenCacheService.postShortenHash(clone(history));
 
     if (history?.email) history.email = '';
     if (history?.password) history.password = '';

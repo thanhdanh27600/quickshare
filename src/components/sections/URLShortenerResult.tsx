@@ -29,7 +29,7 @@ export const URLShortenerResult = () => {
       <ShortenUrlTile />
       <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap gap-1">
-          <span className="text-gray-500">{t('trackingLive')}</span>
+          <span className="text-gray-500">{t('trackingLink')}</span>
           <a
             href={linkWithLanguage(shortenUrl.replace(`${BASE_URL_SHORT}/`, `${BASE_URL}/v/`), locale)}
             target="_blank"
