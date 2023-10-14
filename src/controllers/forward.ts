@@ -66,11 +66,11 @@ export const handler = api<Forward>(
     valid = shortenService.verifyToken(history, token);
     if (!valid) return res.send({ errorCode: HttpStatusCode.UNAUTHORIZED, errorMessage: 'UNAUTHORIZED' });
 
-    if (history?.email) history.email = '';
-    if (history?.password) history.password = '';
-
     sendMessageToQueue([{ subject: 'forward', body: data }]);
     shortenCacheService.postShortenHash(history);
+
+    if (history?.email) history.email = '';
+    if (history?.password) history.password = '';
     return successHandler(res, { history, token: encryptS(history.id.toString()) });
   },
   ['POST'],
