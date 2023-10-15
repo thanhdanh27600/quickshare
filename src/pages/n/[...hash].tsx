@@ -42,7 +42,7 @@ const ViewNote = ({ note, ip, error }: Props) => {
         <meta property="twitter:description" content={t('ogDescription')} />
       </Head>
       <LayoutMain featureTab={false}>
-        <h1 className="m-4 text-lg font-medium text-gray-700">{note.title}</h1>
+        <h1 className="mx-2 my-4 w-full break-words text-xl font-medium text-gray-700">{note.title}</h1>
         <TextEditor defaultValue={note.text} readonly />
         <div className="mt-6">
           {(note.Media || []).length > 0 && <h2 className="mb-2">{t('attachments')}</h2>}
@@ -61,10 +61,10 @@ const ViewNote = ({ note, ip, error }: Props) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const locale = context.locale || defaultLocale;
-    const { hash } = context.query;
+    const { hash, token } = context.query;
     const ip = requestIp.getClientIp(context.req) || '';
     // start server-side get note
-    const noteRs = await getNoteRequest(hash ? (hash[0] as string) : '');
+    const noteRs = await getNoteRequest(hash ? (hash[0] as string) : '', token as string);
 
     if (!noteRs.note) throw new Error('Cannot found note');
 

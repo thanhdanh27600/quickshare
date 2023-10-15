@@ -54,8 +54,12 @@ export const handler = api<Stats>(
       },
     });
     if (history && history?.password) {
+      let valid = false;
       const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
-      if (!token || decryptS(token) !== history.id.toString()) {
+      if (decryptS(token) === history.id.toString()) {
+        valid = true;
+      }
+      if (!valid) {
         return errorHandler(res);
       }
     }

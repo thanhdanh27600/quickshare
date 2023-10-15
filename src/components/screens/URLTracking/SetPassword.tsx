@@ -1,4 +1,5 @@
 import { Button } from 'components/atoms/Button';
+import { Checkbox } from 'components/atoms/Checkbox';
 import { Input } from 'components/atoms/Input';
 import { Modal } from 'components/atoms/Modal';
 import { logEvent } from 'firebase/analytics';
@@ -18,16 +19,17 @@ import { emailRegex } from 'utils/text';
 type PasswordForm = {
   password: string;
   email: string;
+  usePasswordForward: boolean;
 };
 
-export const SetPassword = ({ hash }: { hash: string }) => {
+export const SetPassword = ({ hash, onSetPasswordSuccess }: { hash: string; onSetPasswordSuccess?: () => void }) => {
   const { t } = useTrans();
   const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PasswordForm>();
+  } = useForm<PasswordForm>({ defaultValues: { usePasswordForward: true } });
 
   const closeModalRef = useRef<HTMLButtonElement>(null);
 
@@ -50,13 +52,19 @@ export const SetPassword = ({ hash }: { hash: string }) => {
     onSuccess: async (data) => {
       mixpanel.track(MIXPANEL_EVENT.SET_PASSWORD, { status: EVENTS_STATUS.OK, data });
       await queryClient.invalidateQueries(QueryKey.STATS);
+      if (onSetPasswordSuccess) onSetPasswordSuccess();
       closeModalRef.current?.click();
       toast.success(t('updated'));
     },
   });
 
   const onSubmit: SubmitHandler<PasswordForm> = (data) => {
-    setPassword.mutate({ hash, email: data.email, password: data.password });
+    setPassword.mutate({
+      hash,
+      email: data.email,
+      password: data.password,
+      usePasswordForward: data.usePasswordForward,
+    });
   };
 
   return (
@@ -110,6 +118,9 @@ export const SetPassword = ({ hash }: { hash: string }) => {
             })}
           />
           <p className="mt-2 text-red-400">{errors.email?.message}</p>
+        </div>
+        <div className="py-2">
+          <Checkbox label={t('usePasswordToShortenedLink')} {...register('usePasswordForward')} />
         </div>
       </Modal>
     </div>

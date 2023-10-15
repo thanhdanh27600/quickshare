@@ -53,7 +53,7 @@ export const handler = api<ShortenUrl>(
         theme,
       },
     });
-    // update cache
+    // purge cache
     shortenCacheService.expireShortenHash(hash);
     // remove used tag
     if (ogImgPublicId) {

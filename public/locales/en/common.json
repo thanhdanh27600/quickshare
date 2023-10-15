@@ -37,7 +37,7 @@
   "totalClick": "Total clicks",
   "clickedByHuman": "Clicked by human",
   "copyRawInfo": "copy raw info",
-  "trackingLive": "Live link tracking",
+  "trackingLink": "Link tracking",
   "shareFacebook": "Share Facebook",
   "shareTwitter": "Share Twitter",
   "shareLinkedIn": "Share LinkedIn",
@@ -115,5 +115,6 @@
     "p1-head": "Free yet powerful URL shortener!",
     "p2-head": "Shortening, tracking and sharing"
   },
-  "signInLink": "Or click here to continue."
+  "signInLink": "Or click here to continue.",
+  "usePasswordToShortenedLink": "Also use this password for shortened URL"
 }

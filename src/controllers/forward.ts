@@ -1,4 +1,4 @@
-import { isEmpty } from 'ramda';
+import { clone, isEmpty } from 'ramda';
 import { redis } from '../redis';
 import { shortenCacheService } from '../services/cache';
 import { forwardCacheService } from '../services/cache/forward.service';
@@ -8,6 +8,7 @@ import { REDIS_KEY, getRedisKey } from '../types/constants';
 import { Forward, ForwardMeta } from '../types/forward';
 import { ipLookup } from '../utils/agent';
 import { api, badRequest, successHandler } from '../utils/axios';
+import { encryptS } from '../utils/crypto';
 import HttpStatusCode from '../utils/statusCode';
 import { validateForwardSchema } from '../utils/validateMiddleware';
 
@@ -17,6 +18,8 @@ export const handler = api<Forward>(
     const userAgent = req.body.userAgent as string;
     const ip = req.body.ip as string;
     const fromClientSide = !!req.body.fromClientSide;
+    let valid = false;
+    const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
 
     await validateForwardSchema.parseAsync({
       hash,
@@ -43,21 +46,32 @@ export const handler = api<Forward>(
       countryCode: lookupIp?.country || '',
       updatedAt: new Date(),
     };
+
+    // Check from Cache
     const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
-    const shortenedUrlCache = await redis.hgetall(hashKey);
+    const shortenedUrlCache = (await redis.hgetall(hashKey)) as any;
     if (!isEmpty(shortenedUrlCache)) {
+      valid = shortenService.verifyToken(shortenedUrlCache, token);
+      if (!valid) return res.send({ errorCode: HttpStatusCode.UNAUTHORIZED, errorMessage: 'UNAUTHORIZED' });
       // cache hit
       sendMessageToQueue([{ subject: 'forward', body: data }]);
-      return successHandler(res, { history: shortenedUrlCache });
+      return successHandler(res, { history: shortenedUrlCache, token: encryptS(shortenedUrlCache.id.toString()) });
     }
-    // cache missed write back to cache
+    // cache missed, fetch and write back to cache
+    // Check from DB
     const history = await shortenService.getShortenHistory(hash);
     if (!history) {
       return badRequest(res);
     }
+    valid = shortenService.verifyToken(history, token);
+    if (!valid) return res.send({ errorCode: HttpStatusCode.UNAUTHORIZED, errorMessage: 'UNAUTHORIZED' });
+
     sendMessageToQueue([{ subject: 'forward', body: data }]);
-    shortenCacheService.postShortenHash(history);
-    return successHandler(res, { history });
+    shortenCacheService.postShortenHash(clone(history));
+
+    if (history?.email) history.email = '';
+    if (history?.password) history.password = '';
+    return successHandler(res, { history, token: encryptS(history.id.toString()) });
   },
   ['POST'],
 );

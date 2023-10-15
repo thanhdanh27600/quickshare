@@ -6,9 +6,13 @@ import { redis } from '../../redis';
 import { noteCacheService } from '../../services/cache';
 import prisma from '../../services/db/prisma';
 import { generateHash } from '../../services/hash';
+import { noteService } from '../../services/note';
+import { shortenService } from '../../services/shorten';
 import { BASE_URL, HASH, REDIS_KEY, getRedisKey } from '../../types/constants';
 import { NoteRs } from '../../types/note';
-import { api, badRequest, successHandler } from '../../utils/axios';
+import { api, badRequest, errorHandler, successHandler } from '../../utils/axios';
+import { decodeBase64 } from '../../utils/crypto';
+import { parseIntSafe } from '../../utils/number';
 import HttpStatusCode from '../../utils/statusCode';
 import { validateNoteSchema } from '../../utils/validateMiddleware';
 
@@ -101,13 +105,26 @@ export const handler = api<NoteRs>(
 
 const getNote: NextApiHandler<NoteRs> = async (req, res) => {
   let hash = req.query.hash as string;
-  if (!hash) return badRequest(res);
+  let token = decodeBase64(req.query.token as string);
+  let valid = false;
+
+  if (!hash || hash.trim().length < HASH.Length) return badRequest(res);
 
   // get from cache
   const hashKey = getRedisKey(REDIS_KEY.MAP_NOTE_BY_HASH, hash);
   const noteCacheId = await redis.hget(hashKey, 'id');
   const noteCacheText = await redis.hget(hashKey, 'text');
   const noteCacheTitle = await redis.hget(hashKey, 'title');
+  const noteCachePassword = await redis.hget(hashKey, 'password');
+  const urlShortenerHistoryId = await redis.hget(hashKey, 'urlShortenerHistoryId');
+
+  if (noteCachePassword) {
+    valid = shortenService.verifyToken(
+      { id: parseIntSafe(urlShortenerHistoryId), password: noteCachePassword, usePasswordForward: true } as any,
+      token,
+    );
+    if (!valid) return errorHandler(res);
+  }
 
   if (noteCacheId && noteCacheText) {
     // cache hit
@@ -115,13 +132,14 @@ const getNote: NextApiHandler<NoteRs> = async (req, res) => {
     return successHandler(res, { note: { text: noteCacheText, title: noteCacheTitle, Media: medias } });
   }
   // cache missed
-  const note = await prisma.note.findUnique({
-    where: {
-      hash,
-    },
-    include: { Media: true },
-  });
+  const note = await noteService.getNote(hash);
   if (!note) return badRequest(res);
+
+  if (note.password) {
+    valid = shortenService.verifyToken(note.UrlShortenerHistory, token);
+    if (!valid) return errorHandler(res);
+  }
+
   const dataHashNote = [
     'id',
     note.id,
@@ -129,11 +147,16 @@ const getNote: NextApiHandler<NoteRs> = async (req, res) => {
     note.title,
     'text',
     note.text,
+    'password',
+    note.password,
+    'urlShortenerHistoryId',
+    note.urlShortenerHistoryId,
     'uid',
     note.uid,
     'updatedAt',
     new Date().getTime(),
   ];
+  // update cache
   noteCacheService.postNoteHash({ hash, data: dataHashNote });
   return successHandler(res, { note: { text: note.text, Media: note.Media, title: note.title } });
 };

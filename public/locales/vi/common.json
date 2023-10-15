@@ -37,7 +37,7 @@
   "totalClick": "Số lượt click",
   "clickedByHuman": "Click thật / bot",
   "copyRawInfo": "copy đầy đủ",
-  "trackingLive": "Theo dõi link trực tiếp",
+  "trackingLink": "Theo dõi link",
   "shareFacebook": "Chia sẻ Facebook",
   "shareTwitter": "Chia sẻ Twitter",
   "shareLinkedIn": "Chia sẻ LinkedIn",
@@ -116,5 +116,6 @@
     "card3": "Theo dõi link là minh bạch",
     "card3-content": "Tất cả truy cập vào link rút gọn, kể cả bot hay người dùng đều được ghi lại. Thông tin theo dõi bao gồm đầy đủ User Agent, địa chỉ IP và thông tin thiết bị."
   },
-  "signInLink": "Hoặc bạn có thể click vào đây để tiếp tục."
+  "signInLink": "Hoặc bạn có thể click vào đây để tiếp tục.",
+  "usePasswordToShortenedLink": "Áp dụng mật khẩu cho link rút gọn"
 }

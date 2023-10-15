@@ -37,7 +37,7 @@
   "totalClick": "总点击数",
   "clickedByHuman": "人工点击",
   "copyRawInfo": "复制原始信息",
-  "trackingLive": "实时链接跟踪",
+  "trackingLink": "链接跟踪",
   "shareFacebook": "分享到Facebook",
   "shareTwitter": "分享到Twitter",
   "shareLinkedIn": "分享到LinkedIn",
@@ -116,5 +116,6 @@
     "card3": "链接跟踪具高透明度",
     "card3-content": "所有对缩短链接的访问,包括机器人和用户,都会被记录。跟踪信息包括完整的用户代理字符串、IP 地址和设备信息。"
   },
-  "signInLink": "或者点击这里继续。"
+  "signInLink": "或者点击这里继续。",
+  "usePasswordToShortenedLink": "也为缩短网址使用这个密码"
 }

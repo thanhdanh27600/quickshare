@@ -66,7 +66,7 @@ export const Modal = (props: Props) => {
       {...props.ModalProps}>
       <div
         data-te-modal-dialog-ref
-        className="pointer-events-none relative flex min-h-full w-auto translate-y-[-50px] items-center opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:min-h-full min-[576px]:max-w-[500px]">
+        className="pointer-events-none relative flex min-h-full w-auto translate-y-[-50px] items-center opacity-0 transition-all duration-300 ease-in-out max-[576px]:mt-12 min-[576px]:mx-auto min-[576px]:min-h-full min-[576px]:max-w-[500px]">
         <div className="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative mx-auto flex w-[95%] flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none">
           <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4">
             <h5 className="text-xl font-medium leading-normal text-neutral-800" id={`${props.id}Label`}>

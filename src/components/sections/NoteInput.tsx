@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { createNoteRequest, updateNoteRequest } from 'requests';
 import { useBearStore } from 'store';
-import { LIMIT_FEATURE_HOUR, LIMIT_NOTE_REQUEST, isProduction, tinymce } from 'types/constants';
+import { LIMIT_FEATURE_HOUR, LIMIT_NOTE_REQUEST, tinymce } from 'types/constants';
 import { NoteWithMedia } from 'types/note';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { analytics } from 'utils/firebase';
@@ -39,14 +39,18 @@ export const NoteInput = () => {
   const hasPassword = note?.password !== null;
 
   useEffect(() => {
+    getNote();
+  }, []);
+
+  const getNote = () => {
     const query = new URLSearchParams(window.location.search);
     const uid = query.get('uid') || '';
     if (!!uid) {
       requestNote.mutate({ hash: null, ip: '', text: '', title: '', uid, medias: [] });
     }
-  }, []);
+  };
 
-  const requestNote = useMutation(QueryKey.SHORTEN, createNoteRequest, {
+  const requestNote = useMutation(QueryKey.NOTE, createNoteRequest, {
     onMutate: (variables) => {
       setLocalError('');
     },
@@ -174,7 +178,11 @@ export const NoteInput = () => {
       {hasNote && (
         <div className="mb-4">
           <NoteUrlTile />
-          {!isProduction && !hasPassword && <SetPassword hash={note?.UrlShortenerHistory?.hash || ''} />}
+          {!loading && !hasPassword && (
+            <div className="mt-4 flex w-full justify-end">
+              <SetPassword hash={note?.UrlShortenerHistory?.hash || ''} onSetPasswordSuccess={getNote} />
+            </div>
+          )}
           <URLShare />
         </div>
       )}

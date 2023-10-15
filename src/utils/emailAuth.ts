@@ -21,7 +21,7 @@ export async function sendVerificationRequest(params: {
   const { host, searchParams } = new URL(url);
   const callbackUrl = searchParams.get('callbackUrl');
 
-  let locale = defaultLocale;
+  let locale: Locale = defaultLocale;
   try {
     locale = callbackUrl ? (new URL(callbackUrl).pathname.split('/')[1] as Locale) : defaultLocale;
     if (!locales[locale]) locale = defaultLocale;
