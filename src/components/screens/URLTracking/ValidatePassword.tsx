@@ -14,7 +14,7 @@ export const ValidatePassword = ({ open, hash }: { hash: string; open?: boolean 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setError,
   } = useForm<ValidatePasswordForm>();
   const router = useRouter();
@@ -49,6 +49,7 @@ export const ValidatePassword = ({ open, hash }: { hash: string; open?: boolean 
         title={t('unlock')}
         ConfirmButtonProps={{
           onClick: handleSubmit(onSubmit),
+          loading: isSubmitting,
         }}
         modalOptions={{
           backdrop: 'static',
