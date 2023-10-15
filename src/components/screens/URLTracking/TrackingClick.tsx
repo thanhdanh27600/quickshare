@@ -89,6 +89,9 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
     onSuccess(data) {
       setParsedUA(data);
     },
+    onMutate(data) {
+      setParsedUA({ userAgent: data } as any);
+    },
   });
 
   const onLoadMore = () => {
@@ -135,7 +138,9 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
         title={'User Agent'}
         onDismiss={() => setParsedUA(undefined)}
         ConfirmButtonProps={{ ['data-te-modal-dismiss']: true } as any}>
-        <div className="contents w-full p-2">{parsedUA && !getMoreUA.isLoading && <JsonViewer value={parsedUA} />}</div>
+        <div className="contents w-full p-2">
+          {parsedUA ? !getMoreUA.isLoading && <JsonViewer rootName="data" value={parsedUA} /> : ''}
+        </div>
       </Modal>
       {!needValidate && (
         <>
@@ -143,9 +148,7 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
             <div>
               {data?.record && <p> {`${t('author')}: ${data?.record.ip}`}</p>}
               {data?.record && (
-                <p>
-                  {`${t('shortCreatedAt')}: ${date(data?.record.createdAt).locale(locale).format(DATE_FULL_FORMAT)}`}
-                </p>
+                <p>{`${t('shortCreatedAt')}: ${date(history?.createdAt).locale(locale).format(DATE_FULL_FORMAT)}`}</p>
               )}
               {history?.hash && (
                 <a

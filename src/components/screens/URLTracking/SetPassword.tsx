@@ -90,6 +90,7 @@ export const SetPassword = ({ hash, onSetPasswordSuccess }: { hash: string; onSe
         title={t('setPassword')}
         ConfirmButtonProps={{
           onClick: handleSubmit(onSubmit),
+          loading: setPassword.isLoading,
         }}>
         <div className="py-2">
           <label className="text-gray-700">{t('requiredPasswordLabel')}</label>
