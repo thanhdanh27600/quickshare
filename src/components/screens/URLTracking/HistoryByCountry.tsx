@@ -41,12 +41,13 @@ export const HistoryByCountry = (props: Props) => {
 
   const chartDataGeo = useMemo(() => {
     if (!data) return [];
-    return data.map((data) => [getCountryName(data.countryCode || '') || '', data._count.countryCode]);
+    return data.map((data) => [getCountryName(data.countryCode || '') || 'world', data._count.countryCode]);
   }, [data]);
+
   const chartDataBar = useMemo(() => {
     if (!data) return [];
     let total = data.map((data) => [
-      getCountryName(data.countryCode || '') || '',
+      getCountryName(data.countryCode || '') || t('unknown'),
       data._count.countryCode,
       `color: ${color}`,
     ]);
@@ -71,19 +72,23 @@ export const HistoryByCountry = (props: Props) => {
   if (!fetchStatsGeo.data) return null;
 
   return (
-    <div className={clsx('flex h-full w-full flex-col items-center justify-center gap-4 lg:flex-row', props.className)}>
-      <GeoChart
-        key={`geo-${rerender}`}
-        label={['Country', t('totalClick')]}
-        value={chartDataGeo}
-        className="h-[240px] w-full sm:w-[400px] lg:h-[300px] lg:w-[500px]"
-      />
-      <BarChart
-        key={`bar-${rerender}`}
-        label={['Country', t('totalClick'), { role: 'style' }]}
-        value={chartDataBar}
-        className="w-full sm:w-[400px] md:w-[600px]"
-      />
+    <div>
+      <div
+        className={clsx('flex h-full w-full flex-col items-center justify-center gap-4 lg:flex-row', props.className)}>
+        <GeoChart
+          key={`geo-${rerender}`}
+          label={['Country', t('totalClick')]}
+          value={chartDataGeo}
+          className="h-[240px] w-full sm:w-[400px] lg:h-[300px] lg:w-[500px]"
+        />
+        <BarChart
+          key={`bar-${rerender}`}
+          label={['Country', t('totalClick'), { role: 'style' }]}
+          value={chartDataBar}
+          className="w-full sm:w-[400px] md:w-[600px]"
+        />
+      </div>
+      {chartDataGeo.length === 0 && <p className="mt-4 text-center text-base text-gray-500">{t('noData')}</p>}
     </div>
   );
 };

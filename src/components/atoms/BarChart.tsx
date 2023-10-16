@@ -44,6 +44,8 @@ export const BarChart = (props: Props) => {
     }
   }, [loaded, google]);
 
+  if (value.length === 0) return null;
+
   return (
     <>
       <Script
