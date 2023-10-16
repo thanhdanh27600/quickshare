@@ -29,6 +29,7 @@ export const handler = api<StatsGeo>(
         urlShortenerHistoryId: history.id,
       },
       _count: { countryCode: true },
+      orderBy: { _count: { countryCode: 'desc' } },
     });
 
     return successHandler(res, { history });

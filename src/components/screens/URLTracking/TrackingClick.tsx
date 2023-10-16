@@ -15,7 +15,7 @@ import date, { DATE_FULL_FORMAT } from 'utils/date';
 import { useTrans } from 'utils/i18next';
 import { QueryKey, strictRefetch } from 'utils/requests';
 import { truncateMiddle } from 'utils/text';
-import { HistoryGeo } from './HistoryGeo';
+import { HistoryByCountry } from './HistoryByCountry';
 import { HistoryTable } from './HistoryTable';
 import { SetPassword } from './SetPassword';
 import { ValidatePassword } from './ValidatePassword';
@@ -172,7 +172,7 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
             )}
           </div>
           <div className="my-2">
-            {tab === 'geo' && <HistoryGeo className="my-8" hash={hash} />}
+            {tab === 'geo' && <HistoryByCountry className="my-8" hash={hash} />}
             {tab === 'table' && (
               <HistoryTable
                 refetch={refetch}

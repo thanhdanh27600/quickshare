@@ -119,5 +119,6 @@
   "signInLink": "またはここをクリックして続行。",
   "usePasswordToShortenedLink": "このパスワードを短縮URLにも使用する",
   "clicks": "クリック数",
-  "clicksByCountry": "国別クリック数"
+  "clicksByCountry": "国別クリック数",
+  "otherCountry": "その他"
 }

@@ -118,5 +118,6 @@
   "signInLink": "Or click here to continue.",
   "usePasswordToShortenedLink": "Also use this password for shortened URL",
   "clicks": "Clicks",
-  "clicksByCountry": "Clicks by Country"
+  "clicksByCountry": "Clicks by Country",
+  "otherCountry": "Others"
 }

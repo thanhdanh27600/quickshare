@@ -119,5 +119,6 @@
   "signInLink": "या जारी रखने के लिए यहां क्लिक करें।",
   "usePasswordToShortenedLink": "इस पासवर्ड का उपयोग शॉर्ट URL के लिए भी करें",
   "clicks": "क्लिक्स",
-  "clicksByCountry": "देश के हिसाब से क्लिक्स"
+  "clicksByCountry": "देश के हिसाब से क्लिक्स",
+  "otherCountry": "अन्य"
 }

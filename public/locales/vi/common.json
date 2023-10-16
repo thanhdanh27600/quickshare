@@ -119,5 +119,6 @@
   "signInLink": "Hoặc bạn có thể click vào đây để tiếp tục.",
   "usePasswordToShortenedLink": "Áp dụng mật khẩu cho link rút gọn",
   "clicks": "Clicks",
-  "clicksByCountry": "Clicks theo quốc gia"
+  "clicksByCountry": "Clicks theo quốc gia",
+  "otherCountry": "Khác"
 }

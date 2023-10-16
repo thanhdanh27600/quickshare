@@ -119,5 +119,6 @@
   "signInLink": "Ou cliquez ici pour continuer.",
   "usePasswordToShortenedLink": "Utilisez également ce mot de passe pour l'URL raccourcie",
   "clicks": "Clics",
-  "clicksByCountry": "Clics par pays"
+  "clicksByCountry": "Clics par pays",
+  "otherCountry": "Autres"
 }

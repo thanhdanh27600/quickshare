@@ -119,5 +119,6 @@
   "signInLink": "或者点击这里继续。",
   "usePasswordToShortenedLink": "也为缩短网址使用这个密码",
   "clicks": "点击次数",
-  "clicksByCountry": "各国点击量"
+  "clicksByCountry": "各国点击量",
+  "otherCountry": "其他"
 }
