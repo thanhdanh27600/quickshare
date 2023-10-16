@@ -117,5 +117,8 @@
     "card3-content": "ボットやユーザーを含む、短縮URLへの全アクセスが記録されます。トラッキング情報にはユーザーエージェント文字列、IPアドレス、デバイス情報が全て含まれます。"
   },
   "signInLink": "またはここをクリックして続行。",
-  "usePasswordToShortenedLink": "このパスワードを短縮URLにも使用する"
+  "usePasswordToShortenedLink": "このパスワードを短縮URLにも使用する",
+  "clicks": "クリック数",
+  "clicksByCountry": "国別クリック数",
+  "otherCountry": "その他"
 }

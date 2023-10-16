@@ -1,5 +1,6 @@
 import { shortenCacheService } from '../../services/cache/shorten.service';
 import prisma from '../../services/db/prisma';
+import { shortenService } from '../../services/shorten';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, errorHandler, successHandler } from '../../utils/axios';
 import { cloudinaryInstance } from '../../utils/cloudinary';
@@ -32,7 +33,7 @@ export const handler = api<ShortenUrl>(
       if (!media) return badRequest(res);
     }
 
-    const history = await prisma.urlShortenerHistory.findUnique({ where: { hash } });
+    const history = await shortenService.getUniqueShortenHistory(hash);
     if (!history) return badRequest(res, "No URL was found on your request. Let's shorten one!");
 
     if (history.password) {

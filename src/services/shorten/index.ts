@@ -3,6 +3,9 @@ import { decryptS } from '../../utils/crypto';
 import prisma from '../db/prisma';
 
 export class ShortenService {
+  async getUniqueShortenHistory(hash: string, include?: Prisma.UrlShortenerHistoryInclude) {
+    return prisma.urlShortenerHistory.findUnique({ where: { hash }, include });
+  }
   async getShortenHistory(hash: string, args?: Prisma.UrlShortenerHistoryFindFirstArgs) {
     return prisma.urlShortenerHistory.findFirst({
       where: {

@@ -4,7 +4,7 @@ import { Forward } from 'types/forward';
 import { Locale } from 'types/locale';
 import { NoteRs } from 'types/note';
 import { ShortenUrl } from 'types/shorten';
-import { Stats } from 'types/stats';
+import { Stats, StatsGeo } from 'types/stats';
 import {
   ForwardSchema,
   NoteSchema,
@@ -89,6 +89,15 @@ export const getStats = async ({
   const rs = await API.get(`/api/stats?${q}`);
   const data = rs.data;
   return data as Stats;
+};
+
+export const getStatsGeo = async ({ hash }: { hash: string }) => {
+  const q = stringify({
+    h: hash,
+  });
+  const rs = await API.get(`/api/stats/geo?${q}`);
+  const data = rs.data;
+  return data as StatsGeo;
 };
 
 export const setPasswordRequest = async (payload: PasswordSchema) => {

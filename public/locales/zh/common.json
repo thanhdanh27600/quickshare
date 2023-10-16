@@ -117,5 +117,8 @@
     "card3-content": "所有对缩短链接的访问,包括机器人和用户,都会被记录。跟踪信息包括完整的用户代理字符串、IP 地址和设备信息。"
   },
   "signInLink": "或者点击这里继续。",
-  "usePasswordToShortenedLink": "也为缩短网址使用这个密码"
+  "usePasswordToShortenedLink": "也为缩短网址使用这个密码",
+  "clicks": "点击次数",
+  "clicksByCountry": "各国点击量",
+  "otherCountry": "其他"
 }

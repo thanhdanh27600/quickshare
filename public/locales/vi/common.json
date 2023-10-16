@@ -117,5 +117,8 @@
     "card3-content": "Tất cả truy cập vào link rút gọn, kể cả bot hay người dùng đều được ghi lại. Thông tin theo dõi bao gồm đầy đủ User Agent, địa chỉ IP và thông tin thiết bị."
   },
   "signInLink": "Hoặc bạn có thể click vào đây để tiếp tục.",
-  "usePasswordToShortenedLink": "Áp dụng mật khẩu cho link rút gọn"
+  "usePasswordToShortenedLink": "Áp dụng mật khẩu cho link rút gọn",
+  "clicks": "Clicks",
+  "clicksByCountry": "Clicks theo quốc gia",
+  "otherCountry": "Khác"
 }
