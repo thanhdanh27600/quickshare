@@ -1,6 +1,7 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, UrlShortenerHistory, UrlShortenerRecord } from '@prisma/client';
 import requestIp from 'request-ip';
 import prisma from '../../services/db/prisma';
+import { shortenService } from '../../services/shorten';
 import { LIMIT_RECENT_HISTORY } from '../../types/constants';
 import { Stats } from '../../types/stats';
 import { api, errorHandler, successHandler } from '../../utils/axios';
@@ -19,7 +20,7 @@ export const handler = api<Stats>(
     const queryCursor = req.query.qc ? parseIntSafe(req.query.qc as string) : undefined;
     const notShowBot = (req.query.noBot as string) === 'true';
     let record;
-    let history;
+    let history: (UrlShortenerHistory & { UrlShortenerRecord: UrlShortenerRecord }) | null = null;
     if (!hash) {
       // get recent with ip
       record = await prisma.urlShortenerRecord.findFirst({
@@ -37,22 +38,18 @@ export const handler = api<Stats>(
       return successHandler(res, { record: record });
     }
     // get stats with hash
-    history = await prisma.urlShortenerHistory.findUnique({
-      where: {
-        hash,
-      },
-      include: {
-        UrlForwardMeta: {
-          ...(notShowBot ? { where: { fromClientSide: true } } : null),
-          orderBy: {
-            updatedAt: Prisma.SortOrder.desc,
-          },
-          ...withQueryCursor(queryCursor),
+    history = (await shortenService.getUniqueShortenHistory(hash, {
+      UrlForwardMeta: {
+        ...(notShowBot ? { where: { fromClientSide: true } } : null),
+        orderBy: {
+          updatedAt: Prisma.SortOrder.desc,
         },
-        _count: true,
-        UrlShortenerRecord: true,
+        ...withQueryCursor(queryCursor),
       },
-    });
+      _count: true,
+      UrlShortenerRecord: true,
+    })) as any;
+
     if (history && history?.password) {
       let valid = false;
       const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
@@ -70,3 +67,5 @@ export const handler = api<Stats>(
   },
   ['GET'],
 );
+
+export * as geo from './geo';

@@ -1,5 +1,7 @@
-const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
-export const getCountryName = (code: string) => {
+import { Locale } from 'types/locale';
+
+export const getCountryName = (code: string, locale: Locale = Locale.English) => {
+  const regionNames = new Intl.DisplayNames([locale], { type: 'region' });
   let countryName: string | undefined = '';
   try {
     countryName = regionNames.of(code.toUpperCase());

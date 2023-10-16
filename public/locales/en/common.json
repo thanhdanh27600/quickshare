@@ -116,5 +116,7 @@
     "p2-head": "Shortening, tracking and sharing"
   },
   "signInLink": "Or click here to continue.",
-  "usePasswordToShortenedLink": "Also use this password for shortened URL"
+  "usePasswordToShortenedLink": "Also use this password for shortened URL",
+  "clicks": "Clicks",
+  "clicksByCountry": "Clicks by Country"
 }
