@@ -26,6 +26,7 @@ export const GeoChart = (props: Props) => {
 
       var options = {
         legend: 'none',
+        backgroundColor: '#f9fafb80',
         colorAxis: { minValue: 0, colors: ['#9d8ed1', '#6644de'] },
       };
 

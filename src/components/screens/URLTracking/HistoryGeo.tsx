@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { GeoChart } from 'components/atoms/GeoChart';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useQuery } from 'react-query';
 import { getStatsGeo } from 'requests';
@@ -18,6 +18,7 @@ interface Props {
 export const HistoryGeo = (props: Props) => {
   const { hash } = props;
   const { t, locale } = useTrans();
+  const [rerender, setRerender] = useState(0);
   const { width } = useDimensionWindow();
   const fetchStatsGeo = useQuery({
     queryKey: QueryKey.STATS_GEO,
@@ -39,12 +40,16 @@ export const HistoryGeo = (props: Props) => {
     return data.map((data) => [getCountryName(data.countryCode || '') || '', data._count.countryCode]);
   }, [data]);
 
+  useEffect(() => {
+    setRerender((_) => _ + 1);
+  }, [width, locale]);
+
   if (!fetchStatsGeo.data) return null;
 
   return (
     <div className={clsx('flex w-full justify-center', props.className)}>
       <GeoChart
-        key={`${width}`}
+        key={rerender}
         label={['Country', t('totalClick')]}
         value={chartData}
         className="h-[200px] w-[400px] sm:h-[300px] sm:w-[600px] lg:h-[500px] lg:w-[900px]"
