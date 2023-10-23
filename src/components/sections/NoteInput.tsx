@@ -197,7 +197,7 @@ export const NoteInput = () => {
         className="mx-auto mt-4 flex w-fit min-w-[5rem] justify-center"
         animation
       />
-      {hasNote && <URLAdvancedSetting defaultOpen={false} />}
+      {hasNote && <URLAdvancedSetting />}
       <FeedbackLink template={FeedbackTemplate.NOTE} />
     </div>
   );
