@@ -30,7 +30,7 @@ export const URLTracking = ({ hash }: { hash: string }) => {
           <div className="mt-8">
             <ShortenUrlTile />
             <URLShare />
-            <URLAdvancedSetting defaultOpen={false} shortenUrl={shortenUrl} />
+            <URLAdvancedSetting />
           </div>
           <div className="m-4">
             <FeedbackLink template={FeedbackTemplate.URL_TRACKING} />
