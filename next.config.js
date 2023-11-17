@@ -15,7 +15,7 @@ module.exports = async (phase, { defaultConfig }) => {
   console.log('Quickshare is starting...');
 
   let shouldRunQueue = phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_SERVER;
-  if (isProduction) shouldRunQueue = false;
+  if (!isProduction) shouldRunQueue = false;
   if (process.env.NEXT_PUBLIC_SHORT_DOMAIN === 'true') shouldRunQueue = false;
   if (shouldRunQueue) {
     queueReceiver();
