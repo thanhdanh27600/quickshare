@@ -1,3 +1,16 @@
+:root {
+  --d: 5s;
+  --angle: 90deg;
+  --c1: #0890b2b2;
+  --c2: #9233ea85;
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 90deg;
+  inherits: true;
+}
+
 @keyframes gradient {
   to {
     background-position: var(--bg-size) 0;
@@ -73,4 +86,17 @@ html {
 
 input[type='checkbox'] {
   accent-color: rgb(0, 142, 167);
+}
+
+.border-animate {
+  border: 0.15rem solid;
+  border-image: conic-gradient(from var(--angle), var(--c1), var(--c1) 0.33turn, var(--c1) 0.33turn, var(--c2) 0.33turn)
+    1;
+  animation: borderRotate var(--d) linear infinite forwards;
+}
+
+@keyframes borderRotate {
+  100% {
+    --angle: 450deg;
+  }
 }

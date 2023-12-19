@@ -1,3 +1,5 @@
+'use client';
+
 import { UrlShortenerHistory } from '@prisma/client';
 import clsx from 'clsx';
 import { CldImage } from 'next-cloudinary';

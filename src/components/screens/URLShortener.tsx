@@ -14,7 +14,7 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import { getOrCreateShortenUrlRequest } from 'requests';
 import { useBearStore } from 'store';
-import { LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST, isProduction } from 'types/constants';
+import { LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST } from 'types/constants';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { encrypt } from 'utils/crypto';
 import { analytics } from 'utils/firebase';
@@ -143,7 +143,10 @@ const URLShortenerInput = () => {
 
   return (
     <FormProvider {...methods}>
-      <div className="solid container mx-auto max-w-5xl rounded-lg border p-4 pt-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10">
+      <div
+        className={`${
+          loading || shortenUrl ? 'border-animate' : 'border'
+        } container mx-auto max-w-5xl p-4 pt-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10`}>
         <h1 className="mb-4 flex gap-1 text-3xl">
           {t('urlShortener')}
           <HelpTooltip text={t('helpShortUrlHead')} />
@@ -176,7 +179,7 @@ const URLShortenerInput = () => {
           />
         </form>
         <CustomLinkForm />
-        {!isProduction && <SignInToCustomLink />}
+        <SignInToCustomLink />
         <p className="mt-4 text-red-400">{error}</p>
         {hasData && shortenUrl && <URLShortenerResult />}
         <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
