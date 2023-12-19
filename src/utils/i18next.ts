@@ -12,11 +12,10 @@ export type LanguageNamespaces = {
 export type SingleNamespace<K extends keyof LanguageNamespaces> = LanguageNamespaces[K];
 
 export function useTrans<K extends keyof LanguageNamespaces>(namespace?: K | K[], options?: UseTranslationOptions<K>) {
-  // @ts-ignore
   const { t, i18n } = useTranslation(namespace, options);
   const locale: Locale = locales[i18n.language as Locales];
   return {
-    t: (key: SingleNamespace<K>, options?: object | TOptions) => t(key, options || {}),
+    t: (key: SingleNamespace<K>, options?: object | TOptions) => t(key, options || ({} as any)),
     i18n,
     locale,
   };
