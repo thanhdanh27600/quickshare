@@ -1,4 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { Session, getServerSession } from 'next-auth';
 import { z } from 'zod';
 import { isDebug, isProduction, isTest } from '../types/constants';
 import HttpStatusCode from './statusCode';
@@ -39,13 +40,18 @@ export const catchErrorHandler = (res: NextApiResponse, error?: any) => {
 };
 
 export const api =
-  <T extends Response = any>(f: NextApiHandler<T>, allowMethods?: HttpMethod[]) =>
+  <T extends Response = any>(f: NextApiHandler<T & { session?: Session }>, allowMethods?: HttpMethod[]) =>
   async (req: NextApiRequest, res: NextApiResponse<T | Response>) => {
     if (isDebug) require('./loggerServer').info(req);
     if (allowMethods && !allowMethods.includes(req.method as HttpMethod)) {
       return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).json({ errorMessage: 'Method Not Allowed' });
     }
     try {
+      if (!isTest) {
+        const authOptions = (await import('../pages/api/auth/[...nextauth]')).authOptions;
+        const session = await getServerSession(req, res, authOptions);
+        req.session = session;
+      }
       await f(req, res);
     } catch (error: any) {
       return catchErrorHandler(res, error);

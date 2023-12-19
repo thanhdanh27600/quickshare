@@ -2,7 +2,7 @@ export const isDebug = process.env.NEXT_PUBLIC_DEBUG === 'true';
 export const isLocal = process.env.NEXT_PUBLIC_BUILD_ENV === 'local';
 export const isUAT = process.env.NEXT_PUBLIC_BUILD_ENV === 'uat';
 export const isProduction = process.env.NEXT_PUBLIC_BUILD_ENV === 'production';
-export const localUrl = 'http://localhost:5000';
+export const localUrl = 'http://localhost:5050';
 export const localUrlShort = 'http://localhost:5001';
 export const brandUrl = 'https://quickshare.at';
 export const brandUrlShort = 'https://qsh.at';
@@ -24,7 +24,7 @@ export const LIMIT_FEATURE_SECOND = LIMIT_FEATURE_HOUR * 3600;
 // export const LIMIT_TOKEN_MILLISECOND = isProduction ? 3600e3 : 60e3;
 export const LIMIT_SHORTENED_HOUR = 72; // 3 days
 export const LIMIT_SHORTENED_SECOND = LIMIT_SHORTENED_HOUR * 3600;
-export const LIMIT_SHORTEN_REQUEST = 5;
+export const LIMIT_SHORTEN_REQUEST = isProduction ? 5 : 10;
 export const LIMIT_NOTE_HOUR = 168; // 7 days
 export const LIMIT_NOTE_SECOND = LIMIT_NOTE_HOUR * 3600;
 export const LIMIT_NOTE_REQUEST = 5;

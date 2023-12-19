@@ -23,7 +23,7 @@ export const getOrCreateShortenUrlRequest = async ({
   hash?: string;
   customHash?: string;
 }) => {
-  const query = hash ? stringify({ hash }) : stringify({ url, customHash });
+  const query = hash ? stringify({ hash }) : customHash ? stringify({ url, customHash }) : stringify({ url });
   const rs = await API.get(`/api/shorten?${query}`);
   const data = rs.data;
   return data as ShortenUrl;

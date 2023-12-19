@@ -64,8 +64,7 @@ model UrlShortenerRecord {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ip     String  @unique
-  userId String?
+  ip String @unique
 
   history UrlShortenerHistory[]
   Note    Note[]

@@ -12,8 +12,8 @@ if (process.env.NODE_ENV === 'production') {
   prisma = global.prisma;
 }
 
-prisma.$on('beforeExit', async () => {
-  console.log('\x1b[33m prisma exiting...\n');
-});
+// prisma.$on('beforeExit', async () => {
+//   console.log('\x1b[33m prisma exiting...\n');
+// });
 
 module.exports = prisma;

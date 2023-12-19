@@ -24,7 +24,9 @@ export const handler = api<Stats>(
     if (!hash) {
       // get recent with ip
       record = await prisma.urlShortenerRecord.findFirst({
-        where: { ip },
+        where: {
+          OR: [{ ip }, ...(req.session?.user?.email ? [{ User: { email: req.session?.user?.email } }] : [])],
+        },
         include: {
           history: {
             select: { hash: true, url: true },

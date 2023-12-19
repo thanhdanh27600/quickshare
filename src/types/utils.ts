@@ -11,6 +11,7 @@ export const enum EVENTS_STATUS {
 const EVENTS = {
   HOMEPAGED: 'Homepaged',
   SHORTEN: 'Shorten',
+  SHORTEN_MORE: 'Shorten Another',
   NOTE_LANDED: 'Note Landed',
   NOTE_GET: 'Note Get',
   NOTE_CREATE: 'Note Create',

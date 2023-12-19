@@ -14,7 +14,7 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import { getOrCreateShortenUrlRequest } from 'requests';
 import { useBearStore } from 'store';
-import { LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST, isProduction } from 'types/constants';
+import { LIMIT_FEATURE_HOUR, LIMIT_SHORTEN_REQUEST } from 'types/constants';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { encrypt } from 'utils/crypto';
 import { analytics } from 'utils/firebase';
@@ -176,7 +176,7 @@ const URLShortenerInput = () => {
           />
         </form>
         <CustomLinkForm />
-        {!isProduction && <SignInToCustomLink />}
+        <SignInToCustomLink />
         <p className="mt-4 text-red-400">{error}</p>
         {hasData && shortenUrl && <URLShortenerResult />}
         <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
