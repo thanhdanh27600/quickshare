@@ -1,11 +1,11 @@
 import { UrlShortenerRecord, User } from '@prisma/client';
 import axios from 'axios';
 import requestIp from 'request-ip';
-import { RESERVED_HASH } from 'types/constants';
 import { shortenCacheService } from '../../services/cache/shorten.service';
 import prisma from '../../services/db/prisma';
 import { generateHash } from '../../services/hash';
 import { shortenService } from '../../services/shorten';
+import { RESERVED_HASH } from '../../types/constants';
 import { ShortenUrl } from '../../types/shorten';
 import { api, badRequest, successHandler } from '../../utils/axios';
 import { decrypt, decryptS } from '../../utils/crypto';
