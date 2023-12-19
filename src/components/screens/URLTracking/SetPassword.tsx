@@ -22,7 +22,15 @@ type PasswordForm = {
   usePasswordForward: boolean;
 };
 
-export const SetPassword = ({ hash, onSetPasswordSuccess }: { hash: string; onSetPasswordSuccess?: () => void }) => {
+export const SetPassword = ({
+  hash,
+  email: initialEmail,
+  onSetPasswordSuccess,
+}: {
+  hash: string;
+  email?: string | null;
+  onSetPasswordSuccess?: () => void;
+}) => {
   const { t } = useTrans();
   const queryClient = useQueryClient();
   const {
@@ -61,7 +69,7 @@ export const SetPassword = ({ hash, onSetPasswordSuccess }: { hash: string; onSe
   const onSubmit: SubmitHandler<PasswordForm> = (data) => {
     setPassword.mutate({
       hash,
-      email: data.email,
+      email: initialEmail || data.email,
       password: data.password,
       usePasswordForward: data.usePasswordForward,
     });
@@ -110,7 +118,9 @@ export const SetPassword = ({ hash, onSetPasswordSuccess }: { hash: string; onSe
           <label className="text-gray-700">{t('emailRecoverLabel')}</label>
           <Input
             className="mt-2 h-12"
+            defaultValue={initialEmail || ''}
             {...register('email', {
+              disabled: !!initialEmail,
               required: { message: t('errorNoInput'), value: true },
               pattern: {
                 value: emailRegex,

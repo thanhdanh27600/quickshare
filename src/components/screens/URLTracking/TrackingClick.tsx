@@ -152,7 +152,7 @@ export const TrackingClick = ({ hash }: { hash: string }) => {
                 </a>
               )}
             </div>
-            {!hasPassword && <SetPassword hash={hash} />}
+            {!hasPassword && <SetPassword hash={hash} email={shortenHistory?.email} />}
           </div>
           <p className="mt-2 text-lg capitalize text-cyan-500">
             {`${t('totalClick')}: `}{' '}

@@ -25,7 +25,7 @@ export const handler = api<Stats>(
       // get recent with ip
       record = await prisma.urlShortenerRecord.findFirst({
         where: {
-          OR: [{ ip }, ...(req.session?.user?.email ? [{ User: { email: req.session?.user?.email } }] : [])],
+          ...(req.session?.user?.email ? { User: { email: req.session?.user?.email } } : { ip }),
         },
         include: {
           history: {
@@ -63,7 +63,7 @@ export const handler = api<Stats>(
       }
     }
     // hide sensitive data
-    if (history?.email) history.email = '';
+    // if (history?.email) history.email = '';
     if (history?.password) history.password = '';
     return successHandler(res, { record: history?.UrlShortenerRecord, history: history ? [history] : null });
   },

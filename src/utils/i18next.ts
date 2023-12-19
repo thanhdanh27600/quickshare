@@ -15,7 +15,7 @@ export function useTrans<K extends keyof LanguageNamespaces>(namespace?: K | K[]
   const { t, i18n } = useTranslation(namespace, options);
   const locale: Locale = locales[i18n.language as Locales];
   return {
-    t: (key: SingleNamespace<K>, options?: object | TOptions) => t(key, options || ({} as any)),
+    t: (key: SingleNamespace<K>, options?: object | TOptions) => t(key, options || ({} as any)).toString(),
     i18n,
     locale,
   };

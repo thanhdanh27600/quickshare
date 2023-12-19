@@ -4,9 +4,9 @@ import { HASH_CUSTOM, isProduction } from '../types/constants';
 import { Theme, Themes } from '../types/og';
 import { isValidUrl } from './text';
 
-const invalidUrlPatterns: RegExp[] = [/quickshare\.at/, /qsh\.at/, /localhost/];
+export const invalidUrlPatterns: RegExp[] = [/quickshare\.at/, /qsh\.at/, /localhost/];
 
-const isUrlToShortenValid = (url: string) => {
+export const isUrlToShortenValid = (url: string) => {
   let isValid = true;
   if (!url) return false;
   if (url.includes(' ')) return false;
@@ -94,7 +94,7 @@ export const validatePasswordSchema = z.object({
     required_error: 'Hash is required',
   }),
   email: z.string({
-    required_error: 'Password is required',
+    required_error: 'Email is required',
   }),
   password: z.string({
     required_error: 'Password is required',

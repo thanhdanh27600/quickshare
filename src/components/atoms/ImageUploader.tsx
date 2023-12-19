@@ -1,3 +1,5 @@
+'use client';
+
 import { UploadCloud } from '@styled-icons/feather';
 import { CldUploadWidget } from 'next-cloudinary';
 import { MouseEventHandler, useState } from 'react';

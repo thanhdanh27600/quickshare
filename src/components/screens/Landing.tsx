@@ -1,4 +1,4 @@
-import { CloudCheck, DatabaseLock, EmojiSunglasses } from '@styled-icons/bootstrap';
+import { CloudCheck, DatabaseLock, EmojiSmile } from '@styled-icons/bootstrap';
 import { useTrans } from 'utils/i18next';
 
 const LandingCard = ({ title, subtitle, Icon }: any) => {
@@ -24,11 +24,7 @@ export const Landing = () => {
           subtitle={t('landing.card2-content' as any)}
           Icon={DatabaseLock}
         />
-        <LandingCard
-          title={t('landing.card3' as any)}
-          subtitle={t('landing.card3-content' as any)}
-          Icon={EmojiSunglasses}
-        />
+        <LandingCard title={t('landing.card3' as any)} subtitle={t('landing.card3-content' as any)} Icon={EmojiSmile} />
       </div>
       <div className="my-16" style={{ background: 'url(/assets/dot.png) rgba(0,0,0,.01)', minHeight: '32px' }} />
       <h2 className="text-2xl font-medium">{t('landing.p1-head' as any)}</h2>

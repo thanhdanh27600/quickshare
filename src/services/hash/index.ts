@@ -35,7 +35,7 @@ export const generateHash = async (generateFor: 'shorten' | 'note') => {
     hash = generateRandomString(HASH.Length);
 
     // check reserved hash
-    if (RESERVED_HASH.includes(hash)) continue;
+    if (RESERVED_HASH.has(hash)) continue;
 
     // check from cache
     // isExist = await existCache({ generateFor, hash });

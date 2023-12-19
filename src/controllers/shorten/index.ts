@@ -1,6 +1,7 @@
 import { UrlShortenerRecord, User } from '@prisma/client';
 import axios from 'axios';
 import requestIp from 'request-ip';
+import { RESERVED_HASH } from 'types/constants';
 import { shortenCacheService } from '../../services/cache/shorten.service';
 import prisma from '../../services/db/prisma';
 import { generateHash } from '../../services/hash';
@@ -57,6 +58,12 @@ export const handler = api<ShortenUrl>(
     // use custom hash or create
     let shortHash = !!req.session ? customHash : null;
     if (!shortHash) shortHash = await generateHash('shorten');
+    if (RESERVED_HASH.has(shortHash)) {
+      return res.status(HttpStatusCode.BAD_REQUEST).send({
+        errorMessage: 'Wrong shorten format, please try again',
+        errorCode: 'INVALID_URL',
+      });
+    }
 
     // extract og metas
     let htmlString = '';
@@ -69,7 +76,20 @@ export const handler = api<ShortenUrl>(
 
     // write to db
     let record: (UrlShortenerRecord & { User?: User | null }) | null = null;
-    record = await prisma.urlShortenerRecord.findFirst({ where: { ip }, include: { User: true } });
+    if (!!req.session?.user?.email) {
+      record = await prisma.urlShortenerRecord.findFirst({
+        where: {
+          User: {
+            email: req.session?.user?.email,
+          },
+        },
+        include: { User: true },
+      });
+    }
+
+    if (!record) {
+      record = await prisma.urlShortenerRecord.findFirst({ where: { ip }, include: { User: true } });
+    }
     // update record's user
     if (!!record && !record.User && !!req.session?.user?.email) {
       record = await prisma.urlShortenerRecord.update({
@@ -105,6 +125,7 @@ export const handler = api<ShortenUrl>(
           ogImgSrc: socialMetaTags.image,
           hash: shortHash,
           urlShortenerRecordId: record.id,
+          email: req.session?.user?.email,
         },
       });
       // write to cache

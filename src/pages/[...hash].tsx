@@ -1,3 +1,5 @@
+'use client';
+
 import { UrlShortenerHistory } from '@prisma/client';
 import { logEvent } from 'firebase/analytics';
 import mixpanel from 'mixpanel-browser';
