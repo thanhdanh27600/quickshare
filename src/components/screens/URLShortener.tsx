@@ -43,7 +43,11 @@ const URLShortenerInput = () => {
   const { shortenSlice } = useBearStore();
   const { t } = useTrans('common');
 
-  const [shortenUrl, setShortenHistory] = shortenSlice((state) => [state.getShortenUrl(), state.setShortenHistory]);
+  const [url, shortenUrl, setShortenHistory] = shortenSlice((state) => [
+    state.getUrl(),
+    state.getShortenUrl(),
+    state.setShortenHistory,
+  ]);
   const queryClient = useQueryClient();
 
   const methods = useForm<URLShortenerForm>();
@@ -153,7 +157,7 @@ const URLShortenerInput = () => {
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
           <InputWithButton
-            placeholder={shortenUrl || 'https://example.com'}
+            placeholder={url || 'https://example.com'}
             {...register('url', {
               required: { message: t('errorNoUrl'), value: true },
               validate: (text) => {

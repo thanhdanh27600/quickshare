@@ -12,7 +12,7 @@ import { linkWithLanguage, useTrans } from 'utils/i18next';
 const tabs = (t: any, locale: Locale) => [
   {
     content: (
-      <Link href={`${BASE_URL}/${locale}`}>
+      <Link href={'/'}>
         <span className="flex items-center gap-2">
           <LinkIcon className="w-5" />
           {t('shareLink')}
@@ -23,7 +23,7 @@ const tabs = (t: any, locale: Locale) => [
   },
   {
     content: (
-      <Link href={linkWithLanguage(`${BASE_URL}/note`, locale)}>
+      <Link href={'/note'}>
         <span className="flex items-center gap-2">
           <Clipboard className="w-5" />
           {t('shareNote')}
@@ -62,7 +62,7 @@ export const FeatureTabs = () => {
 
   const handleSelectTab = (tab: string) => {
     if (router.pathname === '/note' && tab === FeatureTabKey.SHARE_LINK) {
-      location.href = `${BASE_URL}/${locale}`;
+      location.href = linkWithLanguage(`${BASE_URL}/`, locale);
     }
     if (router.pathname === '/' && tab === FeatureTabKey.SHARE_TEXT) {
       location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
