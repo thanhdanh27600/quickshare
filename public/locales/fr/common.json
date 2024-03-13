@@ -75,8 +75,8 @@
   "description": "Description",
   "errorSharing": "Votre navigateur ne prend pas en charge le partage, essayez de copier à la place !",
   "publish": "Publier",
-  "shareLink": "Partager le lien",
-  "shareNote": "Partager la note",
+  "shareLink": "Lien",
+  "shareNote": "Note",
   "NOTE_REQUIRED": "Veuillez saisir votre note avant de publier !",
   "tracking": "Suivi",
   "edit": "Modifier",
@@ -120,5 +120,7 @@
   "usePasswordToShortenedLink": "Utilisez également ce mot de passe pour l'URL raccourcie",
   "clicks": "Clics",
   "clicksByCountry": "Clics par pays",
-  "otherCountry": "Autres"
+  "otherCountry": "Autres",
+  "file": "Fichier",
+  "uploadFile": "Charger un fichier"
 }

@@ -44,7 +44,7 @@ const TextEditor = ({ defaultValue, readonly }: { defaultValue?: string; readonl
       menubar: !readonly,
       readonly,
       language: locale,
-      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14pt }',
+      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:12pt }',
     });
   }, []);
 

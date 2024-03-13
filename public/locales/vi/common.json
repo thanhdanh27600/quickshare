@@ -62,7 +62,7 @@
   "noData": "Chưa có dữ liệu",
   "helpShortUrlHead": "- Rút gọn link thành 3 ký tự định danh xxx (qsh.at/xxx)\n- Link lưu theo IP, không cần đăng nhập\n- Để theo dõi link, vào \"Quản lý link\"\n- Link sau khi rút gọn là công khai, trừ khi đặt mật khẩu",
   "helpNoteHead": "- Tạo ghi chú nhanh thành 3 ký tự định danh xxx (qsh.at/xxx)\n- Ghi chú lưu theo IP, không cần đăng nhập\n- Ghi chú sau khi xuất bản là công khai, trừ khi đặt mật khẩu\n- Lưu lại link edit note khi cần chỉnh sửa",
-  "brandTitle": "Quickshare | Tạo ghi chú cùng rút gọn link",
+  "brandTitle": "Quickshare | Rút gọn link và tạo ghi chú",
   "brandTitleNote": "Quickshare | Tạo ghi chú mới",
   "brandDescription": "Tạo ghi chú miễn phí cùng rút gọn URLs. Quickshare chia sẻ ghi chú, rút gọn link Bitly, rút gọn link bomso, rút gọn link miễn phí theo ý muốn. Theo dõi số lượng click, vị trí.",
   "advancedView": "Xem nâng cao",
@@ -75,8 +75,8 @@
   "description": "Mô tả ngắn",
   "errorSharing": "Trình duyệt của bạn không hỗ trợ share. Dùng copy link nhé!",
   "publish": "Xuất bản",
-  "shareLink": "Chia sẻ link",
-  "shareNote": "Chia sẻ ghi chú",
+  "shareLink": "Rút gọn link",
+  "shareNote": "Tạo ghi chú",
   "NOTE_REQUIRED": "Hãy nhập nội dung của ghi chú trước khi xuất bản nhé!",
   "tracking": "Theo dõi",
   "edit": "Chỉnh sửa",
@@ -85,7 +85,7 @@
   "contact": "Liên hệ",
   "selectOrDropFiles": "Chọn hoặc Kéo thả file",
   "attachments": "File đính kèm",
-  "attachmentsCreate": "File đính kèm (tối đa 3 file, mỗi file 10MB)",
+  "attachmentsCreate": "File đính kèm (tối đa 3 file, mỗi file 20MB)",
   "addAttachment": "Thêm file",
   "customLink": "Rút gọn thành",
   "signInTo": "Link đăng nhập vào",
@@ -120,5 +120,7 @@
   "usePasswordToShortenedLink": "Áp dụng mật khẩu cho link rút gọn",
   "clicks": "Clicks",
   "clicksByCountry": "Clicks theo quốc gia",
-  "otherCountry": "Khác"
+  "otherCountry": "Khác",
+  "file": "File",
+  "uploadFile": "Upload file"
 }

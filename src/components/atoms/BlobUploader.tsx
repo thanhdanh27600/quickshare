@@ -35,10 +35,11 @@ export const BlobUploader = ({ name = '', selectedMedia }: Props) => {
   }, [selectedFile]);
 
   useEffect(() => {
+    if (!!downloadUrl) return;
     if (hasSelected) {
       handleFileDownload();
     }
-  }, [selectedMedia]);
+  }, [hasSelected]);
 
   const handleDelete = (event?: any) => {
     event?.preventDefault();
@@ -51,7 +52,7 @@ export const BlobUploader = ({ name = '', selectedMedia }: Props) => {
 
   const handleFile = (file: File) => {
     if (file.size > LIMIT_FILE_UPLOAD) {
-      return setError('File size cannot be bigger than 10MB.');
+      return setError('File size cannot be bigger than 20MB.');
     }
     setSelectedFile(file);
     setDownloadUrl('');
@@ -187,6 +188,7 @@ export const BlobUploader = ({ name = '', selectedMedia }: Props) => {
           <div className="absolute bottom-2 flex gap-4">
             {!!downloadUrl && (
               <a
+                download={fileName}
                 target="_blank"
                 href={downloadUrl}
                 className="flex cursor-pointer items-center gap-1 text-gray-500 hover:text-gray-900">

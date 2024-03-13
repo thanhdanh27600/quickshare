@@ -5,6 +5,7 @@ export type Tab = {
   content: ReactNode;
   key: string;
   disabled?: boolean;
+  hidden?: boolean;
 };
 
 interface Props {
@@ -26,6 +27,7 @@ export const Tabs = (props: Props) => {
     <div className={clsx('border-b border-gray-200', props.className)}>
       <ul className="-mb-px flex flex-wrap text-center text-sm font-medium text-gray-500">
         {tabs.map((tab) => {
+          if (tab.hidden) return;
           const selected = selectedKey === tab.key;
           return (
             <li className="mr-2" key={`tab-${tab.key}`}>
@@ -39,7 +41,7 @@ export const Tabs = (props: Props) => {
                     '!border-cyan-500 bg-gray-100/60 text-cyan-500 hover:border-cyan-400 hover:text-cyan-400',
                   tab.disabled && 'cursor-not-allowed text-gray-400',
                 )}>
-                <div className={clsx()}>{tab.content}</div>
+                <div className={''}>{tab.content}</div>
               </button>
             </li>
           );

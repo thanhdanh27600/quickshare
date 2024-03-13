@@ -7,6 +7,7 @@ import mixpanel from 'mixpanel-browser';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useBearStore } from 'store';
+import { isLocal } from 'types/constants';
 import { MIXPANEL_EVENT } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
@@ -21,6 +22,7 @@ export const Footer = ({ className }: { className?: string }) => {
 
   useEffect(() => {
     if (!shortenHistory) return;
+    if (isLocal) return;
     const timeout = setTimeout(() => {
       setOpen(true);
     }, 2000);

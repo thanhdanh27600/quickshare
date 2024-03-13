@@ -10,7 +10,6 @@ export const brandUrlUat = 'https://uat.quickshare.at';
 export const brandUrlShortUat = 'https://uat.qsh.at';
 
 export const brandUrlShortDomain = 'qsh.at';
-export const alternateBrandUrl = ['https://vietnamese.cloud', 'https://clickdi.top'] as const;
 export const isTest = process.env.NODE_ENV === 'test';
 export const cdnUrl = 'https://cdn.jsdelivr.net/gh/thanhdanh27600/quickshare@production/public';
 export const GOOGLE_ADS_CLIENT_ID = 'ca-pub-5833291778924123';
@@ -36,7 +35,7 @@ export const LIMIT_OG_TITLE_LENGTH = 200;
 export const LIMIT_NOTE_TITLE_LENGTH = 200;
 export const LIMIT_OG_DESCRIPTION_LENGTH = 500;
 export const OG_IMAGE_DIMENSION = '1200 x 630';
-export const LIMIT_FILE_UPLOAD = 10 * 1024 * 1024; // 10MB
+export const LIMIT_FILE_UPLOAD = 20 * 1024 * 1024; // 20MB
 export const RESERVED_HASH = new Set(['qsh', 'xxx', '---', '___', '-_-', '_-_', '__-', '-__', '--_', '_--']);
 
 export const HASH = {

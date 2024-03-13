@@ -1,5 +1,5 @@
 import { ShortenUrlTile } from 'components/gadgets/URLShortener/ShortenUrlTile';
-import { track } from 'mixpanel-browser';
+import mixpanel from 'mixpanel-browser';
 import { useEffect, useState } from 'react';
 import { useBearStore } from 'store';
 import { BASE_URL, BASE_URL_SHORT } from 'types/constants';
@@ -40,8 +40,11 @@ export const URLShortenerResult = () => {
           </a>
         </div>
         <a
-          onClick={() => {
-            track(MIXPANEL_EVENT.SHORTEN_MORE);
+          onClick={(e) => {
+            e.preventDefault();
+            mixpanel.track(MIXPANEL_EVENT.SHORTEN_MORE, undefined, () => {
+              window.location.href = linkWithLanguage(BASE_URL, locale);
+            });
           }}
           href={linkWithLanguage(BASE_URL, locale)}
           target="_self"

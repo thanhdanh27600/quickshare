@@ -21,7 +21,7 @@ import { useTrans } from 'utils/i18next';
 import { QueryKey } from 'utils/requests';
 import { validateNoteSchema, validateUpdateNoteSchema } from 'utils/validateMiddleware';
 import { ZodError } from 'zod';
-import { NoteAttachments } from '../gadgets/Note/NoteAttachments';
+import { Attachments } from '../gadgets/Attachments';
 import { NoteTitleInput } from '../gadgets/Note/NoteTitleInput';
 import { NoteUrlTile } from '../gadgets/Note/NoteUrlTile';
 
@@ -173,12 +173,14 @@ export const NoteInput = () => {
       : mutateError;
   const error = localError || requestErrorMessage;
 
+  if (requestNote.isLoading) return null;
+
   return (
     <div>
       {hasNote && (
         <div className="mb-4">
           <NoteUrlTile />
-          {!loading && !hasPassword && (
+          {!hasPassword && (
             <div className="mt-4 flex w-full justify-end">
               <SetPassword hash={note?.UrlShortenerHistory?.hash || ''} onSetPasswordSuccess={getNote} />
             </div>
@@ -188,7 +190,13 @@ export const NoteInput = () => {
       )}
       <NoteTitleInput />
       <TextEditor key={hasNote} defaultValue={note?.text} />
-      <NoteAttachments />
+      <h2 className="mt-4 text-sm text-gray-700">{t('attachmentsCreate')}</h2>
+      <Attachments
+        defaultValues={note?.Media}
+        onChange={(attachments) => {
+          setNote({ Media: attachments });
+        }}
+      />
       {error && <p className="mt-4 text-red-400">{error}</p>}
       <Button
         text={hasNote ? t('save') : t('publish')}

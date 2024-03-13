@@ -75,8 +75,8 @@
   "description": "विवरण",
   "errorSharing": "आपका ब्राउज़र साझा करने का समर्थन नहीं करता है, कृपया कॉपी करने की कोशिश करें!",
   "publish": "प्रकाशित करें",
-  "shareLink": "लिंक साझा करें",
-  "shareNote": "नोट साझा करें",
+  "shareLink": "लिंक",
+  "shareNote": "नोट",
   "NOTE_REQUIRED": "कृपया प्रकाशन से पहले अपना नोट दर्ज करें!",
   "tracking": "ट्रैकिंग",
   "edit": "संपादित करें",
@@ -85,7 +85,7 @@
   "tos": "सेवा की शर्तें",
   "selectOrDropFiles": "फ़ाइल का चयन करें या ड्रॉप करें",
   "attachments": "संलग्नक",
-  "attachmentsCreate": "संलग्नक (अधिकतम 3 फ़ाइलें, प्रत्येक 10MB)",
+  "attachmentsCreate": "संलग्नक (अधिकतम 3 फ़ाइलें, प्रत्येक 20MB)",
   "addAttachment": "संलग्नक जोड़ें",
   "customLink": "कस्टम लिंक",
   "signInTo": "जारी रखने के लिए साइन इन करें",
@@ -120,5 +120,7 @@
   "usePasswordToShortenedLink": "इस पासवर्ड का उपयोग शॉर्ट URL के लिए भी करें",
   "clicks": "क्लिक्स",
   "clicksByCountry": "देश के हिसाब से क्लिक्स",
-  "otherCountry": "अन्य"
+  "otherCountry": "अन्य",
+  "file": "फ़ाइल",
+  "uploadFile": "फ़ाइल अपलोड करें"
 }

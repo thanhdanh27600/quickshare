@@ -75,8 +75,8 @@
   "description": "説明",
   "errorSharing": "お使いのブラウザは共有をサポートしていないため、コピーして試してください！",
   "publish": "公開",
-  "shareLink": "リンクを共有",
-  "shareNote": "ノートを共有",
+  "shareLink": "リンク",
+  "shareNote": "ノート",
   "NOTE_REQUIRED": "公開前にノートを入力してください！",
   "tracking": "トラッキング",
   "edit": "編集",
@@ -85,7 +85,7 @@
   "tos": "利用規約",
   "selectOrDropFiles": "添付ファイルの選択またはドロップ",
   "attachments": "添付ファイル",
-  "attachmentsCreate": "添付ファイル（最大3つのファイル、各10MB）",
+  "attachmentsCreate": "添付ファイル（最大3つのファイル、各20MB）",
   "addAttachment": "添付ファイルを追加",
   "customLink": "カスタムリンク",
   "signInTo": "続行するにはサインイン",
@@ -120,5 +120,7 @@
   "usePasswordToShortenedLink": "このパスワードを短縮URLにも使用する",
   "clicks": "クリック数",
   "clicksByCountry": "国別クリック数",
-  "otherCountry": "その他"
+  "otherCountry": "その他",
+  "file": "ファイル",
+  "uploadFile": "ファイルをアップロードする"
 }

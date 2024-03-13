@@ -3,6 +3,7 @@ import { StateCreator, create } from 'zustand';
 
 export enum FeatureTabKey {
   'SHARE_LINK' = 'SHARE_LINK',
+  'SHARE_FILE' = 'SHARE_FILE',
   'SHARE_TEXT' = 'SHARE_TEXT',
 }
 
@@ -12,7 +13,7 @@ export interface UtilitySlice {
 }
 
 const slice: StateCreator<UtilitySlice> = (set, get) => ({
-  featureTab: FeatureTabKey.SHARE_LINK,
+  featureTab: '' as any,
   setFeatureTab: (tab) => set({ featureTab: tab as FeatureTabKey }),
 });
 
