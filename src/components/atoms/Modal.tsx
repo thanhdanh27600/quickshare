@@ -1,6 +1,8 @@
 import { Button, ButtonProps } from 'components/atoms/Button';
+import mixpanel from 'mixpanel-browser';
 import { useEffect, useRef } from 'react';
 import { TE } from 'types/constants';
+import { MIXPANEL_EVENT } from 'types/utils';
 import { useTrans } from 'utils/i18next';
 
 interface Props {
@@ -14,6 +16,7 @@ interface Props {
   ModalProps?: Object;
   blockDismiss?: boolean;
   hideDismissButton?: boolean;
+  hideConfirmButton?: boolean;
   ConfirmButtonProps?: ButtonProps;
   onDismiss?: (e: any) => void;
   DismissButtonProps?: ButtonProps;
@@ -103,7 +106,14 @@ export const Modal = (props: Props) => {
                 {...props.DismissButtonProps}
               />
             )}
-            <Button type="button" text={props.confirmText || t('confirm')} {...props.ConfirmButtonProps} />
+            {!props.hideConfirmButton && (
+              <div
+                onClick={() => {
+                  mixpanel.track(MIXPANEL_EVENT.CLOSE_MODAL, { modalId: props.id });
+                }}>
+                <Button type="button" text={props.confirmText || t('confirm')} {...props.ConfirmButtonProps} />
+              </div>
+            )}
           </div>
         </div>
       </div>

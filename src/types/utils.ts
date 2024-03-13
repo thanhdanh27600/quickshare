@@ -33,6 +33,7 @@ const EVENTS = {
   SIGN_IN: 'Sign in',
   SIGN_OUT: 'Sign out',
   CRASH: 'CRASH',
+  CLOSE_MODAL: 'Close Modal',
 } as const;
 
 export const MIXPANEL_EVENT = EVENTS;
