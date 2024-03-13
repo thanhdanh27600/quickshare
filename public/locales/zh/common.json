@@ -75,8 +75,8 @@
   "description": "描述",
   "errorSharing": "您的浏览器不支持分享，请尝试复制！",
   "publish": "发布",
-  "shareLink": "分享链接",
-  "shareNote": "分享备注",
+  "shareLink": "链接",
+  "shareNote": "备注",
   "NOTE_REQUIRED": "请在发布前输入您的备注！",
   "tracking": "跟踪",
   "edit": "编辑",
@@ -85,7 +85,7 @@
   "tos": "服务条款",
   "selectOrDropFiles": "选择或拖放附件",
   "attachments": "附件",
-  "attachmentsCreate": "附件（最多3个文件，每个文件10MB）",
+  "attachmentsCreate": "附件（最多3个文件，每个文件20MB）",
   "addAttachment": "添加附件",
   "customLink": "自定义链接",
   "signInTo": "继续登录到",
@@ -120,5 +120,7 @@
   "usePasswordToShortenedLink": "也为缩短网址使用这个密码",
   "clicks": "点击次数",
   "clicksByCountry": "各国点击量",
-  "otherCountry": "其他"
+  "otherCountry": "其他",
+  "file": "文件",
+  "uploadFile": "上传文件"
 }

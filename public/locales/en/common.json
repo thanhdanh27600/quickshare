@@ -62,7 +62,7 @@
   "noData": "No data found",
   "helpShortUrlHead": "- Shorten link to 3 unique hash xxx (qsh.at/xxx)\n- Link saved by IP, no sign in required\n- To tracking click, check \"Manage link\"\n- Shortened link goes publicly, unless set new password",
   "helpNoteHead": "- Create note and save to 3 unique hash xxx (qsh.at/xxx)\n- Note saved by IP, no sign in required\n- Note published has publicly access, unless set new password\n- Save your edit link in another place for further update",
-  "brandTitle": "Quickshare | Create Note with URLs Shortener, quick and all free.",
+  "brandTitle": "Quickshare | URLs Shortener quick and all free.",
   "brandTitleNote": "Quickshare | Create new note",
   "brandDescription": "Share and Create Free Notes with URLs Shortener as Bitly, TinyUrl,shorten any URLs for free. Quickshare save your notes, texts, and track shortened links, click counts, locations.",
   "advancedView": "Advanced info",
@@ -75,8 +75,8 @@
   "description": "Description",
   "errorSharing": "Your browser not supports sharing, try copy instead!",
   "publish": "Pubish",
-  "shareLink": "Share link",
-  "shareNote": "Share note",
+  "shareLink": "Shorten link",
+  "shareNote": "Note",
   "NOTE_REQUIRED": "Please input your note before publish!",
   "tracking": "Tracking",
   "edit": "Edit",
@@ -85,7 +85,7 @@
   "tos": "Terms of Service",
   "selectOrDropFiles": "Select or Drop attachment",
   "attachments": "Attachments",
-  "attachmentsCreate": "Attachments (maximum 3 files, 10MB each)",
+  "attachmentsCreate": "Attachments (maximum 3 files, 20MB each)",
   "addAttachment": "Add an attachment",
   "customLink": "Custom link",
   "signInTo": "Continue sign in to",
@@ -119,5 +119,7 @@
   "usePasswordToShortenedLink": "Also use this password for shortened URL",
   "clicks": "Clicks",
   "clicksByCountry": "Clicks by Country",
-  "otherCountry": "Others"
+  "otherCountry": "Others",
+  "file": "File",
+  "uploadFile": "Upload file"
 }

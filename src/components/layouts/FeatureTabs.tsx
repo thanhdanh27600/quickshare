@@ -1,4 +1,4 @@
-import { Clipboard, Link as LinkIcon } from '@styled-icons/feather';
+import { Clipboard, File, Link as LinkIcon } from '@styled-icons/feather';
 import { Tabs } from 'components/atoms/Tabs';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -21,6 +21,7 @@ const tabs = (t: any, locale: Locale) => [
     ),
     key: FeatureTabKey.SHARE_LINK,
   },
+
   {
     content: (
       <Link href={'/note'}>
@@ -31,6 +32,17 @@ const tabs = (t: any, locale: Locale) => [
       </Link>
     ),
     key: FeatureTabKey.SHARE_TEXT,
+  },
+  {
+    content: (
+      <Link href={'/upload'}>
+        <span className="flex items-center gap-2">
+          <File className="w-5" />
+          {t('uploadFile')}
+        </span>
+      </Link>
+    ),
+    key: FeatureTabKey.SHARE_FILE,
   },
 ];
 
@@ -44,6 +56,9 @@ export const FeatureTabs = () => {
     switch (router.pathname) {
       case '/note':
         setFeatureTab(FeatureTabKey.SHARE_TEXT);
+        break;
+      case '/upload':
+        setFeatureTab(FeatureTabKey.SHARE_FILE);
         break;
       default:
       case '/':
@@ -63,6 +78,9 @@ export const FeatureTabs = () => {
   const handleSelectTab = (tab: string) => {
     if (router.pathname === '/note' && tab === FeatureTabKey.SHARE_LINK) {
       location.href = linkWithLanguage(`${BASE_URL}/`, locale);
+    }
+    if (router.pathname === '/upload' && tab === FeatureTabKey.SHARE_FILE) {
+      location.href = linkWithLanguage(`${BASE_URL}/upload`, locale);
     }
     if (router.pathname === '/' && tab === FeatureTabKey.SHARE_TEXT) {
       location.href = linkWithLanguage(`${BASE_URL}/note`, locale);

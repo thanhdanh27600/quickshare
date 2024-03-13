@@ -3,6 +3,7 @@ import { StateCreator, create } from 'zustand';
 
 export enum FeatureTabKey {
   'SHARE_LINK' = 'SHARE_LINK',
+  'SHARE_FILE' = 'SHARE_FILE',
   'SHARE_TEXT' = 'SHARE_TEXT',
 }
 

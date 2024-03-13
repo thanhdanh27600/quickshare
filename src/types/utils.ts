@@ -13,6 +13,7 @@ const EVENTS = {
   SHORTEN: 'Shorten',
   SHORTEN_MORE: 'Shorten Another',
   NOTE_LANDED: 'Note Landed',
+  UPLOAD_LANDED: 'Upload Landed',
   NOTE_GET: 'Note Get',
   NOTE_CREATE: 'Note Create',
   NOTE_UPDATE: 'Note Update',
