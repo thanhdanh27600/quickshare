@@ -13,7 +13,7 @@ export interface UtilitySlice {
 }
 
 const slice: StateCreator<UtilitySlice> = (set, get) => ({
-  featureTab: FeatureTabKey.SHARE_LINK,
+  featureTab: '' as any,
   setFeatureTab: (tab) => set({ featureTab: tab as FeatureTabKey }),
 });
 

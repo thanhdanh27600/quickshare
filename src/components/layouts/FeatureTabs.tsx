@@ -43,6 +43,7 @@ const tabs = (t: any, locale: Locale) => [
       </Link>
     ),
     key: FeatureTabKey.SHARE_FILE,
+    hidden: true,
   },
 ];
 
@@ -76,14 +77,14 @@ export const FeatureTabs = () => {
   }, [router.pathname]);
 
   const handleSelectTab = (tab: string) => {
-    if (router.pathname === '/note' && tab === FeatureTabKey.SHARE_LINK) {
-      location.href = linkWithLanguage(`${BASE_URL}/`, locale);
+    if (router.pathname !== '/note' && tab === FeatureTabKey.SHARE_TEXT) {
+      location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
     }
-    if (router.pathname === '/upload' && tab === FeatureTabKey.SHARE_FILE) {
+    if (router.pathname !== '/upload' && tab === FeatureTabKey.SHARE_FILE) {
       location.href = linkWithLanguage(`${BASE_URL}/upload`, locale);
     }
-    if (router.pathname === '/' && tab === FeatureTabKey.SHARE_TEXT) {
-      location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
+    if (router.pathname !== '/' && tab === FeatureTabKey.SHARE_LINK) {
+      location.href = linkWithLanguage(`${BASE_URL}/`, locale);
     }
   };
 

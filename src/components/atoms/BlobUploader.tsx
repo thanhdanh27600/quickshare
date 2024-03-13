@@ -35,6 +35,7 @@ export const BlobUploader = ({ name = '', selectedMedia }: Props) => {
   }, [selectedFile]);
 
   useEffect(() => {
+    if (!!downloadUrl) return;
     if (hasSelected) {
       handleFileDownload();
     }

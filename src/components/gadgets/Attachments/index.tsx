@@ -21,18 +21,15 @@ export const Attachments = ({
   onChange: (attatchments: Media[]) => void;
 }) => {
   const { t } = useTrans();
-  const methods = useForm<BlobForm>();
+  const methods = useForm<BlobForm>({ defaultValues: { blobs: defaultValues || [{ id: -1 } as any] } });
 
   const { control, watch, reset } = methods;
   const attachments = watch('blobs');
+  const uploadedAttachments = attachments?.filter((att) => att.id > 0);
 
   useEffect(() => {
-    if (defaultValues) reset({ blobs: defaultValues || [{ id: -1 } as any] });
-  }, [defaultValues]);
-
-  useEffect(() => {
-    if (onChange) onChange(attachments);
-  }, [attachments]);
+    if (onChange) onChange(uploadedAttachments);
+  }, [uploadedAttachments?.length]);
 
   const { fields, append, remove } = useFieldArray({
     control,
