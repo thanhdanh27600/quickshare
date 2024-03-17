@@ -1,14 +1,15 @@
+import { AxiosError } from 'axios';
 import { Attachments } from 'components/gadgets/Attachments';
 import { URLShare } from 'components/gadgets/URLShare';
 import { ShortenUrlTile } from 'components/gadgets/URLShortener/ShortenUrlTile';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { logEvent } from 'firebase/analytics';
 import mixpanel from 'mixpanel-browser';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useMutation } from 'react-query';
 import { createFileRequest } from 'requests';
 import shortenSlice from 'store/shortenSlice';
-import { BASE_URL } from 'types/constants';
+import { BASE_URL, LIMIT_FEATURE_HOUR, LIMIT_FILE_REQUEST } from 'types/constants';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { analytics } from 'utils/firebase';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
@@ -68,20 +69,41 @@ export const Upload = () => {
       requestFile.mutate(payload);
     }
   };
+  const mutateError = (requestFile.error as AxiosError)?.message;
+  const requestErrorMessage = useMemo(() => {
+    let errorMessage;
+    switch (mutateError) {
+      case 'EXCEEDED_FILE':
+        errorMessage = t('reachedFeatureLimit', {
+          n: LIMIT_FILE_REQUEST,
+          feature: t('uploadFile'),
+          time: `${LIMIT_FEATURE_HOUR} ${t('hour')}`,
+        });
+        break;
+      default:
+        errorMessage = mutateError;
+        break;
+    }
+    return errorMessage;
+  }, [mutateError]);
+
+  const error = localError || requestErrorMessage;
   const loading = requestFile.isLoading;
   const hasData = !loading && !requestFile.isError && shortenUrl;
 
   return (
     <>
       <h1 className="mb-4 flex gap-1 text-xl md:text-3xl">{t('uploadFile')}</h1>
-      <Attachments
-        generateFor="file"
-        onChange={(attachment) => {
-          const mediaId = attachment?.at(-1)?.id;
-          if (!mediaId) return;
-          handleCreateFile(mediaId);
-        }}
-      />
+      {!error && (
+        <Attachments
+          generateFor="file"
+          onChange={(attachment) => {
+            const mediaId = attachment?.at(-1)?.id;
+            if (!mediaId) return;
+            handleCreateFile(mediaId);
+          }}
+        />
+      )}
       {hasData && (
         <>
           <p>🚀 {t('fileSuccess')}</p>
@@ -101,6 +123,7 @@ export const Upload = () => {
           <URLShare />
         </>
       )}
+      <p className="mt-4 text-red-400">{error}</p>
       <FeedbackLink template={FeedbackTemplate.UPLOAD} />
     </>
   );
