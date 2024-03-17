@@ -5,7 +5,7 @@ import { ShortenUrlTile } from 'components/gadgets/URLShortener/ShortenUrlTile';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
 import { logEvent } from 'firebase/analytics';
 import mixpanel from 'mixpanel-browser';
-import { useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo, useState } from 'react';
 import { useMutation } from 'react-query';
 import { createFileRequest } from 'requests';
 import shortenSlice from 'store/shortenSlice';
@@ -22,6 +22,10 @@ export const Upload = () => {
   const [localError, setLocalError] = useState('');
   const [shortenUrl, setShortenHistory] = shortenSlice((state) => [state.getShortenUrl(), state.setShortenHistory]);
 
+  useLayoutEffect(() => {
+    setShortenHistory(undefined);
+  }, []);
+
   const requestFile = useMutation(QueryKey.FILE, createFileRequest, {
     onMutate: (variables) => {
       setLocalError('');
@@ -32,13 +36,13 @@ export const Upload = () => {
         errorMessage: error,
         data: variables,
       };
-      mixpanel.track(MIXPANEL_EVENT.NOTE_CREATE, log);
+      mixpanel.track(MIXPANEL_EVENT.FILE_CREATE, log);
       logEvent(analytics, FIREBASE_ANALYTICS_EVENT.FILE_CREATE, log);
     },
     onSuccess: (data, variables, context) => {
       if (data.file?.UrlShortenerHistory) {
         setShortenHistory(data.file.UrlShortenerHistory);
-        mixpanel.track(MIXPANEL_EVENT.NOTE_CREATE, {
+        mixpanel.track(MIXPANEL_EVENT.FILE_CREATE, {
           status: EVENTS_STATUS.OK,
           data,
         });

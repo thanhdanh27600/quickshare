@@ -212,7 +212,7 @@ export const BlobUploader = ({ name = '', selectedMedia }: Props) => {
                 <p className="text-sm">Download</p>
               </button>
             )}
-            {hasFile && (
+            {!!downloadUrl && (
               <div className="flex cursor-pointer items-center gap-1 text-gray-700" onClick={handleDelete}>
                 <Trash className="h-4 w-4 " />
                 <p className="text-sm">Delete</p>
