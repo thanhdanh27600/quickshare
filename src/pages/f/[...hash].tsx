@@ -22,11 +22,12 @@ interface Props {
 
 const ViewFile = ({ file, ip, error }: Props) => {
   const { t } = useTrans();
-  if (!file || !file.Media || !!error) return <PageNotFound />;
 
   useEffect(() => {
     mixpanel.track(MIXPANEL_EVENT.BLOB_VIEW_LANDED);
   }, []);
+
+  if (!file || !file.Media || !!error) return <PageNotFound />;
 
   return (
     <>
