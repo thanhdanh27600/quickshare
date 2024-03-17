@@ -2,12 +2,15 @@ import { Media } from '@prisma/client';
 import { BlobViewer } from 'components/atoms/BlobViewer';
 import { LayoutMain } from 'components/layouts/LayoutMain';
 import { FeedbackLink, FeedbackTemplate } from 'components/sections/FeedbackLink';
+import mixpanel from 'mixpanel-browser';
 import { GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
+import { useEffect } from 'react';
 import requestIp from 'request-ip';
 import { getFileRequest } from 'requests';
 import { FileWithData } from 'types/file';
+import { MIXPANEL_EVENT } from 'types/utils';
 import { defaultLocale, useTrans } from 'utils/i18next';
 import PageNotFound from '../404';
 
@@ -18,8 +21,12 @@ interface Props {
 }
 
 const ViewFile = ({ file, ip, error }: Props) => {
-  const { t, locale } = useTrans();
+  const { t } = useTrans();
   if (!file || !file.Media || !!error) return <PageNotFound />;
+
+  useEffect(() => {
+    mixpanel.track(MIXPANEL_EVENT.BLOB_VIEW_LANDED);
+  }, []);
 
   return (
     <>

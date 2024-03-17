@@ -14,6 +14,7 @@ const EVENTS = {
   SHORTEN_MORE: 'Shorten Another',
   NOTE_LANDED: 'Note Landed',
   UPLOAD_LANDED: 'Upload Landed',
+  BLOB_VIEW_LANDED: 'Blob View Landed',
   NOTE_GET: 'Note Get',
   NOTE_CREATE: 'Note Create',
   NOTE_UPDATE: 'Note Update',

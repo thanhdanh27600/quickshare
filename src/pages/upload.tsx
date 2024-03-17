@@ -14,7 +14,6 @@ const UploadComponent = ({ feature }: { feature: FeatureTabKey }) => {
   useEffect(() => {
     mixpanel.track(MIXPANEL_EVENT.UPLOAD_LANDED);
   }, []);
-
   return <MainPage feature={feature} />;
 };
 
