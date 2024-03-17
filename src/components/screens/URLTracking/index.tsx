@@ -15,7 +15,7 @@ import { TrackingClick } from './TrackingClick';
 export const URLTracking = ({ hash }: { hash: string }) => {
   const { t } = useTrans();
   const { shortenSlice } = useBearStore();
-  const [shortenHistory, shortenUrl] = shortenSlice((state) => [state.shortenHistory, state.getShortenUrl()]);
+  const [shortenHistory] = shortenSlice((state) => [state.shortenHistory, state.getShortenUrl()]);
 
   useEffect(() => {
     mixpanel.track(MIXPANEL_EVENT.TRACKING);

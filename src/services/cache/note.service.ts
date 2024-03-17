@@ -38,7 +38,7 @@ export class NoteCache {
 
     await Promise.all([redis.hset(hashKey, data), redis.expire(hashKey, LIMIT_NOTE_SECOND)]);
   }
-  expireNoteHash(hash: string) {
+  purgeNoteHash(hash: string) {
     const hashKey = getRedisKey(REDIS_KEY.MAP_NOTE_BY_HASH, hash);
     redis.expire(hashKey, -1).then().catch();
   }

@@ -2,6 +2,7 @@ import { Media } from '@prisma/client';
 import base64url from 'base64url';
 import { NextApiHandler } from 'next';
 import requestIp from 'request-ip';
+import { recordService } from 'services/record';
 import { redis } from '../../redis';
 import { noteCacheService } from '../../services/cache';
 import prisma from '../../services/db/prisma';
@@ -26,9 +27,9 @@ export const handler = api<NoteRs>(
     let medias = req.body.medias as Media[];
 
     // retrive note for update if uid
-    if (!!uid && req.method === 'POST') return await getNoteForUpdate(req, res);
+    if (!!uid && req.method === 'POST') return await getNoteForUpdateHandler(req, res);
     // retrive note for view if hash
-    if (!!hash && req.method === 'GET') return await getNote(req, res);
+    if (!!hash && req.method === 'GET') return await getNoteHandler(req, res);
 
     await validateNoteSchema.parseAsync({ text, title, hash, ip, uid, medias });
 
@@ -48,9 +49,7 @@ export const handler = api<NoteRs>(
     }
     noteCacheService.incLimitIp(ip);
 
-    let record = await prisma.urlShortenerRecord.findFirst({ where: { ip } });
-    if (!record) record = await prisma.urlShortenerRecord.create({ data: { ip } });
-
+    const record = await recordService.getOrCreate(ip);
     // generate hash
     const noteHash = await generateHash('note');
 
@@ -103,7 +102,7 @@ export const handler = api<NoteRs>(
   ['POST', 'GET'],
 );
 
-const getNote: NextApiHandler<NoteRs> = async (req, res) => {
+const getNoteHandler: NextApiHandler<NoteRs> = async (req, res) => {
   let hash = req.query.hash as string;
   let token = decodeBase64(req.query.token as string);
   let valid = false;
@@ -161,14 +160,14 @@ const getNote: NextApiHandler<NoteRs> = async (req, res) => {
   return successHandler(res, { note: { text: note.text, Media: note.Media, title: note.title } });
 };
 
-const getNoteForUpdate: NextApiHandler<NoteRs> = async (req, res) => {
+const getNoteForUpdateHandler: NextApiHandler<NoteRs> = async (req, res) => {
   let uid = req.body.uid as string;
   if (!uid) return badRequest(res);
   const note = await prisma.note.findUnique({
     where: {
       uid,
     },
-    include: { UrlShortenerHistory: true, Media: true },
+    include: { UrlShortenerHistory: true, Media: { orderBy: { id: 'asc' } } },
   });
 
   if (!note) {

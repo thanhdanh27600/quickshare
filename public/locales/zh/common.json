@@ -18,6 +18,7 @@
   "feedbackURLSubject": "[QUICKSHARE.AT] 反馈/报告URL缩短器错误",
   "feedbackShortSubject": "[QUICKSHARE.AT] 反馈/报告URL跟踪错误",
   "feedbackNoteSubject": "[QUICKSHARE.AT] 反馈/报告URL备注错误",
+  "feedbackUploadSubject": "[QUICKSHARE.AT] 反馈/报告上传文件",
   "feedbackForgotSubject": "[QUICKSHARE.AT] 忘记密码",
   "feedbackReportLinkSubject": "[QUICKSHARE.AT] 报告链接滥用",
   "feedbackReportLinkBody": "如果您遇到有害链接，请提供详细信息：...\n\n滥用类型：...",
@@ -122,5 +123,8 @@
   "clicksByCountry": "各国点击量",
   "otherCountry": "其他",
   "file": "文件",
-  "uploadFile": "上传文件"
+  "uploadFile": "上传文件",
+  "fileSuccess": "太快了！文件已成功上传。",
+  "generateNoteMore": "创建另一个笔记",
+  "generateFileMore": "上传另一个文件"
 }

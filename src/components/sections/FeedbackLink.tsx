@@ -1,6 +1,6 @@
 import { useTrans } from 'utils/i18next';
 
-export const FeedbackLink = ({ template, displayText }: { template: FeedbackTemplate; displayText?: string }) => {
+export const FeedbackLink = ({ template, displayText }: { template?: FeedbackTemplate; displayText?: string }) => {
   const { t } = useTrans('common');
   const supportUrl = useFeedbackTemplate(template);
 
@@ -21,19 +21,15 @@ export enum FeedbackTemplate {
   URL_TRACKING = 'URL_TRACKING',
   FORGOT_PASSWORD = 'FORGOT_PASSWORD',
   NOTE = 'NOTE',
+  UPLOAD = 'UPLOAD',
   REPORT_LINK = 'REPORT_LINK',
 }
 
-export const useFeedbackTemplate = (template: FeedbackTemplate) => {
+export const useFeedbackTemplate = (template?: FeedbackTemplate) => {
   const { t } = useTrans('common');
   const email = 'quickshare.at@gmail.com';
   let supportUrl = '';
   switch (template) {
-    case FeedbackTemplate.URL_SHORT:
-      supportUrl = `mailto:${email}?subject=${encodeURIComponent(t('feedbackURLSubject'))}&body=${encodeURIComponent(
-        t('feedbackBody'),
-      )}`;
-      break;
     case FeedbackTemplate.URL_TRACKING:
       supportUrl = `mailto:${email}?subject=${encodeURIComponent(t('feedbackShortSubject'))}&body=${encodeURIComponent(
         t('feedbackBody'),
@@ -41,6 +37,11 @@ export const useFeedbackTemplate = (template: FeedbackTemplate) => {
       break;
     case FeedbackTemplate.NOTE:
       supportUrl = `mailto:${email}?subject=${encodeURIComponent(t('feedbackNoteSubject'))}&body=${encodeURIComponent(
+        t('feedbackBody'),
+      )}`;
+      break;
+    case FeedbackTemplate.UPLOAD:
+      supportUrl = `mailto:${email}?subject=${encodeURIComponent(t('feedbackUploadSubject'))}&body=${encodeURIComponent(
         t('feedbackBody'),
       )}`;
       break;
@@ -54,7 +55,11 @@ export const useFeedbackTemplate = (template: FeedbackTemplate) => {
         t('feedbackReportLinkSubject'),
       )}&body=${encodeURIComponent(t('feedbackReportLinkBody'))}`;
       break;
+    case FeedbackTemplate.URL_SHORT:
     default:
+      supportUrl = `mailto:${email}?subject=${encodeURIComponent(t('feedbackURLSubject'))}&body=${encodeURIComponent(
+        t('feedbackBody'),
+      )}`;
       break;
   }
   return supportUrl;

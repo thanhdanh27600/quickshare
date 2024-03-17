@@ -5,9 +5,8 @@ import mixpanel from 'mixpanel-browser';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { BASE_URL } from 'types/constants';
 import { MIXPANEL_EVENT } from 'types/utils';
-import { linkWithLanguage, useTrans } from 'utils/i18next';
+import { useTrans } from 'utils/i18next';
 import { truncateMiddle } from 'utils/text';
 
 export const Header = () => {
@@ -51,11 +50,15 @@ export const Header = () => {
               {router.pathname !== '/note' && (
                 <Link
                   href="/note"
-                  onClick={() => {
-                    location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
-                  }}
                   className="text-grey-900 text-md h-fit font-medium decoration-1 hover:text-cyan-500 hover:underline">
                   {t('noteEditor')}
+                </Link>
+              )}
+              {router.pathname !== '/upload' && (
+                <Link
+                  href="/upload"
+                  className="text-grey-900 text-md h-fit font-medium decoration-1 hover:text-cyan-500 hover:underline">
+                  {t('uploadFile')}
                 </Link>
               )}
             </div>

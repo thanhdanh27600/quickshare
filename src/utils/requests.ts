@@ -28,4 +28,5 @@ export const QueryKey = {
   NOTE_UPDATE: 'NOTE_UPDATE',
   QR: 'QR',
   PARSE_UA: 'PARSE_UA',
+  FILE: 'FILE',
 };

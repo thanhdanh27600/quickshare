@@ -18,7 +18,6 @@ export const handler = api<Forward>(
     const userAgent = req.body.userAgent as string;
     const ip = req.body.ip as string;
     const fromClientSide = !!req.body.fromClientSide;
-    let valid = false;
     const token = req.headers['X-Platform-Auth'.toLowerCase()] as string;
 
     await validateForwardSchema.parseAsync({
@@ -47,6 +46,7 @@ export const handler = api<Forward>(
       updatedAt: new Date(),
     };
 
+    let valid = false;
     // Check from Cache
     const hashKey = getRedisKey(REDIS_KEY.MAP_SHORTEN_BY_HASH, hash);
     const shortenedUrlCache = (await redis.hgetall(hashKey)) as any;

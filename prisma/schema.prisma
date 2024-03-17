@@ -68,7 +68,9 @@ model UrlShortenerRecord {
 
   history UrlShortenerHistory[]
   Note    Note[]
-  User    User?
+  File    File[]
+
+  User User?
 }
 
 model UrlShortenerHistory {
@@ -92,8 +94,9 @@ model UrlShortenerHistory {
   UrlShortenerRecord   UrlShortenerRecord @relation(fields: [urlShortenerRecordId], references: [id], onDelete: Cascade)
   UrlForwardMeta       UrlForwardMeta[]
   urlShortenerRecordId Int
-  Media                Media?
+  Media                Media[]
   Note                 Note?
+  File                 File[]
 }
 
 model UrlForwardMeta {
@@ -122,10 +125,12 @@ model Media {
   externalId String? @unique
   provider   String?
 
-  urlShortenerHistoryId Int?                 @unique
-  UrlShortenerHistory   UrlShortenerHistory? @relation(fields: [urlShortenerHistoryId], references: [id], onDelete: Cascade)
-  noteId                Int?
-  Note                  Note?                @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  urlShortenerHistoryId Int?
+  UrlShortenerHistory   UrlShortenerHistory? @relation(fields: [urlShortenerHistoryId], references: [id], onDelete: SetNull)
+
+  noteId Int?
+  Note   Note? @relation(fields: [noteId], references: [id], onDelete: SetNull)
+  File   File?
 }
 
 model Note {
@@ -146,4 +151,20 @@ model Note {
 
   UrlShortenerHistory   UrlShortenerHistory? @relation(fields: [urlShortenerHistoryId], references: [id], onDelete: Cascade)
   urlShortenerHistoryId Int                  @unique
+}
+
+model File {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  hash      String   @unique
+
+  UrlShortenerHistory   UrlShortenerHistory? @relation(fields: [urlShortenerHistoryId], references: [id], onDelete: Cascade)
+  urlShortenerHistoryId Int
+
+  UrlShortenerRecord   UrlShortenerRecord? @relation(fields: [urlShortenerRecordId], references: [id])
+  urlShortenerRecordId Int?
+
+  Media   Media @relation(fields: [mediaId], references: [id])
+  mediaId Int   @unique
 }

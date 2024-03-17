@@ -38,7 +38,7 @@ export const BlobViewer = ({ media }: { media: Media }) => {
         className="flex cursor-pointer items-center gap-1 text-gray-500 hover:text-gray-900">
         <div
           className={clsx(
-            'flex w-full flex-col items-center rounded-lg border border-gray-300 p-6 transition-colors',
+            'flex w-full flex-col items-center rounded-lg border border-gray-300 p-6 py-10 transition-colors',
             { 'cursor-not-allowed opacity-30': !downloadUrl },
             { 'cursor-pointer hover:bg-gray-100': downloadUrl },
           )}>

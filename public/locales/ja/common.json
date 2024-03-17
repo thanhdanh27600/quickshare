@@ -18,6 +18,7 @@
   "feedbackURLSubject": "[QUICKSHARE.AT] フィードバック/バグのURL短縮",
   "feedbackShortSubject": "[QUICKSHARE.AT] フィードバック/バグレポートURLトラッキング",
   "feedbackNoteSubject": "[QUICKSHARE.AT] フィードバック/バグのURLノート",
+  "feedbackUploadSubject": "[QUICKSHARE.AT] フィードバック/バグファイルをアップロードする",
   "feedbackForgotSubject": "[QUICKSHARE.AT] パスワードを忘れた",
   "feedbackReportLinkSubject": "[QUICKSHARE.AT] リンクの乱用を報告",
   "feedbackReportLinkBody": "有害なリンクに遭遇した場合、詳細情報を提供してください：...\n\n乱用の種類：...",
@@ -122,5 +123,8 @@
   "clicksByCountry": "国別クリック数",
   "otherCountry": "その他",
   "file": "ファイル",
-  "uploadFile": "ファイルをアップロードする"
+  "uploadFile": "ファイルをアップロードする",
+  "fileSuccess": "早いですね！ファイルのアップロードが成功しました。",
+  "generateNoteMore": "別のメモを作成する",
+  "generateFileMore": "別のファイルをアップロードする"
 }

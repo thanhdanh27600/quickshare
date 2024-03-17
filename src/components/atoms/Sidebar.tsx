@@ -85,7 +85,6 @@ export const Sidebar = ({ className }: Props) => {
 
           <Link href="/tracking" className="text-grey-900 text-xl font-medium hover:underline">
             {t('manageLink')}
-            {/* <ExternalLink className="mb-4 ml-1 w-4" /> */}
           </Link>
 
           <Link
@@ -95,6 +94,10 @@ export const Sidebar = ({ className }: Props) => {
             }}
             className="text-grey-900 text-xl font-medium hover:underline">
             {t('noteEditor')}
+          </Link>
+
+          <Link href="/upload" className="text-grey-900 text-xl font-medium hover:underline">
+            {t('uploadFile')}
           </Link>
 
           <div className="flex w-full flex-1 flex-col items-center justify-end">

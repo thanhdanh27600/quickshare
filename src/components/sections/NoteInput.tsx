@@ -173,8 +173,6 @@ export const NoteInput = () => {
       : mutateError;
   const error = localError || requestErrorMessage;
 
-  if (requestNote.isLoading) return null;
-
   return (
     <div>
       {hasNote && (
@@ -189,10 +187,12 @@ export const NoteInput = () => {
         </div>
       )}
       <NoteTitleInput />
-      <TextEditor key={hasNote} defaultValue={note?.text} />
+      <TextEditor key={(hasNote || 0) + 1} defaultValue={note?.text} />
       <h2 className="mt-4 text-sm text-gray-700">{t('attachmentsCreate')}</h2>
       <Attachments
-        defaultValues={note?.Media}
+        key={(hasNote || 0) + 2}
+        generateFor="note"
+        defaultValues={hasNote ? note?.Media : [{ id: -1 } as any]}
         onChange={(attachments) => {
           setNote({ Media: attachments });
         }}

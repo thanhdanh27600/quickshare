@@ -18,6 +18,7 @@
   "feedbackURLSubject": "[QUICKSHARE.AT] Feedback / Signaler un raccourcisseur d'URL avec bug",
   "feedbackShortSubject": "[QUICKSHARE.AT] Feedback / Signaler un raccourcisseur d'URL avec suivi",
   "feedbackNoteSubject": "[QUICKSHARE.AT] Feedback / Signaler un bug de note d'URL",
+  "feedbackUploadSubject": "[QUICKSHARE.AT] Feedback / Signaler un bug charger un fichier",
   "feedbackForgotSubject": "[QUICKSHARE.AT] Mot de passe oublié",
   "feedbackReportLinkSubject": "[QUICKSHARE.AT] Signaler un abus de lien",
   "feedbackReportLinkBody": "Veuillez fournir des informations si vous avez rencontré un lien nuisible :...\n\nType d'abus :...",
@@ -122,5 +123,8 @@
   "clicksByCountry": "Clics par pays",
   "otherCountry": "Autres",
   "file": "Fichier",
-  "uploadFile": "Charger un fichier"
+  "uploadFile": "Charger un fichier",
+  "fileSuccess": "C'était rapide ! Le fichier a été téléchargé avec succès.",
+  "generateNoteMore": "Créer une autre note",
+  "generateFileMore": "Télécharger un autre fichier"
 }
