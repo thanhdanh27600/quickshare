@@ -32,7 +32,7 @@ export const handler = api<FileRs>(
     }
     fileCacheService.incLimitIp(ip);
 
-    const record = await recordService.getOrCreate(ip);
+    const record = await recordService.getOrCreate(req, ip);
 
     // generate hash
     const fileHash = await generateHash('file');

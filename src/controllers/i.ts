@@ -15,7 +15,7 @@ export const handler = api(
     const provider = req.body.provider;
     const name = req.body.name;
     const type = req.body.type;
-    const record = await recordService.getOrCreate(ip);
+    const record = await recordService.getOrCreate(req, ip);
     const rs = await prisma.media.create({
       data: {
         url,

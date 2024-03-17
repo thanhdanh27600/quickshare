@@ -49,7 +49,7 @@ export const handler = api<NoteRs>(
     }
     noteCacheService.incLimitIp(ip);
 
-    const record = await recordService.getOrCreate(ip);
+    const record = await recordService.getOrCreate(req, ip);
     // generate hash
     const noteHash = await generateHash('note');
 
