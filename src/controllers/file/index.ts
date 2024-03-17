@@ -1,16 +1,16 @@
 import { NextApiHandler } from 'next';
 import requestIp from 'request-ip';
-import { fileCacheService } from 'services/cache/file.service';
-import prisma from 'services/db/prisma';
-import { fileService } from 'services/file';
-import { generateHash } from 'services/hash';
-import { recordService } from 'services/record';
-import { FileRs } from 'types/file';
-import HttpStatusCode from 'utils/statusCode';
-import { validateFileSchema } from 'utils/validateMiddleware';
 import { redis } from '../../redis';
+import { fileCacheService } from '../../services/cache/file.service';
+import prisma from '../../services/db/prisma';
+import { fileService } from '../../services/file';
+import { generateHash } from '../../services/hash';
+import { recordService } from '../../services/record';
 import { BASE_URL, HASH, REDIS_KEY, getRedisKey } from '../../types/constants';
+import { FileRs } from '../../types/file';
 import { api, badRequest, successHandler } from '../../utils/axios';
+import HttpStatusCode from '../../utils/statusCode';
+import { validateFileSchema } from '../../utils/validateMiddleware';
 
 export const handler = api<FileRs>(
   async (req, res) => {

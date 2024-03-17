@@ -1,6 +1,6 @@
 import requestIp from 'request-ip';
-import { recordService } from 'services/record';
 import prisma from '../services/db/prisma';
+import { recordService } from '../services/record';
 import { api, successHandler } from '../utils/axios';
 import { validateMediaSchema } from '../utils/validateMiddleware';
 
