@@ -43,8 +43,8 @@ export const handler = api(
         : []),
     ]);
     // purge cache
-    shortenCacheService.expireShortenHash(hash);
-    if (history.Note?.id) noteCacheService.expireNoteHash(history.Note?.hash);
+    shortenCacheService.purgeShortenHash(hash);
+    if (history.Note?.id) noteCacheService.purgeNoteHash(history.Note?.hash);
     res.send('OK');
   },
   ['POST'],

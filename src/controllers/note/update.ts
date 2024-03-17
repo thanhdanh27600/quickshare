@@ -42,7 +42,7 @@ export const handler = api<NoteRs>(
       }),
     ]);
     // purge cache
-    noteCacheService.expireNoteHash(note.hash);
+    noteCacheService.purgeNoteHash(note.hash);
     return successHandler(res, { note: { ...note, text } });
   },
   ['PUT'],

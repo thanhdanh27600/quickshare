@@ -55,3 +55,11 @@ export const share = (shareData: ShareData, t: any) => {
     console.log('Web Share API is not supported in this browser');
   }
 };
+
+export function generateFileName(originalFileName?: string): string {
+  if (!originalFileName) return '';
+  const hash = generateRandomString(5);
+  const fileExtension = originalFileName.includes('.') ? `.${originalFileName.split('.').pop()}` : '';
+  const fileNameWithoutExtension = originalFileName.replace(fileExtension, '');
+  return `${fileNameWithoutExtension}_${hash}${fileExtension}`;
+}

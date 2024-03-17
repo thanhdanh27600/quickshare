@@ -30,18 +30,18 @@ export const Tabs = (props: Props) => {
           if (tab.hidden) return;
           const selected = selectedKey === tab.key;
           return (
-            <li className="mr-2" key={`tab-${tab.key}`}>
+            <li className="mr-1 md:mr-2" key={`tab-${tab.key}`}>
               <button
                 onClick={handleClick(tab)}
                 className={clsx(
-                  'group inline-flex items-center justify-center rounded-t-lg border-b-2 border-transparent p-4 py-2 transition-all',
+                  'group inline-flex items-center justify-center rounded-t-lg border-b-2 border-transparent p-2 py-2 transition-all md:p-4',
                   !tab.disabled && !selected && 'hover:border-gray-300 hover:bg-gray-100/40 hover:text-gray-600',
                   !tab.disabled &&
                     selected &&
                     '!border-cyan-500 bg-gray-100/60 text-cyan-500 hover:border-cyan-400 hover:text-cyan-400',
                   tab.disabled && 'cursor-not-allowed text-gray-400',
                 )}>
-                <div className={''}>{tab.content}</div>
+                <div className={'text-xs md:text-base'}>{tab.content}</div>
               </button>
             </li>
           );

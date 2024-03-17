@@ -15,10 +15,12 @@ export const Attachments = ({
   maxAttachments = MAX_ATTACHMENTS,
   defaultValues,
   onChange,
+  generateFor,
 }: {
   maxAttachments?: number;
   defaultValues?: Media[] | null;
   onChange: (attatchments: Media[]) => void;
+  generateFor: 'note' | 'file';
 }) => {
   const { t } = useTrans();
   const methods = useForm<BlobForm>({ defaultValues: { blobs: defaultValues || [{ id: -1 } as any] } });
@@ -48,12 +50,12 @@ export const Attachments = ({
     <FormProvider {...methods}>
       {fields.map((field, index) => {
         return (
-          <div className="relative my-4" key={`blob-${index}`}>
+          <div className="relative my-2 md:my-4" key={`blob-${index}`}>
             <BlobUploader selectedMedia={attachments[index]} name={`blobs.${index}`} />
           </div>
         );
       })}
-      {fields.length > 0 && (
+      {generateFor === 'note' && fields.length > 0 && (
         <div
           className="mt-2 flex w-fit cursor-pointer items-center gap-1 text-sm text-gray-500 transition-colors hover:text-gray-700"
           onClick={onDelete}>
@@ -61,7 +63,7 @@ export const Attachments = ({
           {t('resetFiles')}
         </div>
       )}
-      {fields.length < maxAttachments && (
+      {generateFor === 'note' && fields.length < maxAttachments && (
         <div
           className="mt-2 flex w-fit cursor-pointer items-center gap-1 text-sm text-gray-500 transition-colors hover:text-gray-700"
           onClick={onAdd}>

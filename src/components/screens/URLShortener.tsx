@@ -131,7 +131,7 @@ const URLShortenerInput = () => {
   const formError = errors.url?.message || errors.hash?.message;
   const error = formError || localError || requestErrorMessage;
   const loading = requestShortenUrl.isLoading;
-  const hasData = !loading && !requestShortenUrl.isError;
+  const hasData = !loading && !requestShortenUrl.isError && shortenUrl;
 
   useEffect(() => {
     if (error && isSubmitting) {
@@ -151,7 +151,7 @@ const URLShortenerInput = () => {
         className={`${
           loading || shortenUrl ? 'border-animate' : 'border'
         } container mx-auto max-w-5xl p-4 pt-8 shadow-xl sm:px-8 sm:py-8 sm:pt-10`}>
-        <h1 className="mb-4 flex gap-1 text-3xl">
+        <h1 className="mb-4 flex gap-1 text-xl md:text-3xl">
           {t('urlShortener')}
           <HelpTooltip text={t('helpShortUrlHead')} />
         </h1>
@@ -185,7 +185,7 @@ const URLShortenerInput = () => {
         <CustomLinkForm />
         <SignInToCustomLink />
         <p className="mt-4 text-red-400">{error}</p>
-        {hasData && shortenUrl && <URLShortenerResult />}
+        {hasData && <URLShortenerResult />}
         <FeedbackLink template={FeedbackTemplate.URL_SHORT} />
       </div>
     </FormProvider>

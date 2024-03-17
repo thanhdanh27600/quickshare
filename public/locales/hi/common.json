@@ -18,6 +18,7 @@
   "feedbackURLSubject": "[QUICKSHARE.AT] प्रतिसाद / बग URL शॉर्टनर",
   "feedbackShortSubject": "[QUICKSHARE.AT] प्रतिसाद / बग रिपोर्ट URL ट्रैकिंग",
   "feedbackNoteSubject": "[QUICKSHARE.AT] प्रतिसाद / बग URL नोट",
+  "feedbackUploadSubject": "[QUICKSHARE.AT] प्रतिसाद / बग फ़ाइल अपलोड करें",
   "feedbackForgotSubject": "[QUICKSHARE.AT] पासवर्ड भूल गए",
   "feedbackReportLinkSubject": "[QUICKSHARE.AT] लिंक के दुरुपयोग की रिपोर्ट करें",
   "feedbackReportLinkBody": "यदि आपको किसी हानिकारक लिंक का सामना करना पड़ा है, तो कृपया विवरण प्रदान करें:...\n\nदुरुपयोग के प्रकार:...",
@@ -122,5 +123,8 @@
   "clicksByCountry": "देश के हिसाब से क्लिक्स",
   "otherCountry": "अन्य",
   "file": "फ़ाइल",
-  "uploadFile": "फ़ाइल अपलोड करें"
+  "uploadFile": "फ़ाइल अपलोड करें",
+  "fileSuccess": "इतनी तेज़ी! फ़ाइल सफलतापूर्वक अपलोड हो गई है।",
+  "generateNoteMore": "एक और नोट बनाएं",
+  "generateFileMore": "एक और फ़ाइल अपलोड करें"
 }

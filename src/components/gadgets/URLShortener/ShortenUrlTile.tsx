@@ -19,6 +19,8 @@ export const ShortenUrlTile = () => {
     toast.success('Copied');
   };
 
+  if (!shortenUrl) return null;
+
   return (
     <div className="mt-2 flex flex-wrap justify-between gap-2 border-gray-200 bg-gray-100 px-3 py-6 sm:py-8 md:py-10">
       <a href={shortenUrl} target="_blank" className="flex-1">

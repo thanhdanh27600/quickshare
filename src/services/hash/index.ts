@@ -11,13 +11,15 @@ const existCache = async ({ generateFor, hash }: { hash: string; generateFor: st
     : 1;
 
 const existDb = async ({ generateFor, hash }: { hash: string; generateFor: string }) =>
-  generateFor === 'note'
-    ? await prisma.note.findUnique({ where: { hash } })
-    : generateFor === 'shorten'
+  generateFor === 'shorten'
     ? await prisma.urlShortenerHistory.findUnique({ where: { hash } })
+    : generateFor === 'note'
+    ? await prisma.note.findUnique({ where: { hash } })
+    : generateFor === 'file'
+    ? await prisma.file.findUnique({ where: { hash } })
     : 1;
 
-export const generateHash = async (generateFor: 'shorten' | 'note') => {
+export const generateHash = async (generateFor: 'shorten' | 'note' | 'file') => {
   let hash = '';
   let isExist = 1;
   let timesLimit = 0;

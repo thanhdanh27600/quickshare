@@ -1,11 +1,13 @@
 import memoize from 'fast-memoize';
 import { stringify } from 'querystring';
+import { FileRs } from 'types/file';
 import { Forward } from 'types/forward';
 import { Locale } from 'types/locale';
 import { NoteRs } from 'types/note';
 import { ShortenUrl } from 'types/shorten';
 import { Stats, StatsGeo } from 'types/stats';
 import {
+  FileSchema,
   ForwardSchema,
   NoteSchema,
   PasswordSchema,
@@ -136,4 +138,20 @@ export const getNoteRequest = async (hash: string, token?: string) => {
   );
   const data = rs.data;
   return data as NoteRs;
+};
+
+export const createFileRequest = async (payload: FileSchema) => {
+  const rs = await API.post(`/api/file`, payload);
+  const data = rs.data;
+  return data as FileRs;
+};
+
+export const getFileRequest = async (hash: string) => {
+  const rs = await API.get(
+    `/api/file?${stringify({
+      hash,
+    })}`,
+  );
+  const data = rs.data;
+  return data as FileRs;
 };

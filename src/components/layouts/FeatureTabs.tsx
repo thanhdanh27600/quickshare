@@ -6,10 +6,9 @@ import { useEffect } from 'react';
 import { useBearStore } from 'store';
 import { FeatureTabKey } from 'store/utilitySlice';
 import { BASE_URL } from 'types/constants';
-import { Locale } from 'types/locale';
 import { linkWithLanguage, useTrans } from 'utils/i18next';
 
-const tabs = (t: any, locale: Locale) => [
+const tabs = (t: any) => [
   {
     content: (
       <Link href={'/'}>
@@ -43,7 +42,7 @@ const tabs = (t: any, locale: Locale) => [
       </Link>
     ),
     key: FeatureTabKey.SHARE_FILE,
-    hidden: true,
+    // hidden: true,
   },
 ];
 
@@ -88,7 +87,5 @@ export const FeatureTabs = () => {
     }
   };
 
-  return (
-    <Tabs selectedKey={selectedTab} setSelectedKey={handleSelectTab} tabs={tabs(t, locale)} className="border-b-0 " />
-  );
+  return <Tabs selectedKey={selectedTab} setSelectedKey={handleSelectTab} tabs={tabs(t)} className="border-b-0 " />;
 };

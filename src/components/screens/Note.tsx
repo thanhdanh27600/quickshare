@@ -9,7 +9,7 @@ export const Note = () => {
 
   return (
     <>
-      <h1 className="mb-4 flex gap-1 text-3xl">
+      <h1 className="mb-4 flex gap-1 text-xl md:text-3xl">
         {t('noteEditor')}
         <HelpTooltip text={t('helpNoteHead')} />
       </h1>

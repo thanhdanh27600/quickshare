@@ -4,11 +4,12 @@ import { isEmpty } from 'ramda';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useBearStore } from 'store';
+import { BASE_URL } from 'types/constants';
 import { EVENTS_STATUS, MIXPANEL_EVENT } from 'types/utils';
-import { useTrans } from 'utils/i18next';
+import { linkWithLanguage, useTrans } from 'utils/i18next';
 
 export const NoteUrlTile = () => {
-  const { t } = useTrans();
+  const { t, locale } = useTrans();
   const { noteSlice, shortenSlice } = useBearStore();
   const [note, getEditUrl] = noteSlice((state) => [state.note, state.getEditUrl]);
   const [shortenUrl, trackingUrl] = shortenSlice((state) => [state.getShortenUrl(), state.getTrackingUrl()]);
@@ -39,8 +40,6 @@ export const NoteUrlTile = () => {
       clearTimeout(timeout);
     };
   }, [copied]);
-
-  if (!note) return null;
 
   return (
     <div className="mb-4">
@@ -79,7 +78,22 @@ export const NoteUrlTile = () => {
         </button>
       </div>
 
-      <div className="text-sm">{t('tracking')}</div>
+      <div className="flex justify-between text-sm">
+        <div>{t('tracking')}</div>
+        <a
+          onClick={(e) => {
+            e.preventDefault();
+            mixpanel.track(MIXPANEL_EVENT.SHORTEN_MORE, undefined, () => {
+              window.location.href = linkWithLanguage(`${BASE_URL}/note`, locale);
+            });
+          }}
+          href={linkWithLanguage(`${BASE_URL}/note`, locale)}
+          target="_self"
+          className="cursor-pointer text-cyan-500 underline decoration-1 transition-all hover:decoration-wavy">
+          {t('generateNoteMore')}
+        </a>
+      </div>
+
       <div className="flex flex-wrap justify-start gap-2">
         <a href={trackingUrl} target="_blank">
           <p className="text-sm tracking-tight text-cyan-500 transition-all hover:underline" title={trackingUrl}>

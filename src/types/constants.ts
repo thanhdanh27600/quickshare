@@ -21,12 +21,15 @@ export const Window = () => ('object' === typeof window && window ? (window as a
 export const LIMIT_FEATURE_HOUR = 1;
 export const LIMIT_FEATURE_SECOND = LIMIT_FEATURE_HOUR * 3600;
 // export const LIMIT_TOKEN_MILLISECOND = isProduction ? 3600e3 : 60e3;
-export const LIMIT_SHORTENED_HOUR = 72; // 3 days
+export const LIMIT_SHORTENED_HOUR = 168; // 7 days
 export const LIMIT_SHORTENED_SECOND = LIMIT_SHORTENED_HOUR * 3600;
 export const LIMIT_SHORTEN_REQUEST = isProduction ? 5 : 10;
 export const LIMIT_NOTE_HOUR = 168; // 7 days
 export const LIMIT_NOTE_SECOND = LIMIT_NOTE_HOUR * 3600;
 export const LIMIT_NOTE_REQUEST = 5;
+export const LIMIT_FILE_REQUEST = 10;
+export const LIMIT_FILE_HOUR = 168; // 7 days
+export const LIMIT_FILE_SECOND = LIMIT_FILE_HOUR * 3600;
 export const LIMIT_FORWARD_HOUR = isProduction ? 0.5 : 0.005; // 30mins
 export const LIMIT_FORWARD_SECOND = LIMIT_FORWARD_HOUR * 3600;
 export const LIMIT_FORWARD_REQUEST = isProduction ? 200 : 10;
@@ -67,8 +70,10 @@ export const REDIS_KEY = {
   LIMIT_SHORTEN: 'limitShort',
   LIMIT_FORWARD: 'limitForward',
   LIMIT_NOTE: 'limitNote',
+  LIMIT_FILE: 'limitFile',
   MAP_SHORTEN_BY_HASH: 'hShort',
   MAP_NOTE_BY_HASH: 'hNote',
+  MAP_FILE_BY_HASH: 'hFile',
   OG_BY_HASH: 'og',
 } as const;
 type RedisKeys = keyof typeof REDIS_KEY;

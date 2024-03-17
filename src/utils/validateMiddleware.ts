@@ -233,3 +233,20 @@ export const validateUpdateNoteSchema = z.object({
   ),
 });
 export type UpdateNoteSchema = z.infer<typeof validateUpdateNoteSchema>;
+
+export const validateFileSchema = z.object({
+  ip: z.string({
+    required_error: 'IP is required',
+  }),
+  mediaId: z.number({
+    required_error: 'Media is required',
+  }),
+  hash: z.nullable(
+    z
+      .string({
+        invalid_type_error: 'Hash is required',
+      })
+      .refine((value) => (!value ? true : HASH_CUSTOM.Regex.test(value || '')), 'Wrong hash format'),
+  ),
+});
+export type FileSchema = z.infer<typeof validateFileSchema>;
