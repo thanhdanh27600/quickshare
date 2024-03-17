@@ -64,7 +64,7 @@ export default function SignIn({ csrfToken }: InferGetServerSidePropsType<typeof
             name="email"
             render={(error) => <p className="text-red-400">{error.message}</p>}
           />
-          <p className="mt-2 text-gray-500">{t('signInNowDetail')}</p>
+          <p className="mt-2 text-sm text-gray-500">{t('signInNowDetail')}</p>
           <Button className="mt-4 w-full" type="button" loading={loading} onClick={handleSubmit(onSubmit)}>
             {t('continue')}
           </Button>

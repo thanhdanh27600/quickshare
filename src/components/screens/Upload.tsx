@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import { Loading } from 'components/atoms/Loading';
 import { Attachments } from 'components/gadgets/Attachments';
 import { URLShare } from 'components/gadgets/URLShare';
 import { ShortenUrlTile } from 'components/gadgets/URLShortener/ShortenUrlTile';
@@ -98,16 +99,23 @@ export const Upload = () => {
   return (
     <>
       <h1 className="mb-4 flex gap-1 text-xl md:text-3xl">{t('uploadFile')}</h1>
-      {!error && (
-        <Attachments
-          generateFor="file"
-          onChange={(attachment) => {
-            const mediaId = attachment?.at(-1)?.id;
-            if (!mediaId) return;
-            handleCreateFile(mediaId);
-          }}
-        />
-      )}
+      <div className={`relative ${loading ? 'opacity-50' : ''}`}>
+        {!error && (
+          <Attachments
+            generateFor="file"
+            onChange={(attachment) => {
+              const mediaId = attachment?.at(-1)?.id;
+              if (!mediaId) return;
+              handleCreateFile(mediaId);
+            }}
+          />
+        )}
+        {loading && (
+          <div className="absolute left-[calc(50%-20px)] top-[calc(50%+30px)]">
+            <Loading className="" />
+          </div>
+        )}
+      </div>
       {hasData && (
         <>
           <p>🚀 {t('fileSuccess')}</p>

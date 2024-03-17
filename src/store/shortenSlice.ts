@@ -23,7 +23,8 @@ const slice: StateCreator<ShortenSlice> = (set, get) => ({
   getShortenUrl: () => (!!get().shortenHistory?.id ? `${BASE_URL_SHORT}/${get().shortenHistory?.hash}` : ''),
   getTrackingUrl: () => (!!get().shortenHistory?.id ? `${BASE_URL}/v/${get().shortenHistory?.hash}` : ''),
   getHash: () => (!!get().shortenHistory ? get().shortenHistory?.hash || '' : ''),
-  setShortenHistory: (history) => set((state) => ({ shortenHistory: { ...state.shortenHistory, ...history } })),
+  setShortenHistory: (history) =>
+    set((state) => ({ shortenHistory: history === undefined ? undefined : { ...state.shortenHistory, ...history } })),
   setShortenHistoryMediaId: (id: number) => set({ shortenHistoryMediaId: id }),
   clearShortenHistory: () => set({ shortenHistory: undefined }),
 });

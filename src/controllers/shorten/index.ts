@@ -1,9 +1,9 @@
-import { UrlShortenerRecord, User } from '@prisma/client';
 import axios from 'axios';
 import requestIp from 'request-ip';
 import { shortenCacheService } from '../../services/cache/shorten.service';
 import prisma from '../../services/db/prisma';
 import { generateHash } from '../../services/hash';
+import { recordService } from '../../services/record';
 import { shortenService } from '../../services/shorten';
 import { RESERVED_HASH } from '../../types/constants';
 import { ShortenUrl } from '../../types/shorten';
@@ -75,47 +75,8 @@ export const handler = api<ShortenUrl>(
     const socialMetaTags = extractOgMetaTags(htmlString, baseUrl);
 
     // write to db
-    let record: (UrlShortenerRecord & { User?: User | null }) | null = null;
-    if (!!req.session?.user?.email) {
-      record = await prisma.urlShortenerRecord.findFirst({
-        where: {
-          User: {
-            email: req.session?.user?.email,
-          },
-        },
-        include: { User: true },
-      });
-    }
+    const record = await recordService.getOrCreate(req, ip);
 
-    if (!record) {
-      record = await prisma.urlShortenerRecord.findFirst({ where: { ip }, include: { User: true } });
-    }
-    // update record's user
-    if (!!record && !record.User && !!req.session?.user?.email) {
-      record = await prisma.urlShortenerRecord.update({
-        where: { id: record.id },
-        data: {
-          User: {
-            connect: { email: req.session?.user?.email },
-          },
-        },
-      });
-    }
-    // create record
-    if (!record) {
-      record = await prisma.urlShortenerRecord.create({
-        data: {
-          ip,
-          ...(req.session?.user?.email
-            ? {
-                User: {
-                  connect: { email: req.session?.user?.email },
-                },
-              }
-            : null),
-        },
-      });
-    }
     try {
       const history = await prisma.urlShortenerHistory.create({
         data: {
