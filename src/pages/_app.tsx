@@ -15,7 +15,7 @@ import '../styles/globals.css';
 
 const getLocation = (callback: Function) => async () => {
   try {
-    const response = await axios.post('api/l');
+    const response = await axios.post('/api/l');
     const data = response.data;
     callback(data);
   } catch (error) {
