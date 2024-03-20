@@ -14,9 +14,11 @@ import { useTrans } from 'utils/i18next';
 export const Footer = ({ className }: { className?: string }) => {
   const { t, locale } = useTrans();
   const [open, setOpen] = useState(false);
-  const { shortenSlice } = useBearStore();
+  const [timeoutButton, setTimeoutButton] = useState(0);
+  const { shortenSlice, utilitySlice } = useBearStore();
 
   const [shortenHistory] = shortenSlice((state) => [state.shortenHistory]);
+  const [country] = utilitySlice((state) => [state.country]);
 
   const reportLink = useFeedbackTemplate(FeedbackTemplate.REPORT_LINK);
 
@@ -25,12 +27,26 @@ export const Footer = ({ className }: { className?: string }) => {
     if (isLocal) return;
     const timeout = setTimeout(() => {
       setOpen(true);
+      setTimeoutButton(6);
     }, 2000);
 
     return () => {
       clearTimeout(timeout);
     };
   }, [shortenHistory]);
+
+  useEffect(() => {
+    if (!open) return;
+    const interval = setInterval(() => {
+      setTimeoutButton((state) => {
+        if (state === 0) clearInterval(interval);
+        return state === 0 ? 0 : state - 1;
+      });
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [open]);
 
   if (!locale) return null;
 
@@ -39,14 +55,28 @@ export const Footer = ({ className }: { className?: string }) => {
       <Modal
         id="donate"
         title="Donate 🙏"
-        confirmText={"No, I'm sorry :("}
+        confirmText={`No, I'm sorry :( ${timeoutButton > 0 ? timeoutButton : ''}`}
         hideDismissButton
-        ConfirmButtonProps={{ ['data-te-modal-dismiss']: true } as any}
+        ConfirmButtonProps={{ ['data-te-modal-dismiss']: true, disabled: timeoutButton > 0 } as any}
         open={open}
         blockDismiss>
-        <p className="text-center text-sm">Duy trì server 10k/ngày, ai đó gánh chung không 🙏🙏🙏</p>
-        <div className="flex justify-center">
-          <Image alt="Qr-Bank" src={'/assets/qr-bank.jpg'} width={200} height={0} />
+        <p className="text-center text-red-500">{t('donateDetail')}</p>
+        {country === 'VN' && (
+          <>
+            <div className="mt-2 flex justify-center">
+              <Image alt="Qr-Bank" src={'/assets/qr-bank.jpg'} width={200} height={0} />
+            </div>
+            <p className="my-4 text-center text-xl font-bold">{`or`}</p>
+          </>
+        )}
+        <div className="mt-2 flex justify-center gap-2">
+          <a
+            target="_blank"
+            href="https://wise.com/pay/r/WERUX911k7Un7LM"
+            className="inline-flex items-center font-medium hover:text-cyan-600 hover:underline">
+            <Image className="mr-2" alt="Wise-Bank" src={'/assets/wise-bank.png'} width={120} height={0} /> {`Wise`}
+            <ArrowUpRight className="mb-2 w-4" />
+          </a>
         </div>
         <p className="my-4 text-center text-xl font-bold">{`or`}</p>
         <div className="mt-2 flex justify-center">
@@ -54,7 +84,7 @@ export const Footer = ({ className }: { className?: string }) => {
             target="_blank"
             href="https://paypal.me/dolph2k"
             className="inline-flex items-center font-medium hover:text-cyan-600 hover:underline">
-            <Image alt="Qr-Momo" src={'/assets/paypal.png'} width={50} height={0} />
+            <Image className="mr-2" alt="Qr-Paypal" src={'/assets/paypal.png'} width={50} height={0} />
             {`Paypal`}
             <ArrowUpRight className="mb-2 w-4" />
           </a>

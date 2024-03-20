@@ -11,7 +11,7 @@ import { stringify } from 'querystring';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
-import { getForwardUrl } from 'requests';
+import { forwardUrl } from 'requests';
 import { BASE_URL_OG, Window, isProduction } from 'types/constants';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { encodeBase64 } from 'utils/crypto';
@@ -28,8 +28,8 @@ interface Props {
 
 const ForwardURL = ({ history, ip, error }: Props) => {
   const { t } = useTrans();
-  const forwardUrl = useMutation(QueryKey.FORWARD, getForwardUrl);
-  const loading = forwardUrl.isLoading && !forwardUrl.isError;
+  const mutation = useMutation(QueryKey.FORWARD, forwardUrl);
+  const loading = mutation.isLoading && !mutation.isError;
 
   const hash = history?.hash;
   const url = history?.url;
@@ -46,7 +46,7 @@ const ForwardURL = ({ history, ip, error }: Props) => {
     // start client-side forward
     setTimeout(
       () => {
-        forwardUrl.mutate({
+        mutation.mutate({
           hash: hash,
           userAgent: navigator.userAgent,
           ip,
@@ -61,7 +61,7 @@ const ForwardURL = ({ history, ip, error }: Props) => {
     if (!Window()) {
       return;
     }
-    if (forwardUrl.isIdle) {
+    if (mutation.isIdle) {
       return;
     }
     if (loading) {
@@ -82,7 +82,7 @@ const ForwardURL = ({ history, ip, error }: Props) => {
       hash,
     });
     location.replace(`${url.includes('http') ? '' : '//'}${url}`);
-  }, [forwardUrl]);
+  }, [mutation]);
 
   const encodeTitle = encodeBase64(ogTitle);
 
@@ -134,18 +134,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const ip = requestIp.getClientIp(context.req) || '';
     const userAgent = context.req.headers['user-agent'] || 'Unknown';
     // start server-side forward
-    const forwardUrl = await getForwardUrl({
+    const mutation = await forwardUrl({
       hash: hash ? (hash[0] as string) : '',
       userAgent,
       ip,
       fromClientSide: false,
     });
 
-    if (!forwardUrl.history) throw new Error('Cannot found history to forward');
+    if (!mutation.history) throw new Error('Cannot found history to forward');
 
     return {
       props: {
-        history: forwardUrl.history,
+        history: mutation.history,
         ip,
         ...(await serverSideTranslations(locale, ['common'])),
       },

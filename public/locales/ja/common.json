@@ -126,5 +126,6 @@
   "uploadFile": "ファイルをアップロードする",
   "fileSuccess": "早いですね！ファイルのアップロードが成功しました。",
   "generateNoteMore": "別のメモを作成する",
-  "generateFileMore": "別のファイルをアップロードする"
+  "generateFileMore": "別のファイルをアップロードする",
+  "donateDetail": "私は個人的にサーバーの維持に1日10ドルを費やしています。ご協力いただけると大変ありがたいです。🙏"
 }

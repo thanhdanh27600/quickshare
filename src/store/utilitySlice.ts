@@ -10,11 +10,15 @@ export enum FeatureTabKey {
 export interface UtilitySlice {
   featureTab: FeatureTabKey;
   setFeatureTab: (tab: string) => void;
+  country: string;
+  setCountry: (value: string) => void;
 }
 
 const slice: StateCreator<UtilitySlice> = (set, get) => ({
   featureTab: '' as any,
   setFeatureTab: (tab) => set({ featureTab: tab as FeatureTabKey }),
+  country: '',
+  setCountry: (value) => set({ country: value }),
 });
 
 const utilitySlice = create(withDevTools(slice, { anonymousActionType: 'UtilitySlice' }));
