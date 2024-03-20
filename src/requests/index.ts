@@ -64,7 +64,7 @@ export const updateShortenUrlRequest = async ({
   return data as ShortenUrl;
 };
 
-export const getForwardUrl = async ({ hash, userAgent, ip, fromClientSide }: ForwardSchema) => {
+export const forwardUrl = async ({ hash, userAgent, ip, fromClientSide }: ForwardSchema) => {
   const rs = await API.post(`/api/forward`, { hash, userAgent, ip, fromClientSide });
   const data = rs.data;
   return data as Forward;

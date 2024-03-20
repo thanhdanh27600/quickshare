@@ -126,5 +126,6 @@
   "uploadFile": "Charger un fichier",
   "fileSuccess": "C'était rapide ! Le fichier a été téléchargé avec succès.",
   "generateNoteMore": "Créer une autre note",
-  "generateFileMore": "Télécharger un autre fichier"
+  "generateFileMore": "Télécharger un autre fichier",
+  "donateDetail": "Je dépense personnellement 10 $ par jour pour maintenir mon serveur. Votre aide serait grandement appréciée. 🙏"
 }

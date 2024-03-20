@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { Session, getServerSession } from 'next-auth';
 import { z } from 'zod';
-import { isDebug, isProduction, isTest } from '../types/constants';
+import { allowedDomains, isDebug, isProduction, isTest } from '../types/constants';
 import HttpStatusCode from './statusCode';
 
 export type Response =
@@ -67,3 +67,9 @@ export const badRequest = (res: NextApiResponse, message?: string) =>
     errorMessage: message ?? 'You have submitted wrong data, please try again',
     errorCode: 'BAD_REQUEST',
   });
+
+export const originGuard = (req: NextApiRequest, res: NextApiResponse) => {
+  if (!req.headers.origin || !allowedDomains.includes(req.headers.origin)) {
+    return res.status(HttpStatusCode.FORBIDDEN).json({ errorMessage: 'Origin Not Allowed' });
+  }
+};

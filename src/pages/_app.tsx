@@ -1,3 +1,4 @@
+import axios from 'axios';
 import ErrorBoundary from 'components/gadgets/shared/ErrorBoundary';
 import mixpanel from 'mixpanel-browser';
 import { SessionProvider } from 'next-auth/react';
@@ -6,15 +7,28 @@ import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { useBearStore } from 'store';
 import { MIX_PANEL_TOKEN, Window, isProduction } from 'types/constants';
 import { trackLanded } from 'types/utils';
 import '../styles/common.scss';
 import '../styles/globals.css';
 
+const getLocation = (callback: Function) => async () => {
+  try {
+    const response = await axios.post('api/l');
+    const data = response.data;
+    callback(data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   // const { locale } = useTrans();
+  const { utilitySlice } = useBearStore();
+  const [setCountry] = utilitySlice((state) => [state.setCountry]);
 
   if (!MIX_PANEL_TOKEN) {
     console.error('Mix panel Not found');
@@ -37,6 +51,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     function gtag(...a: any[]) {
       (window as any).dataLayer.push(a);
     }
+    getLocation(({ country }: { country: string }) => {
+      setCountry(country || 'VN');
+    })();
     gtag('js', new Date());
     gtag('config', 'G-LE8KPBMBMD');
   }, []);
