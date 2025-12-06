@@ -26,71 +26,21 @@ interface Props {
   ip: string;
 }
 
-const ForwardURL = ({ history, ip, error }: Props) => {
-  const { t } = useTrans();
-  const mutation = useMutation(QueryKey.FORWARD, forwardUrl);
-  const loading = mutation.isLoading && !mutation.isError;
+interface MetaTagsProps {
+  url: string;
+  ogTitle: string;
+  ogDescription: string;
+  ogImgSrc?: string | null;
+  useCldImg: boolean | string | null;
+  hash: string;
+  theme?: string | null;
+  encodeTitle: string;
+  t: any;
+}
 
-  const hash = history?.hash;
-  const url = history?.url;
-  const theme = history?.theme;
-  const ogTitle = history?.ogTitle || t('ogTitle', { hash });
-  const ogDescription = history?.ogDescription || t('ogDescription');
-  const ogImgSrc = history?.ogImgSrc;
-  const useCldImg = ogImgSrc && history?.ogImgPublicId;
-
-  useEffect(() => {
-    if (!Window()) {
-      return;
-    }
-    // start client-side forward
-    setTimeout(
-      () => {
-        mutation.mutate({
-          hash: hash,
-          userAgent: navigator.userAgent,
-          ip,
-          fromClientSide: true,
-        });
-      },
-      isProduction ? 0 : 2000,
-    );
-  }, []);
-
-  useEffect(() => {
-    if (!Window()) {
-      return;
-    }
-    if (mutation.isIdle) {
-      return;
-    }
-    if (loading) {
-      return;
-    }
-    if (!url) {
-      const log = {
-        status: EVENTS_STATUS.FAILED,
-        error,
-      };
-      mixpanel.track(MIXPANEL_EVENT.FORWARD, log);
-      logEvent(analytics, FIREBASE_ANALYTICS_EVENT.FORWARD, log);
-      return;
-    }
-    mixpanel.track(MIXPANEL_EVENT.FORWARD, {
-      status: EVENTS_STATUS.OK,
-      urlRaw: url,
-      hash,
-    });
-    location.replace(`${url.includes('http') ? '' : '//'}${url}`);
-  }, [mutation]);
-
-  const encodeTitle = encodeBase64(ogTitle);
-
-  if (!history || !history?.hash || !!error) return <PageNotFound />;
-
+const MetaTags = ({ url, ogTitle, ogDescription, ogImgSrc, useCldImg, hash, theme, encodeTitle, t }: MetaTagsProps) => {
   return (
     <>
-      {/* CUSTOM HEAD */}
       <Head>
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
@@ -121,9 +71,94 @@ const ForwardURL = ({ history, ip, error }: Props) => {
           </>
         )}
       </Head>
-      {useCldImg && <CldOgImage alt={t('ogDescription')} src={ogImgSrc} />}
+      {useCldImg && ogImgSrc && <CldOgImage alt={t('ogDescription')} src={ogImgSrc} />}
       {!useCldImg && ogImgSrc && <meta property="og:image" content={ogImgSrc} />}
     </>
+  );
+};
+
+const useForwardUrl = (hash: string, url: string, ip: string, error?: unknown) => {
+  const mutation = useMutation(QueryKey.FORWARD, forwardUrl);
+  const loading = mutation.isLoading && !mutation.isError;
+
+  useEffect(() => {
+    if (!Window()) {
+      return;
+    }
+    // start client-side forward
+    const timeout = setTimeout(
+      () => {
+        mutation.mutate({
+          hash,
+          userAgent: navigator.userAgent,
+          ip,
+          fromClientSide: true,
+        });
+      },
+      isProduction ? 0 : 2000,
+    );
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    if (!Window()) {
+      return;
+    }
+    if (mutation.isIdle) {
+      return;
+    }
+    if (loading) {
+      return;
+    }
+    if (!url) {
+      const log = {
+        status: EVENTS_STATUS.FAILED,
+        error,
+      };
+      mixpanel.track(MIXPANEL_EVENT.FORWARD, log);
+      logEvent(analytics, FIREBASE_ANALYTICS_EVENT.FORWARD, log);
+      return;
+    }
+    mixpanel.track(MIXPANEL_EVENT.FORWARD, {
+      status: EVENTS_STATUS.OK,
+      urlRaw: url,
+      hash,
+    });
+    location.replace(`${url.includes('http') ? '' : '//'}${url}`);
+  }, [mutation]);
+};
+
+const ForwardURL = ({ history, ip, error }: Props) => {
+  const { t } = useTrans();
+
+  const hash = history?.hash;
+  const url = history?.url;
+  const theme = history?.theme;
+  const ogTitle = history?.ogTitle || t('ogTitle', { hash });
+  const ogDescription = history?.ogDescription || t('ogDescription');
+  const ogImgSrc = history?.ogImgSrc;
+  const useCldImg = !!(ogImgSrc && history?.ogImgPublicId);
+  const encodeTitle = encodeBase64(ogTitle);
+
+  useForwardUrl(hash, url, ip, error);
+
+  if (!history || !history?.hash || !!error) {
+    return <PageNotFound />;
+  }
+
+  return (
+    <MetaTags
+      url={url}
+      ogTitle={ogTitle}
+      ogDescription={ogDescription}
+      ogImgSrc={ogImgSrc}
+      useCldImg={useCldImg}
+      hash={hash}
+      theme={theme}
+      encodeTitle={encodeTitle}
+      t={t}
+    />
   );
 };
 
