@@ -95,7 +95,7 @@ const useForwardUrl = (hash: string, url: string, ip: string, error?: unknown) =
           fromClientSide: true,
         });
       },
-      isProduction ? 0 : 2000,
+      isProduction ? 0 : 1000,
     );
 
     return () => clearTimeout(timeout);
@@ -175,11 +175,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       ip,
       fromClientSide: false,
     };
-    console.log('🚀 ~ [...hash].tsx ~ getServerSideProps ~ payload:', payload);
-
     const mutation = await forwardUrl(payload);
-    console.log('🚀 ~ [...hash].tsx ~ getServerSideProps ~ mutation:', mutation);
-
     if (!mutation.history) throw new Error('Cannot found history to forward');
 
     return {
@@ -190,8 +186,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   } catch (error: any) {
-    console.log('🚀 ~ [...hash].tsx ~ getServerSideProps ~ error:', error);
-
     return {
       props: { error: error.message || 'somethingWrong', ...(await serverSideTranslations(defaultLocale, ['common'])) },
     };
