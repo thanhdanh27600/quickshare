@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import requestIp from 'request-ip';
 import { forwardUrl } from 'requests';
-import { BASE_URL_OG, Window, isProduction } from 'types/constants';
+import { BASE_URL_OG, Window, isDebug, isLocal, isProduction } from 'types/constants';
 import { EVENTS_STATUS, FIREBASE_ANALYTICS_EVENT, MIXPANEL_EVENT } from 'types/utils';
 import { encodeBase64 } from 'utils/crypto';
 import { analytics } from 'utils/firebase';
@@ -166,15 +166,19 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const locale = context.locale || defaultLocale;
     const { hash } = context.query;
-    const ip = requestIp.getClientIp(context.req) || '';
+    const ip = isDebug || isLocal ? '127.0.0.1' : requestIp.getClientIp(context.req) || '';
     const userAgent = context.req.headers['user-agent'] || 'Unknown';
     // start server-side forward
-    const mutation = await forwardUrl({
+    const payload = {
       hash: hash ? (hash[0] as string) : '',
       userAgent,
       ip,
       fromClientSide: false,
-    });
+    };
+    console.log('🚀 ~ [...hash].tsx ~ getServerSideProps ~ payload:', payload);
+
+    const mutation = await forwardUrl(payload);
+    console.log('🚀 ~ [...hash].tsx ~ getServerSideProps ~ mutation:', mutation);
 
     if (!mutation.history) throw new Error('Cannot found history to forward');
 
@@ -186,6 +190,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   } catch (error: any) {
+    console.log('🚀 ~ [...hash].tsx ~ getServerSideProps ~ error:', error);
+
     return {
       props: { error: error.message || 'somethingWrong', ...(await serverSideTranslations(defaultLocale, ['common'])) },
     };
