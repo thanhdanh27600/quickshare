@@ -6,56 +6,56 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
 <url>
-  <loc>https://quickshare.my</loc>
+  <loc>https://qshare.fun</loc>
   <lastmod>2024-03-14</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/tracking</loc>
+  <loc>https://qshare.fun/tracking</loc>
   <lastmod>2024-03-14</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/note</loc>
+  <loc>https://qshare.fun/note</loc>
   <lastmod>2023-09-12</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/contact</loc>
+  <loc>https://qshare.fun/contact</loc>
   <lastmod>2024-03-14</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/terms-of-service</loc>
+  <loc>https://qshare.fun/terms-of-service</loc>
   <lastmod>2023-09-15</lastmod>
   <changefreq>yearly</changefreq>
   <priority>0.5</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/privacy-policy</loc>
+  <loc>https://qshare.fun/privacy-policy</loc>
   <lastmod>2023-09-15</lastmod>
   <changefreq>yearly</changefreq>
   <priority>0.5</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/en</loc>
+  <loc>https://qshare.fun/en</loc>
   <lastmod>2023-09-10</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/en/tracking</loc>
+  <loc>https://qshare.fun/en/tracking</loc>
   <lastmod>2024-03-14</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
@@ -63,84 +63,84 @@
 
 
 <url>
-  <loc>https://quickshare.my/en/note</loc>
+  <loc>https://qshare.fun/en/note</loc>
   <lastmod>2023-09-12</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/en/contact</loc>
+  <loc>https://qshare.fun/en/contact</loc>
   <lastmod>2024-03-14</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/en/terms-of-service</loc>
+  <loc>https://qshare.fun/en/terms-of-service</loc>
   <lastmod>2023-09-15</lastmod>
   <changefreq>yearly</changefreq>
   <priority>0.5</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/en/privacy-policy</loc>
+  <loc>https://qshare.fun/en/privacy-policy</loc>
   <lastmod>2023-09-15</lastmod>
   <changefreq>yearly</changefreq>
   <priority>0.5</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/zh</loc>
+  <loc>https://qshare.fun/zh</loc>
   <lastmod>2023-09-22</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/zh/note</loc>
+  <loc>https://qshare.fun/zh/note</loc>
   <lastmod>2023-09-22</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/fr</loc>
+  <loc>https://qshare.fun/fr</loc>
   <lastmod>2023-09-22</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/fr/note</loc>
+  <loc>https://qshare.fun/fr/note</loc>
   <lastmod>2023-09-22</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/ja</loc>
+  <loc>https://qshare.fun/ja</loc>
   <lastmod>2023-09-22</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/ja/note</loc>
+  <loc>https://qshare.fun/ja/note</loc>
   <lastmod>2023-09-22</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/hi</loc>
+  <loc>https://qshare.fun/hi</loc>
   <lastmod>2023-09-22</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
 </url>
 
 <url>
-  <loc>https://quickshare.my/hi/note</loc>
+  <loc>https://qshare.fun/hi/note</loc>
   <lastmod>2023-09-22</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>

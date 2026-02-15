@@ -3,6 +3,7 @@ import mixpanel from 'mixpanel-browser';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import { useEffect } from 'react';
+import { brandUrl } from 'types/constants';
 import { LocaleProp } from 'types/locale';
 import { MIXPANEL_EVENT } from 'types/utils';
 import { defaultLocale } from 'utils/i18next';
@@ -103,8 +104,8 @@ const PrivacyPolicy = () => {
           <li>
             <p>
               <strong>Website</strong> refers to Quickshare, accessible from{' '}
-              <a href="https://quickshare.my" rel="external nofollow noopener" target="_blank">
-                https://quickshare.my
+              <a href={brandUrl} rel="external nofollow noopener" target="_blank">
+                {brandUrl}
               </a>
             </p>
           </li>
@@ -419,8 +420,8 @@ const PrivacyPolicy = () => {
         <ul>
           <li>
             By email:{' '}
-            <a href="mailto:quickshare.my@gmail.com" className="text-cyan-500">
-              quickshare.my@gmail.com
+            <a href="mailto:qshare.fun@gmail.com" className="text-cyan-500">
+              qshare.fun@gmail.com
             </a>
           </li>
         </ul>

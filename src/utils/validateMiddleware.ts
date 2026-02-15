@@ -4,7 +4,7 @@ import { HASH_CUSTOM, isProduction } from '../types/constants';
 import { Theme, Themes } from '../types/og';
 import { isValidUrl } from './text';
 
-export const invalidUrlPatterns: RegExp[] = [/quickshare\.at/, /qsh\.at/, /localhost/];
+export const invalidUrlPatterns: RegExp[] = [/qshare\.fun/, /qsh\.at/, /localhost/];
 
 export const isUrlToShortenValid = (url: string) => {
   let isValid = true;
